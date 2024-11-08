@@ -14,13 +14,15 @@ navbar:
       menu:
       - text: "Page 1"
         href: lab1.html
+      - text: "Page 2"
+        href: lab2.html
         
         # here, other .Rmds can be added
 
 
   right:
   - icon: fab fa-github
-    href: https://github.com/robfranken/LabJournal
+    href: https://github.com/ninabranten/socialunsafety_1
 output:
   html_document:
     theme: flatly
