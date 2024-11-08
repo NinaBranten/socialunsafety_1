@@ -1,17 +1,17 @@
 ---
-title: "Lab journal"
+title: "Social unsafety"
 output:
   html_document:
     toc: false
     number_sections: false
-author: "by: Your Name"
+author: "by: Nina Branten"
 bibliography: references.bib
 
 ---
 
 
 ```{r, install remotely, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
-# install.packages("remotes")
+#install.packages("remotes")
 #remotes::install_github("rlesur/klippy")
 ``` 
 
@@ -46,7 +46,7 @@ klippy::klippy(position = c('top', 'right'))
 # My Lab Journal
 Last compiled on `r format(Sys.time(), '%B, %Y')`  
 
-*Describe lab journal here.*
+*First paper of the social unsafety project.*
 
 <br>
 
@@ -70,24 +70,6 @@ Use this example to journal your lab work and assignments.
 
 :::
 ::::::::::::::
-
-
-
-## How to use
-
-1. Fork the repository for this website and follow instructions on `README` to get started [here](https://github.com/robfranken/LabJournal).  
-
-2. Journal your work, by editing the .Rmd-files
-
-3. ...
-
-4. Change everything to make it your own!
-
-
-<br>
-
-Use the top menu to navigate through the journal.
-
 
 ----
 
