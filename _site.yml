@@ -11,9 +11,9 @@ navbar:
     - icon: fa-home
       href: index.html
     - text: "Data mergen"
-      href: lab1.html
+      href: mergingdata.html
     - text: "Recoding variables"
-      href: lab2.html
+      href: recodingvariables.html
         
         # here, other .Rmds can be added
 
