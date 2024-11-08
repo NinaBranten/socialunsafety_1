@@ -32,15 +32,28 @@ Last compiled on `r format(Sys.time(), '%B, %Y')`
 
 ----
   
-This is just an example page of your `r colorize("lab journal", "red")`.
+Loading in the necessary packages.
   
+```{r}
+library("foreign")
+library("ggplot2")
 
+```
 ----
-
+Starting out with loading in the NEA data 2005-2021
 
 ```{r}
-print("Hello Lab Journal")
-```
+NEAoud <-read.spss("data/raw/DANS_NEA2005-2018.sav", use.value.labels = T, to.data.frame = T)
 
+```
+```{r}
+summary(NEAoud$OngwGedr_a)
+NEAoud$OngwGedr_a <- as.numeric(NEAoud$OngwGedr_a) 
+ggplot(data=NEAoud, aes(x=OngwGedr_a)) + geom_bar(stat="bin")
+class(NEAoud$OngwGedr_a)
+
+ggplot(data=NEAoud[!NEAoud$OngwGedr_a==1,], aes(x=OngwGedr_a)) + geom_bar(stat="bin")
+
+```
 
 
