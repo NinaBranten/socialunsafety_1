@@ -1,0 +1,114 @@
+---
+title: "LCA"
+#bibliography: references.bib
+author: "Nina Branten"
+---
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"))
+options(width = 100)
+rgl::setupKnitr()
+
+
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+----
+Loading in the necessary packages.
+  
+```{r}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+```
+----
+
+Starting out with loading in the NEA data 2005-2021
+
+```{r}
+NEAmerged <-read.spss("data/processed/NEA2005-2021 with all variables.sav", use.value.labels = T, to.data.frame = T)
+
+```
+----
+Transforming the variables into numeric variables
+
+```{r}
+NEAmerged$OngwGedr_b_num <- as.numeric(NEAmerged$OngwGedr_b)
+NEAmerged$OngwGedr_d_num <- as.numeric(NEAmerged$OngwGedr_d)
+NEAmerged$OngwGedr_f_num <- as.numeric(NEAmerged$OngwGedr_f)
+NEAmerged$OngwGedr_h_num <- as.numeric(NEAmerged$OngwGedr_h)
+
+```
+----
+LCA
+
+```{r}
+data <- data.frame(NEAmerged$OngwGedr_b_num, NEAmerged$OngwGedr_d_num, NEAmerged$OngwGedr_f_num, NEAmerged$OngwGedr_h_num)
+items <- cbind(NEAmerged.OngwGedr_b_num, NEAmerged.OngwGedr_d_num, NEAmerged.OngwGedr_f_num, NEAmerged.OngwGedr_h_num) ~ 1
+```
+
+```{r}
+model1 <- poLCA(items, data, nclass = 1, maxiter = 1000, nrep = 1, graphs=FALSE, na.rm = FALSE)
+model1
+```
+
+```{r}
+model2 <- poLCA(items, data, nclass = 2, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model2
+```
+
+```{r}
+model3 <- poLCA(items, data, nclass = 3, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model3
+```
+
+```{r}
+model4 <- poLCA(items, data, nclass = 4, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model4
+```
+
+```{r}
+model5 <- poLCA(items, data, nclass = 5, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model5
+```
+
+```{r}
+model6 <- poLCA(items, data, nclass = 6, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model6
+```
+
+```{r}
+model7 <- poLCA(items, data, nclass = 7, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model7
+```
+
+```{r}
+model8 <- poLCA(items, data, nclass = 8, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model8
+```
+
+```{r}
+model9 <- poLCA(items, data, nclass = 9, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model9
+```
+
+```{r}
+model10 <- poLCA(items, data, nclass = 10, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model10
+```
+
