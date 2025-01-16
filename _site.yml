@@ -1,6 +1,6 @@
-name: "Example Lab Journal"
+name: "Social unsafety"
 author: 
-  - 'Your Name'
+  - 'Nina Branten'
 output_dir: "docs"
 exclude: 
   - "data"
@@ -10,12 +10,10 @@ navbar:
   left:
     - icon: fa-home
       href: index.html
-    - text: "Data mergen"
+    - text: "first try"
       href: mergingdata.html
-    - text: "Recoding variables"
-      href: recodingvariables.html
-    - text: "LCA"
-      href: lca.html
+    - text: "frequencies"
+      href: frequencies.html
         
         # here, other .Rmds can be added
 
