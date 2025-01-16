@@ -55,5 +55,3 @@ class(NEAoud$OngwGedr_a)
 ggplot(data=NEAoud[!NEAoud$OngwGedr_a==1,], aes(x=OngwGedr_a)) + geom_bar(stat="bin")
 
 ```
-
-
