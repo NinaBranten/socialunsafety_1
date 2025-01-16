@@ -1,0 +1,66 @@
+---
+title: "Intersectionality"
+#bibliography: references.bib
+author: "Nina Branten"
+---
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"))
+options(width = 100)
+rgl::setupKnitr()
+
+
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+```{r klippy3, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+```{r echo=FALSE, warning=FALSE}
+library("foreign")
+library("ggplot2")
+library("summarytools")
+```
+
+```{r klippy4, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022 <-read.spss("data/processed/Data 2022 cleaned.sav", use.value.labels = T, to.data.frame = T)
+
+#NEA20142022 <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
+```
+
+Gender
+
+```{r}
+summarytools::freq(NEA2022$m_v, order = "freq")
+```
+Migration background
+```{r}
+summarytools::freq(NEA2022$vrllandd, order = "freq")
+```
+Educational level
+```{r}
+summarytools::freq(NEA2022$afl_soi3, order = "freq")
+```
+
+Age
+
+```{r}
+summarytools::freq(NEA2022$afl_lftc, order = "freq")
+```
+Recoden laag (15-35), middelbaar (35-55), hoog (55-75)
+
+```{r}
+summarytools::freq(NEA2022$afl_lftc, order = "freq")
+str(NEA2022$afl_lftc)
+
+
+
+```
+
