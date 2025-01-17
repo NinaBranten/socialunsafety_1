@@ -27,6 +27,10 @@ klippy::klippy(position = c('top', 'right'))
 library("foreign")
 library("ggplot2")
 library("summarytools")
+library("dplyr")
+library("labelled")
+library("tidyr")
+library("fastDummies")
 ```
 
 ```{r klippy4, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
@@ -38,29 +42,99 @@ NEA2022 <-read.spss("data/processed/Data 2022 cleaned.sav", use.value.labels = T
 Gender
 
 ```{r}
-summarytools::freq(NEA2022$m_v, order = "freq")
+summarytools::freq(NEA2022$m_v)
 ```
 Migration background
 ```{r}
-summarytools::freq(NEA2022$vrllandd, order = "freq")
+summarytools::freq(NEA2022$vrllandd)
 ```
 Educational level
 ```{r}
-summarytools::freq(NEA2022$afl_soi3, order = "freq")
+summarytools::freq(NEA2022$afl_soi3)
 ```
 
 Age
 
 ```{r}
-summarytools::freq(NEA2022$afl_lftc, order = "freq")
+summarytools::freq(NEA2022$afl_lftc)
 ```
 Recoden laag (15-35), middelbaar (35-55), hoog (55-75)
 
 ```{r}
-summarytools::freq(NEA2022$afl_lftc, order = "freq")
+summarytools::freq(NEA2022$afl_lftc)
 str(NEA2022$afl_lftc)
 
 
+NEA2022$lft_num <- as.numeric(NEA2022$afl_lftc)
+
+NEA2022 <- NEA2022 %>%
+  mutate(leeftijd = case_when(
+    lft_num %in% c(1, 2) ~ 1,
+    lft_num %in% c(3, 4) ~ 2,
+    lft_num %in% c(5, 6) ~ 3,
+    TRUE ~ NA_real_
+  ))
+
+
+NEA2022$leeftijd_ <- factor(NEA2022$leeftijd,
+                                 levels = c(1, 2, 3),
+                                 labels = c("15-35", "35-55", "55-75"))
+
+
+summarytools::freq(NEA2022$leeftijd_)
+
+```
+Intersectionality
+
+```{r}
+
+NEA2022 <- NEA2022 %>%
+  mutate(gender = recode(m_v,
+                               "man" = "m",
+                               "vrouw" = "v"))
+
+
+NEA2022 <- NEA2022 %>%
+  mutate(migration = recode(vrllandd,
+                               "Nederland" = "nl",
+                               "Europa (exclusief Nederland)" = "eu",
+                               "Buiten Europa" = "noeu"))
+
+NEA2022 <- NEA2022 %>%
+  mutate(education = recode(afl_soi3,
+                               "laag opleidingsniveau" = "laag",
+                               "middelbaar opleidingsniveau" = "middel",
+                               "hoog opleidingsniveau" = "hoog"))
+
+NEA2022$intersections <- interaction(NEA2022$gender, NEA2022$migration, NEA2022$education, NEA2022$leeftijd_)
+
+table(NEA2022$intersections) 
+
+#NEA2022$intersections <- interaction(NEA2022$m_v, NEA2022$vrllandd, NEA2022$afl_soi3, NEA2022$leeftijd_)
+#table(NEA2022$intersections) 
+
+#NEA2022$gender_num <- as.numeric(NEA2022$m_v)
+#NEA2022$migr_num <- as.numeric(NEA2022$vrllandd)
+#NEA2022$educ_num <- as.numeric(NEA2022$afl_soi3)
+
+#NEA2022$intersections_num <- interaction(NEA2022$gender_num, NEA2022$migr_num, NEA2022$educ_num, NEA2022$leeftijd)
+#table(NEA2022$intersections_num)
+#summary(NEA2022$intersections_num)
+
+```
+
+Making dummy variables
+
+```{r}
+NEA2022 <- dummy_cols(NEA2022, select_columns = "intersections", remove_first_dummy = FALSE)
+
+dummy_columns <- grep("^intersections_", colnames(NEA2022), value = TRUE)  # Find dummy columns
+colnames(NEA2022)[colnames(NEA2022) %in% dummy_columns] <- gsub("^intersections_", "", dummy_columns)
+
+```
+
+```{r}
+table(NEA2022$intersections, NEA2022$se_clust)
 
 ```
 
