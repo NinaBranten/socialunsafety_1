@@ -14,6 +14,8 @@ navbar:
       href: mergingdata.html
     - text: "frequencies"
       href: frequencies.html
+    - text: "intersectionality"
+      href: intersectionality.html
         
         # here, other .Rmds can be added
 
