@@ -37,111 +37,113 @@ NEA2022 <-read.spss("data/processed/Data 2022 cleaned.sav", use.value.labels = T
 #NEA20142022 <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
 ```
 
-Pesten door collega's
+<br><br> **Pesten door collega's**
 
 ```{r}
 summarytools::freq(NEA2022$afl_pe_1)
 
 ```
-Pesten door leidinggevenden
+<br><br> **Pesten door leidinggevenden**
 
 ```{r}
 summarytools::freq(NEA2022$afl_pe_2)
 ```
-Intimidatie door collega's
+<br><br> **Intimidatie door collega's**
 
 ```{r}
 summarytools::freq(NEA2022$afl_be_1)
 ```
-Intimidatie door leidinggevenden
+<br><br> **Intimidatie door leidinggevenden**
 
 ```{r}
 summarytools::freq(NEA2022$afl_be_2)
 ```
 
-Fysiek geweld door collega's 
+<br><br> **Fysiek geweld door collega's** 
 
 ```{r}
 summarytools::freq(NEA2022$afl_ge_3)
 ```
 
-Fysiek geweld door leidinggevenden
+<br><br> **Fysiek geweld door leidinggevenden**
 
 ```{r}
 summarytools::freq(NEA2022$afl_ge_4)
 ```
 
-Afgelopen maanden te maken gehad met intern ongewenst gedrag: dus op een van de bovenstaande vragen 'een enkele keer' of vaker.
+<br><br> **Afgelopen maanden te maken gehad met intern ongewenst gedrag: dus op een van de bovenstaande vragen 'een enkele keer' of vaker.**
 
 ```{r}
 summarytools::freq(NEA2022$afl_on_3)
 ```
-Conflict met collega
+<br><br> **Conflict met collega**
 
 ```{r}
 summarytools::freq(NEA2022$conflict)
 ```
-Conflict met directe leidinggevende
+<br><br> **Conflict met directe leidinggevende**
 
 ```{r}
 summarytools::freq(NEA2022$confli_1)
 ```
 
-Conflict met uw werkgever
+<br><br> **Conflict met uw werkgever**
 
 ```{r}
 summarytools::freq(NEA2022$confli_2)
 ```
-Kort- en/of langdurig conflict met collega's, leidinggevende en/of werkgever
+<br><br> **Kort- en/of langdurig conflict met collega's, leidinggevende en/of werkgever**
 
 ```{r}
 summary(NEA2022$afl_conf)
 ```
-Sociale steun leidinggevenden
+<br><br> **Sociale steun leidinggevenden**
 
 ```{r}
 summarytools::freq(NEA2022$afl_socs)
 ```
-Sociale steun leidinggevenden: mijn leidinggevende heeft oog voor het welzijn van de medewerkers
+<br><br> **Sociale steun leidinggevenden: mijn leidinggevende heeft oog voor het welzijn van de medewerkers**
+
 ```{r}
 summarytools::freq(NEA2022$leiding_)
 ```
-Sociale steun leidinggevenden: mijn leidinggevende besteedt aandacht aan wat ik zeg
+<br><br> **Sociale steun leidinggevenden: mijn leidinggevende besteedt aandacht aan wat ik zeg**
+
 ```{r}
 summarytools::freq(NEA2022$leidin_1)
 ```
 
-Sociale steun collega's
+<br><br> **Sociale steun collega's**
 
 ```{r}
 summarytools::freq(NEA2022$afl_so_2)
 ```
 
-Sociale steun collega's: mijn collega's hebben persoonlijke belangstelling voor me
+<br><br> **Sociale steun collega's: mijn collega's hebben persoonlijke belangstelling voor me**
 
 ```{r}
 summarytools::freq(NEA2022$collega_)
 ```
 
-Sociale steun collega's: mijn collega's zijn vriendelijk
+<br><br> **Sociale steun collega's: mijn collega's zijn vriendelijk**
 
 ```{r}
 summarytools::freq(NEA2022$colleg_1)
 ```
 
-Psychologische veiligheid: op mijn werk kun je lastige kwesties naar voren brengen
+<br><br> **Psychologische veiligheid: op mijn werk kun je lastige kwesties naar voren brengen**
 
 ```{r}
 summarytools::freq(NEA2022$psyveil)
 ```
 
-Psychologische veiligheid: op mijn werk ik het gemakkelijk om hulp te vragen
+<br><br> **Psychologische veiligheid: op mijn werk ik het gemakkelijk om hulp te vragen**
 
 ```{r}
 summarytools::freq(NEA2022$psyvei_1)
 ```
 
-Psychologische veiligheid: op mijn werk is het niet erg om een fout te maken
+<br><br> **Psychologische veiligheid: op mijn werk is het niet erg om een fout te maken**
 
 ```{r}
 summarytools::freq(NEA2022$psyvei_2)

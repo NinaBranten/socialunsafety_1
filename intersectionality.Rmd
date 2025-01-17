@@ -39,26 +39,26 @@ NEA2022 <-read.spss("data/processed/Data 2022 cleaned.sav", use.value.labels = T
 #NEA20142022 <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
 ```
 
-Gender
+<br><br> **Gender**
 
 ```{r}
 summarytools::freq(NEA2022$m_v)
 ```
-Migration background
+<br><br> **Migration background**
 ```{r}
 summarytools::freq(NEA2022$vrllandd)
 ```
-Educational level
+<br><br> **Educational level**
 ```{r}
 summarytools::freq(NEA2022$afl_soi3)
 ```
 
-Age
+<br><br> **Age**
 
 ```{r}
 summarytools::freq(NEA2022$afl_lftc)
 ```
-Recoden laag (15-35), middelbaar (35-55), hoog (55-75)
+<br><br> **Recoden laag (15-35), middelbaar (35-55), hoog (55-75)**
 
 ```{r}
 summarytools::freq(NEA2022$afl_lftc)
@@ -84,10 +84,10 @@ NEA2022$leeftijd_ <- factor(NEA2022$leeftijd,
 summarytools::freq(NEA2022$leeftijd_)
 
 ```
-Intersectionality
+<br><br> **Preparing variables for intersections**
 
 ```{r}
-
+# Easier labels
 NEA2022 <- NEA2022 %>%
   mutate(gender = recode(m_v,
                                "man" = "m",
@@ -106,9 +106,31 @@ NEA2022 <- NEA2022 %>%
                                "middelbaar opleidingsniveau" = "middel",
                                "hoog opleidingsniveau" = "hoog"))
 
+# Missing values
+NEA2022$education[NEA2022$education == "onbekend"] <- NA
+NEA2022$education[NEA2022$migration == "Onbekend"] <- NA
+
+# Drop unused levels
+levels(NEA2022$migration)
+NEA2022$migration <- droplevels(NEA2022$migration)
+levels(NEA2022$migration)
+
+levels(NEA2022$education)
+NEA2022$education <- droplevels(NEA2022$education)
+levels(NEA2022$education)
+
+summary(NEA2022$gender)
+summary(NEA2022$migration)
+summary(NEA2022$education)
+summary(NEA2022$leeftijd_)
+
+```
+
+```{r}
 NEA2022$intersections <- interaction(NEA2022$gender, NEA2022$migration, NEA2022$education, NEA2022$leeftijd_)
 
-table(NEA2022$intersections) 
+summarytools::freq(NEA2022$intersections)
+
 
 #NEA2022$intersections <- interaction(NEA2022$m_v, NEA2022$vrllandd, NEA2022$afl_soi3, NEA2022$leeftijd_)
 #table(NEA2022$intersections) 
@@ -123,18 +145,26 @@ table(NEA2022$intersections)
 
 ```
 
-Making dummy variables
+
+```{r}
+
+# Per cluster
+table(NEA2022$intersections, NEA2022$se_clust)
+
+
+
+# Alleen cluster 2
+summarytools::freq(NEA2022$intersections[NEA2022$se_clust == 2])
+
+```
+
+<br><br> **Creating dummy variables**
 
 ```{r}
 NEA2022 <- dummy_cols(NEA2022, select_columns = "intersections", remove_first_dummy = FALSE)
 
 dummy_columns <- grep("^intersections_", colnames(NEA2022), value = TRUE)  # Find dummy columns
 colnames(NEA2022)[colnames(NEA2022) %in% dummy_columns] <- gsub("^intersections_", "", dummy_columns)
-
-```
-
-```{r}
-table(NEA2022$intersections, NEA2022$se_clust)
 
 ```
 
