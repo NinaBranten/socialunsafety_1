@@ -16,6 +16,8 @@ navbar:
       href: frequencies.html
     - text: "intersectionality"
       href: intersectionality.html
+    - text: "LCA"
+      href: LCA2022.html
         
         # here, other .Rmds can be added
 
