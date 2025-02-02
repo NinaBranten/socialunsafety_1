@@ -38,7 +38,6 @@ Loading in the necessary packages.
 library("foreign")
 library("ggplot2")
 
-
 ```
 ----
 Starting out with loading in the NEA data 2005-2021
