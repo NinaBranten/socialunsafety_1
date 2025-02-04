@@ -52,652 +52,353 @@ attach(NEA2022)
 #NEA20142022 <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
 ```
 
+
 ```{r}
+#pesten collega's
+table(NEA2022$afl_pe_1)
 
-summary(NEA2022$afl_pe_1)
-levels (NEA2022$afl_pe_1)
+NEA2022$pesten_col <- as.numeric(NEA2022$afl_pe_1)
 
-NEA2022$afl_pe_1 <- as.character(NEA2022$afl_pe_1)
-NEA2022$afl_pe_1[NEA2022$afl_pe_1 == "refusal"] <- NA
-NEA2022$afl_pe_1 <- factor(NEA2022$afl_pe_1)
+table(NEA2022$pesten_col)
 
-levels(NEA2022$afl_pe_1)
+NEA2022 <- NEA2022 %>%
+  mutate(pesten_col = recode(pesten_col, `4` = 1, `1` = 2, `2` = 3, `3` = 4))
 
-NEA2022$afl_pe_1 <- factor(NEA2022$afl_pe_1, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-NEA2022$afl_pe_1 <- droplevels(NEA2022$afl_pe_1)
+table(NEA2022$pesten_col)
 
-
-#levels(NEA2022$afl_pe_1)
-#summary(afl_pe_1)
-#levels (afl_pe_1)
-#afl_pe_1 <- as.character(afl_pe_1)
-#afl_pe_1[afl_pe_1 == "refusal"] <- NA
-#afl_pe_1 <- factor(afl_pe_1)
-#levels(afl_pe_1)
-#afl_pe_1 <- factor(afl_pe_1, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-#afl_pe_1 <- droplevels(afl_pe_1)
-#levels(afl_pe_1)
 ```
 
 ```{r}
-summary(NEA2022$afl_pe_2)
-levels (NEA2022$afl_pe_2)
+#pesten leidinggevenden
+table(NEA2022$afl_pe_2)
 
-NEA2022$afl_pe_2 <- as.character(NEA2022$afl_pe_2)
-NEA2022$afl_pe_2[NEA2022$afl_pe_2 == "refusal"] <- NA
-NEA2022$afl_pe_2 <- factor(NEA2022$afl_pe_2)
+NEA2022$pesten_leid <- as.numeric(NEA2022$afl_pe_2)
 
-levels(NEA2022$afl_pe_2)
+table(NEA2022$pesten_leid)
 
-NEA2022$afl_pe_2 <- factor(NEA2022$afl_pe_2, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
+NEA2022 <- NEA2022 %>%
+  mutate(pesten_leid = recode(pesten_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-NEA2022$afl_pe_2 <- droplevels(NEA2022$afl_pe_2)
-levels(NEA2022$afl_pe_2)
-
-#summary(afl_pe_2)
-#levels (afl_pe_2)
-#afl_pe_2 <- as.character(afl_pe_2)
-#afl_pe_2[afl_pe_2 == "refusal"] <- NA
-#afl_pe_2 <- factor(afl_pe_2)
-#levels(afl_pe_2)
-#afl_pe_2 <- factor(afl_pe_2, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-#afl_pe_2 <- droplevels(afl_pe_2)
-#levels(afl_pe_2)
+table(NEA2022$pesten_leid)
 ```
+
 ```{r}
-summary(NEA2022$afl_be_1)
-levels (NEA2022$afl_be_1)
+#intimidatie collega's
+table(NEA2022$afl_be_1)
 
-NEA2022$afl_be_1 <- as.character(NEA2022$afl_be_1)
-NEA2022$afl_be_1[NEA2022$afl_be_1 == "refusal"] <- NA
-NEA2022$afl_be_1 <- factor(NEA2022$afl_be_1)
+NEA2022$intimidation_col <- as.numeric(NEA2022$afl_be_1)
 
-levels(NEA2022$afl_be_1)
+table(NEA2022$intimidation_col)
 
-NEA2022$afl_be_1 <- factor(NEA2022$afl_be_1, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
+NEA2022 <- NEA2022 %>%
+  mutate(intimidation_col = recode(intimidation_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-NEA2022$afl_be_1 <- droplevels(NEA2022$afl_be_1)
-levels(NEA2022$afl_be_1)
-
-#summary(afl_be_1)
-#levels (afl_be_1)
-#afl_be_1 <- as.character(afl_be_1)
-#afl_be_1[afl_be_1 == "refusal"] <- NA
-#afl_be_1 <- factor(afl_be_1)
-#levels(afl_be_1)
-#afl_be_1 <- factor(afl_be_1, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-#afl_be_1 <- droplevels(afl_be_1)
-#levels(afl_be_1)
+table(NEA2022$intimidation_col)
 
 ```
 ```{r}
-summary(NEA2022$afl_be_2)
-levels (NEA2022$afl_be_2)
+#intimidatie leidinggevenden
+table(NEA2022$afl_be_2)
 
-NEA2022$afl_be_2 <- as.character(NEA2022$afl_be_2)
-NEA2022$afl_be_2[NEA2022$afl_be_2 == "refusal"] <- NA
-NEA2022$afl_be_2 <- factor(NEA2022$afl_be_2)
+NEA2022$intimidation_leid <- as.numeric(NEA2022$afl_be_2)
 
-levels(NEA2022$afl_be_2)
+table(NEA2022$intimidation_leid)
 
-NEA2022$afl_be_2 <- factor(NEA2022$afl_be_2, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
+NEA2022 <- NEA2022 %>%
+  mutate(intimidation_leid = recode(intimidation_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-NEA2022$afl_be_2 <- droplevels(NEA2022$afl_be_2)
-levels(NEA2022$afl_be_2)
+table(NEA2022$intimidation_leid)
 
-
-#summary(afl_be_2)
-#levels (afl_be_2)
-#afl_be_2 <- as.character(afl_be_2)
-#afl_be_2[afl_be_2 == "refusal"] <- NA
-#afl_be_2 <- factor(afl_be_2)
-#levels(afl_be_2)
-#afl_be_2 <- factor(afl_be_2, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-#afl_be_2 <- droplevels(afl_be_2)
-#levels(afl_be_2)
 ```
 ```{r}
-summary(NEA2022$afl_ge_3)
-levels (NEA2022$afl_ge_3)
+#fysiek geweld collega's
+table(NEA2022$afl_ge_3)
 
-NEA2022$afl_ge_3 <- as.character(NEA2022$afl_ge_3)
-NEA2022$afl_ge_3[NEA2022$afl_ge_3 == "refusal"] <- NA
-NEA2022$afl_ge_3 <- factor(NEA2022$afl_ge_3)
+NEA2022$geweld_col <- as.numeric(NEA2022$afl_ge_3)
 
-levels(NEA2022$afl_ge_3)
+table(NEA2022$geweld_col)
 
-NEA2022$afl_ge_3 <- factor(NEA2022$afl_ge_3, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
+NEA2022 <- NEA2022 %>%
+  mutate(geweld_col = recode(geweld_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-NEA2022$afl_ge_3 <- droplevels(NEA2022$afl_ge_3)
-levels(NEA2022$afl_ge_3)
+table(NEA2022$geweld_col)
 
+```
 
-#summary(afl_ge_3)
-#levels (afl_ge_3)
-#afl_ge_3 <- as.character(afl_ge_3)
-#afl_ge_3[afl_ge_3 == "refusal"] <- NA
-#afl_ge_3 <- factor(afl_ge_3)
-#levels(afl_ge_3)
-#afl_ge_3 <- factor(afl_ge_3, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-#afl_ge_3 <- droplevels(afl_ge_3)
-#levels(afl_ge_3)
+```{r}
+#fysiek geweld leidinggevenden
+table(NEA2022$afl_ge_4)
+
+NEA2022$geweld_leid <- as.numeric(NEA2022$afl_ge_4)
+
+table(NEA2022$geweld_leid)
+
+NEA2022 <- NEA2022 %>%
+  mutate(geweld_leid = recode(geweld_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+table(NEA2022$geweld_leid)
+
+```
+
+```{r}
+#ongewenste seksuele aandacht collega's
+table(NEA2022$afl_se_1)
+
+NEA2022$seks_col <- as.numeric(NEA2022$afl_se_1)
+
+table(NEA2022$seks_col)
+
+NEA2022 <- NEA2022 %>%
+  mutate(seks_col = recode(seks_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+table(NEA2022$seks_col)
+
+```
+
+```{r}
+#ongewenste seksuele aandacht leidinggevenden
+table(NEA2022$afl_se_2)
+
+NEA2022$seks_leid <- as.numeric(NEA2022$afl_se_2)
+
+table(NEA2022$seks_leid)
+
+NEA2022 <- NEA2022 %>%
+  mutate(seks_leid = recode(seks_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+table(NEA2022$seks_leid)
+
+```
+
+```{r}
+#conflict collega
+table(NEA2022$conflict)
+
+NEA2022$conflict_col <- as.numeric(NEA2022$conflict)
+
+table(NEA2022$conflict_col)
 ```
 ```{r}
-summary(NEA2022$afl_ge_4)
-levels (NEA2022$afl_ge_4)
+#conflict leidinggevende
+table(NEA2022$confli_1)
 
-NEA2022$afl_ge_4 <- as.character(NEA2022$afl_ge_4)
-NEA2022$afl_ge_4[NEA2022$afl_ge_4 == "refusal"] <- NA
-NEA2022$afl_ge_4 <- factor(NEA2022$afl_ge_4)
+NEA2022$conflict_leid <- as.numeric(NEA2022$confli_1)
 
-levels(NEA2022$afl_ge_4)
-
-NEA2022$afl_ge_4 <- factor(NEA2022$afl_ge_4, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-
-NEA2022$afl_ge_4 <- droplevels(NEA2022$afl_ge_4)
-levels(NEA2022$afl_ge_4)
-
-
-#summary(afl_ge_4)
-#levels (afl_ge_4)
-#afl_ge_4 <- as.character(afl_ge_4)
-#afl_ge_4[afl_ge_4 == "refusal"] <- NA
-#afl_ge_4 <- factor(afl_ge_4)
-#levels(afl_ge_4)
-#afl_ge_4 <- factor(afl_ge_4, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-#afl_ge_4 <- droplevels(afl_ge_4)
-#levels(afl_ge_4)
+table(NEA2022$conflict_leid)
 ```
+
 ```{r}
-summary(NEA2022$afl_se_1)
-levels (NEA2022$afl_se_1)
+#conflict werkgever
+table(NEA2022$confli_2)
 
-NEA2022$afl_se_1 <- as.character(NEA2022$afl_se_1)
-NEA2022$afl_se_1[NEA2022$afl_se_1 == "refusal"] <- NA
-NEA2022$afl_se_1 <- factor(NEA2022$afl_se_1)
+NEA2022$conflict_werk <- as.numeric(NEA2022$confli_2)
 
-levels(NEA2022$afl_se_1)
-
-NEA2022$afl_se_1 <- factor(NEA2022$afl_se_1, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-
-NEA2022$afl_se_1 <- droplevels(NEA2022$afl_se_1)
-levels(NEA2022$afl_se_1)
-
-
-#summary(afl_se_1)
-#levels (afl_se_1)
-#afl_se_1 <- as.character(afl_se_1)
-#afl_se_1[afl_se_1 == "refusal"] <- NA
-#afl_se_1 <- factor(afl_se_1)
-#levels(afl_se_1)
-#afl_se_1 <- factor(afl_se_1, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-#afl_se_1 <- droplevels(afl_se_1)
-#levels(afl_se_1)
+table(NEA2022$conflict_werk)
 ```
+
 ```{r}
-summary(NEA2022$afl_se_2)
-levels (NEA2022$afl_se_2)
+#conflict werkgever
+table(NEA2022$confli_2)
 
-NEA2022$afl_se_2 <- as.character(NEA2022$afl_se_2)
-NEA2022$afl_se_2[NEA2022$afl_se_2 == "refusal"] <- NA
-NEA2022$afl_se_2 <- factor(NEA2022$afl_se_2)
+NEA2022$conflict_werk <- as.numeric(NEA2022$confli_2)
 
-levels(NEA2022$afl_se_2)
-
-NEA2022$afl_se_2 <- factor(NEA2022$afl_se_2, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-
-NEA2022$afl_se_2 <- droplevels(NEA2022$afl_se_2)
-levels(NEA2022$afl_se_2)
-
-
-
-#summary(afl_se_2)
-#levels (afl_se_2)
-#afl_se_2 <- as.character(afl_se_2)
-#afl_se_2[afl_se_2 == "refusal"] <- NA
-#afl_se_2 <- factor(afl_se_2)
-#levels(afl_se_2)
-#afl_se_2 <- factor(afl_se_2, levels = c("Niet", "Een enkele keer", "Vaak", "Zeer vaak"))
-#afl_se_2 <- droplevels(afl_se_2)
-#levels(afl_se_2)
+table(NEA2022$conflict_werk)
 ```
+
 ```{r}
-summary(NEA2022$conflict)
-levels (NEA2022$conflict)
+#sociale steun leidinggevende: mijn leidinggevende heeft oog voor het welzijn van de medewerkers
+table(NEA2022$leiding_)
 
-NEA2022$conflict <- as.character(NEA2022$conflict)
-NEA2022$conflict[NEA2022$conflict == "refusal"] <- NA
-NEA2022$conflict <- factor(NEA2022$conflict)
-
-levels(NEA2022$conflict)
-
-NEA2022$conflict <- factor(NEA2022$conflict, levels = c("nee", "ja, kortdurend", "ja, langdurig"))
-
-NEA2022$conflict <- droplevels(NEA2022$conflict)
-levels(NEA2022$conflict)
-
-
-
-#summary(conflict)
-#levels (conflict)
-#conflict <- as.character(conflict)
-#conflict[conflict == "refusal"] <- NA
-#conflict <- factor(conflict)
-#levels(conflict)
-#conflict <- factor(conflict, levels = c("nee", "ja, kortdurend", "ja, langdurig"))
-#conflict <- droplevels(conflict)
-#levels(conflict)
-```
-```{r}
-summary(NEA2022$confli_1)
-levels (NEA2022$confli_1)
-
-NEA2022$confli_1 <- as.character(NEA2022$confli_1)
-NEA2022$confli_1[NEA2022$confli_1 == "refusal"] <- NA
-NEA2022$confli_1 <- factor(NEA2022$confli_1)
-
-levels(NEA2022$confli_1)
-
-NEA2022$confli_1 <- factor(NEA2022$confli_1, levels = c("nee", "ja, kortdurend", "ja, langdurig"))
-
-NEA2022$confli_1 <- droplevels(NEA2022$confli_1)
-levels(NEA2022$confli_1)
-
-#summary(confli_1)
-#levels (confli_1)
-#confli_1 <- as.character(confli_1)
-#confli_1[confli_1 == "refusal"] <- NA
-#confli_1 <- factor(confli_1)
-#levels(confli_1)
-#confli_1 <- factor(confli_1, levels = c("nee", "ja, kortdurend", "ja, langdurig"))
-#confli_1 <- droplevels(confli_1)
-#levels(confli_1)
-```
-```{r}
-summary(NEA2022$leiding_)
-levels (NEA2022$leiding_)
-
-NEA2022$leiding_ <- as.character(NEA2022$leiding_)
-NEA2022$leiding_[NEA2022$leiding_ == "refusal"] <- NA
 NEA2022$leiding_[NEA2022$leiding_ == "nvt"] <- NA
-NEA2022$leiding_ <- factor(NEA2022$leiding_)
 
-levels(NEA2022$leiding_)
+NEA2022$steunleid_welzijn <- as.numeric(NEA2022$leiding_)
 
-NEA2022$leiding_ <- factor(NEA2022$leiding_, levels = c("helemaal mee eens", "mee eens", "mee oneens", "helemaal mee oneens"))
+table(NEA2022$steunleid_welzijn)
 
-NEA2022$leiding_ <- droplevels(NEA2022$leiding_)
-levels(NEA2022$leiding_)
+NEA2022 <- NEA2022 %>%
+  mutate(steunleid_welzijn = recode(steunleid_welzijn, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
 
-
-#summary(leiding_)
-#levels (leiding_)
-#leiding_ <- as.character(leiding_)
-#leiding_[leiding_ == "refusal"] <- NA
-#leiding_[leiding_ == "nvt"] <- NA
-#leiding_ <- factor(leiding_)
-#levels(leiding_)
-#leiding_ <- factor(leiding_, levels = c("helemaal mee eens", "mee eens", "mee oneens", "helemaal mee oneens"))
-#leiding_ <- droplevels(leiding_)
-#levels(leiding_)
+table(NEA2022$steunleid_welzijn)
 ```
 ```{r}
-summary(NEA2022$leidin_1)
-levels (NEA2022$leidin_1)
+#sociale steun leidinggevende: mijn leidinggevende besteedt aandacht aan wat ik zeg
+table(NEA2022$leidin_1)
 
-NEA2022$leidin_1 <- as.character(NEA2022$leidin_1)
-NEA2022$leidin_1[NEA2022$leidin_1 == "refusal"] <- NA
 NEA2022$leidin_1[NEA2022$leidin_1 == "nvt"] <- NA
-NEA2022$leidin_1 <- factor(NEA2022$leidin_1)
 
-levels(NEA2022$leidin_1)
+NEA2022$steunleid_aandacht <- as.numeric(NEA2022$leidin_1)
 
-NEA2022$leidin_1 <- factor(NEA2022$leidin_1, levels = c("helemaal mee eens", "mee eens", "mee oneens", "helemaal mee oneens"))
+table(NEA2022$steunleid_aandacht)
 
-NEA2022$leidin_1 <- droplevels(NEA2022$leidin_1)
-levels(NEA2022$leidin_1)
+NEA2022 <- NEA2022 %>%
+  mutate(steunleid_aandacht = recode(steunleid_aandacht, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
 
-
-
-#summary(leidin_1)
-#levels (leidin_1)
-#leidin_1 <- as.character(leidin_1)
-#leidin_1[leidin_1 == "refusal"] <- NA
-#leidin_1[leidin_1 == "nvt"] <- NA
-#leidin_1 <- factor(leidin_1)
-#levels(leidin_1)
-#leidin_1 <- factor(leidin_1, levels = c("helemaal mee eens", "mee eens", "mee oneens", "helemaal mee oneens"))
-#leidin_1 <- droplevels(leidin_1)
-#levels(leidin_1)
+table(NEA2022$steunleid_aandacht)
 ```
 ```{r}
-summary(NEA2022$collega_)
-levels (NEA2022$collega_)
+#sociale steun collega's: mijn collega's hebben persoonlijke belangstelling voor me
+table(NEA2022$collega_)
 
-NEA2022$collega_ <- as.character(NEA2022$collega_)
-NEA2022$collega_[NEA2022$collega_ == "refusal"] <- NA
 NEA2022$collega_[NEA2022$collega_ == "nvt"] <- NA
-NEA2022$collega_ <- factor(NEA2022$collega_)
 
-levels(NEA2022$collega_)
+NEA2022$steuncol_belang <- as.numeric(NEA2022$collega_)
 
-NEA2022$collega_ <- factor(NEA2022$collega_, levels = c("helemaal mee eens", "mee eens", "mee oneens", "helemaal mee oneens"))
+table(NEA2022$steuncol_belang)
 
-NEA2022$collega_ <- droplevels(NEA2022$collega_)
-levels(NEA2022$collega_)
+NEA2022 <- NEA2022 %>%
+  mutate(steuncol_belang = recode(steuncol_belang, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
 
-
-#summary(collega_)
-#levels (collega_)
-#collega_ <- as.character(collega_)
-#collega_[collega_ == "refusal"] <- NA
-#collega_[collega_ == "nvt"] <- NA
-#collega_ <- factor(collega_)
-#levels(collega_)
-#collega_ <- factor(collega_, levels = c("helemaal mee eens", "mee eens", "mee oneens", "helemaal mee oneens"))
-#collega_ <- droplevels(collega_)
-#levels(collega_)
+table(NEA2022$steuncol_belang)
 ```
 
 ```{r}
-summary(NEA2022$colleg_1)
-levels (NEA2022$colleg_1)
+#sociale steun collega's: mijn collega's zijn vriendelijk
+table(NEA2022$colleg_1)
 
-NEA2022$colleg_1 <- as.character(NEA2022$colleg_1)
-NEA2022$colleg_1[NEA2022$colleg_1 == "refusal"] <- NA
 NEA2022$colleg_1[NEA2022$colleg_1 == "nvt"] <- NA
-NEA2022$colleg_1 <- factor(NEA2022$colleg_1)
 
-levels(NEA2022$colleg_1)
+NEA2022$steuncol_vriendelijk <- as.numeric(NEA2022$colleg_1)
 
-NEA2022$colleg_1 <- factor(NEA2022$colleg_1, levels = c("helemaal mee eens", "mee eens", "mee oneens", "helemaal mee oneens"))
+table(NEA2022$steuncol_vriendelijk)
 
-NEA2022$colleg_1 <- droplevels(NEA2022$colleg_1)
-levels(NEA2022$colleg_1)
+NEA2022 <- NEA2022 %>%
+  mutate(steuncol_vriendelijk = recode(steuncol_vriendelijk, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
 
-#summary(colleg_1)
-#levels (colleg_1)
-#colleg_1 <- as.character(colleg_1)
-#colleg_1[colleg_1 == "refusal"] <- NA
-#colleg_1[colleg_1 == "nvt"] <- NA
-#colleg_1 <- factor(colleg_1)
-#levels(colleg_1)
-#colleg_1 <- factor(colleg_1, levels = c("helemaal mee eens", "mee eens", "mee oneens", "helemaal mee oneens"))
-#colleg_1 <- droplevels(colleg_1)
-#levels(colleg_1)
+table(NEA2022$steuncol_vriendelijk)
 ```
 ```{r}
-summary(NEA2022$psyveil_)
-levels (NEA2022$psyveil_)
+#Psychologische veiligheid: op mijn werk kun je lastige kwesties naar voren brengen
+table(NEA2022$psyveil_)
 
-NEA2022$psyveil_ <- as.character(NEA2022$psyveil_)
-NEA2022$psyveil_[NEA2022$psyveil_ == "refusal"] <- NA
-NEA2022$psyveil_ <- factor(NEA2022$psyveil_)
+NEA2022$psyveil_last <- as.numeric(NEA2022$psyveil_)
 
-levels(NEA2022$psyveil_)
-
-NEA2022$psyveil_ <- factor(NEA2022$psyveil_, levels = c("Helemaal eens", "Eens", "Niet eens, niet oneens", "Niet eens", "Helemaal niet eens"))
-
-NEA2022$psyveil_ <- droplevels(NEA2022$psyveil_)
-levels(NEA2022$psyveil_)
-
-
-#summary(psyveil_)
-#levels (psyveil_)
-#psyveil_ <- as.character(psyveil_)
-#psyveil_[psyveil_ == "refusal"] <- NA
-#psyveil_ <- factor(psyveil_)
-#levels(psyveil_)
-#psyveil_ <- factor(psyveil_, levels = c("Helemaal eens", "Eens", "Niet eens, niet oneens", "Niet eens", "Helemaal niet eens"))
-#psyveil_ <- droplevels(psyveil_)
-#levels(psyveil_)
+table(NEA2022$psyveil_last)
 ```
 
 ```{r}
-summary(NEA2022$psyvei_1)
-levels (NEA2022$psyvei_1)
+#Psychologische veiligheid: op mijn werk ik het gemakkelijk om hulp te vragen
+table(NEA2022$psyvei_1)
 
-NEA2022$psyvei_1 <- as.character(NEA2022$psyvei_1)
-NEA2022$psyvei_1[NEA2022$psyvei_1 == "refusal"] <- NA
-NEA2022$psyvei_1 <- factor(NEA2022$psyvei_1)
+NEA2022$psyveil_hulp <- as.numeric(NEA2022$psyvei_1)
 
-levels(NEA2022$psyvei_1)
-
-NEA2022$psyvei_1 <- factor(NEA2022$psyvei_1, levels = c("Helemaal eens", "Eens", "Niet eens, niet oneens", "Niet eens", "Helemaal niet eens"))
-
-NEA2022$psyvei_1 <- droplevels(NEA2022$psyvei_1)
-levels(NEA2022$psyvei_1)
-
-#summary(psyvei_1)
-#levels (psyvei_1)
-#psyvei_1 <- as.character(psyvei_1)
-#psyvei_1[psyvei_1 == "refusal"] <- NA
-#psyvei_1 <- factor(psyvei_1)
-#levels(psyvei_1)
-#psyvei_1 <- factor(psyvei_1, levels = c("Helemaal eens", "Eens", "Niet eens, niet oneens", "Niet eens", "Helemaal niet eens"))
-#psyvei_1 <- droplevels(psyvei_1)
-#levels(psyvei_1)
+table(NEA2022$psyveil_hulp)
 ```
 
 ```{r}
-summary(NEA2022$psyvei_2)
-levels (NEA2022$psyvei_2)
+#Psychologische veiligheid: op mijn werk is het niet erg om een fout te maken
+table(NEA2022$psyvei_2)
 
-NEA2022$psyvei_2 <- as.character(NEA2022$psyvei_2)
-NEA2022$psyvei_2[NEA2022$psyvei_2 == "refusal"] <- NA
-NEA2022$psyvei_2 <- factor(NEA2022$psyvei_2)
+NEA2022$psyveil_fout <- as.numeric(NEA2022$psyvei_2)
 
-levels(NEA2022$psyvei_2)
-
-NEA2022$psyvei_2 <- factor(NEA2022$psyvei_2, levels = c("Helemaal eens", "Eens", "Niet eens, niet oneens", "Niet eens", "Helemaal niet eens"))
-
-NEA2022$psyvei_2 <- droplevels(NEA2022$psyvei_2)
-levels(NEA2022$psyvei_2)
-
-
-#summary(psyvei_2)
-#levels (psyvei_2)
-#psyvei_2 <- as.character(psyvei_2)
-#psyvei_2[psyvei_2 == "refusal"] <- NA
-#psyvei_2 <- factor(psyvei_2)
-#levels(psyvei_2)
-#psyvei_2 <- factor(psyvei_2, levels = c("Helemaal eens", "Eens", "Niet eens, niet oneens", "Niet eens", "Helemaal niet eens"))
-#psyvei_2 <- droplevels(psyvei_2)
-#levels(psyvei_2)
+table(NEA2022$psyveil_fout)
 ```
+```{r}
+NEA2022_clust1 <- NEA2022 %>%
+  filter(se_clust == 1)
+
+attach(NEA2022_clust1)
+```
+
+
+```{r}
+data <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht, steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout)
+
+items <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht, steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout) ~ 1
+```
+
+Variabelen:
+
+<br><br> Pesten_col: **pesten door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Pesten_leid: **pesten door leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Intimidation_col: **intimidatie door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Intimidation_leid: *intimidatie door leidinggevenden.* (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Geweld_col: **fysiek geweld door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Geweld_leid: **fysiek geweld door leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Seks_col: **ongewenste seksuele aandacht collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Seks_leid: **ongewenste seksuele aandacht leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Conflict_col: **conflict collega's.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Conflict_leid: **conflict leidinggevenden.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Conflict_werk: **conflict werkgever.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Steunleid_welzijn: **mijn leidinggevende heeft oog voor het welzijn van de medewerker.** (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
+<br><br> Steunleid_aandacht: **mijn leidinggevende besteedt aandacht aan wat ik zeg.** (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
+<br><br> Steuncol_belang: **mijn collega's hebben persoonlijke belangstelling voor me.** (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
+<br><br> Steuncol_vriendelijk: **mijn collega's zijn vriendelijk.** (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
+<br><br> Psyveil_last: **op mijn werk kun je lastige kwesties naar voren brengen.** (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
+<br><br> Psyveil_hulp: **op mijn werk is het gemakkelijk om hulp te vragen.** (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
+<br><br> Psyveil_fout: **op mijn werk is het niet erg om een fout te maken.** (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
 
 
 
 ```{r}
-# pesten
-
-#colnames(NEA2022)[colnames(NEA2022) == "afl_pe_1"] <- "pest_col"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #pest_col = "Frequentie pesten door collega's in de afgelopen 12 maanden")
-
-
-#colnames(NEA2022)[colnames(NEA2022) == "afl_pe_2"] <- "pest_leid"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #pest_leid = "Frequentie pesten door leidinggevenden in de afgelopen 12 maanden")
-
-# intimidatie
-
-#colnames(NEA2022)[colnames(NEA2022) == "afl_be_1"] <- "int_col"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #int_col = "Frequentie intimidatie of bedreiging door collega's in de afgelopen 12 maanden")
-
-
-#colnames(NEA2022)[colnames(NEA2022) == "afl_be_2"] <- "int_leid"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #int_leid = "Frequentie intimidatie of bedreiging door leidinggevenden in de afgelopen 12 maanden")
-
-# fysiek geweld
-
-#colnames(NEA2022)[colnames(NEA2022) == "afl_ge_3"] <- "gew_col"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #gew_col = "Frequentie fysiek geweld door collega's in de afgelopen 12 maanden")
-
-#colnames(NEA2022)[colnames(NEA2022) == "afl_ge_4"] <- "gew_leid"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #gew_leid = "Frequentie fysiek geweld door leidinggevenden in de afgelopen 12 maanden")
-
-# ongewenste seksuele aandacht
-
-#colnames(NEA2022)[colnames(NEA2022) == "afl_se_1"] <- "seks_col"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #seks_col = "Frequentie ongewenste seksuele aandacht door collega's in de afgelopen 12 maanden")
-
-
-#colnames(NEA2022)[colnames(NEA2022) == "afl_se_2"] <- "seks_leid"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #seks_leid = "Frequentie ongewenste seksuele aandacht door leidinggevenden in de afgelopen 12 maanden")
-
-#conflict
-
-#colnames(NEA2022)[colnames(NEA2022) == "conflict"] <- "conf_col"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #conf_col = "Conflict met een of meer directe collega's")
-
-
-#colnames(NEA2022)[colnames(NEA2022) == "confli_1"] <- "conf_leid"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #conf_leid = "Conflict met uw direct leidinggevende")
-
-
-#colnames(NEA2022)[colnames(NEA2022) == "confli_2"] <- "conf_werkg"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #conf_werkg = "Conflict met uw werkgever")
-
-
-# sociale steun
-
-#colnames(NEA2022)[colnames(NEA2022) == "leiding_"] <- "steun1_leid"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #steun1_leid = "Mijn leidinggevende heeft oog voor het welzijn van de medewerkers")
-
-
-#colnames(NEA2022)[colnames(NEA2022) == "leidin_1"] <- "steun2_leid"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #steun2_leid = "Mijn leidinggevende besteed aandacht aan wat ik zeg")
-
-
-#colnames(NEA2022)[colnames(NEA2022) == "collega_"] <- "steun1_col"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #steun1_col = "Mijn collegas hebben persoonlijke belangstelling voor me")
-
-
-#colnames(NEA2022)[colnames(NEA2022) == "colleg_1"] <- "steun2_col"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #steun2_col = "Mijn collegas zijn vriendelijk")
-
-
-# psychologische veiligheid
-
-#colnames(NEA2022)[colnames(NEA2022) == "psyveil_"] <- "psyveil_1"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #psyveil_1 = "Op mijn werk kun je lastige kwesties naar voren brengen")
-
-
-#colnames(NEA2022)[colnames(NEA2022) == "psyvei_1"] <- "psyveil_2"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #psyveil_2 = "Op mijn werk is het gemakkelijk om hulp te vragen")
-
-
-#colnames(NEA2022)[colnames(NEA2022) == "psyvei_2"] <- "psyveil_3"
-#NEA2022 <- set_variable_labels(NEA2022, 
-                            #psyveil_3 = "Op mijn werk is het niet erg om een fout te maken")
-```
-
-
- 
-```{r}
-data <- data.frame(NEA2022$afl_pe_1, NEA2022$afl_pe_2, NEA2022$afl_be_1 , NEA2022$afl_be_2, NEA2022$afl_ge_3, NEA2022$afl_ge_4, NEA2022$afl_se_1, NEA2022$afl_se_2, NEA2022$conflict, NEA2022$confli_1, NEA2022$confli_2, NEA2022$leiding_, NEA2022$leidin_1, NEA2022$collega_, NEA2022$colleg_1, NEA2022$psyveil_, NEA2022$psyvei_1, NEA2022$psyvei_2)
-
-items <- cbind(NEA2022.afl_pe_1, NEA2022.afl_pe_2, NEA2022.afl_be_1 , NEA2022.afl_be_2, NEA2022.afl_ge_3, NEA2022.afl_ge_4, NEA2022.afl_se_1, NEA2022.afl_se_2, NEA2022.conflict, NEA2022.confli_1, NEA2022.confli_2, NEA2022.leiding_, NEA2022.leidin_1, NEA2022.collega_, NEA2022.colleg_1, NEA2022.psyveil_, NEA2022.psyvei_1, NEA2022.psyvei_2) ~ 1
-
-data[] <- lapply(data, function(x) droplevels(x))
-
-#data <- data.frame(afl_pe_1, afl_pe_2, afl_be_1, afl_be_2, afl_ge_3, afl_ge_4, afl_se_1, afl_se_2, conflict, confli_1, confli_2, leiding_, leidin_1, collega_, colleg_1, psyveil_, psyvei_1, psyvei_2)
-
-#items <- cbind(afl_pe_1, afl_pe_2, afl_be_1, afl_be_2, afl_ge_3, afl_ge_4, afl_se_1, afl_se_2, conflict, confli_1, confli_2, leiding_, leidin_1, collega_, colleg_1, psyveil_, psyvei_1, psyvei_2) ~ 1
-
-
-
-#items <- cbind(NEA2022$pest_col, NEA2022$pest_leid, NEA2022$int_col, NEA2022$int_leid, NEA2022$gew_col, NEA2022$gew_leid, NEA2022$seks_col, NEA2022$seks_leid, NEA2022$conf_col, NEA2022$conf_leid, NEA2022$conf_werkg, NEA2022$steun1_leid, NEA2022$steun2_leid, NEA2022$steun1_col, NEA2022$steun2_col, NEA2022$psyveil_1, NEA2022$psyveil_2, NEA2022$psyveil_3) ~ 1
-
-#items <- cbind(data$NEA2022.pest_col, data$NEA2022.pest_leid, data$NEA2022.int_col, data$NEA2022.int_leid, data$NEA2022.gew_col, data$NEA2022.gew_leid, data$NEA2022.seks_col, data$NEA2022.seks_leid, data$NEA2022.conf_col, data$NEA2022.conf_leid, data$NEA2022.conf_werkg, data$NEA2022.steun1_leid, data$NEA2022.steun2_leid, data$NEA2022.steun1_col, data$NEA2022.steun2_col, data$NEA2022.psyveil_1, data$NEA2022.psyveil_2, data$NEA2022.psyveil_3) ~ 1
-
-#identical(NEA2022$afl_pe_1, data$NEA2022.afl_pe_1)
+model1 <- poLCA(items, data, nclass = 1, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model1 <- poLCA(items, data, nclass = 1, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model2 <- poLCA(items, data, nclass = 2, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model2 <- poLCA(items, data, nclass = 2, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model3 <- poLCA(items, data, nclass = 3, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model3 <- poLCA(items, data, nclass = 3, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model4 <- poLCA(items, data, nclass = 4, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model4 <- poLCA(items, data, nclass = 4, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model5 <- poLCA(items, data, nclass = 5, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model5 <- poLCA(items, data, nclass = 5, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model6 <- poLCA(items, data, nclass = 6, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model6 <- poLCA(items, data, nclass = 6, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model7 <- poLCA(items, data, nclass = 7, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model7 <- poLCA(items, data, nclass = 7, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model8 <- poLCA(items, data, nclass = 8, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model8 <- poLCA(items, data, nclass = 8, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model9 <- poLCA(items, data, nclass = 9, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model9 <- poLCA(items, data, nclass = 9, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model10 <- poLCA(items, data, nclass = 10, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model10 <- poLCA(items, data, nclass = 10, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model11 <- poLCA(items, data, nclass = 11, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model11 <- poLCA(items, data, nclass = 11, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model12 <- poLCA(items, data, nclass = 12, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model12 <- poLCA(items, data, nclass = 12, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model13 <- poLCA(items, data, nclass = 13, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model13 <- poLCA(items, data, nclass = 13, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model14 <- poLCA(items, data, nclass = 14, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model14 <- poLCA(items, data, nclass = 14, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model15 <- poLCA(items, data, nclass = 15, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model15 <- poLCA(items, data, nclass = 15, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model16 <- poLCA(items, data, nclass = 16, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model16 <- poLCA(items, data, nclass = 16, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model17 <- poLCA(items, data, nclass = 17, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model17 <- poLCA(items, data, nclass = 17, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
+model18 <- poLCA(items, data, nclass = 18, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
-model18 <- poLCA(items, data, nclass = 18, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = TRUE)
-```
+
