@@ -18,6 +18,8 @@ navbar:
       href: intersectionality.html
     - text: "LCA"
       href: LCA2022.html
+    - text: "Factoranalyse"
+      href: Factoranalyse.html
         
         # here, other .Rmds can be added
 

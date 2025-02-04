@@ -1,0 +1,76 @@
+---
+title: "Factoranalyse"
+output: html_document
+date: "2025-02-04"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"))
+options(width = 100)
+rgl::setupKnitr()
+
+
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+```{r klippy6, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+```{r}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+library("dplyr")
+library("haven")
+library("psych")
+library("GPArotation")
+```
+
+```{r klippy7, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022_clust1 <-read.spss("data/processed/NEA2022_clust1.sav", use.value.labels = T, to.data.frame = T)
+attach(NEA2022_clust1)
+```
+
+```{r}
+data <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht, steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout)
+```
+
+```{r}
+cor_matrix <- cor(data, use = "pairwise.complete.obs")
+print(cor_matrix)
+```
+
+```{r}
+kable(round(cor_matrix, 3))
+```
+
+
+```{r}
+fa.parallel(data, fa = "fa", n.iter = 100, show.legend = FALSE)
+```
+
+```{r}
+fa.parallel(data, fa = "both", n.iter = 100, show.legend = FALSE)
+```
+
+```{r}
+efa <- fa(data, nfactors = 7, rotate = "oblimin", fm = "ml")
+print(efa, digits = 2)
+```

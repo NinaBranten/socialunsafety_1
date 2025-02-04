@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2025-02-04" />
+
+<title>Factoranalyse</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="site_libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="site_libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="site_libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="tweaks.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="mergingdata.html">first try</a>
+</li>
+<li>
+  <a href="frequencies.html">frequencies</a>
+</li>
+<li>
+  <a href="intersectionality.html">intersectionality</a>
+</li>
+<li>
+  <a href="LCA2022.html">LCA</a>
+</li>
+<li>
+  <a href="Factoranalyse.html">Factoranalyse</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ninabranten/socialunsafety_1">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Factoranalyse</h1>
+<h4 class="date">2025-02-04</h4>
+
+</div>
+
+
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
+</script>
+<pre class="r test"><code>library(&quot;formatR&quot;)
+library(&quot;foreign&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;lme4&quot;)
+library(&quot;poLCA&quot;)
+library(&quot;reprex&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;klippy&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;haven&quot;)
+library(&quot;psych&quot;)
+library(&quot;GPArotation&quot;)</code></pre>
+<pre class="r test"><code>data &lt;- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid,
+    seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht,
+    steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout)</code></pre>
+<pre class="r test"><code>cor_matrix &lt;- cor(data, use = &quot;pairwise.complete.obs&quot;)
+print(cor_matrix)</code></pre>
+<pre class="test2"><code>#&gt;                      pesten_col pesten_leid intimidation_col intimidation_leid    geweld_col
+#&gt; pesten_col           1.00000000  0.15181294       0.33758483        0.10509739  0.0919332507
+#&gt; pesten_leid          0.15181294  1.00000000       0.10316745        0.50233804  0.1026417923
+#&gt; intimidation_col     0.33758483  0.10316745       1.00000000        0.06882758  0.2103067937
+#&gt; intimidation_leid    0.10509739  0.50233804       0.06882758        1.00000000  0.0621115493
+#&gt; geweld_col           0.09193325  0.10264179       0.21030679        0.06211155  1.0000000000
+#&gt; geweld_leid          0.03944993  0.10303266       0.11315923        0.11616203 -0.0006014355
+#&gt; seks_col             0.13423729  0.05354064       0.13709055        0.08934090  0.1745766095
+#&gt; seks_leid            0.04700290  0.15103683       0.14321072        0.09837462  0.1333506935
+#&gt; conflict_col         0.26852871  0.10139825       0.21356100        0.08727705  0.0510687924
+#&gt; conflict_leid        0.11221040  0.29306018       0.09495549        0.31378355  0.0403498254
+#&gt; conflict_werk        0.09760448  0.23008782       0.09644123        0.26739284  0.0536598228
+#&gt; steunleid_welzijn    0.09458651  0.15318967       0.05755086        0.16686473  0.0196773925
+#&gt; steunleid_aandacht   0.09782264  0.15613485       0.05824110        0.16084705  0.0263903586
+#&gt; steuncol_belang      0.14091001  0.05922719       0.07928442        0.04613882  0.0295277536
+#&gt; steuncol_vriendelijk 0.15773622  0.06742352       0.08622217        0.05765229  0.0439864682
+#&gt; psyveil_last         0.09769820  0.11153660       0.06168404        0.12747895  0.0331421183
+#&gt; psyveil_hulp         0.11537506  0.13356889       0.07666921        0.14299905  0.0405804450
+#&gt; psyveil_fout         0.09429411  0.10168738       0.04872682        0.10274234  0.0185761737
+#&gt;                        geweld_leid   seks_col  seks_leid conflict_col conflict_leid conflict_werk
+#&gt; pesten_col            0.0394499348 0.13423729 0.04700290   0.26852871    0.11221040    0.09760448
+#&gt; pesten_leid           0.1030326602 0.05354064 0.15103683   0.10139825    0.29306018    0.23008782
+#&gt; intimidation_col      0.1131592293 0.13709055 0.14321072   0.21356100    0.09495549    0.09644123
+#&gt; intimidation_leid     0.1161620330 0.08934090 0.09837462   0.08727705    0.31378355    0.26739284
+#&gt; geweld_col           -0.0006014355 0.17457661 0.13335069   0.05106879    0.04034983    0.05365982
+#&gt; geweld_leid           1.0000000000 0.08995286 0.18290148   0.02599414    0.02836644    0.03328733
+#&gt; seks_col              0.0899528629 1.00000000 0.08923504   0.07513314    0.04321563    0.06305698
+#&gt; seks_leid             0.1829014838 0.08923504 1.00000000   0.03234345    0.06360150    0.06959423
+#&gt; conflict_col          0.0259941382 0.07513314 0.03234345   1.00000000    0.34355464    0.26731196
+#&gt; conflict_leid         0.0283664369 0.04321563 0.06360150   0.34355464    1.00000000    0.50020317
+#&gt; conflict_werk         0.0332873347 0.06305698 0.06959423   0.26731196    0.50020317    1.00000000
+#&gt; steunleid_welzijn     0.0159758524 0.04503670 0.04681261   0.13602142    0.29668033    0.20191375
+#&gt; steunleid_aandacht    0.0091813238 0.03928059 0.05233476   0.13395164    0.30364378    0.19993198
+#&gt; steuncol_belang       0.0101355095 0.02776179 0.03276834   0.14457136    0.09613509    0.08410498
+#&gt; steuncol_vriendelijk  0.0127607379 0.02300081 0.01857598   0.17307716    0.09658941    0.08280206
+#&gt; psyveil_last          0.0138085056 0.04306611 0.04750437   0.11130872    0.18895945    0.14358862
+#&gt; psyveil_hulp          0.0155156657 0.04374124 0.04017554   0.15276810    0.21387838    0.17626070
+#&gt; psyveil_fout          0.0134093701 0.03435294 0.03393102   0.09056993    0.15161643    0.12313850
+#&gt;                      steunleid_welzijn steunleid_aandacht steuncol_belang steuncol_vriendelijk
+#&gt; pesten_col                  0.09458651        0.097822637      0.14091001           0.15773622
+#&gt; pesten_leid                 0.15318967        0.156134851      0.05922719           0.06742352
+#&gt; intimidation_col            0.05755086        0.058241102      0.07928442           0.08622217
+#&gt; intimidation_leid           0.16686473        0.160847053      0.04613882           0.05765229
+#&gt; geweld_col                  0.01967739        0.026390359      0.02952775           0.04398647
+#&gt; geweld_leid                 0.01597585        0.009181324      0.01013551           0.01276074
+#&gt; seks_col                    0.04503670        0.039280587      0.02776179           0.02300081
+#&gt; seks_leid                   0.04681261        0.052334760      0.03276834           0.01857598
+#&gt; conflict_col                0.13602142        0.133951636      0.14457136           0.17307716
+#&gt; conflict_leid               0.29668033        0.303643780      0.09613509           0.09658941
+#&gt; conflict_werk               0.20191375        0.199931982      0.08410498           0.08280206
+#&gt; steunleid_welzijn           1.00000000        0.771098875      0.33964369           0.32994030
+#&gt; steunleid_aandacht          0.77109887        1.000000000      0.36713462           0.34139552
+#&gt; steuncol_belang             0.33964369        0.367134618      1.00000000           0.67404693
+#&gt; steuncol_vriendelijk        0.32994030        0.341395523      0.67404693           1.00000000
+#&gt; psyveil_last                0.36062162        0.361278494      0.24620585           0.22327654
+#&gt; psyveil_hulp                0.42810411        0.414749098      0.29221421           0.28934859
+#&gt; psyveil_fout                0.30653931        0.304789272      0.19452106           0.20403439
+#&gt;                      psyveil_last psyveil_hulp psyveil_fout
+#&gt; pesten_col             0.09769820   0.11537506   0.09429411
+#&gt; pesten_leid            0.11153660   0.13356889   0.10168738
+#&gt; intimidation_col       0.06168404   0.07666921   0.04872682
+#&gt; intimidation_leid      0.12747895   0.14299905   0.10274234
+#&gt; geweld_col             0.03314212   0.04058045   0.01857617
+#&gt; geweld_leid            0.01380851   0.01551567   0.01340937
+#&gt; seks_col               0.04306611   0.04374124   0.03435294
+#&gt; seks_leid              0.04750437   0.04017554   0.03393102
+#&gt; conflict_col           0.11130872   0.15276810   0.09056993
+#&gt; conflict_leid          0.18895945   0.21387838   0.15161643
+#&gt; conflict_werk          0.14358862   0.17626070   0.12313850
+#&gt; steunleid_welzijn      0.36062162   0.42810411   0.30653931
+#&gt; steunleid_aandacht     0.36127849   0.41474910   0.30478927
+#&gt; steuncol_belang        0.24620585   0.29221421   0.19452106
+#&gt; steuncol_vriendelijk   0.22327654   0.28934859   0.20403439
+#&gt; psyveil_last           1.00000000   0.53957283   0.35335028
+#&gt; psyveil_hulp           0.53957283   1.00000000   0.48425132
+#&gt; psyveil_fout           0.35335028   0.48425132   1.00000000</code></pre>
+<pre class="r test"><code>kable(round(cor_matrix, 3))</code></pre>
+<table>
+<colgroup>
+<col width="7%" />
+<col width="4%" />
+<col width="4%" />
+<col width="6%" />
+<col width="6%" />
+<col width="4%" />
+<col width="4%" />
+<col width="3%" />
+<col width="3%" />
+<col width="4%" />
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+<col width="6%" />
+<col width="5%" />
+<col width="7%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">pesten_col</th>
+<th align="right">pesten_leid</th>
+<th align="right">intimidation_col</th>
+<th align="right">intimidation_leid</th>
+<th align="right">geweld_col</th>
+<th align="right">geweld_leid</th>
+<th align="right">seks_col</th>
+<th align="right">seks_leid</th>
+<th align="right">conflict_col</th>
+<th align="right">conflict_leid</th>
+<th align="right">conflict_werk</th>
+<th align="right">steunleid_welzijn</th>
+<th align="right">steunleid_aandacht</th>
+<th align="right">steuncol_belang</th>
+<th align="right">steuncol_vriendelijk</th>
+<th align="right">psyveil_last</th>
+<th align="right">psyveil_hulp</th>
+<th align="right">psyveil_fout</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">pesten_col</td>
+<td align="right">1.000</td>
+<td align="right">0.152</td>
+<td align="right">0.338</td>
+<td align="right">0.105</td>
+<td align="right">0.092</td>
+<td align="right">0.039</td>
+<td align="right">0.134</td>
+<td align="right">0.047</td>
+<td align="right">0.269</td>
+<td align="right">0.112</td>
+<td align="right">0.098</td>
+<td align="right">0.095</td>
+<td align="right">0.098</td>
+<td align="right">0.141</td>
+<td align="right">0.158</td>
+<td align="right">0.098</td>
+<td align="right">0.115</td>
+<td align="right">0.094</td>
+</tr>
+<tr class="even">
+<td align="left">pesten_leid</td>
+<td align="right">0.152</td>
+<td align="right">1.000</td>
+<td align="right">0.103</td>
+<td align="right">0.502</td>
+<td align="right">0.103</td>
+<td align="right">0.103</td>
+<td align="right">0.054</td>
+<td align="right">0.151</td>
+<td align="right">0.101</td>
+<td align="right">0.293</td>
+<td align="right">0.230</td>
+<td align="right">0.153</td>
+<td align="right">0.156</td>
+<td align="right">0.059</td>
+<td align="right">0.067</td>
+<td align="right">0.112</td>
+<td align="right">0.134</td>
+<td align="right">0.102</td>
+</tr>
+<tr class="odd">
+<td align="left">intimidation_col</td>
+<td align="right">0.338</td>
+<td align="right">0.103</td>
+<td align="right">1.000</td>
+<td align="right">0.069</td>
+<td align="right">0.210</td>
+<td align="right">0.113</td>
+<td align="right">0.137</td>
+<td align="right">0.143</td>
+<td align="right">0.214</td>
+<td align="right">0.095</td>
+<td align="right">0.096</td>
+<td align="right">0.058</td>
+<td align="right">0.058</td>
+<td align="right">0.079</td>
+<td align="right">0.086</td>
+<td align="right">0.062</td>
+<td align="right">0.077</td>
+<td align="right">0.049</td>
+</tr>
+<tr class="even">
+<td align="left">intimidation_leid</td>
+<td align="right">0.105</td>
+<td align="right">0.502</td>
+<td align="right">0.069</td>
+<td align="right">1.000</td>
+<td align="right">0.062</td>
+<td align="right">0.116</td>
+<td align="right">0.089</td>
+<td align="right">0.098</td>
+<td align="right">0.087</td>
+<td align="right">0.314</td>
+<td align="right">0.267</td>
+<td align="right">0.167</td>
+<td align="right">0.161</td>
+<td align="right">0.046</td>
+<td align="right">0.058</td>
+<td align="right">0.127</td>
+<td align="right">0.143</td>
+<td align="right">0.103</td>
+</tr>
+<tr class="odd">
+<td align="left">geweld_col</td>
+<td align="right">0.092</td>
+<td align="right">0.103</td>
+<td align="right">0.210</td>
+<td align="right">0.062</td>
+<td align="right">1.000</td>
+<td align="right">-0.001</td>
+<td align="right">0.175</td>
+<td align="right">0.133</td>
+<td align="right">0.051</td>
+<td align="right">0.040</td>
+<td align="right">0.054</td>
+<td align="right">0.020</td>
+<td align="right">0.026</td>
+<td align="right">0.030</td>
+<td align="right">0.044</td>
+<td align="right">0.033</td>
+<td align="right">0.041</td>
+<td align="right">0.019</td>
+</tr>
+<tr class="even">
+<td align="left">geweld_leid</td>
+<td align="right">0.039</td>
+<td align="right">0.103</td>
+<td align="right">0.113</td>
+<td align="right">0.116</td>
+<td align="right">-0.001</td>
+<td align="right">1.000</td>
+<td align="right">0.090</td>
+<td align="right">0.183</td>
+<td align="right">0.026</td>
+<td align="right">0.028</td>
+<td align="right">0.033</td>
+<td align="right">0.016</td>
+<td align="right">0.009</td>
+<td align="right">0.010</td>
+<td align="right">0.013</td>
+<td align="right">0.014</td>
+<td align="right">0.016</td>
+<td align="right">0.013</td>
+</tr>
+<tr class="odd">
+<td align="left">seks_col</td>
+<td align="right">0.134</td>
+<td align="right">0.054</td>
+<td align="right">0.137</td>
+<td align="right">0.089</td>
+<td align="right">0.175</td>
+<td align="right">0.090</td>
+<td align="right">1.000</td>
+<td align="right">0.089</td>
+<td align="right">0.075</td>
+<td align="right">0.043</td>
+<td align="right">0.063</td>
+<td align="right">0.045</td>
+<td align="right">0.039</td>
+<td align="right">0.028</td>
+<td align="right">0.023</td>
+<td align="right">0.043</td>
+<td align="right">0.044</td>
+<td align="right">0.034</td>
+</tr>
+<tr class="even">
+<td align="left">seks_leid</td>
+<td align="right">0.047</td>
+<td align="right">0.151</td>
+<td align="right">0.143</td>
+<td align="right">0.098</td>
+<td align="right">0.133</td>
+<td align="right">0.183</td>
+<td align="right">0.089</td>
+<td align="right">1.000</td>
+<td align="right">0.032</td>
+<td align="right">0.064</td>
+<td align="right">0.070</td>
+<td align="right">0.047</td>
+<td align="right">0.052</td>
+<td align="right">0.033</td>
+<td align="right">0.019</td>
+<td align="right">0.048</td>
+<td align="right">0.040</td>
+<td align="right">0.034</td>
+</tr>
+<tr class="odd">
+<td align="left">conflict_col</td>
+<td align="right">0.269</td>
+<td align="right">0.101</td>
+<td align="right">0.214</td>
+<td align="right">0.087</td>
+<td align="right">0.051</td>
+<td align="right">0.026</td>
+<td align="right">0.075</td>
+<td align="right">0.032</td>
+<td align="right">1.000</td>
+<td align="right">0.344</td>
+<td align="right">0.267</td>
+<td align="right">0.136</td>
+<td align="right">0.134</td>
+<td align="right">0.145</td>
+<td align="right">0.173</td>
+<td align="right">0.111</td>
+<td align="right">0.153</td>
+<td align="right">0.091</td>
+</tr>
+<tr class="even">
+<td align="left">conflict_leid</td>
+<td align="right">0.112</td>
+<td align="right">0.293</td>
+<td align="right">0.095</td>
+<td align="right">0.314</td>
+<td align="right">0.040</td>
+<td align="right">0.028</td>
+<td align="right">0.043</td>
+<td align="right">0.064</td>
+<td align="right">0.344</td>
+<td align="right">1.000</td>
+<td align="right">0.500</td>
+<td align="right">0.297</td>
+<td align="right">0.304</td>
+<td align="right">0.096</td>
+<td align="right">0.097</td>
+<td align="right">0.189</td>
+<td align="right">0.214</td>
+<td align="right">0.152</td>
+</tr>
+<tr class="odd">
+<td align="left">conflict_werk</td>
+<td align="right">0.098</td>
+<td align="right">0.230</td>
+<td align="right">0.096</td>
+<td align="right">0.267</td>
+<td align="right">0.054</td>
+<td align="right">0.033</td>
+<td align="right">0.063</td>
+<td align="right">0.070</td>
+<td align="right">0.267</td>
+<td align="right">0.500</td>
+<td align="right">1.000</td>
+<td align="right">0.202</td>
+<td align="right">0.200</td>
+<td align="right">0.084</td>
+<td align="right">0.083</td>
+<td align="right">0.144</td>
+<td align="right">0.176</td>
+<td align="right">0.123</td>
+</tr>
+<tr class="even">
+<td align="left">steunleid_welzijn</td>
+<td align="right">0.095</td>
+<td align="right">0.153</td>
+<td align="right">0.058</td>
+<td align="right">0.167</td>
+<td align="right">0.020</td>
+<td align="right">0.016</td>
+<td align="right">0.045</td>
+<td align="right">0.047</td>
+<td align="right">0.136</td>
+<td align="right">0.297</td>
+<td align="right">0.202</td>
+<td align="right">1.000</td>
+<td align="right">0.771</td>
+<td align="right">0.340</td>
+<td align="right">0.330</td>
+<td align="right">0.361</td>
+<td align="right">0.428</td>
+<td align="right">0.307</td>
+</tr>
+<tr class="odd">
+<td align="left">steunleid_aandacht</td>
+<td align="right">0.098</td>
+<td align="right">0.156</td>
+<td align="right">0.058</td>
+<td align="right">0.161</td>
+<td align="right">0.026</td>
+<td align="right">0.009</td>
+<td align="right">0.039</td>
+<td align="right">0.052</td>
+<td align="right">0.134</td>
+<td align="right">0.304</td>
+<td align="right">0.200</td>
+<td align="right">0.771</td>
+<td align="right">1.000</td>
+<td align="right">0.367</td>
+<td align="right">0.341</td>
+<td align="right">0.361</td>
+<td align="right">0.415</td>
+<td align="right">0.305</td>
+</tr>
+<tr class="even">
+<td align="left">steuncol_belang</td>
+<td align="right">0.141</td>
+<td align="right">0.059</td>
+<td align="right">0.079</td>
+<td align="right">0.046</td>
+<td align="right">0.030</td>
+<td align="right">0.010</td>
+<td align="right">0.028</td>
+<td align="right">0.033</td>
+<td align="right">0.145</td>
+<td align="right">0.096</td>
+<td align="right">0.084</td>
+<td align="right">0.340</td>
+<td align="right">0.367</td>
+<td align="right">1.000</td>
+<td align="right">0.674</td>
+<td align="right">0.246</td>
+<td align="right">0.292</td>
+<td align="right">0.195</td>
+</tr>
+<tr class="odd">
+<td align="left">steuncol_vriendelijk</td>
+<td align="right">0.158</td>
+<td align="right">0.067</td>
+<td align="right">0.086</td>
+<td align="right">0.058</td>
+<td align="right">0.044</td>
+<td align="right">0.013</td>
+<td align="right">0.023</td>
+<td align="right">0.019</td>
+<td align="right">0.173</td>
+<td align="right">0.097</td>
+<td align="right">0.083</td>
+<td align="right">0.330</td>
+<td align="right">0.341</td>
+<td align="right">0.674</td>
+<td align="right">1.000</td>
+<td align="right">0.223</td>
+<td align="right">0.289</td>
+<td align="right">0.204</td>
+</tr>
+<tr class="even">
+<td align="left">psyveil_last</td>
+<td align="right">0.098</td>
+<td align="right">0.112</td>
+<td align="right">0.062</td>
+<td align="right">0.127</td>
+<td align="right">0.033</td>
+<td align="right">0.014</td>
+<td align="right">0.043</td>
+<td align="right">0.048</td>
+<td align="right">0.111</td>
+<td align="right">0.189</td>
+<td align="right">0.144</td>
+<td align="right">0.361</td>
+<td align="right">0.361</td>
+<td align="right">0.246</td>
+<td align="right">0.223</td>
+<td align="right">1.000</td>
+<td align="right">0.540</td>
+<td align="right">0.353</td>
+</tr>
+<tr class="odd">
+<td align="left">psyveil_hulp</td>
+<td align="right">0.115</td>
+<td align="right">0.134</td>
+<td align="right">0.077</td>
+<td align="right">0.143</td>
+<td align="right">0.041</td>
+<td align="right">0.016</td>
+<td align="right">0.044</td>
+<td align="right">0.040</td>
+<td align="right">0.153</td>
+<td align="right">0.214</td>
+<td align="right">0.176</td>
+<td align="right">0.428</td>
+<td align="right">0.415</td>
+<td align="right">0.292</td>
+<td align="right">0.289</td>
+<td align="right">0.540</td>
+<td align="right">1.000</td>
+<td align="right">0.484</td>
+</tr>
+<tr class="even">
+<td align="left">psyveil_fout</td>
+<td align="right">0.094</td>
+<td align="right">0.102</td>
+<td align="right">0.049</td>
+<td align="right">0.103</td>
+<td align="right">0.019</td>
+<td align="right">0.013</td>
+<td align="right">0.034</td>
+<td align="right">0.034</td>
+<td align="right">0.091</td>
+<td align="right">0.152</td>
+<td align="right">0.123</td>
+<td align="right">0.307</td>
+<td align="right">0.305</td>
+<td align="right">0.195</td>
+<td align="right">0.204</td>
+<td align="right">0.353</td>
+<td align="right">0.484</td>
+<td align="right">1.000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r test"><code>fa.parallel(data, fa = &quot;fa&quot;, n.iter = 100, show.legend = FALSE)</code></pre>
+<p><img src="Factoranalyse_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="test2"><code>#&gt; Parallel analysis suggests that the number of factors =  7  and the number of components =  NA</code></pre>
+<pre class="r test"><code>fa.parallel(data, fa = &quot;both&quot;, n.iter = 100, show.legend = FALSE)</code></pre>
+<p><img src="Factoranalyse_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="test2"><code>#&gt; Parallel analysis suggests that the number of factors =  7  and the number of components =  5</code></pre>
+<pre class="r test"><code>efa &lt;- fa(data, nfactors = 7, rotate = &quot;oblimin&quot;, fm = &quot;ml&quot;)
+print(efa, digits = 2)</code></pre>
+<pre class="test2"><code>#&gt; Factor Analysis using method =  ml
+#&gt; Call: fa(r = data, nfactors = 7, rotate = &quot;oblimin&quot;, fm = &quot;ml&quot;)
+#&gt; Standardized loadings (pattern matrix) based upon correlation matrix
+#&gt;                        ML2   ML4   ML1   ML3   ML6   ML5   ML7    h2    u2 com
+#&gt; pesten_col            0.03  0.01  0.01 -0.03  0.08  0.67 -0.02 0.466 0.534 1.0
+#&gt; pesten_leid           0.01  0.00  0.01  0.01  0.67  0.05  0.04 0.483 0.517 1.0
+#&gt; intimidation_col      0.01  0.00 -0.01  0.04 -0.05  0.39  0.34 0.349 0.651 2.0
+#&gt; intimidation_leid     0.00  0.01  0.00  0.04  0.71  0.00 -0.02 0.530 0.470 1.0
+#&gt; geweld_col           -0.01  0.01  0.02  0.00  0.02  0.04  0.34 0.129 0.871 1.0
+#&gt; geweld_leid          -0.02  0.00  0.02 -0.03  0.12 -0.05  0.27 0.087 0.913 1.5
+#&gt; seks_col              0.02  0.02 -0.02  0.00  0.02  0.09  0.25 0.092 0.908 1.3
+#&gt; seks_leid             0.02  0.01  0.01  0.00  0.08 -0.11  0.44 0.195 0.805 1.2
+#&gt; conflict_col         -0.06  0.02  0.08  0.45 -0.13  0.29  0.01 0.315 0.685 2.1
+#&gt; conflict_leid         0.05  0.00 -0.02  0.78  0.04 -0.04 -0.02 0.660 0.340 1.0
+#&gt; conflict_werk        -0.03  0.03  0.01  0.59  0.06 -0.03  0.04 0.385 0.615 1.0
+#&gt; steunleid_welzijn     0.75  0.08  0.03  0.03  0.01 -0.01  0.00 0.672 0.328 1.0
+#&gt; steunleid_aandacht    0.97 -0.03  0.00  0.00  0.00  0.01  0.00 0.900 0.100 1.0
+#&gt; steuncol_belang       0.12  0.05  0.63 -0.02 -0.02  0.02  0.01 0.509 0.491 1.1
+#&gt; steuncol_vriendelijk -0.02 -0.01  0.98  0.00  0.01 -0.01  0.00 0.935 0.065 1.0
+#&gt; psyveil_last          0.07  0.59  0.00  0.01  0.01  0.00  0.01 0.398 0.602 1.0
+#&gt; psyveil_hulp         -0.02  0.88  0.00  0.00  0.00  0.00  0.00 0.744 0.256 1.0
+#&gt; psyveil_fout          0.03  0.54  0.01 -0.01  0.02  0.01 -0.01 0.317 0.683 1.0
+#&gt; 
+#&gt;                        ML2  ML4  ML1  ML3  ML6  ML5  ML7
+#&gt; SS loadings           1.60 1.48 1.42 1.22 1.05 0.78 0.61
+#&gt; Proportion Var        0.09 0.08 0.08 0.07 0.06 0.04 0.03
+#&gt; Cumulative Var        0.09 0.17 0.25 0.32 0.38 0.42 0.45
+#&gt; Proportion Explained  0.20 0.18 0.17 0.15 0.13 0.10 0.08
+#&gt; Cumulative Proportion 0.20 0.38 0.55 0.70 0.83 0.92 1.00
+#&gt; 
+#&gt;  With factor correlations of 
+#&gt;      ML2  ML4  ML1  ML3  ML6  ML5  ML7
+#&gt; ML2 1.00 0.55 0.40 0.35 0.23 0.08 0.05
+#&gt; ML4 0.55 1.00 0.37 0.30 0.21 0.15 0.08
+#&gt; ML1 0.40 0.37 1.00 0.14 0.07 0.21 0.05
+#&gt; ML3 0.35 0.30 0.14 1.00 0.45 0.22 0.13
+#&gt; ML6 0.23 0.21 0.07 0.45 1.00 0.11 0.23
+#&gt; ML5 0.08 0.15 0.21 0.22 0.11 1.00 0.34
+#&gt; ML7 0.05 0.08 0.05 0.13 0.23 0.34 1.00
+#&gt; 
+#&gt; Mean item complexity =  1.2
+#&gt; Test of the hypothesis that 7 factors are sufficient.
+#&gt; 
+#&gt; df null model =  153  with the objective function =  4.14 with Chi Square =  126142.2
+#&gt; df of  the model are 48  and the objective function was  0.04 
+#&gt; 
+#&gt; The root mean square of the residuals (RMSR) is  0.01 
+#&gt; The df corrected root mean square of the residuals is  0.02 
+#&gt; 
+#&gt; The harmonic n.obs is  29744 with the empirical chi square  1546.87  with prob &lt;  1.4e-292 
+#&gt; The total n.obs was  30501  with Likelihood Chi Square =  1258.7  with prob &lt;  4.5e-232 
+#&gt; 
+#&gt; Tucker Lewis Index of factoring reliability =  0.969
+#&gt; RMSEA index =  0.029  and the 90 % confidence intervals are  0.027 0.03
+#&gt; BIC =  763.07
+#&gt; Fit based upon off diagonal values = 1
+#&gt; Measures of factor score adequacy             
+#&gt;                                                    ML2  ML4  ML1  ML3  ML6  ML5   ML7
+#&gt; Correlation of (regression) scores with factors   0.96 0.90 0.97 0.87 0.83 0.77  0.68
+#&gt; Multiple R square of scores with factors          0.92 0.82 0.94 0.75 0.70 0.59  0.46
+#&gt; Minimum correlation of possible factor scores     0.84 0.64 0.88 0.51 0.39 0.17 -0.08</code></pre>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZhY3RvcmFuYWx5c2UiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCmRhdGU6ICIyMDI1LTAyLTA0Ig0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0KDQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpDQpvcHRzX2NodW5rJHNldCh0aWR5Lm9wdHM9bGlzdCh3aWR0aC5jdXRvZmY9MTAwKSx0aWR5PVRSVUUsIHdhcm5pbmcgPSBGQUxTRSwgbWVzc2FnZSA9IEZBTFNFLGNvbW1lbnQgPSAiIz4iLCBjYWNoZT1UUlVFLCBjbGFzcy5zb3VyY2U9YygidGVzdCIpLCBjbGFzcy5vdXRwdXQ9YygidGVzdDIiKSkNCm9wdGlvbnMod2lkdGggPSAxMDApDQpyZ2w6OnNldHVwS25pdHIoKQ0KDQoNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCg0KYGBgDQoNCmBgYHtyIGtsaXBweTYsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KYGBge3J9DQpsaWJyYXJ5KCJmb3JtYXRSIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ2dwbG90MiIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoInBvTENBIikNCmxpYnJhcnkoInJlcHJleCIpDQpsaWJyYXJ5KCJ0aWR5ciIpDQpsaWJyYXJ5KCJrbGlwcHkiKQ0KbGlicmFyeSgiZHBseXIiKQ0KbGlicmFyeSgiaGF2ZW4iKQ0KbGlicmFyeSgicHN5Y2giKQ0KbGlicmFyeSgiR1BBcm90YXRpb24iKQ0KYGBgDQoNCmBgYHtyIGtsaXBweTcsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQpORUEyMDIyX2NsdXN0MSA8LXJlYWQuc3BzcygiZGF0YS9wcm9jZXNzZWQvTkVBMjAyMl9jbHVzdDEuc2F2IiwgdXNlLnZhbHVlLmxhYmVscyA9IFQsIHRvLmRhdGEuZnJhbWUgPSBUKQ0KYXR0YWNoKE5FQTIwMjJfY2x1c3QxKQ0KYGBgDQoNCmBgYHtyfQ0KZGF0YSA8LSBkYXRhLmZyYW1lKHBlc3Rlbl9jb2wsIHBlc3Rlbl9sZWlkLCBpbnRpbWlkYXRpb25fY29sLCBpbnRpbWlkYXRpb25fbGVpZCwgZ2V3ZWxkX2NvbCwgZ2V3ZWxkX2xlaWQsIHNla3NfY29sLCBzZWtzX2xlaWQsIGNvbmZsaWN0X2NvbCwgY29uZmxpY3RfbGVpZCwgY29uZmxpY3Rfd2Vyaywgc3RldW5sZWlkX3dlbHppam4sIHN0ZXVubGVpZF9hYW5kYWNodCwgc3RldW5jb2xfYmVsYW5nLCBzdGV1bmNvbF92cmllbmRlbGlqaywgcHN5dmVpbF9sYXN0LCBwc3l2ZWlsX2h1bHAsIHBzeXZlaWxfZm91dCkNCmBgYA0KDQpgYGB7cn0NCmNvcl9tYXRyaXggPC0gY29yKGRhdGEsIHVzZSA9ICJwYWlyd2lzZS5jb21wbGV0ZS5vYnMiKQ0KcHJpbnQoY29yX21hdHJpeCkNCmBgYA0KDQpgYGB7cn0NCmthYmxlKHJvdW5kKGNvcl9tYXRyaXgsIDMpKQ0KYGBgDQoNCg0KYGBge3J9DQpmYS5wYXJhbGxlbChkYXRhLCBmYSA9ICJmYSIsIG4uaXRlciA9IDEwMCwgc2hvdy5sZWdlbmQgPSBGQUxTRSkNCmBgYA0KDQpgYGB7cn0NCmZhLnBhcmFsbGVsKGRhdGEsIGZhID0gImJvdGgiLCBuLml0ZXIgPSAxMDAsIHNob3cubGVnZW5kID0gRkFMU0UpDQpgYGANCg0KYGBge3J9DQplZmEgPC0gZmEoZGF0YSwgbmZhY3RvcnMgPSA3LCByb3RhdGUgPSAib2JsaW1pbiIsIGZtID0gIm1sIikNCnByaW50KGVmYSwgZGlnaXRzID0gMikNCmBgYA==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("Factoranalyse.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
