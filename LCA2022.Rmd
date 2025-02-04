@@ -308,8 +308,7 @@ data <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 
 items <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht, steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout) ~ 1
 ```
-
-Variabelen:
+<br><br> Variabelen:
 
 <br><br> Pesten_col: **pesten door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
 <br><br> Pesten_leid: **pesten door leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
