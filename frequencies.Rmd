@@ -137,7 +137,7 @@ summarytools::freq(NEA2022$colleg_1)
 summarytools::freq(NEA2022$psyveil)
 ```
 
-<br><br> **Psychologische veiligheid: op mijn werk ik het gemakkelijk om hulp te vragen**
+<br><br> **Psychologische veiligheid: op mijn werk ik het gemakkelijk om hulp te vragen** 
 
 ```{r}
 summarytools::freq(NEA2022$psyvei_1)

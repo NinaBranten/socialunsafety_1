@@ -298,7 +298,7 @@ NEA2022_clust1 <- NEA2022 %>%
 
 attach(NEA2022_clust1)
 
-write_sav(NEA2022_clust1, "data/processed/NEA2022_clust1.sav")
+#write_sav(NEA2022_clust1, "data/processed/NEA2022_clust1.sav")
 
 ```
 
