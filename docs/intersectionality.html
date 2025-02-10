@@ -651,75 +651,75 @@ table(NEA2022$intersections, NEA2022$se_clust)</code></pre>
 #&gt;   v.eu.hoog.55-75       91   93
 #&gt;   m.noeu.hoog.55-75    117  147
 #&gt;   v.noeu.hoog.55-75    125  118</code></pre>
-<pre class="r test"><code># Alleen cluster 2
-summarytools::freq(NEA2022$intersections[NEA2022$se_clust == 2])</code></pre>
+<pre class="r test"><code># Alleen cluster 1
+summarytools::freq(NEA2022$intersections[NEA2022$se_clust == 1])</code></pre>
 <pre class="test2"><code>#&gt; Frequencies  
 #&gt; 
 #&gt;                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 #&gt; ------------------------- ------- --------- -------------- --------- --------------
-#&gt;           m.nl.laag.15-35     695      2.32           2.32      2.27           2.27
-#&gt;           v.nl.laag.15-35     624      2.08           4.40      2.04           4.31
-#&gt;           m.eu.laag.15-35      63      0.21           4.61      0.21           4.52
-#&gt;           v.eu.laag.15-35      69      0.23           4.84      0.23           4.75
-#&gt;         m.noeu.laag.15-35     128      0.43           5.26      0.42           5.16
-#&gt;         v.noeu.laag.15-35     134      0.45           5.71      0.44           5.60
-#&gt;         m.nl.middel.15-35    1415      4.72          10.43      4.63          10.23
-#&gt;         v.nl.middel.15-35    1366      4.55          14.98      4.47          14.70
-#&gt;         m.eu.middel.15-35     100      0.33          15.32      0.33          15.03
-#&gt;         v.eu.middel.15-35     102      0.34          15.66      0.33          15.36
-#&gt;       m.noeu.middel.15-35     175      0.58          16.24      0.57          15.93
-#&gt;       v.noeu.middel.15-35     182      0.61          16.85      0.60          16.53
-#&gt;           m.nl.hoog.15-35    1343      4.48          21.33      4.39          20.92
-#&gt;           v.nl.hoog.15-35    1972      6.58          27.90      6.45          27.37
-#&gt;           m.eu.hoog.15-35     147      0.49          28.39      0.48          27.85
-#&gt;           v.eu.hoog.15-35     193      0.64          29.03      0.63          28.48
-#&gt;         m.noeu.hoog.15-35     213      0.71          29.74      0.70          29.18
-#&gt;         v.noeu.hoog.15-35     256      0.85          30.60      0.84          30.02
-#&gt;           m.nl.laag.35-55     713      2.38          32.98      2.33          32.35
-#&gt;           v.nl.laag.35-55     479      1.60          34.57      1.57          33.91
-#&gt;           m.eu.laag.35-55      74      0.25          34.82      0.24          34.16
-#&gt;           v.eu.laag.35-55      44      0.15          34.97      0.14          34.30
-#&gt;         m.noeu.laag.35-55     124      0.41          35.38      0.41          34.71
-#&gt;         v.noeu.laag.35-55     102      0.34          35.72      0.33          35.04
-#&gt;         m.nl.middel.35-55    1905      6.35          42.07      6.23          41.27
-#&gt;         v.nl.middel.35-55    1769      5.90          47.97      5.79          47.06
-#&gt;         m.eu.middel.35-55     112      0.37          48.34      0.37          47.42
-#&gt;         v.eu.middel.35-55     117      0.39          48.73      0.38          47.81
-#&gt;       m.noeu.middel.35-55     216      0.72          49.45      0.71          48.51
-#&gt;       v.noeu.middel.35-55     223      0.74          50.20      0.73          49.24
-#&gt;           m.nl.hoog.35-55    2307      7.69          57.89      7.55          56.79
-#&gt;           v.nl.hoog.35-55    2927      9.76          67.65      9.57          66.36
-#&gt;           m.eu.hoog.35-55     208      0.69          68.34      0.68          67.04
-#&gt;           v.eu.hoog.35-55     264      0.88          69.22      0.86          67.90
-#&gt;         m.noeu.hoog.35-55     324      1.08          70.30      1.06          68.96
-#&gt;         v.noeu.hoog.35-55     366      1.22          71.52      1.20          70.16
-#&gt;           m.nl.laag.55-75     974      3.25          74.77      3.19          73.35
-#&gt;           v.nl.laag.55-75     751      2.50          77.27      2.46          75.80
-#&gt;           m.eu.laag.55-75      64      0.21          77.49      0.21          76.01
-#&gt;           v.eu.laag.55-75      33      0.11          77.60      0.11          76.12
-#&gt;         m.noeu.laag.55-75      98      0.33          77.92      0.32          76.44
-#&gt;         v.noeu.laag.55-75      61      0.20          78.13      0.20          76.64
-#&gt;         m.nl.middel.55-75    1594      5.31          83.44      5.21          81.85
-#&gt;         v.nl.middel.55-75    1214      4.05          87.49      3.97          85.82
-#&gt;         m.eu.middel.55-75      61      0.20          87.69      0.20          86.02
-#&gt;         v.eu.middel.55-75      65      0.22          87.91      0.21          86.24
-#&gt;       m.noeu.middel.55-75     111      0.37          88.28      0.36          86.60
-#&gt;       v.noeu.middel.55-75      96      0.32          88.60      0.31          86.91
-#&gt;           m.nl.hoog.55-75    1584      5.28          93.88      5.18          92.09
-#&gt;           v.nl.hoog.55-75    1405      4.68          98.57      4.60          96.69
-#&gt;           m.eu.hoog.55-75      72      0.24          98.81      0.24          96.93
-#&gt;           v.eu.hoog.55-75      93      0.31          99.12      0.30          97.23
-#&gt;         m.noeu.hoog.55-75     147      0.49          99.61      0.48          97.71
-#&gt;         v.noeu.hoog.55-75     118      0.39         100.00      0.39          98.10
-#&gt;                      &lt;NA&gt;     582                               1.90         100.00
-#&gt;                     Total   30574    100.00         100.00    100.00         100.00</code></pre>
+#&gt;           m.nl.laag.15-35     711      2.38           2.38      2.33           2.33
+#&gt;           v.nl.laag.15-35     650      2.17           4.55      2.13           4.46
+#&gt;           m.eu.laag.15-35      64      0.21           4.76      0.21           4.67
+#&gt;           v.eu.laag.15-35      59      0.20           4.96      0.19           4.87
+#&gt;         m.noeu.laag.15-35     131      0.44           5.40      0.43           5.29
+#&gt;         v.noeu.laag.15-35     139      0.46           5.86      0.46           5.75
+#&gt;         m.nl.middel.15-35    1271      4.25          10.11      4.17           9.92
+#&gt;         v.nl.middel.15-35    1445      4.83          14.94      4.74          14.66
+#&gt;         m.eu.middel.15-35      68      0.23          15.17      0.22          14.88
+#&gt;         v.eu.middel.15-35     103      0.34          15.51      0.34          15.22
+#&gt;       m.noeu.middel.15-35     191      0.64          16.15      0.63          15.84
+#&gt;       v.noeu.middel.15-35     221      0.74          16.89      0.72          16.57
+#&gt;           m.nl.hoog.15-35    1334      4.46          21.34      4.37          20.94
+#&gt;           v.nl.hoog.15-35    2023      6.76          28.11      6.63          27.57
+#&gt;           m.eu.hoog.15-35     123      0.41          28.52      0.40          27.98
+#&gt;           v.eu.hoog.15-35     188      0.63          29.14      0.62          28.59
+#&gt;         m.noeu.hoog.15-35     187      0.62          29.77      0.61          29.21
+#&gt;         v.noeu.hoog.15-35     288      0.96          30.73      0.94          30.15
+#&gt;           m.nl.laag.35-55     651      2.18          32.91      2.13          32.28
+#&gt;           v.nl.laag.35-55     497      1.66          34.57      1.63          33.91
+#&gt;           m.eu.laag.35-55      58      0.19          34.76      0.19          34.10
+#&gt;           v.eu.laag.35-55      44      0.15          34.91      0.14          34.25
+#&gt;         m.noeu.laag.35-55     115      0.38          35.29      0.38          34.63
+#&gt;         v.noeu.laag.35-55      96      0.32          35.61      0.31          34.94
+#&gt;         m.nl.middel.35-55    1955      6.53          42.15      6.41          41.35
+#&gt;         v.nl.middel.35-55    1749      5.85          47.99      5.73          47.08
+#&gt;         m.eu.middel.35-55     105      0.35          48.34      0.34          47.43
+#&gt;         v.eu.middel.35-55     133      0.44          48.79      0.44          47.86
+#&gt;       m.noeu.middel.35-55     225      0.75          49.54      0.74          48.60
+#&gt;       v.noeu.middel.35-55     193      0.64          50.19      0.63          49.23
+#&gt;           m.nl.hoog.35-55    2375      7.94          58.12      7.79          57.02
+#&gt;           v.nl.hoog.35-55    2817      9.41          67.54      9.24          66.26
+#&gt;           m.eu.hoog.35-55     161      0.54          68.07      0.53          66.78
+#&gt;           v.eu.hoog.35-55     269      0.90          68.97      0.88          67.67
+#&gt;         m.noeu.hoog.35-55     345      1.15          70.13      1.13          68.80
+#&gt;         v.noeu.hoog.35-55     353      1.18          71.31      1.16          69.96
+#&gt;           m.nl.laag.55-75    1041      3.48          74.79      3.41          73.37
+#&gt;           v.nl.laag.55-75     715      2.39          77.17      2.34          75.71
+#&gt;           m.eu.laag.55-75      45      0.15          77.33      0.15          75.86
+#&gt;           v.eu.laag.55-75      39      0.13          77.46      0.13          75.99
+#&gt;         m.noeu.laag.55-75      91      0.30          77.76      0.30          76.29
+#&gt;         v.noeu.laag.55-75      69      0.23          77.99      0.23          76.51
+#&gt;         m.nl.middel.55-75    1625      5.43          83.42      5.33          81.84
+#&gt;         v.nl.middel.55-75    1299      4.34          87.76      4.26          86.10
+#&gt;         m.eu.middel.55-75      79      0.26          88.03      0.26          86.36
+#&gt;         v.eu.middel.55-75      65      0.22          88.24      0.21          86.57
+#&gt;       m.noeu.middel.55-75     120      0.40          88.64      0.39          86.96
+#&gt;       v.noeu.middel.55-75      98      0.33          88.97      0.32          87.29
+#&gt;           m.nl.hoog.55-75    1538      5.14          94.11      5.04          92.33
+#&gt;           v.nl.hoog.55-75    1362      4.55          98.66      4.47          96.79
+#&gt;           m.eu.hoog.55-75      67      0.22          98.89      0.22          97.01
+#&gt;           v.eu.hoog.55-75      91      0.30          99.19      0.30          97.31
+#&gt;         m.noeu.hoog.55-75     117      0.39          99.58      0.38          97.70
+#&gt;         v.noeu.hoog.55-75     125      0.42         100.00      0.41          98.10
+#&gt;                      &lt;NA&gt;     578                               1.90         100.00
+#&gt;                     Total   30501    100.00         100.00    100.00         100.00</code></pre>
 <p><br><br> <strong>Creating dummy variables</strong></p>
 <pre class="r test"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;intersections&quot;, remove_first_dummy = FALSE)
 
 dummy_columns &lt;- grep(&quot;^intersections_&quot;, colnames(NEA2022), value = TRUE)  # Find dummy columns
 colnames(NEA2022)[colnames(NEA2022) %in% dummy_columns] &lt;- gsub(&quot;^intersections_&quot;, &quot;&quot;, dummy_columns)</code></pre>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkludGVyc2VjdGlvbmFsaXR5Ig0KI2JpYmxpb2dyYXBoeTogcmVmZXJlbmNlcy5iaWINCmF1dGhvcjogIk5pbmEgQnJhbnRlbiINCi0tLQ0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCg0KDQpjb2xvcml6ZSA8LSBmdW5jdGlvbih4LCBjb2xvcikge3NwcmludGYoIjxzcGFuIHN0eWxlPSdjb2xvcjogJXM7Jz4lczwvc3Bhbj4iLCBjb2xvciwgeCkgfQ0KDQpgYGANCg0KYGBge3Iga2xpcHB5MywgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFfQ0Ka2xpcHB5OjprbGlwcHkocG9zaXRpb24gPSBjKCd0b3AnLCAncmlnaHQnKSkNCiNrbGlwcHk6OmtsaXBweShjb2xvciA9ICdkYXJrcmVkJykNCiNrbGlwcHk6OmtsaXBweSh0b29sdGlwX21lc3NhZ2UgPSAnQ2xpY2sgdG8gY29weScsIHRvb2x0aXBfc3VjY2VzcyA9ICdEb25lJykNCmBgYA0KDQpgYGB7ciBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQ0KbGlicmFyeSgiZm9yZWlnbiIpDQpsaWJyYXJ5KCJnZ3Bsb3QyIikNCmxpYnJhcnkoInN1bW1hcnl0b29scyIpDQpsaWJyYXJ5KCJkcGx5ciIpDQpsaWJyYXJ5KCJsYWJlbGxlZCIpDQpsaWJyYXJ5KCJ0aWR5ciIpDQpsaWJyYXJ5KCJmYXN0RHVtbWllcyIpDQpgYGANCg0KYGBge3Iga2xpcHB5NCwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCk5FQTIwMjIgPC1yZWFkLnNwc3MoImRhdGEvcHJvY2Vzc2VkL0RhdGEgMjAyMiBjbGVhbmVkLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCg0KI05FQTIwMTQyMDIyIDwtcmVhZC5zcHNzKCJkYXRhL3Jhdy9EYXRhIDIwMTQtMjAyMi5zYXYiLCB1c2UudmFsdWUubGFiZWxzID0gVCwgdG8uZGF0YS5mcmFtZSA9IFQpDQpgYGANCg0KPGJyPjxicj4gKipHZW5kZXIqKg0KDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJG1fdikNCmBgYA0KPGJyPjxicj4gKipNaWdyYXRpb24gYmFja2dyb3VuZCoqDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHZybGxhbmRkKQ0KYGBgDQo8YnI+PGJyPiAqKkVkdWNhdGlvbmFsIGxldmVsKioNCmBgYHtyfQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX3NvaTMpDQpgYGANCg0KPGJyPjxicj4gKipBZ2UqKg0KDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9sZnRjKQ0KYGBgDQo8YnI+PGJyPiAqKlJlY29kZW4gbGFhZyAoMTUtMzUpLCBtaWRkZWxiYWFyICgzNS01NSksIGhvb2cgKDU1LTc1KSoqDQoNCmBgYHtyfQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX2xmdGMpDQpzdHIoTkVBMjAyMiRhZmxfbGZ0YykNCg0KDQpORUEyMDIyJGxmdF9udW0gPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9sZnRjKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShsZWVmdGlqZCA9IGNhc2Vfd2hlbigNCiAgICBsZnRfbnVtICVpbiUgYygxLCAyKSB+IDEsDQogICAgbGZ0X251bSAlaW4lIGMoMywgNCkgfiAyLA0KICAgIGxmdF9udW0gJWluJSBjKDUsIDYpIH4gMywNCiAgICBUUlVFIH4gTkFfcmVhbF8NCiAgKSkNCg0KDQpORUEyMDIyJGxlZWZ0aWpkXyA8LSBmYWN0b3IoTkVBMjAyMiRsZWVmdGlqZCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoMSwgMiwgMyksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsYWJlbHMgPSBjKCIxNS0zNSIsICIzNS01NSIsICI1NS03NSIpKQ0KDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGxlZWZ0aWpkXykNCg0KYGBgDQo8YnI+PGJyPiAqKlByZXBhcmluZyB2YXJpYWJsZXMgZm9yIGludGVyc2VjdGlvbnMqKg0KDQpgYGB7cn0NCiMgRWFzaWVyIGxhYmVscw0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoZ2VuZGVyID0gcmVjb2RlKG1fdiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAibWFuIiA9ICJtIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAidnJvdXciID0gInYiKSkNCg0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShtaWdyYXRpb24gPSByZWNvZGUodnJsbGFuZGQsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIk5lZGVybGFuZCIgPSAibmwiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJFdXJvcGEgKGV4Y2x1c2llZiBOZWRlcmxhbmQpIiA9ICJldSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkJ1aXRlbiBFdXJvcGEiID0gIm5vZXUiKSkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoZWR1Y2F0aW9uID0gcmVjb2RlKGFmbF9zb2kzLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJsYWFnIG9wbGVpZGluZ3NuaXZlYXUiID0gImxhYWciLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJtaWRkZWxiYWFyIG9wbGVpZGluZ3NuaXZlYXUiID0gIm1pZGRlbCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImhvb2cgb3BsZWlkaW5nc25pdmVhdSIgPSAiaG9vZyIpKQ0KDQojIE1pc3NpbmcgdmFsdWVzDQpORUEyMDIyJGVkdWNhdGlvbltORUEyMDIyJGVkdWNhdGlvbiA9PSAib25iZWtlbmQiXSA8LSBOQQ0KTkVBMjAyMiRlZHVjYXRpb25bTkVBMjAyMiRtaWdyYXRpb24gPT0gIk9uYmVrZW5kIl0gPC0gTkENCg0KIyBEcm9wIHVudXNlZCBsZXZlbHMNCmxldmVscyhORUEyMDIyJG1pZ3JhdGlvbikNCk5FQTIwMjIkbWlncmF0aW9uIDwtIGRyb3BsZXZlbHMoTkVBMjAyMiRtaWdyYXRpb24pDQpsZXZlbHMoTkVBMjAyMiRtaWdyYXRpb24pDQoNCmxldmVscyhORUEyMDIyJGVkdWNhdGlvbikNCk5FQTIwMjIkZWR1Y2F0aW9uIDwtIGRyb3BsZXZlbHMoTkVBMjAyMiRlZHVjYXRpb24pDQpsZXZlbHMoTkVBMjAyMiRlZHVjYXRpb24pDQoNCnN1bW1hcnkoTkVBMjAyMiRnZW5kZXIpDQpzdW1tYXJ5KE5FQTIwMjIkbWlncmF0aW9uKQ0Kc3VtbWFyeShORUEyMDIyJGVkdWNhdGlvbikNCnN1bW1hcnkoTkVBMjAyMiRsZWVmdGlqZF8pDQoNCmBgYA0KDQpgYGB7cn0NCk5FQTIwMjIkaW50ZXJzZWN0aW9ucyA8LSBpbnRlcmFjdGlvbihORUEyMDIyJGdlbmRlciwgTkVBMjAyMiRtaWdyYXRpb24sIE5FQTIwMjIkZWR1Y2F0aW9uLCBORUEyMDIyJGxlZWZ0aWpkXykNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkaW50ZXJzZWN0aW9ucykNCg0KDQojTkVBMjAyMiRpbnRlcnNlY3Rpb25zIDwtIGludGVyYWN0aW9uKE5FQTIwMjIkbV92LCBORUEyMDIyJHZybGxhbmRkLCBORUEyMDIyJGFmbF9zb2kzLCBORUEyMDIyJGxlZWZ0aWpkXykNCiN0YWJsZShORUEyMDIyJGludGVyc2VjdGlvbnMpIA0KDQojTkVBMjAyMiRnZW5kZXJfbnVtIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRtX3YpDQojTkVBMjAyMiRtaWdyX251bSA8LSBhcy5udW1lcmljKE5FQTIwMjIkdnJsbGFuZGQpDQojTkVBMjAyMiRlZHVjX251bSA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3NvaTMpDQoNCiNORUEyMDIyJGludGVyc2VjdGlvbnNfbnVtIDwtIGludGVyYWN0aW9uKE5FQTIwMjIkZ2VuZGVyX251bSwgTkVBMjAyMiRtaWdyX251bSwgTkVBMjAyMiRlZHVjX251bSwgTkVBMjAyMiRsZWVmdGlqZCkNCiN0YWJsZShORUEyMDIyJGludGVyc2VjdGlvbnNfbnVtKQ0KI3N1bW1hcnkoTkVBMjAyMiRpbnRlcnNlY3Rpb25zX251bSkNCg0KYGBgDQoNCg0KYGBge3J9DQoNCiMgUGVyIGNsdXN0ZXINCnRhYmxlKE5FQTIwMjIkaW50ZXJzZWN0aW9ucywgTkVBMjAyMiRzZV9jbHVzdCkNCg0KDQoNCiMgQWxsZWVuIGNsdXN0ZXIgMg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkaW50ZXJzZWN0aW9uc1tORUEyMDIyJHNlX2NsdXN0ID09IDJdKQ0KDQpgYGANCg0KPGJyPjxicj4gKipDcmVhdGluZyBkdW1teSB2YXJpYWJsZXMqKg0KDQpgYGB7cn0NCk5FQTIwMjIgPC0gZHVtbXlfY29scyhORUEyMDIyLCBzZWxlY3RfY29sdW1ucyA9ICJpbnRlcnNlY3Rpb25zIiwgcmVtb3ZlX2ZpcnN0X2R1bW15ID0gRkFMU0UpDQoNCmR1bW15X2NvbHVtbnMgPC0gZ3JlcCgiXmludGVyc2VjdGlvbnNfIiwgY29sbmFtZXMoTkVBMjAyMiksIHZhbHVlID0gVFJVRSkgICMgRmluZCBkdW1teSBjb2x1bW5zDQpjb2xuYW1lcyhORUEyMDIyKVtjb2xuYW1lcyhORUEyMDIyKSAlaW4lIGR1bW15X2NvbHVtbnNdIDwtIGdzdWIoIl5pbnRlcnNlY3Rpb25zXyIsICIiLCBkdW1teV9jb2x1bW5zKQ0KDQpgYGANCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkludGVyc2VjdGlvbmFsaXR5Ig0KI2JpYmxpb2dyYXBoeTogcmVmZXJlbmNlcy5iaWINCmF1dGhvcjogIk5pbmEgQnJhbnRlbiINCi0tLQ0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCg0KDQpjb2xvcml6ZSA8LSBmdW5jdGlvbih4LCBjb2xvcikge3NwcmludGYoIjxzcGFuIHN0eWxlPSdjb2xvcjogJXM7Jz4lczwvc3Bhbj4iLCBjb2xvciwgeCkgfQ0KDQpgYGANCg0KYGBge3Iga2xpcHB5MywgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFfQ0Ka2xpcHB5OjprbGlwcHkocG9zaXRpb24gPSBjKCd0b3AnLCAncmlnaHQnKSkNCiNrbGlwcHk6OmtsaXBweShjb2xvciA9ICdkYXJrcmVkJykNCiNrbGlwcHk6OmtsaXBweSh0b29sdGlwX21lc3NhZ2UgPSAnQ2xpY2sgdG8gY29weScsIHRvb2x0aXBfc3VjY2VzcyA9ICdEb25lJykNCmBgYA0KDQpgYGB7ciBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQ0KbGlicmFyeSgiZm9yZWlnbiIpDQpsaWJyYXJ5KCJnZ3Bsb3QyIikNCmxpYnJhcnkoInN1bW1hcnl0b29scyIpDQpsaWJyYXJ5KCJkcGx5ciIpDQpsaWJyYXJ5KCJsYWJlbGxlZCIpDQpsaWJyYXJ5KCJ0aWR5ciIpDQpsaWJyYXJ5KCJmYXN0RHVtbWllcyIpDQpgYGANCg0KYGBge3Iga2xpcHB5NCwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCk5FQTIwMjIgPC1yZWFkLnNwc3MoImRhdGEvcHJvY2Vzc2VkL0RhdGEgMjAyMiBjbGVhbmVkLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCg0KI05FQTIwMTQyMDIyIDwtcmVhZC5zcHNzKCJkYXRhL3Jhdy9EYXRhIDIwMTQtMjAyMi5zYXYiLCB1c2UudmFsdWUubGFiZWxzID0gVCwgdG8uZGF0YS5mcmFtZSA9IFQpDQpgYGANCg0KPGJyPjxicj4gKipHZW5kZXIqKg0KDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJG1fdikNCmBgYA0KPGJyPjxicj4gKipNaWdyYXRpb24gYmFja2dyb3VuZCoqDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHZybGxhbmRkKQ0KYGBgDQo8YnI+PGJyPiAqKkVkdWNhdGlvbmFsIGxldmVsKioNCmBgYHtyfQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX3NvaTMpDQpgYGANCg0KPGJyPjxicj4gKipBZ2UqKg0KDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9sZnRjKQ0KYGBgDQo8YnI+PGJyPiAqKlJlY29kZW4gbGFhZyAoMTUtMzUpLCBtaWRkZWxiYWFyICgzNS01NSksIGhvb2cgKDU1LTc1KSoqDQoNCmBgYHtyfQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX2xmdGMpDQpzdHIoTkVBMjAyMiRhZmxfbGZ0YykNCg0KDQpORUEyMDIyJGxmdF9udW0gPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9sZnRjKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShsZWVmdGlqZCA9IGNhc2Vfd2hlbigNCiAgICBsZnRfbnVtICVpbiUgYygxLCAyKSB+IDEsDQogICAgbGZ0X251bSAlaW4lIGMoMywgNCkgfiAyLA0KICAgIGxmdF9udW0gJWluJSBjKDUsIDYpIH4gMywNCiAgICBUUlVFIH4gTkFfcmVhbF8NCiAgKSkNCg0KDQpORUEyMDIyJGxlZWZ0aWpkXyA8LSBmYWN0b3IoTkVBMjAyMiRsZWVmdGlqZCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoMSwgMiwgMyksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsYWJlbHMgPSBjKCIxNS0zNSIsICIzNS01NSIsICI1NS03NSIpKQ0KDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGxlZWZ0aWpkXykNCg0KYGBgDQo8YnI+PGJyPiAqKlByZXBhcmluZyB2YXJpYWJsZXMgZm9yIGludGVyc2VjdGlvbnMqKg0KDQpgYGB7cn0NCiMgRWFzaWVyIGxhYmVscw0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoZ2VuZGVyID0gcmVjb2RlKG1fdiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAibWFuIiA9ICJtIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAidnJvdXciID0gInYiKSkNCg0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShtaWdyYXRpb24gPSByZWNvZGUodnJsbGFuZGQsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIk5lZGVybGFuZCIgPSAibmwiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJFdXJvcGEgKGV4Y2x1c2llZiBOZWRlcmxhbmQpIiA9ICJldSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkJ1aXRlbiBFdXJvcGEiID0gIm5vZXUiKSkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoZWR1Y2F0aW9uID0gcmVjb2RlKGFmbF9zb2kzLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJsYWFnIG9wbGVpZGluZ3NuaXZlYXUiID0gImxhYWciLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJtaWRkZWxiYWFyIG9wbGVpZGluZ3NuaXZlYXUiID0gIm1pZGRlbCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImhvb2cgb3BsZWlkaW5nc25pdmVhdSIgPSAiaG9vZyIpKQ0KDQojIE1pc3NpbmcgdmFsdWVzDQpORUEyMDIyJGVkdWNhdGlvbltORUEyMDIyJGVkdWNhdGlvbiA9PSAib25iZWtlbmQiXSA8LSBOQQ0KTkVBMjAyMiRlZHVjYXRpb25bTkVBMjAyMiRtaWdyYXRpb24gPT0gIk9uYmVrZW5kIl0gPC0gTkENCg0KIyBEcm9wIHVudXNlZCBsZXZlbHMNCmxldmVscyhORUEyMDIyJG1pZ3JhdGlvbikNCk5FQTIwMjIkbWlncmF0aW9uIDwtIGRyb3BsZXZlbHMoTkVBMjAyMiRtaWdyYXRpb24pDQpsZXZlbHMoTkVBMjAyMiRtaWdyYXRpb24pDQoNCmxldmVscyhORUEyMDIyJGVkdWNhdGlvbikNCk5FQTIwMjIkZWR1Y2F0aW9uIDwtIGRyb3BsZXZlbHMoTkVBMjAyMiRlZHVjYXRpb24pDQpsZXZlbHMoTkVBMjAyMiRlZHVjYXRpb24pDQoNCnN1bW1hcnkoTkVBMjAyMiRnZW5kZXIpDQpzdW1tYXJ5KE5FQTIwMjIkbWlncmF0aW9uKQ0Kc3VtbWFyeShORUEyMDIyJGVkdWNhdGlvbikNCnN1bW1hcnkoTkVBMjAyMiRsZWVmdGlqZF8pDQoNCmBgYA0KDQpgYGB7cn0NCk5FQTIwMjIkaW50ZXJzZWN0aW9ucyA8LSBpbnRlcmFjdGlvbihORUEyMDIyJGdlbmRlciwgTkVBMjAyMiRtaWdyYXRpb24sIE5FQTIwMjIkZWR1Y2F0aW9uLCBORUEyMDIyJGxlZWZ0aWpkXykNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkaW50ZXJzZWN0aW9ucykNCg0KDQojTkVBMjAyMiRpbnRlcnNlY3Rpb25zIDwtIGludGVyYWN0aW9uKE5FQTIwMjIkbV92LCBORUEyMDIyJHZybGxhbmRkLCBORUEyMDIyJGFmbF9zb2kzLCBORUEyMDIyJGxlZWZ0aWpkXykNCiN0YWJsZShORUEyMDIyJGludGVyc2VjdGlvbnMpIA0KDQojTkVBMjAyMiRnZW5kZXJfbnVtIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRtX3YpDQojTkVBMjAyMiRtaWdyX251bSA8LSBhcy5udW1lcmljKE5FQTIwMjIkdnJsbGFuZGQpDQojTkVBMjAyMiRlZHVjX251bSA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3NvaTMpDQoNCiNORUEyMDIyJGludGVyc2VjdGlvbnNfbnVtIDwtIGludGVyYWN0aW9uKE5FQTIwMjIkZ2VuZGVyX251bSwgTkVBMjAyMiRtaWdyX251bSwgTkVBMjAyMiRlZHVjX251bSwgTkVBMjAyMiRsZWVmdGlqZCkNCiN0YWJsZShORUEyMDIyJGludGVyc2VjdGlvbnNfbnVtKQ0KI3N1bW1hcnkoTkVBMjAyMiRpbnRlcnNlY3Rpb25zX251bSkNCg0KYGBgDQoNCg0KYGBge3J9DQoNCiMgUGVyIGNsdXN0ZXINCnRhYmxlKE5FQTIwMjIkaW50ZXJzZWN0aW9ucywgTkVBMjAyMiRzZV9jbHVzdCkNCg0KDQoNCiMgQWxsZWVuIGNsdXN0ZXIgMQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkaW50ZXJzZWN0aW9uc1tORUEyMDIyJHNlX2NsdXN0ID09IDFdKQ0KDQpgYGANCg0KPGJyPjxicj4gKipDcmVhdGluZyBkdW1teSB2YXJpYWJsZXMqKg0KDQpgYGB7cn0NCk5FQTIwMjIgPC0gZHVtbXlfY29scyhORUEyMDIyLCBzZWxlY3RfY29sdW1ucyA9ICJpbnRlcnNlY3Rpb25zIiwgcmVtb3ZlX2ZpcnN0X2R1bW15ID0gRkFMU0UpDQoNCmR1bW15X2NvbHVtbnMgPC0gZ3JlcCgiXmludGVyc2VjdGlvbnNfIiwgY29sbmFtZXMoTkVBMjAyMiksIHZhbHVlID0gVFJVRSkgICMgRmluZCBkdW1teSBjb2x1bW5zDQpjb2xuYW1lcyhORUEyMDIyKVtjb2xuYW1lcyhORUEyMDIyKSAlaW4lIGR1bW15X2NvbHVtbnNdIDwtIGdzdWIoIl5pbnRlcnNlY3Rpb25zXyIsICIiLCBkdW1teV9jb2x1bW5zKQ0KDQpgYGANCg0K</div>
 
 
 </div>

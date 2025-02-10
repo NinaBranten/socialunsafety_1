@@ -29,122 +29,130 @@ klippy::klippy(position = c('top', 'right'))
 library("foreign")
 library("ggplot2")
 library("summarytools")
+library("dplyr")
 ```
 
 ```{r klippy2, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEA2022 <-read.spss("data/processed/Data 2022 cleaned.sav", use.value.labels = T, to.data.frame = T)
 
-#NEA20142022 <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
+NEA2022_clust1 <- NEA2022 %>%
+  filter(se_clust == 1)
+
+summary(NEA2022_clust1$afl_soi3)
+NEA2022_clust1$afl_soi3[NEA2022_clust1$afl_soi3 == "onbekend"] <- NA
+
+clust1_clean <- NEA2022_clust1 %>%
+  filter(!is.na(afl_soi3))
 ```
 
 <br><br> **Pesten door collega's**
 
 ```{r}
-summarytools::freq(NEA2022$afl_pe_1)
+summarytools::freq(clust1_clean$afl_pe_1)
 
 ```
 <br><br> **Pesten door leidinggevenden**
 
 ```{r}
-summarytools::freq(NEA2022$afl_pe_2)
+summarytools::freq(clust1_clean$afl_pe_2)
 ```
 <br><br> **Intimidatie door collega's**
 
 ```{r}
-summarytools::freq(NEA2022$afl_be_1)
+summarytools::freq(clust1_clean$afl_be_1)
 ```
 <br><br> **Intimidatie door leidinggevenden**
 
 ```{r}
-summarytools::freq(NEA2022$afl_be_2)
+summarytools::freq(clust1_clean$afl_be_2)
 ```
 
 <br><br> **Fysiek geweld door collega's** 
 
 ```{r}
-summarytools::freq(NEA2022$afl_ge_3)
+summarytools::freq(clust1_clean$afl_ge_3)
 ```
 
 <br><br> **Fysiek geweld door leidinggevenden**
 
 ```{r}
-summarytools::freq(NEA2022$afl_ge_4)
+summarytools::freq(clust1_clean$afl_ge_4)
 ```
 
 <br><br> **Afgelopen maanden te maken gehad met intern ongewenst gedrag: dus op een van de bovenstaande vragen 'een enkele keer' of vaker.**
 
 ```{r}
-summarytools::freq(NEA2022$afl_on_3)
+summarytools::freq(clust1_clean$afl_on_3)
 ```
 <br><br> **Conflict met collega**
 
 ```{r}
-summarytools::freq(NEA2022$conflict)
+summarytools::freq(clust1_clean$conflict)
 ```
 <br><br> **Conflict met directe leidinggevende**
 
 ```{r}
-summarytools::freq(NEA2022$confli_1)
+summarytools::freq(clust1_clean$confli_1)
 ```
 
 <br><br> **Conflict met uw werkgever**
 
 ```{r}
-summarytools::freq(NEA2022$confli_2)
+summarytools::freq(clust1_clean$confli_2)
 ```
 <br><br> **Kort- en/of langdurig conflict met collega's, leidinggevende en/of werkgever**
 
 ```{r}
-summary(NEA2022$afl_conf)
+summary(clust1_clean$afl_conf)
 ```
 <br><br> **Sociale steun leidinggevenden**
 
 ```{r}
-summarytools::freq(NEA2022$afl_socs)
+summarytools::freq(clust1_clean$afl_socs)
 ```
 <br><br> **Sociale steun leidinggevenden: mijn leidinggevende heeft oog voor het welzijn van de medewerkers**
 
 ```{r}
-summarytools::freq(NEA2022$leiding_)
+summarytools::freq(clust1_clean$leiding_)
 ```
 <br><br> **Sociale steun leidinggevenden: mijn leidinggevende besteedt aandacht aan wat ik zeg**
 
 ```{r}
-summarytools::freq(NEA2022$leidin_1)
+summarytools::freq(clust1_clean$leidin_1)
 ```
 
 <br><br> **Sociale steun collega's**
 
 ```{r}
-summarytools::freq(NEA2022$afl_so_2)
+summarytools::freq(clust1_clean$afl_so_2)
 ```
 
 <br><br> **Sociale steun collega's: mijn collega's hebben persoonlijke belangstelling voor me**
 
 ```{r}
-summarytools::freq(NEA2022$collega_)
+summarytools::freq(clust1_clean$collega_)
 ```
 
 <br><br> **Sociale steun collega's: mijn collega's zijn vriendelijk**
 
 ```{r}
-summarytools::freq(NEA2022$colleg_1)
+summarytools::freq(clust1_clean$colleg_1)
 ```
 
 <br><br> **Psychologische veiligheid: op mijn werk kun je lastige kwesties naar voren brengen**
 
 ```{r}
-summarytools::freq(NEA2022$psyveil)
+summarytools::freq(clust1_clean$psyveil)
 ```
 
 <br><br> **Psychologische veiligheid: op mijn werk ik het gemakkelijk om hulp te vragen** 
 
 ```{r}
-summarytools::freq(NEA2022$psyvei_1)
+summarytools::freq(clust1_clean$psyvei_1)
 ```
 
 <br><br> **Psychologische veiligheid: op mijn werk is het niet erg om een fout te maken**
 
 ```{r}
-summarytools::freq(NEA2022$psyvei_2)
+summarytools::freq(clust1_clean$psyvei_2)
 ```

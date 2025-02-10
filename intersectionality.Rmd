@@ -153,8 +153,8 @@ table(NEA2022$intersections, NEA2022$se_clust)
 
 
 
-# Alleen cluster 2
-summarytools::freq(NEA2022$intersections[NEA2022$se_clust == 2])
+# Alleen cluster 1
+summarytools::freq(NEA2022$intersections[NEA2022$se_clust == 1])
 
 ```
 
