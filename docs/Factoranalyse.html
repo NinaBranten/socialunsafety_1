@@ -405,7 +405,8 @@ library(&quot;klippy&quot;)
 library(&quot;dplyr&quot;)
 library(&quot;haven&quot;)
 library(&quot;psych&quot;)
-library(&quot;GPArotation&quot;)</code></pre>
+library(&quot;GPArotation&quot;)
+library(&quot;Hmisc&quot;)</code></pre>
 <pre class="r test"><code>data &lt;- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid,
     seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht,
     steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout)</code></pre>
@@ -914,11 +915,466 @@ print(cor_matrix)</code></pre>
 </tr>
 </tbody>
 </table>
+<pre class="r test"><code># Compute correlation matrix
+cor_results &lt;- rcorr(as.matrix(data))
+
+# Extract correlation coefficients and p-values
+cor_matrix &lt;- round(cor_results$r, 3)
+p_matrix &lt;- cor_results$P
+
+# Function to format correlation matrix with significance stars
+cor_with_stars &lt;- function(cor_matrix, p_matrix) {
+  stars &lt;- ifelse(is.na(p_matrix), &quot;&quot;,  # Remove NA values from diagonal
+           ifelse(p_matrix &lt; 0.001, &quot;***&quot;,
+           ifelse(p_matrix &lt; 0.01, &quot;**&quot;,
+           ifelse(p_matrix &lt; 0.05, &quot;*&quot;, &quot;&quot;))))
+  
+  # Convert to character matrix and append significance stars
+  cor_matrix_formatted &lt;- matrix(
+    paste0(format(cor_matrix, nsmall = 3), stars),
+    nrow = nrow(cor_matrix), 
+    dimnames = dimnames(cor_matrix)
+  )
+  
+  return(cor_matrix_formatted)
+}
+
+# Apply the function
+cor_matrix_stars &lt;- cor_with_stars(cor_matrix, p_matrix)
+
+# Print using kable
+kable(cor_matrix_stars)</code></pre>
+<table>
+<colgroup>
+<col width="7%" />
+<col width="4%" />
+<col width="4%" />
+<col width="6%" />
+<col width="6%" />
+<col width="4%" />
+<col width="4%" />
+<col width="3%" />
+<col width="3%" />
+<col width="4%" />
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+<col width="6%" />
+<col width="5%" />
+<col width="7%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">pesten_col</th>
+<th align="left">pesten_leid</th>
+<th align="left">intimidation_col</th>
+<th align="left">intimidation_leid</th>
+<th align="left">geweld_col</th>
+<th align="left">geweld_leid</th>
+<th align="left">seks_col</th>
+<th align="left">seks_leid</th>
+<th align="left">conflict_col</th>
+<th align="left">conflict_leid</th>
+<th align="left">conflict_werk</th>
+<th align="left">steunleid_welzijn</th>
+<th align="left">steunleid_aandacht</th>
+<th align="left">steuncol_belang</th>
+<th align="left">steuncol_vriendelijk</th>
+<th align="left">psyveil_last</th>
+<th align="left">psyveil_hulp</th>
+<th align="left">psyveil_fout</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">pesten_col</td>
+<td align="left">1.000</td>
+<td align="left">0.152***</td>
+<td align="left">0.338***</td>
+<td align="left">0.105***</td>
+<td align="left">0.092***</td>
+<td align="left">0.039***</td>
+<td align="left">0.134***</td>
+<td align="left">0.047***</td>
+<td align="left">0.269***</td>
+<td align="left">0.112***</td>
+<td align="left">0.098***</td>
+<td align="left">0.095***</td>
+<td align="left">0.098***</td>
+<td align="left">0.141***</td>
+<td align="left">0.158***</td>
+<td align="left">0.098***</td>
+<td align="left">0.115***</td>
+<td align="left">0.094***</td>
+</tr>
+<tr class="even">
+<td align="left">pesten_leid</td>
+<td align="left">0.152***</td>
+<td align="left">1.000</td>
+<td align="left">0.103***</td>
+<td align="left">0.502***</td>
+<td align="left">0.103***</td>
+<td align="left">0.103***</td>
+<td align="left">0.054***</td>
+<td align="left">0.151***</td>
+<td align="left">0.101***</td>
+<td align="left">0.293***</td>
+<td align="left">0.230***</td>
+<td align="left">0.153***</td>
+<td align="left">0.156***</td>
+<td align="left">0.059***</td>
+<td align="left">0.067***</td>
+<td align="left">0.112***</td>
+<td align="left">0.134***</td>
+<td align="left">0.102***</td>
+</tr>
+<tr class="odd">
+<td align="left">intimidation_col</td>
+<td align="left">0.338***</td>
+<td align="left">0.103***</td>
+<td align="left">1.000</td>
+<td align="left">0.069***</td>
+<td align="left">0.210***</td>
+<td align="left">0.113***</td>
+<td align="left">0.137***</td>
+<td align="left">0.143***</td>
+<td align="left">0.214***</td>
+<td align="left">0.095***</td>
+<td align="left">0.096***</td>
+<td align="left">0.058***</td>
+<td align="left">0.058***</td>
+<td align="left">0.079***</td>
+<td align="left">0.086***</td>
+<td align="left">0.062***</td>
+<td align="left">0.077***</td>
+<td align="left">0.049***</td>
+</tr>
+<tr class="even">
+<td align="left">intimidation_leid</td>
+<td align="left">0.105***</td>
+<td align="left">0.502***</td>
+<td align="left">0.069***</td>
+<td align="left">1.000</td>
+<td align="left">0.062***</td>
+<td align="left">0.116***</td>
+<td align="left">0.089***</td>
+<td align="left">0.098***</td>
+<td align="left">0.087***</td>
+<td align="left">0.314***</td>
+<td align="left">0.267***</td>
+<td align="left">0.167***</td>
+<td align="left">0.161***</td>
+<td align="left">0.046***</td>
+<td align="left">0.058***</td>
+<td align="left">0.127***</td>
+<td align="left">0.143***</td>
+<td align="left">0.103***</td>
+</tr>
+<tr class="odd">
+<td align="left">geweld_col</td>
+<td align="left">0.092***</td>
+<td align="left">0.103***</td>
+<td align="left">0.210***</td>
+<td align="left">0.062***</td>
+<td align="left">1.000</td>
+<td align="left">-0.001</td>
+<td align="left">0.175***</td>
+<td align="left">0.133***</td>
+<td align="left">0.051***</td>
+<td align="left">0.040***</td>
+<td align="left">0.054***</td>
+<td align="left">0.020***</td>
+<td align="left">0.026***</td>
+<td align="left">0.030***</td>
+<td align="left">0.044***</td>
+<td align="left">0.033***</td>
+<td align="left">0.041***</td>
+<td align="left">0.019**</td>
+</tr>
+<tr class="even">
+<td align="left">geweld_leid</td>
+<td align="left">0.039***</td>
+<td align="left">0.103***</td>
+<td align="left">0.113***</td>
+<td align="left">0.116***</td>
+<td align="left">-0.001</td>
+<td align="left">1.000</td>
+<td align="left">0.090***</td>
+<td align="left">0.183***</td>
+<td align="left">0.026***</td>
+<td align="left">0.028***</td>
+<td align="left">0.033***</td>
+<td align="left">0.016**</td>
+<td align="left">0.009</td>
+<td align="left">0.010</td>
+<td align="left">0.013*</td>
+<td align="left">0.014*</td>
+<td align="left">0.016**</td>
+<td align="left">0.013*</td>
+</tr>
+<tr class="odd">
+<td align="left">seks_col</td>
+<td align="left">0.134***</td>
+<td align="left">0.054***</td>
+<td align="left">0.137***</td>
+<td align="left">0.089***</td>
+<td align="left">0.175***</td>
+<td align="left">0.090***</td>
+<td align="left">1.000</td>
+<td align="left">0.089***</td>
+<td align="left">0.075***</td>
+<td align="left">0.043***</td>
+<td align="left">0.063***</td>
+<td align="left">0.045***</td>
+<td align="left">0.039***</td>
+<td align="left">0.028***</td>
+<td align="left">0.023***</td>
+<td align="left">0.043***</td>
+<td align="left">0.044***</td>
+<td align="left">0.034***</td>
+</tr>
+<tr class="even">
+<td align="left">seks_leid</td>
+<td align="left">0.047***</td>
+<td align="left">0.151***</td>
+<td align="left">0.143***</td>
+<td align="left">0.098***</td>
+<td align="left">0.133***</td>
+<td align="left">0.183***</td>
+<td align="left">0.089***</td>
+<td align="left">1.000</td>
+<td align="left">0.032***</td>
+<td align="left">0.064***</td>
+<td align="left">0.070***</td>
+<td align="left">0.047***</td>
+<td align="left">0.052***</td>
+<td align="left">0.033***</td>
+<td align="left">0.019**</td>
+<td align="left">0.048***</td>
+<td align="left">0.040***</td>
+<td align="left">0.034***</td>
+</tr>
+<tr class="odd">
+<td align="left">conflict_col</td>
+<td align="left">0.269***</td>
+<td align="left">0.101***</td>
+<td align="left">0.214***</td>
+<td align="left">0.087***</td>
+<td align="left">0.051***</td>
+<td align="left">0.026***</td>
+<td align="left">0.075***</td>
+<td align="left">0.032***</td>
+<td align="left">1.000</td>
+<td align="left">0.344***</td>
+<td align="left">0.267***</td>
+<td align="left">0.136***</td>
+<td align="left">0.134***</td>
+<td align="left">0.145***</td>
+<td align="left">0.173***</td>
+<td align="left">0.111***</td>
+<td align="left">0.153***</td>
+<td align="left">0.091***</td>
+</tr>
+<tr class="even">
+<td align="left">conflict_leid</td>
+<td align="left">0.112***</td>
+<td align="left">0.293***</td>
+<td align="left">0.095***</td>
+<td align="left">0.314***</td>
+<td align="left">0.040***</td>
+<td align="left">0.028***</td>
+<td align="left">0.043***</td>
+<td align="left">0.064***</td>
+<td align="left">0.344***</td>
+<td align="left">1.000</td>
+<td align="left">0.500***</td>
+<td align="left">0.297***</td>
+<td align="left">0.304***</td>
+<td align="left">0.096***</td>
+<td align="left">0.097***</td>
+<td align="left">0.189***</td>
+<td align="left">0.214***</td>
+<td align="left">0.152***</td>
+</tr>
+<tr class="odd">
+<td align="left">conflict_werk</td>
+<td align="left">0.098***</td>
+<td align="left">0.230***</td>
+<td align="left">0.096***</td>
+<td align="left">0.267***</td>
+<td align="left">0.054***</td>
+<td align="left">0.033***</td>
+<td align="left">0.063***</td>
+<td align="left">0.070***</td>
+<td align="left">0.267***</td>
+<td align="left">0.500***</td>
+<td align="left">1.000</td>
+<td align="left">0.202***</td>
+<td align="left">0.200***</td>
+<td align="left">0.084***</td>
+<td align="left">0.083***</td>
+<td align="left">0.144***</td>
+<td align="left">0.176***</td>
+<td align="left">0.123***</td>
+</tr>
+<tr class="even">
+<td align="left">steunleid_welzijn</td>
+<td align="left">0.095***</td>
+<td align="left">0.153***</td>
+<td align="left">0.058***</td>
+<td align="left">0.167***</td>
+<td align="left">0.020***</td>
+<td align="left">0.016**</td>
+<td align="left">0.045***</td>
+<td align="left">0.047***</td>
+<td align="left">0.136***</td>
+<td align="left">0.297***</td>
+<td align="left">0.202***</td>
+<td align="left">1.000</td>
+<td align="left">0.771***</td>
+<td align="left">0.340***</td>
+<td align="left">0.330***</td>
+<td align="left">0.361***</td>
+<td align="left">0.428***</td>
+<td align="left">0.307***</td>
+</tr>
+<tr class="odd">
+<td align="left">steunleid_aandacht</td>
+<td align="left">0.098***</td>
+<td align="left">0.156***</td>
+<td align="left">0.058***</td>
+<td align="left">0.161***</td>
+<td align="left">0.026***</td>
+<td align="left">0.009</td>
+<td align="left">0.039***</td>
+<td align="left">0.052***</td>
+<td align="left">0.134***</td>
+<td align="left">0.304***</td>
+<td align="left">0.200***</td>
+<td align="left">0.771***</td>
+<td align="left">1.000</td>
+<td align="left">0.367***</td>
+<td align="left">0.341***</td>
+<td align="left">0.361***</td>
+<td align="left">0.415***</td>
+<td align="left">0.305***</td>
+</tr>
+<tr class="even">
+<td align="left">steuncol_belang</td>
+<td align="left">0.141***</td>
+<td align="left">0.059***</td>
+<td align="left">0.079***</td>
+<td align="left">0.046***</td>
+<td align="left">0.030***</td>
+<td align="left">0.010</td>
+<td align="left">0.028***</td>
+<td align="left">0.033***</td>
+<td align="left">0.145***</td>
+<td align="left">0.096***</td>
+<td align="left">0.084***</td>
+<td align="left">0.340***</td>
+<td align="left">0.367***</td>
+<td align="left">1.000</td>
+<td align="left">0.674***</td>
+<td align="left">0.246***</td>
+<td align="left">0.292***</td>
+<td align="left">0.195***</td>
+</tr>
+<tr class="odd">
+<td align="left">steuncol_vriendelijk</td>
+<td align="left">0.158***</td>
+<td align="left">0.067***</td>
+<td align="left">0.086***</td>
+<td align="left">0.058***</td>
+<td align="left">0.044***</td>
+<td align="left">0.013*</td>
+<td align="left">0.023***</td>
+<td align="left">0.019**</td>
+<td align="left">0.173***</td>
+<td align="left">0.097***</td>
+<td align="left">0.083***</td>
+<td align="left">0.330***</td>
+<td align="left">0.341***</td>
+<td align="left">0.674***</td>
+<td align="left">1.000</td>
+<td align="left">0.223***</td>
+<td align="left">0.289***</td>
+<td align="left">0.204***</td>
+</tr>
+<tr class="even">
+<td align="left">psyveil_last</td>
+<td align="left">0.098***</td>
+<td align="left">0.112***</td>
+<td align="left">0.062***</td>
+<td align="left">0.127***</td>
+<td align="left">0.033***</td>
+<td align="left">0.014*</td>
+<td align="left">0.043***</td>
+<td align="left">0.048***</td>
+<td align="left">0.111***</td>
+<td align="left">0.189***</td>
+<td align="left">0.144***</td>
+<td align="left">0.361***</td>
+<td align="left">0.361***</td>
+<td align="left">0.246***</td>
+<td align="left">0.223***</td>
+<td align="left">1.000</td>
+<td align="left">0.540***</td>
+<td align="left">0.353***</td>
+</tr>
+<tr class="odd">
+<td align="left">psyveil_hulp</td>
+<td align="left">0.115***</td>
+<td align="left">0.134***</td>
+<td align="left">0.077***</td>
+<td align="left">0.143***</td>
+<td align="left">0.041***</td>
+<td align="left">0.016**</td>
+<td align="left">0.044***</td>
+<td align="left">0.040***</td>
+<td align="left">0.153***</td>
+<td align="left">0.214***</td>
+<td align="left">0.176***</td>
+<td align="left">0.428***</td>
+<td align="left">0.415***</td>
+<td align="left">0.292***</td>
+<td align="left">0.289***</td>
+<td align="left">0.540***</td>
+<td align="left">1.000</td>
+<td align="left">0.484***</td>
+</tr>
+<tr class="even">
+<td align="left">psyveil_fout</td>
+<td align="left">0.094***</td>
+<td align="left">0.102***</td>
+<td align="left">0.049***</td>
+<td align="left">0.103***</td>
+<td align="left">0.019**</td>
+<td align="left">0.013*</td>
+<td align="left">0.034***</td>
+<td align="left">0.034***</td>
+<td align="left">0.091***</td>
+<td align="left">0.152***</td>
+<td align="left">0.123***</td>
+<td align="left">0.307***</td>
+<td align="left">0.305***</td>
+<td align="left">0.195***</td>
+<td align="left">0.204***</td>
+<td align="left">0.353***</td>
+<td align="left">0.484***</td>
+<td align="left">1.000</td>
+</tr>
+</tbody>
+</table>
 <pre class="r test"><code>fa.parallel(data, fa = &quot;fa&quot;, n.iter = 100, show.legend = FALSE)</code></pre>
-<p><img src="Factoranalyse_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="Factoranalyse_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="test2"><code>#&gt; Parallel analysis suggests that the number of factors =  7  and the number of components =  NA</code></pre>
 <pre class="r test"><code>fa.parallel(data, fa = &quot;both&quot;, n.iter = 100, show.legend = FALSE)</code></pre>
-<p><img src="Factoranalyse_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="Factoranalyse_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="test2"><code>#&gt; Parallel analysis suggests that the number of factors =  7  and the number of components =  5</code></pre>
 <pre class="r test"><code>efa &lt;- fa(data, nfactors = 7, rotate = &quot;oblimin&quot;, fm = &quot;ml&quot;)
 print(efa, digits = 2)</code></pre>
@@ -984,7 +1440,7 @@ print(efa, digits = 2)</code></pre>
 #&gt; Multiple R square of scores with factors          0.92 0.82 0.94 0.75 0.70 0.59  0.46
 #&gt; Minimum correlation of possible factor scores     0.84 0.64 0.88 0.51 0.39 0.17 -0.08</code></pre>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZhY3RvcmFuYWx5c2UiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCmRhdGU6ICIyMDI1LTAyLTA0Ig0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0KDQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpDQpvcHRzX2NodW5rJHNldCh0aWR5Lm9wdHM9bGlzdCh3aWR0aC5jdXRvZmY9MTAwKSx0aWR5PVRSVUUsIHdhcm5pbmcgPSBGQUxTRSwgbWVzc2FnZSA9IEZBTFNFLGNvbW1lbnQgPSAiIz4iLCBjYWNoZT1UUlVFLCBjbGFzcy5zb3VyY2U9YygidGVzdCIpLCBjbGFzcy5vdXRwdXQ9YygidGVzdDIiKSkNCm9wdGlvbnMod2lkdGggPSAxMDApDQpyZ2w6OnNldHVwS25pdHIoKQ0KDQoNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCg0KYGBgDQoNCmBgYHtyIGtsaXBweTYsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KYGBge3J9DQpsaWJyYXJ5KCJmb3JtYXRSIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ2dwbG90MiIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoInBvTENBIikNCmxpYnJhcnkoInJlcHJleCIpDQpsaWJyYXJ5KCJ0aWR5ciIpDQpsaWJyYXJ5KCJrbGlwcHkiKQ0KbGlicmFyeSgiZHBseXIiKQ0KbGlicmFyeSgiaGF2ZW4iKQ0KbGlicmFyeSgicHN5Y2giKQ0KbGlicmFyeSgiR1BBcm90YXRpb24iKQ0KYGBgDQoNCmBgYHtyIGtsaXBweTcsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQpORUEyMDIyX2NsdXN0MSA8LXJlYWQuc3BzcygiZGF0YS9wcm9jZXNzZWQvTkVBMjAyMl9jbHVzdDEuc2F2IiwgdXNlLnZhbHVlLmxhYmVscyA9IFQsIHRvLmRhdGEuZnJhbWUgPSBUKQ0KYXR0YWNoKE5FQTIwMjJfY2x1c3QxKQ0KYGBgDQoNCmBgYHtyfQ0KZGF0YSA8LSBkYXRhLmZyYW1lKHBlc3Rlbl9jb2wsIHBlc3Rlbl9sZWlkLCBpbnRpbWlkYXRpb25fY29sLCBpbnRpbWlkYXRpb25fbGVpZCwgZ2V3ZWxkX2NvbCwgZ2V3ZWxkX2xlaWQsIHNla3NfY29sLCBzZWtzX2xlaWQsIGNvbmZsaWN0X2NvbCwgY29uZmxpY3RfbGVpZCwgY29uZmxpY3Rfd2Vyaywgc3RldW5sZWlkX3dlbHppam4sIHN0ZXVubGVpZF9hYW5kYWNodCwgc3RldW5jb2xfYmVsYW5nLCBzdGV1bmNvbF92cmllbmRlbGlqaywgcHN5dmVpbF9sYXN0LCBwc3l2ZWlsX2h1bHAsIHBzeXZlaWxfZm91dCkNCmBgYA0KDQpgYGB7cn0NCmNvcl9tYXRyaXggPC0gY29yKGRhdGEsIHVzZSA9ICJwYWlyd2lzZS5jb21wbGV0ZS5vYnMiKQ0KcHJpbnQoY29yX21hdHJpeCkNCmBgYA0KDQpgYGB7cn0NCmthYmxlKHJvdW5kKGNvcl9tYXRyaXgsIDMpKQ0KYGBgDQoNCg0KYGBge3J9DQpmYS5wYXJhbGxlbChkYXRhLCBmYSA9ICJmYSIsIG4uaXRlciA9IDEwMCwgc2hvdy5sZWdlbmQgPSBGQUxTRSkNCmBgYA0KDQpgYGB7cn0NCmZhLnBhcmFsbGVsKGRhdGEsIGZhID0gImJvdGgiLCBuLml0ZXIgPSAxMDAsIHNob3cubGVnZW5kID0gRkFMU0UpDQpgYGANCg0KYGBge3J9DQplZmEgPC0gZmEoZGF0YSwgbmZhY3RvcnMgPSA3LCByb3RhdGUgPSAib2JsaW1pbiIsIGZtID0gIm1sIikNCnByaW50KGVmYSwgZGlnaXRzID0gMikNCmBgYA==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZhY3RvcmFuYWx5c2UiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCmRhdGU6ICIyMDI1LTAyLTA0Ig0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0KDQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpDQpvcHRzX2NodW5rJHNldCh0aWR5Lm9wdHM9bGlzdCh3aWR0aC5jdXRvZmY9MTAwKSx0aWR5PVRSVUUsIHdhcm5pbmcgPSBGQUxTRSwgbWVzc2FnZSA9IEZBTFNFLGNvbW1lbnQgPSAiIz4iLCBjYWNoZT1UUlVFLCBjbGFzcy5zb3VyY2U9YygidGVzdCIpLCBjbGFzcy5vdXRwdXQ9YygidGVzdDIiKSkNCm9wdGlvbnMod2lkdGggPSAxMDApDQpyZ2w6OnNldHVwS25pdHIoKQ0KDQoNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCg0KYGBgDQoNCmBgYHtyIGtsaXBweTYsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KYGBge3J9DQpsaWJyYXJ5KCJmb3JtYXRSIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ2dwbG90MiIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoInBvTENBIikNCmxpYnJhcnkoInJlcHJleCIpDQpsaWJyYXJ5KCJ0aWR5ciIpDQpsaWJyYXJ5KCJrbGlwcHkiKQ0KbGlicmFyeSgiZHBseXIiKQ0KbGlicmFyeSgiaGF2ZW4iKQ0KbGlicmFyeSgicHN5Y2giKQ0KbGlicmFyeSgiR1BBcm90YXRpb24iKQ0KbGlicmFyeSgiSG1pc2MiKQ0KYGBgDQoNCmBgYHtyIGtsaXBweTcsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQpORUEyMDIyX2NsdXN0MSA8LXJlYWQuc3BzcygiZGF0YS9wcm9jZXNzZWQvTkVBMjAyMl9jbHVzdDEuc2F2IiwgdXNlLnZhbHVlLmxhYmVscyA9IFQsIHRvLmRhdGEuZnJhbWUgPSBUKQ0KYXR0YWNoKE5FQTIwMjJfY2x1c3QxKQ0KYGBgDQoNCmBgYHtyfQ0KZGF0YSA8LSBkYXRhLmZyYW1lKHBlc3Rlbl9jb2wsIHBlc3Rlbl9sZWlkLCBpbnRpbWlkYXRpb25fY29sLCBpbnRpbWlkYXRpb25fbGVpZCwgZ2V3ZWxkX2NvbCwgZ2V3ZWxkX2xlaWQsIHNla3NfY29sLCBzZWtzX2xlaWQsIGNvbmZsaWN0X2NvbCwgY29uZmxpY3RfbGVpZCwgY29uZmxpY3Rfd2Vyaywgc3RldW5sZWlkX3dlbHppam4sIHN0ZXVubGVpZF9hYW5kYWNodCwgc3RldW5jb2xfYmVsYW5nLCBzdGV1bmNvbF92cmllbmRlbGlqaywgcHN5dmVpbF9sYXN0LCBwc3l2ZWlsX2h1bHAsIHBzeXZlaWxfZm91dCkNCmBgYA0KDQpgYGB7cn0NCmNvcl9tYXRyaXggPC0gY29yKGRhdGEsIHVzZSA9ICJwYWlyd2lzZS5jb21wbGV0ZS5vYnMiKQ0KcHJpbnQoY29yX21hdHJpeCkNCmBgYA0KDQpgYGB7cn0NCmthYmxlKHJvdW5kKGNvcl9tYXRyaXgsIDMpKQ0KYGBgDQpgYGB7cn0NCiMgQ29tcHV0ZSBjb3JyZWxhdGlvbiBtYXRyaXgNCmNvcl9yZXN1bHRzIDwtIHJjb3JyKGFzLm1hdHJpeChkYXRhKSkNCg0KIyBFeHRyYWN0IGNvcnJlbGF0aW9uIGNvZWZmaWNpZW50cyBhbmQgcC12YWx1ZXMNCmNvcl9tYXRyaXggPC0gcm91bmQoY29yX3Jlc3VsdHMkciwgMykNCnBfbWF0cml4IDwtIGNvcl9yZXN1bHRzJFANCg0KIyBGdW5jdGlvbiB0byBmb3JtYXQgY29ycmVsYXRpb24gbWF0cml4IHdpdGggc2lnbmlmaWNhbmNlIHN0YXJzDQpjb3Jfd2l0aF9zdGFycyA8LSBmdW5jdGlvbihjb3JfbWF0cml4LCBwX21hdHJpeCkgew0KICBzdGFycyA8LSBpZmVsc2UoaXMubmEocF9tYXRyaXgpLCAiIiwgICMgUmVtb3ZlIE5BIHZhbHVlcyBmcm9tIGRpYWdvbmFsDQogICAgICAgICAgIGlmZWxzZShwX21hdHJpeCA8IDAuMDAxLCAiKioqIiwNCiAgICAgICAgICAgaWZlbHNlKHBfbWF0cml4IDwgMC4wMSwgIioqIiwNCiAgICAgICAgICAgaWZlbHNlKHBfbWF0cml4IDwgMC4wNSwgIioiLCAiIikpKSkNCiAgDQogICMgQ29udmVydCB0byBjaGFyYWN0ZXIgbWF0cml4IGFuZCBhcHBlbmQgc2lnbmlmaWNhbmNlIHN0YXJzDQogIGNvcl9tYXRyaXhfZm9ybWF0dGVkIDwtIG1hdHJpeCgNCiAgICBwYXN0ZTAoZm9ybWF0KGNvcl9tYXRyaXgsIG5zbWFsbCA9IDMpLCBzdGFycyksDQogICAgbnJvdyA9IG5yb3coY29yX21hdHJpeCksIA0KICAgIGRpbW5hbWVzID0gZGltbmFtZXMoY29yX21hdHJpeCkNCiAgKQ0KICANCiAgcmV0dXJuKGNvcl9tYXRyaXhfZm9ybWF0dGVkKQ0KfQ0KDQojIEFwcGx5IHRoZSBmdW5jdGlvbg0KY29yX21hdHJpeF9zdGFycyA8LSBjb3Jfd2l0aF9zdGFycyhjb3JfbWF0cml4LCBwX21hdHJpeCkNCg0KIyBQcmludCB1c2luZyBrYWJsZQ0Ka2FibGUoY29yX21hdHJpeF9zdGFycykNCg0KYGBgDQoNCmBgYHtyfQ0KZmEucGFyYWxsZWwoZGF0YSwgZmEgPSAiZmEiLCBuLml0ZXIgPSAxMDAsIHNob3cubGVnZW5kID0gRkFMU0UpDQpgYGANCg0KYGBge3J9DQpmYS5wYXJhbGxlbChkYXRhLCBmYSA9ICJib3RoIiwgbi5pdGVyID0gMTAwLCBzaG93LmxlZ2VuZCA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyfQ0KZWZhIDwtIGZhKGRhdGEsIG5mYWN0b3JzID0gNywgcm90YXRlID0gIm9ibGltaW4iLCBmbSA9ICJtbCIpDQpwcmludChlZmEsIGRpZ2l0cyA9IDIpDQpgYGA=</div>
 
 
 </div>

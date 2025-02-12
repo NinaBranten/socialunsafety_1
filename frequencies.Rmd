@@ -43,13 +43,14 @@ NEA2022_clust1$afl_soi3[NEA2022_clust1$afl_soi3 == "onbekend"] <- NA
 
 clust1_clean <- NEA2022_clust1 %>%
   filter(!is.na(afl_soi3))
+
+#write_sav(clust1_clean, "data/processed/clust1_clean.sav")
 ```
 
 <br><br> **Pesten door collega's**
 
 ```{r}
 summarytools::freq(clust1_clean$afl_pe_1)
-
 ```
 <br><br> **Pesten door leidinggevenden**
 

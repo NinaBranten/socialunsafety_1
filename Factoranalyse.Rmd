@@ -41,6 +41,7 @@ library("dplyr")
 library("haven")
 library("psych")
 library("GPArotation")
+library("Hmisc")
 ```
 
 ```{r klippy7, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
@@ -60,7 +61,38 @@ print(cor_matrix)
 ```{r}
 kable(round(cor_matrix, 3))
 ```
+```{r}
+# Compute correlation matrix
+cor_results <- rcorr(as.matrix(data))
 
+# Extract correlation coefficients and p-values
+cor_matrix <- round(cor_results$r, 3)
+p_matrix <- cor_results$P
+
+# Function to format correlation matrix with significance stars
+cor_with_stars <- function(cor_matrix, p_matrix) {
+  stars <- ifelse(is.na(p_matrix), "",  # Remove NA values from diagonal
+           ifelse(p_matrix < 0.001, "***",
+           ifelse(p_matrix < 0.01, "**",
+           ifelse(p_matrix < 0.05, "*", ""))))
+  
+  # Convert to character matrix and append significance stars
+  cor_matrix_formatted <- matrix(
+    paste0(format(cor_matrix, nsmall = 3), stars),
+    nrow = nrow(cor_matrix), 
+    dimnames = dimnames(cor_matrix)
+  )
+  
+  return(cor_matrix_formatted)
+}
+
+# Apply the function
+cor_matrix_stars <- cor_with_stars(cor_matrix, p_matrix)
+
+# Print using kable
+kable(cor_matrix_stars)
+
+```
 
 ```{r}
 fa.parallel(data, fa = "fa", n.iter = 100, show.legend = FALSE)
