@@ -333,75 +333,75 @@ items <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, gew
 
 
 ```{r}
-model1 <- poLCA(items, data, nclass = 1, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model1_ <- poLCA(items, data, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model2 <- poLCA(items, data, nclass = 2, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model2_ <- poLCA(items, data, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model3 <- poLCA(items, data, nclass = 3, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model3_ <- poLCA(items, data, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model4 <- poLCA(items, data, nclass = 4, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model4_ <- poLCA(items, data, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model5 <- poLCA(items, data, nclass = 5, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model5_ <- poLCA(items, data, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model6 <- poLCA(items, data, nclass = 6, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model6_ <- poLCA(items, data, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model7 <- poLCA(items, data, nclass = 7, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model7_ <- poLCA(items, data, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model8 <- poLCA(items, data, nclass = 8, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model8_ <- poLCA(items, data, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model9 <- poLCA(items, data, nclass = 9, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model9_ <- poLCA(items, data, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model10 <- poLCA(items, data, nclass = 10, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model10_ <- poLCA(items, data, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model11 <- poLCA(items, data, nclass = 11, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model11_ <- poLCA(items, data, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model12 <- poLCA(items, data, nclass = 12, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model12_ <- poLCA(items, data, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model13 <- poLCA(items, data, nclass = 13, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model13_ <- poLCA(items, data, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model14 <- poLCA(items, data, nclass = 14, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model14_ <- poLCA(items, data, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model15 <- poLCA(items, data, nclass = 15, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model15_ <- poLCA(items, data, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model16 <- poLCA(items, data, nclass = 16, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model16_ <- poLCA(items, data, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model17 <- poLCA(items, data, nclass = 17, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model17_ <- poLCA(items, data, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r}
-model18 <- poLCA(items, data, nclass = 18, maxiter = 1000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model18_ <- poLCA(items, data, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 
