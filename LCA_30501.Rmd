@@ -138,7 +138,6 @@ NEA2022 <- NEA2022 %>%
   mutate(geweld_leid = recode(geweld_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
 table(NEA2022$geweld_leid)
-
 ```
 
 ```{r}
@@ -293,13 +292,11 @@ NEA2022$psyveil_fout <- as.numeric(NEA2022$psyvei_2)
 
 table(NEA2022$psyveil_fout)
 ```
+
 ```{r}
 NEA2022_clust1 <- NEA2022 %>%
   filter(se_clust == 1)
-
 attach(NEA2022_clust1)
-
-#write_sav(NEA2022_clust1, "data/processed/NEA2022_clust1.sav")
 
 ```
 
