@@ -15,7 +15,7 @@ navbar:
     - text: "intersectionality"
       href: intersectionality.html
     - text: "Recoding variables"
-      href: Recoding-variables.html
+      href: Recoding_variables.html
     - text: "LCA 30501"
       href: LCA_30501.html
     - text: "LCA 29923"
