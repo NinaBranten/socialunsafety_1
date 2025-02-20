@@ -327,7 +327,7 @@ items <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, gew
 <br><br> Psyveil_hulp: **op mijn werk is het gemakkelijk om hulp te vragen.** (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
 <br><br> Psyveil_fout: **op mijn werk is het niet erg om een fout te maken.** (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
 
-
+ 
 
 ```{r}
 model1_ <- poLCA(items, data, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
