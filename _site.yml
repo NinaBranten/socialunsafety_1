@@ -10,8 +10,6 @@ navbar:
   left:
     - icon: fa-home
       href: index.html
-    - text: "first try"
-      href: mergingdata.html
     - text: "frequencies"
       href: frequencies.html
     - text: "intersectionality"
