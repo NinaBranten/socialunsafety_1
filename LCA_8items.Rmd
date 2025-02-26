@@ -1,0 +1,138 @@
+---
+title: "LCA undesirable behaviors"
+output: html_document
+date: "2025-02-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE, echo = TRUE)
+```
+
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"))
+options(width = 100)
+rgl::setupKnitr()
+
+
+
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+
+
+```{r klippy5, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+
+```{r}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+library("dplyr")
+library("haven")
+```
+
+
+```{r klippy6, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022_clust1 <-read.spss("data/processed/NEA2022_clust1.sav", use.value.labels = T, to.data.frame = T)
+attach(NEA2022_clust1)
+
+#NEA20142022 <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
+```
+
+```{r}
+set.seed(123)
+```
+
+```{r, cache=TRUE}
+attach(NEA2022_clust1)
+data8 <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid)
+
+items8 <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid) ~ 1
+```
+
+```{r, cache=TRUE}
+model1. <- poLCA(items8, data8, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model2. <- poLCA(items8, data8, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model3. <- poLCA(items8, data8, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model4. <- poLCA(items8, data8, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model5. <- poLCA(items8, data8, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model6. <- poLCA(items8, data8, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model7. <- poLCA(items8, data8, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model8. <- poLCA(items8, data8, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model9. <- poLCA(items8, data8, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r,cache=TRUE}
+model10. <- poLCA(items8, data8, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model11. <- poLCA(items8, data8, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model12. <- poLCA(items8, data8, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model13. <- poLCA(items8, data8, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model14. <- poLCA(items8, data8, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model15. <- poLCA(items8, data8, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model16. <- poLCA(items8, data8, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model17. <- poLCA(items8, data8, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model18. <- poLCA(items8, data8, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```

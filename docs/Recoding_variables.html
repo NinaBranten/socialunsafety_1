@@ -358,6 +358,15 @@ div.tocify {
   <a href="LCA_29923.html">LCA 29923</a>
 </li>
 <li>
+  <a href="LCA_8items.html">LCA 8 items</a>
+</li>
+<li>
+  <a href="LCA_schaal.html">LCA schaal</a>
+</li>
+<li>
+  <a href="LCA_schaalsteun.html">LCA schaal steun</a>
+</li>
+<li>
   <a href="Factoranalyse.html">Factoranalyse</a>
 </li>
       </ul>
@@ -696,7 +705,7 @@ table(NEA2022$psyveil_last)</code></pre>
 <pre class="test2"><code>#&gt; 
 #&gt;     1     2     3     4     5 
 #&gt;  5441 15495  5042  2457  1272</code></pre>
-<pre class="r test"><code># Psychologische veiligheid: op mijn werk ik het gemakkelijk om hulp te vragen
+<pre class="r test"><code># Psychologische veiligheid: op mijn werk is het gemakkelijk om hulp te vragen
 table(NEA2022$psyvei_1)</code></pre>
 <pre class="test2"><code>#&gt; 
 #&gt;          Helemaal eens                   Eens Niet eens, niet oneens              Niet eens 
@@ -723,9 +732,208 @@ table(NEA2022$psyveil_fout)</code></pre>
 #&gt;     1     2     3     4     5 
 #&gt;  4000 14260  7104  3208  1519</code></pre>
 <pre class="r test"><code>NEA2022_clust1 &lt;- NEA2022 %&gt;%
-    filter(se_clust == 1)</code></pre>
+    filter(se_clust == 1)
+attach(NEA2022_clust1)</code></pre>
+<pre class="r test"><code>summarytools::freq(pesten_col)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   29429     97.57          97.57     96.49          96.49
+#&gt;           2     552      1.83          99.40      1.81          98.30
+#&gt;           3     142      0.47          99.87      0.47          98.76
+#&gt;           4      39      0.13         100.00      0.13          98.89
+#&gt;        &lt;NA&gt;     339                               1.11         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(pesten_leid)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   29810     98.79          98.79     97.73          97.73
+#&gt;           2     212      0.70          99.49      0.70          98.43
+#&gt;           3     112      0.37          99.86      0.37          98.80
+#&gt;           4      41      0.14         100.00      0.13          98.93
+#&gt;        &lt;NA&gt;     326                               1.07         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(intimidation_col)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   29854    98.671         98.671    97.879         97.879
+#&gt;           2     339     1.120         99.792     1.111         98.990
+#&gt;           3      37     0.122         99.914     0.121         99.112
+#&gt;           4      26     0.086        100.000     0.085         99.197
+#&gt;        &lt;NA&gt;     245                              0.803        100.000
+#&gt;       Total   30501   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r test"><code>summarytools::freq(intimidation_leid)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   29780     98.44          98.44     97.64          97.64
+#&gt;           2     336      1.11          99.55      1.10          98.74
+#&gt;           3     100      0.33          99.88      0.33          99.07
+#&gt;           4      37      0.12         100.00      0.12          99.19
+#&gt;        &lt;NA&gt;     248                               0.81         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(geweld_col)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   30284    99.885         99.885    99.289         99.289
+#&gt;           2      25     0.082         99.967     0.082         99.371
+#&gt;           3       5     0.016         99.984     0.016         99.387
+#&gt;           4       5     0.016        100.000     0.016         99.403
+#&gt;        &lt;NA&gt;     182                              0.597        100.000
+#&gt;       Total   30501   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r test"><code>summarytools::freq(geweld_leid)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   30311    99.954         99.954    99.377         99.377
+#&gt;           2       5     0.016         99.970     0.016         99.393
+#&gt;           3       5     0.016         99.987     0.016         99.410
+#&gt;           4       4     0.013        100.000     0.013         99.423
+#&gt;        &lt;NA&gt;     176                              0.577        100.000
+#&gt;       Total   30501   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r test"><code>summarytools::freq(seks_col)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   29989    99.059         99.059    98.321         98.321
+#&gt;           2     233     0.770         99.828     0.764         99.085
+#&gt;           3      37     0.122         99.950     0.121         99.207
+#&gt;           4      15     0.050        100.000     0.049         99.256
+#&gt;        &lt;NA&gt;     227                              0.744        100.000
+#&gt;       Total   30501   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r test"><code>summarytools::freq(seks_leid)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   30194    99.706         99.706    98.993         98.993
+#&gt;           2      67     0.221         99.927     0.220         99.213
+#&gt;           3      10     0.033         99.960     0.033         99.246
+#&gt;           4      12     0.040        100.000     0.039         99.285
+#&gt;        &lt;NA&gt;     218                              0.715        100.000
+#&gt;       Total   30501   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r test"><code>summarytools::freq(conflict_col)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   24690     81.13          81.13     80.95          80.95
+#&gt;           2    5032     16.54          97.67     16.50          97.45
+#&gt;           3     710      2.33         100.00      2.33          99.77
+#&gt;        &lt;NA&gt;      69                               0.23         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(conflict_leid)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   26845     88.28          88.28     88.01          88.01
+#&gt;           2    2952      9.71          97.99      9.68          97.69
+#&gt;           3     612      2.01         100.00      2.01          99.70
+#&gt;        &lt;NA&gt;      92                               0.30         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(conflict_werk)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   28262     93.04          93.04     92.66          92.66
+#&gt;           2    1659      5.46          98.50      5.44          98.10
+#&gt;           3     455      1.50         100.00      1.49          99.59
+#&gt;        &lt;NA&gt;     125                               0.41         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(steunleid_welzijn)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1    9031     30.72          30.72     29.61          29.61
+#&gt;           2   15856     53.93          84.64     51.99          81.59
+#&gt;           3    3723     12.66          97.31     12.21          93.80
+#&gt;           4     792      2.69         100.00      2.60          96.40
+#&gt;        &lt;NA&gt;    1099                               3.60         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(steunleid_aandacht)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1    8598     29.30          29.30     28.19          28.19
+#&gt;           2   16605     56.59          85.89     54.44          82.63
+#&gt;           3    3465     11.81          97.70     11.36          93.99
+#&gt;           4     674      2.30         100.00      2.21          96.20
+#&gt;        &lt;NA&gt;    1159                               3.80         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(steuncol_belang)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   10537     35.74          35.74     34.55          34.55
+#&gt;           2   16813     57.02          92.76     55.12          89.67
+#&gt;           3    1805      6.12          98.88      5.92          95.59
+#&gt;           4     330      1.12         100.00      1.08          96.67
+#&gt;        &lt;NA&gt;    1016                               3.33         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(steuncol_vriendelijk)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1   14367     48.11          48.11     47.10          47.10
+#&gt;           2   14927     49.99          98.10     48.94          96.04
+#&gt;           3     441      1.48          99.58      1.45          97.49
+#&gt;           4     125      0.42         100.00      0.41          97.90
+#&gt;        &lt;NA&gt;     641                               2.10         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(psyveil_last)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1    5441     18.32          18.32     17.84          17.84
+#&gt;           2   15495     52.16          70.47     50.80          68.64
+#&gt;           3    5042     16.97          87.45     16.53          85.17
+#&gt;           4    2457      8.27          95.72      8.06          93.23
+#&gt;           5    1272      4.28         100.00      4.17          97.40
+#&gt;        &lt;NA&gt;     794                               2.60         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(psyveil_hulp)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1    6713     22.29          22.29     22.01          22.01
+#&gt;           2   16990     56.41          78.70     55.70          77.71
+#&gt;           3    4047     13.44          92.13     13.27          90.98
+#&gt;           4    1657      5.50          97.64      5.43          96.41
+#&gt;           5     712      2.36         100.00      2.33          98.75
+#&gt;        &lt;NA&gt;     382                               1.25         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summarytools::freq(psyveil_fout)</code></pre>
+<pre class="test2"><code>#&gt; Frequencies  
+#&gt; 
+#&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+#&gt; ----------- ------- --------- -------------- --------- --------------
+#&gt;           1    4000     13.29          13.29     13.11          13.11
+#&gt;           2   14260     47.39          60.68     46.75          59.87
+#&gt;           3    7104     23.61          84.29     23.29          83.16
+#&gt;           4    3208     10.66          94.95     10.52          93.68
+#&gt;           5    1519      5.05         100.00      4.98          98.66
+#&gt;        &lt;NA&gt;     410                               1.34         100.00
+#&gt;       Total   30501    100.00         100.00    100.00         100.00</code></pre>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlJlY29kaW5nIHZhcmlhYmxlcyINCm91dHB1dDogaHRtbF9kb2N1bWVudA0KZGF0ZTogIjIwMjUtMDItMjAiDQotLS0NCg0KYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9DQprbml0cjo6b3B0c19jaHVuayRzZXQoY2FjaGU9RkFMU0UsIGVjaG8gPSBUUlVFKQ0KYGBgDQoNCg0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCmNvbG9yaXplIDwtIGZ1bmN0aW9uKHgsIGNvbG9yKSB7c3ByaW50ZigiPHNwYW4gc3R5bGU9J2NvbG9yOiAlczsnPiVzPC9zcGFuPiIsIGNvbG9yLCB4KSB9DQpgYGANCg0KDQoNCmBgYHtyIGtsaXBweTUsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KDQpgYGB7cn0NCmxpYnJhcnkoImZvcm1hdFIiKQ0KbGlicmFyeSgiZm9yZWlnbiIpDQpsaWJyYXJ5KCJnZ3Bsb3QyIikNCmxpYnJhcnkoImxtZTQiKQ0KbGlicmFyeSgicG9MQ0EiKQ0KbGlicmFyeSgicmVwcmV4IikNCmxpYnJhcnkoInRpZHlyIikNCmxpYnJhcnkoImtsaXBweSIpDQpsaWJyYXJ5KCJkcGx5ciIpDQpsaWJyYXJ5KCJoYXZlbiIpDQpgYGANCg0KYGBge3Iga2xpcHB5NiwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCk5FQTIwMjIgPC1yZWFkLnNwc3MoImRhdGEvcHJvY2Vzc2VkL0RhdGEgMjAyMiBjbGVhbmVkLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCmF0dGFjaChORUEyMDIyKQ0KDQojTkVBMjAxNDIwMjIgPC1yZWFkLnNwc3MoImRhdGEvcmF3L0RhdGEgMjAxNC0yMDIyLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCmBgYA0KDQoNCmBgYHtyfQ0KI3Blc3RlbiBjb2xsZWdhJ3MNCnRhYmxlKE5FQTIwMjIkYWZsX3BlXzEpDQoNCk5FQTIwMjIkcGVzdGVuX2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3BlXzEpDQoNCnRhYmxlKE5FQTIwMjIkcGVzdGVuX2NvbCkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUocGVzdGVuX2NvbCA9IHJlY29kZShwZXN0ZW5fY29sLCBgNGAgPSAxLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0KSkNCg0KdGFibGUoTkVBMjAyMiRwZXN0ZW5fY29sKQ0KDQpgYGANCg0KYGBge3J9DQojcGVzdGVuIGxlaWRpbmdnZXZlbmRlbg0KdGFibGUoTkVBMjAyMiRhZmxfcGVfMikNCg0KTkVBMjAyMiRwZXN0ZW5fbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3BlXzIpDQoNCnRhYmxlKE5FQTIwMjIkcGVzdGVuX2xlaWQpDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHBlc3Rlbl9sZWlkID0gcmVjb2RlKHBlc3Rlbl9sZWlkLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0KdGFibGUoTkVBMjAyMiRwZXN0ZW5fbGVpZCkNCmBgYA0KDQpgYGB7cn0NCiNpbnRpbWlkYXRpZSBjb2xsZWdhJ3MNCnRhYmxlKE5FQTIwMjIkYWZsX2JlXzEpDQoNCk5FQTIwMjIkaW50aW1pZGF0aW9uX2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2JlXzEpDQoNCnRhYmxlKE5FQTIwMjIkaW50aW1pZGF0aW9uX2NvbCkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoaW50aW1pZGF0aW9uX2NvbCA9IHJlY29kZShpbnRpbWlkYXRpb25fY29sLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0KdGFibGUoTkVBMjAyMiRpbnRpbWlkYXRpb25fY29sKQ0KDQpgYGANCg0KYGBge3J9DQojaW50aW1pZGF0aWUgbGVpZGluZ2dldmVuZGVuDQp0YWJsZShORUEyMDIyJGFmbF9iZV8yKQ0KDQpORUEyMDIyJGludGltaWRhdGlvbl9sZWlkIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfYmVfMikNCg0KdGFibGUoTkVBMjAyMiRpbnRpbWlkYXRpb25fbGVpZCkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoaW50aW1pZGF0aW9uX2xlaWQgPSByZWNvZGUoaW50aW1pZGF0aW9uX2xlaWQsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQp0YWJsZShORUEyMDIyJGludGltaWRhdGlvbl9sZWlkKQ0KDQpgYGANCg0KYGBge3J9DQojZnlzaWVrIGdld2VsZCBjb2xsZWdhJ3MNCnRhYmxlKE5FQTIwMjIkYWZsX2dlXzMpDQoNCk5FQTIwMjIkZ2V3ZWxkX2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2dlXzMpDQoNCnRhYmxlKE5FQTIwMjIkZ2V3ZWxkX2NvbCkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoZ2V3ZWxkX2NvbCA9IHJlY29kZShnZXdlbGRfY29sLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0KdGFibGUoTkVBMjAyMiRnZXdlbGRfY29sKQ0KDQpgYGANCg0KYGBge3J9DQojZnlzaWVrIGdld2VsZCBsZWlkaW5nZ2V2ZW5kZW4NCnRhYmxlKE5FQTIwMjIkYWZsX2dlXzQpDQoNCk5FQTIwMjIkZ2V3ZWxkX2xlaWQgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9nZV80KQ0KDQp0YWJsZShORUEyMDIyJGdld2VsZF9sZWlkKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShnZXdlbGRfbGVpZCA9IHJlY29kZShnZXdlbGRfbGVpZCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkZ2V3ZWxkX2xlaWQpDQpgYGANCg0KYGBge3J9DQojb25nZXdlbnN0ZSBzZWtzdWVsZSBhYW5kYWNodCBjb2xsZWdhJ3MNCnRhYmxlKE5FQTIwMjIkYWZsX3NlXzEpDQoNCk5FQTIwMjIkc2Vrc19jb2wgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9zZV8xKQ0KDQp0YWJsZShORUEyMDIyJHNla3NfY29sKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzZWtzX2NvbCA9IHJlY29kZShzZWtzX2NvbCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkc2Vrc19jb2wpDQpgYGANCg0KYGBge3J9DQojb25nZXdlbnN0ZSBzZWtzdWVsZSBhYW5kYWNodCBsZWlkaW5nZ2V2ZW5kZW4NCnRhYmxlKE5FQTIwMjIkYWZsX3NlXzIpDQoNCk5FQTIwMjIkc2Vrc19sZWlkIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfc2VfMikNCg0KdGFibGUoTkVBMjAyMiRzZWtzX2xlaWQpDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHNla3NfbGVpZCA9IHJlY29kZShzZWtzX2xlaWQsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQp0YWJsZShORUEyMDIyJHNla3NfbGVpZCkNCg0KYGBgDQoNCmBgYHtyfQ0KI2NvbmZsaWN0IGNvbGxlZ2ENCnRhYmxlKE5FQTIwMjIkY29uZmxpY3QpDQoNCk5FQTIwMjIkY29uZmxpY3RfY29sIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRjb25mbGljdCkNCg0KdGFibGUoTkVBMjAyMiRjb25mbGljdF9jb2wpDQpgYGANCg0KYGBge3J9DQojY29uZmxpY3QgbGVpZGluZ2dldmVuZGUNCnRhYmxlKE5FQTIwMjIkY29uZmxpXzEpDQoNCk5FQTIwMjIkY29uZmxpY3RfbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpXzEpDQoNCnRhYmxlKE5FQTIwMjIkY29uZmxpY3RfbGVpZCkNCmBgYA0KDQpgYGB7cn0NCiNjb25mbGljdCB3ZXJrZ2V2ZXINCnRhYmxlKE5FQTIwMjIkY29uZmxpXzIpDQoNCk5FQTIwMjIkY29uZmxpY3Rfd2VyayA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpXzIpDQoNCnRhYmxlKE5FQTIwMjIkY29uZmxpY3Rfd2VyaykNCmBgYA0KDQpgYGB7cn0NCiNjb25mbGljdCB3ZXJrZ2V2ZXINCnRhYmxlKE5FQTIwMjIkY29uZmxpXzIpDQoNCk5FQTIwMjIkY29uZmxpY3Rfd2VyayA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpXzIpDQoNCnRhYmxlKE5FQTIwMjIkY29uZmxpY3Rfd2VyaykNCmBgYA0KDQpgYGB7cn0NCiNzb2NpYWxlIHN0ZXVuIGxlaWRpbmdnZXZlbmRlOiBtaWpuIGxlaWRpbmdnZXZlbmRlIGhlZWZ0IG9vZyB2b29yIGhldCB3ZWx6aWpuIHZhbiBkZSBtZWRld2Vya2Vycw0KdGFibGUoTkVBMjAyMiRsZWlkaW5nXykNCg0KTkVBMjAyMiRsZWlkaW5nX1tORUEyMDIyJGxlaWRpbmdfID09ICJudnQiXSA8LSBOQQ0KDQpORUEyMDIyJHN0ZXVubGVpZF93ZWx6aWpuIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRsZWlkaW5nXykNCg0KdGFibGUoTkVBMjAyMiRzdGV1bmxlaWRfd2VsemlqbikNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5sZWlkX3dlbHppam4gPSByZWNvZGUoc3RldW5sZWlkX3dlbHppam4sIGAxYCA9IDQsIGAyYCA9IDMsIGAzYCA9IDIsIGA0YCA9IDEpKQ0KDQp0YWJsZShORUEyMDIyJHN0ZXVubGVpZF93ZWx6aWpuKQ0KYGBgDQoNCmBgYHtyfQ0KI3NvY2lhbGUgc3RldW4gbGVpZGluZ2dldmVuZGU6IG1pam4gbGVpZGluZ2dldmVuZGUgYmVzdGVlZHQgYWFuZGFjaHQgYWFuIHdhdCBpayB6ZWcNCnRhYmxlKE5FQTIwMjIkbGVpZGluXzEpDQoNCk5FQTIwMjIkbGVpZGluXzFbTkVBMjAyMiRsZWlkaW5fMSA9PSAibnZ0Il0gPC0gTkENCg0KTkVBMjAyMiRzdGV1bmxlaWRfYWFuZGFjaHQgPC0gYXMubnVtZXJpYyhORUEyMDIyJGxlaWRpbl8xKQ0KDQp0YWJsZShORUEyMDIyJHN0ZXVubGVpZF9hYW5kYWNodCkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5sZWlkX2FhbmRhY2h0ID0gcmVjb2RlKHN0ZXVubGVpZF9hYW5kYWNodCwgYDFgID0gNCwgYDJgID0gMywgYDNgID0gMiwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkc3RldW5sZWlkX2FhbmRhY2h0KQ0KYGBgDQoNCmBgYHtyfQ0KI3NvY2lhbGUgc3RldW4gY29sbGVnYSdzOiBtaWpuIGNvbGxlZ2EncyBoZWJiZW4gcGVyc29vbmxpamtlIGJlbGFuZ3N0ZWxsaW5nIHZvb3IgbWUNCnRhYmxlKE5FQTIwMjIkY29sbGVnYV8pDQoNCk5FQTIwMjIkY29sbGVnYV9bTkVBMjAyMiRjb2xsZWdhXyA9PSAibnZ0Il0gPC0gTkENCg0KTkVBMjAyMiRzdGV1bmNvbF9iZWxhbmcgPC0gYXMubnVtZXJpYyhORUEyMDIyJGNvbGxlZ2FfKQ0KDQp0YWJsZShORUEyMDIyJHN0ZXVuY29sX2JlbGFuZykNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5jb2xfYmVsYW5nID0gcmVjb2RlKHN0ZXVuY29sX2JlbGFuZywgYDFgID0gNCwgYDJgID0gMywgYDNgID0gMiwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkc3RldW5jb2xfYmVsYW5nKQ0KYGBgDQoNCmBgYHtyfQ0KI3NvY2lhbGUgc3RldW4gY29sbGVnYSdzOiBtaWpuIGNvbGxlZ2EncyB6aWpuIHZyaWVuZGVsaWprDQp0YWJsZShORUEyMDIyJGNvbGxlZ18xKQ0KDQpORUEyMDIyJGNvbGxlZ18xW05FQTIwMjIkY29sbGVnXzEgPT0gIm52dCJdIDwtIE5BDQoNCk5FQTIwMjIkc3RldW5jb2xfdnJpZW5kZWxpamsgPC0gYXMubnVtZXJpYyhORUEyMDIyJGNvbGxlZ18xKQ0KDQp0YWJsZShORUEyMDIyJHN0ZXVuY29sX3ZyaWVuZGVsaWprKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzdGV1bmNvbF92cmllbmRlbGlqayA9IHJlY29kZShzdGV1bmNvbF92cmllbmRlbGlqaywgYDFgID0gNCwgYDJgID0gMywgYDNgID0gMiwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkc3RldW5jb2xfdnJpZW5kZWxpamspDQpgYGANCg0KYGBge3J9DQojUHN5Y2hvbG9naXNjaGUgdmVpbGlnaGVpZDogb3AgbWlqbiB3ZXJrIGt1biBqZSBsYXN0aWdlIGt3ZXN0aWVzIG5hYXIgdm9yZW4gYnJlbmdlbg0KdGFibGUoTkVBMjAyMiRwc3l2ZWlsXykNCg0KTkVBMjAyMiRwc3l2ZWlsX2xhc3QgPC0gYXMubnVtZXJpYyhORUEyMDIyJHBzeXZlaWxfKQ0KDQp0YWJsZShORUEyMDIyJHBzeXZlaWxfbGFzdCkNCmBgYA0KDQpgYGB7cn0NCiNQc3ljaG9sb2dpc2NoZSB2ZWlsaWdoZWlkOiBvcCBtaWpuIHdlcmsgaWsgaGV0IGdlbWFra2VsaWprIG9tIGh1bHAgdGUgdnJhZ2VuDQp0YWJsZShORUEyMDIyJHBzeXZlaV8xKQ0KDQpORUEyMDIyJHBzeXZlaWxfaHVscCA8LSBhcy5udW1lcmljKE5FQTIwMjIkcHN5dmVpXzEpDQoNCnRhYmxlKE5FQTIwMjIkcHN5dmVpbF9odWxwKQ0KYGBgDQoNCmBgYHtyfQ0KI1BzeWNob2xvZ2lzY2hlIHZlaWxpZ2hlaWQ6IG9wIG1pam4gd2VyayBpcyBoZXQgbmlldCBlcmcgb20gZWVuIGZvdXQgdGUgbWFrZW4NCnRhYmxlKE5FQTIwMjIkcHN5dmVpXzIpDQoNCk5FQTIwMjIkcHN5dmVpbF9mb3V0IDwtIGFzLm51bWVyaWMoTkVBMjAyMiRwc3l2ZWlfMikNCg0KdGFibGUoTkVBMjAyMiRwc3l2ZWlsX2ZvdXQpDQpgYGANCg0KYGBge3J9DQpORUEyMDIyX2NsdXN0MSA8LSBORUEyMDIyICU+JQ0KICBmaWx0ZXIoc2VfY2x1c3QgPT0gMSkNCmBgYA0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlJlY29kaW5nIHZhcmlhYmxlcyINCm91dHB1dDogaHRtbF9kb2N1bWVudA0KZGF0ZTogIjIwMjUtMDItMjAiDQotLS0NCg0KYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9DQprbml0cjo6b3B0c19jaHVuayRzZXQoY2FjaGU9RkFMU0UsIGVjaG8gPSBUUlVFKQ0KYGBgDQoNCg0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCmNvbG9yaXplIDwtIGZ1bmN0aW9uKHgsIGNvbG9yKSB7c3ByaW50ZigiPHNwYW4gc3R5bGU9J2NvbG9yOiAlczsnPiVzPC9zcGFuPiIsIGNvbG9yLCB4KSB9DQpgYGANCg0KDQoNCmBgYHtyIGtsaXBweTUsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KDQpgYGB7cn0NCmxpYnJhcnkoImZvcm1hdFIiKQ0KbGlicmFyeSgiZm9yZWlnbiIpDQpsaWJyYXJ5KCJnZ3Bsb3QyIikNCmxpYnJhcnkoImxtZTQiKQ0KbGlicmFyeSgicG9MQ0EiKQ0KbGlicmFyeSgicmVwcmV4IikNCmxpYnJhcnkoInRpZHlyIikNCmxpYnJhcnkoImtsaXBweSIpDQpsaWJyYXJ5KCJkcGx5ciIpDQpsaWJyYXJ5KCJoYXZlbiIpDQpgYGANCg0KYGBge3Iga2xpcHB5NiwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCk5FQTIwMjIgPC1yZWFkLnNwc3MoImRhdGEvcHJvY2Vzc2VkL0RhdGEgMjAyMiBjbGVhbmVkLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCmF0dGFjaChORUEyMDIyKQ0KDQojTkVBMjAxNDIwMjIgPC1yZWFkLnNwc3MoImRhdGEvcmF3L0RhdGEgMjAxNC0yMDIyLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCmBgYA0KDQoNCmBgYHtyfQ0KI3Blc3RlbiBjb2xsZWdhJ3MNCnRhYmxlKE5FQTIwMjIkYWZsX3BlXzEpDQoNCk5FQTIwMjIkcGVzdGVuX2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3BlXzEpDQoNCnRhYmxlKE5FQTIwMjIkcGVzdGVuX2NvbCkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUocGVzdGVuX2NvbCA9IHJlY29kZShwZXN0ZW5fY29sLCBgNGAgPSAxLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0KSkNCg0KdGFibGUoTkVBMjAyMiRwZXN0ZW5fY29sKQ0KDQpgYGANCg0KYGBge3J9DQojcGVzdGVuIGxlaWRpbmdnZXZlbmRlbg0KdGFibGUoTkVBMjAyMiRhZmxfcGVfMikNCg0KTkVBMjAyMiRwZXN0ZW5fbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3BlXzIpDQoNCnRhYmxlKE5FQTIwMjIkcGVzdGVuX2xlaWQpDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHBlc3Rlbl9sZWlkID0gcmVjb2RlKHBlc3Rlbl9sZWlkLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0KdGFibGUoTkVBMjAyMiRwZXN0ZW5fbGVpZCkNCmBgYA0KDQpgYGB7cn0NCiNpbnRpbWlkYXRpZSBjb2xsZWdhJ3MNCnRhYmxlKE5FQTIwMjIkYWZsX2JlXzEpDQoNCk5FQTIwMjIkaW50aW1pZGF0aW9uX2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2JlXzEpDQoNCnRhYmxlKE5FQTIwMjIkaW50aW1pZGF0aW9uX2NvbCkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoaW50aW1pZGF0aW9uX2NvbCA9IHJlY29kZShpbnRpbWlkYXRpb25fY29sLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0KdGFibGUoTkVBMjAyMiRpbnRpbWlkYXRpb25fY29sKQ0KDQpgYGANCg0KYGBge3J9DQojaW50aW1pZGF0aWUgbGVpZGluZ2dldmVuZGVuDQp0YWJsZShORUEyMDIyJGFmbF9iZV8yKQ0KDQpORUEyMDIyJGludGltaWRhdGlvbl9sZWlkIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfYmVfMikNCg0KdGFibGUoTkVBMjAyMiRpbnRpbWlkYXRpb25fbGVpZCkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoaW50aW1pZGF0aW9uX2xlaWQgPSByZWNvZGUoaW50aW1pZGF0aW9uX2xlaWQsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQp0YWJsZShORUEyMDIyJGludGltaWRhdGlvbl9sZWlkKQ0KDQpgYGANCg0KYGBge3J9DQojZnlzaWVrIGdld2VsZCBjb2xsZWdhJ3MNCnRhYmxlKE5FQTIwMjIkYWZsX2dlXzMpDQoNCk5FQTIwMjIkZ2V3ZWxkX2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2dlXzMpDQoNCnRhYmxlKE5FQTIwMjIkZ2V3ZWxkX2NvbCkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoZ2V3ZWxkX2NvbCA9IHJlY29kZShnZXdlbGRfY29sLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0KdGFibGUoTkVBMjAyMiRnZXdlbGRfY29sKQ0KDQpgYGANCg0KYGBge3J9DQojZnlzaWVrIGdld2VsZCBsZWlkaW5nZ2V2ZW5kZW4NCnRhYmxlKE5FQTIwMjIkYWZsX2dlXzQpDQoNCk5FQTIwMjIkZ2V3ZWxkX2xlaWQgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9nZV80KQ0KDQp0YWJsZShORUEyMDIyJGdld2VsZF9sZWlkKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShnZXdlbGRfbGVpZCA9IHJlY29kZShnZXdlbGRfbGVpZCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkZ2V3ZWxkX2xlaWQpDQpgYGANCg0KYGBge3J9DQojb25nZXdlbnN0ZSBzZWtzdWVsZSBhYW5kYWNodCBjb2xsZWdhJ3MNCnRhYmxlKE5FQTIwMjIkYWZsX3NlXzEpDQoNCk5FQTIwMjIkc2Vrc19jb2wgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9zZV8xKQ0KDQp0YWJsZShORUEyMDIyJHNla3NfY29sKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzZWtzX2NvbCA9IHJlY29kZShzZWtzX2NvbCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkc2Vrc19jb2wpDQpgYGANCg0KYGBge3J9DQojb25nZXdlbnN0ZSBzZWtzdWVsZSBhYW5kYWNodCBsZWlkaW5nZ2V2ZW5kZW4NCnRhYmxlKE5FQTIwMjIkYWZsX3NlXzIpDQoNCk5FQTIwMjIkc2Vrc19sZWlkIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfc2VfMikNCg0KdGFibGUoTkVBMjAyMiRzZWtzX2xlaWQpDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHNla3NfbGVpZCA9IHJlY29kZShzZWtzX2xlaWQsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQp0YWJsZShORUEyMDIyJHNla3NfbGVpZCkNCg0KYGBgDQoNCmBgYHtyfQ0KI2NvbmZsaWN0IGNvbGxlZ2ENCnRhYmxlKE5FQTIwMjIkY29uZmxpY3QpDQoNCk5FQTIwMjIkY29uZmxpY3RfY29sIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRjb25mbGljdCkNCg0KdGFibGUoTkVBMjAyMiRjb25mbGljdF9jb2wpDQpgYGANCg0KYGBge3J9DQojY29uZmxpY3QgbGVpZGluZ2dldmVuZGUNCnRhYmxlKE5FQTIwMjIkY29uZmxpXzEpDQoNCk5FQTIwMjIkY29uZmxpY3RfbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpXzEpDQoNCnRhYmxlKE5FQTIwMjIkY29uZmxpY3RfbGVpZCkNCmBgYA0KDQpgYGB7cn0NCiNjb25mbGljdCB3ZXJrZ2V2ZXINCnRhYmxlKE5FQTIwMjIkY29uZmxpXzIpDQoNCk5FQTIwMjIkY29uZmxpY3Rfd2VyayA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpXzIpDQoNCnRhYmxlKE5FQTIwMjIkY29uZmxpY3Rfd2VyaykNCmBgYA0KDQpgYGB7cn0NCiNjb25mbGljdCB3ZXJrZ2V2ZXINCnRhYmxlKE5FQTIwMjIkY29uZmxpXzIpDQoNCk5FQTIwMjIkY29uZmxpY3Rfd2VyayA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpXzIpDQoNCnRhYmxlKE5FQTIwMjIkY29uZmxpY3Rfd2VyaykNCmBgYA0KDQpgYGB7cn0NCiNzb2NpYWxlIHN0ZXVuIGxlaWRpbmdnZXZlbmRlOiBtaWpuIGxlaWRpbmdnZXZlbmRlIGhlZWZ0IG9vZyB2b29yIGhldCB3ZWx6aWpuIHZhbiBkZSBtZWRld2Vya2Vycw0KdGFibGUoTkVBMjAyMiRsZWlkaW5nXykNCg0KTkVBMjAyMiRsZWlkaW5nX1tORUEyMDIyJGxlaWRpbmdfID09ICJudnQiXSA8LSBOQQ0KDQpORUEyMDIyJHN0ZXVubGVpZF93ZWx6aWpuIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRsZWlkaW5nXykNCg0KdGFibGUoTkVBMjAyMiRzdGV1bmxlaWRfd2VsemlqbikNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5sZWlkX3dlbHppam4gPSByZWNvZGUoc3RldW5sZWlkX3dlbHppam4sIGAxYCA9IDQsIGAyYCA9IDMsIGAzYCA9IDIsIGA0YCA9IDEpKQ0KDQp0YWJsZShORUEyMDIyJHN0ZXVubGVpZF93ZWx6aWpuKQ0KYGBgDQoNCmBgYHtyfQ0KI3NvY2lhbGUgc3RldW4gbGVpZGluZ2dldmVuZGU6IG1pam4gbGVpZGluZ2dldmVuZGUgYmVzdGVlZHQgYWFuZGFjaHQgYWFuIHdhdCBpayB6ZWcNCnRhYmxlKE5FQTIwMjIkbGVpZGluXzEpDQoNCk5FQTIwMjIkbGVpZGluXzFbTkVBMjAyMiRsZWlkaW5fMSA9PSAibnZ0Il0gPC0gTkENCg0KTkVBMjAyMiRzdGV1bmxlaWRfYWFuZGFjaHQgPC0gYXMubnVtZXJpYyhORUEyMDIyJGxlaWRpbl8xKQ0KDQp0YWJsZShORUEyMDIyJHN0ZXVubGVpZF9hYW5kYWNodCkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5sZWlkX2FhbmRhY2h0ID0gcmVjb2RlKHN0ZXVubGVpZF9hYW5kYWNodCwgYDFgID0gNCwgYDJgID0gMywgYDNgID0gMiwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkc3RldW5sZWlkX2FhbmRhY2h0KQ0KYGBgDQoNCmBgYHtyfQ0KI3NvY2lhbGUgc3RldW4gY29sbGVnYSdzOiBtaWpuIGNvbGxlZ2EncyBoZWJiZW4gcGVyc29vbmxpamtlIGJlbGFuZ3N0ZWxsaW5nIHZvb3IgbWUNCnRhYmxlKE5FQTIwMjIkY29sbGVnYV8pDQoNCk5FQTIwMjIkY29sbGVnYV9bTkVBMjAyMiRjb2xsZWdhXyA9PSAibnZ0Il0gPC0gTkENCg0KTkVBMjAyMiRzdGV1bmNvbF9iZWxhbmcgPC0gYXMubnVtZXJpYyhORUEyMDIyJGNvbGxlZ2FfKQ0KDQp0YWJsZShORUEyMDIyJHN0ZXVuY29sX2JlbGFuZykNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5jb2xfYmVsYW5nID0gcmVjb2RlKHN0ZXVuY29sX2JlbGFuZywgYDFgID0gNCwgYDJgID0gMywgYDNgID0gMiwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkc3RldW5jb2xfYmVsYW5nKQ0KYGBgDQoNCmBgYHtyfQ0KI3NvY2lhbGUgc3RldW4gY29sbGVnYSdzOiBtaWpuIGNvbGxlZ2EncyB6aWpuIHZyaWVuZGVsaWprDQp0YWJsZShORUEyMDIyJGNvbGxlZ18xKQ0KDQpORUEyMDIyJGNvbGxlZ18xW05FQTIwMjIkY29sbGVnXzEgPT0gIm52dCJdIDwtIE5BDQoNCk5FQTIwMjIkc3RldW5jb2xfdnJpZW5kZWxpamsgPC0gYXMubnVtZXJpYyhORUEyMDIyJGNvbGxlZ18xKQ0KDQp0YWJsZShORUEyMDIyJHN0ZXVuY29sX3ZyaWVuZGVsaWprKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzdGV1bmNvbF92cmllbmRlbGlqayA9IHJlY29kZShzdGV1bmNvbF92cmllbmRlbGlqaywgYDFgID0gNCwgYDJgID0gMywgYDNgID0gMiwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkc3RldW5jb2xfdnJpZW5kZWxpamspDQpgYGANCg0KYGBge3J9DQojUHN5Y2hvbG9naXNjaGUgdmVpbGlnaGVpZDogb3AgbWlqbiB3ZXJrIGt1biBqZSBsYXN0aWdlIGt3ZXN0aWVzIG5hYXIgdm9yZW4gYnJlbmdlbg0KdGFibGUoTkVBMjAyMiRwc3l2ZWlsXykNCg0KTkVBMjAyMiRwc3l2ZWlsX2xhc3QgPC0gYXMubnVtZXJpYyhORUEyMDIyJHBzeXZlaWxfKQ0KDQp0YWJsZShORUEyMDIyJHBzeXZlaWxfbGFzdCkNCmBgYA0KDQpgYGB7cn0NCiNQc3ljaG9sb2dpc2NoZSB2ZWlsaWdoZWlkOiBvcCBtaWpuIHdlcmsgaXMgaGV0IGdlbWFra2VsaWprIG9tIGh1bHAgdGUgdnJhZ2VuDQp0YWJsZShORUEyMDIyJHBzeXZlaV8xKQ0KDQpORUEyMDIyJHBzeXZlaWxfaHVscCA8LSBhcy5udW1lcmljKE5FQTIwMjIkcHN5dmVpXzEpDQoNCnRhYmxlKE5FQTIwMjIkcHN5dmVpbF9odWxwKQ0KYGBgDQoNCmBgYHtyfQ0KI1BzeWNob2xvZ2lzY2hlIHZlaWxpZ2hlaWQ6IG9wIG1pam4gd2VyayBpcyBoZXQgbmlldCBlcmcgb20gZWVuIGZvdXQgdGUgbWFrZW4NCnRhYmxlKE5FQTIwMjIkcHN5dmVpXzIpDQoNCk5FQTIwMjIkcHN5dmVpbF9mb3V0IDwtIGFzLm51bWVyaWMoTkVBMjAyMiRwc3l2ZWlfMikNCg0KdGFibGUoTkVBMjAyMiRwc3l2ZWlsX2ZvdXQpDQpgYGANCg0KYGBge3J9DQpORUEyMDIyX2NsdXN0MSA8LSBORUEyMDIyICU+JQ0KICBmaWx0ZXIoc2VfY2x1c3QgPT0gMSkNCmF0dGFjaChORUEyMDIyX2NsdXN0MSkNCmBgYA0KDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShwZXN0ZW5fY29sKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKHBlc3Rlbl9sZWlkKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKGludGltaWRhdGlvbl9jb2wpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoaW50aW1pZGF0aW9uX2xlaWQpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoZ2V3ZWxkX2NvbCkNCnN1bW1hcnl0b29sczo6ZnJlcShnZXdlbGRfbGVpZCkNCnN1bW1hcnl0b29sczo6ZnJlcShzZWtzX2NvbCkNCnN1bW1hcnl0b29sczo6ZnJlcShzZWtzX2xlaWQpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoY29uZmxpY3RfY29sKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKGNvbmZsaWN0X2xlaWQpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoY29uZmxpY3Rfd2VyaykNCnN1bW1hcnl0b29sczo6ZnJlcShzdGV1bmxlaWRfd2VsemlqbikNCnN1bW1hcnl0b29sczo6ZnJlcShzdGV1bmxlaWRfYWFuZGFjaHQpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoc3RldW5jb2xfYmVsYW5nKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKHN0ZXVuY29sX3ZyaWVuZGVsaWprKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKHBzeXZlaWxfbGFzdCkNCnN1bW1hcnl0b29sczo6ZnJlcShwc3l2ZWlsX2h1bHApDQpzdW1tYXJ5dG9vbHM6OmZyZXEocHN5dmVpbF9mb3V0KQ0KYGBgDQo=</div>
 
 
 </div>

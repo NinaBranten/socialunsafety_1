@@ -5,7 +5,7 @@ date: "2025-02-04"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(cache=FALSE, echo = TRUE)
+knitr::opts_chunk$set(cache=TRUE, echo = TRUE)
 ```
 
 
@@ -55,6 +55,10 @@ attach(NEA2022_clust1)
 ```
 
 ```{r}
+set.seed(123)
+```
+
+```{r}
 data <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht, steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout)
 
 items <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht, steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout) ~ 1
@@ -82,75 +86,75 @@ items <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, gew
 
 
 
-```{r}
+```{r, cache=TRUE}
 model1_ <- poLCA(items, data, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model2_ <- poLCA(items, data, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model3_ <- poLCA(items, data, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model4_ <- poLCA(items, data, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model5_ <- poLCA(items, data, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model6_ <- poLCA(items, data, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model7_ <- poLCA(items, data, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model8_ <- poLCA(items, data, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model9_ <- poLCA(items, data, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model10_ <- poLCA(items, data, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model11_ <- poLCA(items, data, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model12_ <- poLCA(items, data, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model13_ <- poLCA(items, data, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model14_ <- poLCA(items, data, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model15_ <- poLCA(items, data, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model16_ <- poLCA(items, data, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model17_ <- poLCA(items, data, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r}
+```{r, cache=TRUE}
 model18_ <- poLCA(items, data, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 

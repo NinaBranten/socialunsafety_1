@@ -1,0 +1,180 @@
+---
+title: "Missing values"
+output: html_document
+date: "2025-02-21"
+---
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"))
+options(width = 100)
+rgl::setupKnitr()
+
+
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+```{r klippy1, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+```{r echo=FALSE, warning=FALSE}
+library("foreign")
+library("ggplot2")
+library("summarytools")
+library("dplyr")
+library("naniar")
+library("gmodels")
+```
+
+```{r klippy10, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022_clust1 <-read.spss("data/processed/NEA2022_clust1.sav", use.value.labels = T, to.data.frame = T)
+attach(NEA2022_clust1)
+```
+
+```{r klippy11, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+summary(NEA2022_clust1$afl_soi3) 
+
+education <- tibble(NEA2022_clust1$afl_soi3) 
+naniar::mcar_test(education)
+```
+```{r klippy11, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(educ_missing = recode(afl_soi3,
+                                  "laag opleidingsniveau" = 0,
+                                  "middelbaar opleidingsniveau" = 0,
+                                  "hoog opleidingsniveau" = 0,
+                                  "onbekend" = 1))
+```
+
+```{r klippy11, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+table(NEA2022_clust1$educ_missing)
+```
+```{r klippy11, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+#pesten collega
+lm_model <- lm(pesten_col ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model)
+#pesten leidinggevende
+lm_model2 <- lm(pesten_leid ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model2)
+#intimidatie collega
+lm_model3 <- lm(intimidation_col ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model3)
+#intimidatie leidinggevende
+lm_model4 <- lm(intimidation_leid ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model4)
+#geweld collega
+lm_model5 <- lm(geweld_col ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model5)
+#geweld leidinggevende
+lm_model6 <- lm(geweld_leid ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model6)
+#ongewenste seksuele aandacht collega
+lm_model7 <- lm(seks_col ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model7)
+#ongewenste seksuele aandacht leidinggevende
+lm_model8 <- lm(seks_leid ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model8)
+#conflict collega
+lm_model9 <- lm(conflict_col ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model9)
+#conflict leidinggevende
+lm_model10 <- lm(conflict_leid ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model10)
+#conflict werkgever
+lm_model11 <- lm(conflict_werk ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model11)
+#
+lm_model12 <- lm(steunleid_welzijn ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model12)
+lm_model13 <- lm(steunleid_aandacht ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model13)
+lm_model14 <- lm(steuncol_belang ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model14)
+lm_model15 <- lm(steuncol_vriendelijk ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model15)
+lm_model16 <- lm(psyveil_last ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model16)
+lm_model17 <- lm(psyveil_hulp ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model17)
+lm_model18 <- lm(psyveil_fout ~ educ_missing, data = NEA2022_clust1)
+summary(lm_model18)
+```
+
+
+```{r klippy12, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$pesten_col)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$pesten_leid)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$intimidation_col)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$intimidation_leid)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$geweld_col)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$geweld_leid)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$seks_col)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$seks_leid)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$conflict_col)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$conflict_leid)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$conflict_werk)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$steunleid_welzijn)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$steunleid_aandacht)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$steuncol_belang)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$steuncol_vriendelijk)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$psyveil_last)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$psyveil_hulp)
+print(crosstab)
+
+crosstab <- table(NEA2022_clust1$educ_missing, NEA2022_clust1$psyveil_fout)
+print(crosstab)
+
+```
+
+```{r klippy13, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+dependent <- tibble(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht, steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout) 
+
+naniar::mcar_test(dependent)
+```
+
+
+```{r klippy14, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+gg_miss_upset(NEA2022_clust1[, c("pesten_col", "pesten_leid", "intimidation_col", "intimidation_leid", "geweld_col", "geweld_leid", "seks_col", "seks_leid", "conflict_col", "conflict_leid", "conflict_werk", "steunleid_welzijn", "steunleid_aandacht", "steuncol_belang", "steuncol_vriendelijk", "psyveil_last", "psyveil_hulp", "psyveil_fout")])
+```
+
+

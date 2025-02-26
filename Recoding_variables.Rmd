@@ -277,7 +277,7 @@ table(NEA2022$psyveil_last)
 ```
 
 ```{r}
-#Psychologische veiligheid: op mijn werk ik het gemakkelijk om hulp te vragen
+#Psychologische veiligheid: op mijn werk is het gemakkelijk om hulp te vragen
 table(NEA2022$psyvei_1)
 
 NEA2022$psyveil_hulp <- as.numeric(NEA2022$psyvei_1)
@@ -297,4 +297,26 @@ table(NEA2022$psyveil_fout)
 ```{r}
 NEA2022_clust1 <- NEA2022 %>%
   filter(se_clust == 1)
+attach(NEA2022_clust1)
+```
+
+```{r}
+summarytools::freq(pesten_col)
+summarytools::freq(pesten_leid)
+summarytools::freq(intimidation_col)
+summarytools::freq(intimidation_leid)
+summarytools::freq(geweld_col)
+summarytools::freq(geweld_leid)
+summarytools::freq(seks_col)
+summarytools::freq(seks_leid)
+summarytools::freq(conflict_col)
+summarytools::freq(conflict_leid)
+summarytools::freq(conflict_werk)
+summarytools::freq(steunleid_welzijn)
+summarytools::freq(steunleid_aandacht)
+summarytools::freq(steuncol_belang)
+summarytools::freq(steuncol_vriendelijk)
+summarytools::freq(psyveil_last)
+summarytools::freq(psyveil_hulp)
+summarytools::freq(psyveil_fout)
 ```

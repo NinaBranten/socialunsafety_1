@@ -1,0 +1,187 @@
+---
+title: "LCA_schaalsteun"
+output: html_document
+date: "2025-02-25"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE, echo = TRUE)
+```
+
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"))
+options(width = 100)
+rgl::setupKnitr()
+
+
+
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+
+
+```{r klippy20, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+
+```{r}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+library("dplyr")
+library("haven")
+library("psych")
+```
+
+
+```{r klippy21, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022_clust1 <-read.spss("data/processed/NEA2022_clust1.sav", use.value.labels = T, to.data.frame = T)
+attach(NEA2022_clust1)
+
+#NEA20142022 <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
+```
+
+
+```{r klippy22, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+attach(NEA2022_clust1)
+summarytools::freq(NEA2022_clust1$steunleid_aandacht)
+summarytools::freq(NEA2022_clust1$steunleid_welzijn)
+NEA2022_clust1$steunleid_scale <- rowMeans(NEA2022_clust1[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
+summarytools::freq(NEA2022_clust1$steunleid_scale)
+summarytools::freq(NEA2022_clust1$afl_socs)
+
+NEA2022_clust1$steunleid_R <- as.numeric(factor(NEA2022_clust1$steunleid_scale))
+summarytools::freq(NEA2022_clust1$steunleid_R)
+NEA2022_clust1$steunleid_R[NEA2022_clust1$steunleid_R == "8"] <- NA
+summarytools::freq(NEA2022_clust1$steunleid_R)
+
+summarytools::freq(NEA2022_clust1$steuncol_belang)
+summarytools::freq(NEA2022_clust1$steuncol_vriendelijk)
+NEA2022_clust1$steuncol_scale <- rowMeans(NEA2022_clust1[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
+summarytools::freq(NEA2022_clust1$steuncol_scale)
+summarytools::freq(NEA2022_clust1$afl_so_2)
+
+NEA2022_clust1$steuncol_R <- as.numeric(factor(NEA2022_clust1$steuncol_scale))
+summarytools::freq(NEA2022_clust1$steuncol_R)
+NEA2022_clust1$steuncol_R[NEA2022_clust1$steuncol_R == "8"] <- NA
+summarytools::freq(NEA2022_clust1$steuncol_R)
+```
+
+```{r}
+set.seed(123)
+```
+
+```{r, cache=TRUE}
+attach(NEA2022_clust1)
+datass <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_R, steuncol_R, psyveil_hulp, psyveil_fout, psyveil_last)
+
+itemsss <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_R, steuncol_R, psyveil_hulp, psyveil_fout, psyveil_last) ~ 1
+```
+<br><br> Variabelen:
+
+<br><br> Pesten_col: **pesten door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Pesten_leid: **pesten door leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Intimidation_col: **intimidatie door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Intimidation_leid: *intimidatie door leidinggevenden.* (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Geweld_col: **fysiek geweld door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Geweld_leid: **fysiek geweld door leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Seks_col: **ongewenste seksuele aandacht collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Seks_leid: **ongewenste seksuele aandacht leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Conflict_col: **conflict collega's.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Conflict_leid: **conflict leidinggevenden.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Conflict_werk: **conflict werkgever.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Steunleid_R: **mijn leidinggevende besteedt aandacht aan wat ik zeg.** **mijn leidinggevende heeft oog voor het welzijn van de medewerker.** Gemiddelde score van deze twee items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.5, (3) 2, (4) 2.5, (5) 3 (6) 3.5 (7) 4
+<br><br> Steuncol_R: **mijn collega's hebben persoonlijke belangstelling voor me.** **mijn collega's zijn vriendelijk.** Gemiddelde score van deze twee items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.5, (3) 2, (4) 2.5, (5) 3 (6) 3.5 (7) 4
+<br><br> Psyveil_last: **op mijn werk kun je lastige kwesties naar voren brengen.** (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
+<br><br> Psyveil_hulp: **op mijn werk is het gemakkelijk om hulp te vragen.** (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
+<br><br> Psyveil_fout: **op mijn werk is het niet erg om een fout te maken.** (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
+
+
+
+```{r, cache=TRUE}
+model1ss <- poLCA(itemsss, datass, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model2ss <- poLCA(itemsss, datass, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model3ss <- poLCA(itemsss, datass, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model4ss <- poLCA(itemsss, datass, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model5ss <- poLCA(itemsss, datass, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model6ss <- poLCA(itemsss, datass, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model7ss <- poLCA(itemsss, datass, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model8ss <- poLCA(itemsss, datass, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model9ss <- poLCA(itemsss, datass, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model10ss <- poLCA(itemsss, datass, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model11ss <- poLCA(itemsss, datass, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model12ss <- poLCA(itemsss, datass, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model13ss <- poLCA(itemsss, datass, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model14ss <- poLCA(itemsss, datass, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model15ss <- poLCA(itemsss, datass, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model16ss <- poLCA(itemsss, datass, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model17ss <- poLCA(itemsss, datass, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model18ss <- poLCA(itemsss, datass, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+

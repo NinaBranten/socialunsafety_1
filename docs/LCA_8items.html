@@ -1,0 +1,3033 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2025-02-21" />
+
+<title>LCA undesirable behaviors</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="site_libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="site_libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="site_libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="tweaks.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="frequencies.html">frequencies</a>
+</li>
+<li>
+  <a href="intersectionality.html">intersectionality</a>
+</li>
+<li>
+  <a href="Recoding_variables.html">Recoding variables</a>
+</li>
+<li>
+  <a href="LCA_30501.html">LCA 30501</a>
+</li>
+<li>
+  <a href="LCA_29923.html">LCA 29923</a>
+</li>
+<li>
+  <a href="LCA_8items.html">LCA 8 items</a>
+</li>
+<li>
+  <a href="LCA_schaal.html">LCA schaal</a>
+</li>
+<li>
+  <a href="LCA_schaalsteun.html">LCA schaal steun</a>
+</li>
+<li>
+  <a href="Factoranalyse.html">Factoranalyse</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ninabranten/socialunsafety_1">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">LCA undesirable behaviors</h1>
+<h4 class="date">2025-02-21</h4>
+
+</div>
+
+
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
+</script>
+<pre class="r"><code>library(&quot;formatR&quot;)
+library(&quot;foreign&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;lme4&quot;)
+library(&quot;poLCA&quot;)
+library(&quot;reprex&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;klippy&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;haven&quot;)</code></pre>
+<pre class="r"><code>set.seed(123)</code></pre>
+<pre class="r"><code>attach(NEA2022_clust1)</code></pre>
+<pre><code>## The following objects are masked from NEA2022_clust1 (pos = 3):
+## 
+##     aandac_1, aandac_2, aandac_3, aandac_4, aandacht, aanpas_1,
+##     aanpas_2, aanpas_3, aanpas_4, aanpas_5, aanpas_6, aanpas_j,
+##     aanpas_n, aansluit, aanspr, aantplek, aantuurt, afl_aa_1, afl_aant,
+##     afl_acto, afl_algg, afl_an_1, afl_anci, afl_arbd, afl_atec,
+##     afl_au_1, afl_au_2, afl_au_3, afl_auto, afl_b_10, afl_b_11,
+##     afl_bala, afl_be_1, afl_be_2, afl_be_3, afl_be_4, afl_be_5,
+##     afl_be_6, afl_be_7, afl_be_8, afl_be_9, afl_bedr, afl_beel,
+##     afl_bela, afl_bele, afl_bero, afl_bevl, afl_bu_1, afl_burn,
+##     afl_conf, afl_cont, afl_covi, afl_da_1, afl_dagl, afl_disc,
+##     afl_em_1, afl_em_2, afl_emot, afl_empl, afl_f_10, afl_f_11,
+##     afl_f_12, afl_f_13, afl_f_14, afl_f_15, afl_f_16, afl_f_17,
+##     afl_f_18, afl_f_19, afl_fr_1, afl_fr_2, afl_fr_3, afl_fr_4,
+##     afl_fr_5, afl_fr_6, afl_fr_7, afl_fr_8, afl_fr_9, afl_freq,
+##     afl_ge_1, afl_ge_2, afl_ge_3, afl_ge_4, afl_geva, afl_gevs,
+##     afl_gew_, afl_hi_1, afl_high, afl_hitt, afl_in_1, afl_in_2,
+##     afl_inno, afl_inro, afl_kl_1, afl_kl_2, afl_kl_3, afl_klac,
+##     afl_koum, afl_kour, afl_kw_1, afl_kwav, afl_lf_1, afl_lf_2,
+##     afl_lftc, afl_lfts, afl_lftw, afl_lu_1, afl_luch, afl_marg,
+##     afl_mo_1, afl_moei, afl_n_le, afl_o_10, afl_o_11, afl_o_12,
+##     afl_o_13, afl_o_14, afl_o_15, afl_o_16, afl_o_17, afl_o_18,
+##     afl_o_19, afl_o_20, afl_o_21, afl_o_22, afl_o_23, afl_o_24,
+##     afl_o_25, afl_og_o, afl_on_1, afl_on_2, afl_on_3, afl_on_4,
+##     afl_on_5, afl_on_6, afl_on_7, afl_on_8, afl_on_9, afl_ong_,
+##     afl_onge, afl_ongr, afl_ooex, afl_ooin, afl_over, afl_pe_1,
+##     afl_pe_2, afl_pest, afl_po_1, afl_posw, afl_rede, afl_redf,
+##     afl_rsi, afl_sb_1, afl_sb_2, afl_sb_3, afl_sb_4, afl_sb_5,
+##     afl_sb_6, afl_sb_7, afl_sb_8, afl_sb_9, afl_sbi_, afl_se_1,
+##     afl_se_2, afl_se_3, afl_seks, afl_so_1, afl_so_2, afl_so_3,
+##     afl_socs, afl_soi3, afl_stof, afl_tele, afl_th_1, afl_thui,
+##     afl_to_1, afl_tota, afl_uren, afl_vast, afl_verz, afl_vtdt,
+##     afl_wa_1, afl_wa_2, afl_waar, afl_we_1, afl_we_2, afl_we_3,
+##     afl_werk, afl_zitw, afl_zwaa, altstofv, altstofz, andwer_1,
+##     andwer_2, andwer_3, andwer_4, andwerk_, arbhand, arbo_a, arbo_b,
+##     arbo_c, arbo_d, arbo_e, arbo_g, arbo_h, arbo_i, arbo_j, arbo_k,
+##     arts, arts_and, arts_ast, arts_bur, arts_cop, arts_dep, arts_ecz,
+##     arts_geh, arts_heu, arts_i_1, arts_inf, arts_kni, arts_lag,
+##     arts_pts, arts_rsi, arts_tno, atech_ho, atech_in, atech_le,
+##     atech_li, atech_me, atech_mo, atech_to, atech_ve, auto_a, auto_b,
+##     auto_c, auto_d, auto_e, auto_f, auto_g, avbel_10, avbel_11,
+##     avbel_12, avbel_13, avbel_14, avbel_15, avbela_1, avbela_2,
+##     avbela_3, avbela_4, avbela_5, avbela_6, avbela_7, avbela_8,
+##     avbela_9, avbelang, avond, avtevr_a, avtevr_b, avtevr_c, avtevr_d,
+##     avtevr_e, avtevr_f, avtevr_g, avtevr_h, avtevr_i, avtevr_j,
+##     avtevr_k, avtevr_l, avtevr_m, avtevr_n, avtevr_o, avtevr_p, baooit,
+##     bavertro, bedrarts, beeldsch, behoef_1, behoef_2, behoef_3,
+##     behoefso, behoefte, belang_1, belang_2, belang_3, belang_4,
+##     belangwe, belgev_1, belgev_2, belgev_3, belgev_4, belgev_5,
+##     belgev_a, belgev_b, belgev_g, belgev_s, belgev_v, berzi_10,
+##     berzi_11, berzi_12, berzi_13, berzie_1, berzie_2, berzie_3,
+##     berzie_4, berzie_5, berzie_6, berzie_7, berzie_8, berzie_9,
+##     berziek_, besmet_1, besmet_2, besmet_3, besmet_4, besmet_5,
+##     besmet_j, besmet_n, bevlog_1, bevlog_2, bevlogen, bewegi_1,
+##     bewegi_2, bewegi_3, bewegi_4, bewegi_5, beweging, bijzcatw,
+##     buitwerk, burnou_1, burnou_2, burnou_3, burnou_4, burnout_,
+##     colleg_1, collega_, compet_a, compet_b, compet_c, compet_d,
+##     compet_e, confli_1, confli_2, conflict, conflict_col,
+##     conflict_leid, conflict_werk, contdigi, contdire, controle,
+##     coron_10, corona_1, corona_2, corona_3, corona_4, corona_5,
+##     corona_6, corona_7, corona_8, corona_9, coronafi, coronm_1,
+##     coronm_2, coronm_3, coronm_4, coronm_5, coronm_6, coronm_7,
+##     coronm_8, coronm_9, coronmaa, covid, covid19, creati_a, creati_b,
+##     creati_c, detachee, disbed_1, disbed_2, disbedr_, discma_1,
+##     discma_2, discma_3, discma_4, discma_5, discma_6, discmani,
+##     discr_10, discr_11, discr_12, discr_13, discr_14, discri_1,
+##     discri_2, discri_3, discri_4, discri_5, discri_6, discri_7,
+##     discri_8, discri_9, discrim_, discrim2, disopm_1, disopm_2,
+##     disopm_w, doelopl, eenmeerb, emotie_a, emotie_b, emotie_c,
+##     flexplek, freqge_1, freqge_2, freqge_3, freqge_4, freqge_5,
+##     freqge_6, freqge_7, freqge_8, freqge_9, freqgev_, geaardh,
+##     gevar_10, gevare_1, gevare_2, gevare_3, gevare_4, gevare_5,
+##     gevare_6, gevare_7, gevare_8, gevare_9, gevaren_, gevolgw, gevstof,
+##     gevwerk, geweld_col, geweld_leid, gezonea, gs_man_1, gs_man_2,
+##     gs_man_3, gs_manie, gs_srt_1, gs_srt_2, gs_srt_3, gs_srt_4,
+##     gs_srt_a, gs_srt_b, gs_srt_d, gs_srt_g, gs_srt_h, gs_srt_k,
+##     gs_srt_l, gs_srt_m, gs_srt_o, gs_srt_p, gs_srt_s, hardw_a, hardw_b,
+##     hardw_c, haspec, hhztaak, hitteblo, hoevaakv, hoevdagv, hoevdagw,
+##     hoeveel, innov_a, innov_b, innov_c, innov_d, intimidation_col,
+##     intimidation_leid, jaar, kantoorw, klachtv, klachtve, koubloot,
+##     kwaver_a, kwaver_b, kwaver_c, leidin_1, leiding, leiding_,
+##     lerenmen, lerennie, lerentak, luchtblo, m_v, misver_1, misverw_,
+##     n_leidw, n_leidw_, nacht, nachtmaa, nachtuur, nietwerk, nodig__1,
+##     nodig_aa, nodig_an, nodig_be, nodig_ge, nodig_op, nodig_ty,
+##     ntwkre_1, ntwkre_2, ntwkre_3, ntwkre_4, ntwkre_5, ntwkrege,
+##     omstst_1, omstst_2, omstst_3, omstst_4, omstst_5, omstst_6,
+##     omstst_7, omstst_8, omststaa, omstw_10, omstw_11, omstwi_1,
+##     omstwi_2, omstwi_3, omstwi_4, omstwi_5, omstwi_6, omstwi_7,
+##     omstwi_8, omstwi_9, omstwil_, ondgez, ongwge_1, ongwge_2, ongwge_3,
+##     ongwge_4, ongwge_5, ongwge_6, ongwge_7, ongwgedr, onvldm_1,
+##     onvldm_2, onvldm_3, onvldm_4, onvldm_5, onvldm_6, onvldm_7,
+##     onvldmtr, oorbesch, oplcursu, oproep, ormrpv, overl2_1, overl2_2,
+##     overl2_3, overl2_4, overl2jr, overwerk, partic_1, partic_2,
+##     partic_3, particip, pb1_gebl, persbe_1, persbedr, pesten_col,
+##     pesten_leid, plekvast, ploegend, poshh, preste_1, preste_2,
+##     presteer, prodem_a, prodem_b, prodem_c, prodem_d, psyvei_1,
+##     psyvei_2, psyveil_, psyveil_fout, psyveil_hulp, psyveil_last,
+##     redenw, redenwer, redflex, redmeerb, reg_leef, ruimte_1, ruimte_2,
+##     ruimtefl, ruimteva, samhh, se_clust, secopin, seks_col, seks_leid,
+##     stedgem, stedgem_, steuncol_belang, steuncol_vriendelijk,
+##     steunleid_aandacht, steunleid_welzijn, stimul, stoffe_1, stoffe_2,
+##     stoffe_3, stoffen_, tech_con, tech_dig, tech_ele, tech_gee,
+##     tech_pro, tech_rob, tech_tec, tech_wer, telewerk, tevrao, tevrwrk,
+##     thuiswrk, uitzdeta, vakbond, veil_col, veil_hoo, veil_lei,
+##     veil_reg, veilge_1, veilge_2, veilge_3, veilge_4, veilge_5,
+##     veilge_6, veilgez_, verbed_1, verbed_2, verbed_3, verbed_4,
+##     verbed_5, verbed_6, verbed_7, verbed_8, verbed_9, verbedr_,
+##     verbonde, verbwerk, vertrouw, verzuim, vldmtr_1, vldmtr_2,
+##     vldmtr_3, vldmtr_4, vldmtr_5, vldmtr_6, vldmtr_7, vldmtr_s,
+##     voldsteu, volgnumm, vp_intex, vrlgbage, vrllandd, waarde_1,
+##     waarde_2, waardewe, waarwrk, weeg, weeg_a, weeg_b, weegpo_1,
+##     weegpo_2, weegpo_3, weegpop, weegpop_, weekend, wk_deeln, wk_volnt,
+##     woonwerk, wrktmp_1, wrktmp_2, wrktmp_3, wrktmp_4, wrktmp_5,
+##     wrktmp_6, wrktmpo_, wrntvakb, zaterdag, zelfafsp, zelfst, zieka_10,
+##     zieka_11, zieka_12, zieka_13, zieka_14, zieka_15, ziekaa_1,
+##     ziekaa_2, ziekaa_3, ziekaa_4, ziekaa_5, ziekaa_6, ziekaa_7,
+##     ziekaa_8, ziekaa_9, ziekaand, ziekgev, zitvt, zitwerk, zitwwv,
+##     zondag, zwaar_a, zwaar_b, zwaar_c, zwaar_d, zwaar_e</code></pre>
+<pre class="r"><code>data8 &lt;- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid)
+
+items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid) ~ 1</code></pre>
+<pre class="r"><code>model1. &lt;- poLCA(items8, data8, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9757 0.0183 0.0047 0.0013
+## 
+## $pesten_leid
+##            Pr(1) Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9879 0.007 0.0037 0.0014
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3) Pr(4)
+## class 1:  0.9867 0.0112 0.0012 9e-04
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9844 0.0111 0.0033 0.0012
+## 
+## $geweld_col
+##            Pr(1) Pr(2) Pr(3) Pr(4)
+## class 1:  0.9988 8e-04 2e-04 2e-04
+## 
+## $geweld_leid
+##            Pr(1) Pr(2) Pr(3) Pr(4)
+## class 1:  0.9995 2e-04 2e-04 1e-04
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3) Pr(4)
+## class 1:  0.9906 0.0077 0.0012 5e-04
+## 
+## $seks_leid
+##            Pr(1)  Pr(2) Pr(3) Pr(4)
+## class 1:  0.9971 0.0022 3e-04 4e-04
+## 
+## Estimated class population shares 
+##  1 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  1 
+##  
+## ========================================================= 
+## Fit for 1 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 24 
+## residual degrees of freedom: 30477 
+## maximum log-likelihood: -14307.47 
+##  
+## AIC(1): 28662.94
+## BIC(1): 28862.75
+## G^2(1): 3396.99 (Likelihood ratio/deviance statistic) 
+## X^2(1): 4.259657e+12 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model2. &lt;- poLCA(items8, data8, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -14101.54 ... best llik = -14101.54
+## Model 2: llik = -13447.71 ... best llik = -13447.71
+## Model 3: llik = -14208.9 ... best llik = -13447.71
+## Model 4: llik = -14269.91 ... best llik = -13447.71
+## Model 5: llik = -14159.71 ... best llik = -13447.71
+## Model 6: llik = -13564.2 ... best llik = -13447.71
+## Model 7: llik = -14022.1 ... best llik = -13447.71
+## Model 8: llik = -14389.49 ... best llik = -13447.71
+## Model 9: llik = -13610.43 ... best llik = -13447.71
+## Model 10: llik = -13386.9 ... best llik = -13386.9
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9925 0.0066 0.0007 0.0002
+## class 2:  0.7405 0.1822 0.0604 0.0168
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3) Pr(4)
+## class 1:  0.9975 0.0019 0.0006  0.00
+## class 2:  0.8535 0.0789 0.0475  0.02
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9986 0.0013 0.0000 0.0000
+## class 2:  0.8201 0.1492 0.0182 0.0126
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9934 0.0061 0.0005 0.0000
+## class 2:  0.8586 0.0809 0.0429 0.0177
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9999 0.0001 0.0000 0.0000
+## class 2:  0.9838 0.0112 0.0025 0.0025
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3) Pr(4)
+## class 1:  0.9999 0.0001 0.0000 0.000
+## class 2:  0.9941 0.0014 0.0025 0.002
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3) Pr(4)
+## class 1:  0.9952 0.0041 0.0007 0.000
+## class 2:  0.9269 0.0575 0.0087 0.007
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9989 0.0010 0.0001 0.0000
+## class 2:  0.9712 0.0189 0.0042 0.0056
+## 
+## Estimated class population shares 
+##  0.9294 0.067 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.9556 0.0444 
+##  
+## ========================================================= 
+## Fit for 2 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 49 
+## residual degrees of freedom: 30452 
+## maximum log-likelihood: -13386.9 
+##  
+## AIC(2): 26871.8
+## BIC(2): 27279.75
+## G^2(2): 1681.109 (Likelihood ratio/deviance statistic) 
+## X^2(2): 25732383 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model3. &lt;- poLCA(items8, data8, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13491.29 ... best llik = -13491.29
+## Model 2: llik = -13344.81 ... best llik = -13344.81
+## Model 3: llik = -13738.08 ... best llik = -13344.81
+## Model 4: llik = -13979.34 ... best llik = -13344.81
+## Model 5: llik = -13548.08 ... best llik = -13344.81
+## Model 6: llik = -13707.32 ... best llik = -13344.81
+## Model 7: llik = -13921.77 ... best llik = -13344.81
+## Model 8: llik = -13451.34 ... best llik = -13344.81
+## Model 9: llik = -14107.7 ... best llik = -13344.81
+## Model 10: llik = -13350.23 ... best llik = -13344.81
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9993 0.0000 0.0003 0.0004
+## class 2:  0.9700 0.0261 0.0035 0.0004
+## class 3:  0.6660 0.1557 0.1308 0.0475
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9957 0.0034 0.0009 0.0001
+## class 2:  0.9950 0.0040 0.0010 0.0000
+## class 3:  0.6056 0.1769 0.1473 0.0702
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9986 0.0014 0.0000 0.0000
+## class 2:  0.9859 0.0138 0.0002 0.0000
+## class 3:  0.7685 0.1321 0.0570 0.0424
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9922 0.0069 0.0009 0.0001
+## class 2:  0.9906 0.0087 0.0007 0.0000
+## class 3:  0.6338 0.1720 0.1324 0.0618
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  1.0000 0.0000 0.0000 0.0000
+## class 2:  0.9995 0.0005 0.0000 0.0000
+## class 3:  0.9541 0.0288 0.0085 0.0085
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9999 0.0001 0.0000 0.0000
+## class 2:  1.0000 0.0000 0.0000 0.0000
+## class 3:  0.9794 0.0053 0.0085 0.0068
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9947 0.0044 0.0009 0.0000
+## class 2:  0.9937 0.0057 0.0006 0.0001
+## class 3:  0.8131 0.1361 0.0271 0.0238
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9986 0.0012 0.0002 0.0000
+## class 2:  0.9989 0.0011 0.0000 0.0000
+## class 3:  0.9120 0.0556 0.0129 0.0195
+## 
+## Estimated class population shares 
+##  0.3927 0.5843 0.0194 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0045 0.9824 0.0131 
+##  
+## ========================================================= 
+## Fit for 3 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 74 
+## residual degrees of freedom: 30427 
+## maximum log-likelihood: -13344.81 
+##  
+## AIC(3): 26837.63
+## BIC(3): 27453.72
+## G^2(3): 1616.994 (Likelihood ratio/deviance statistic) 
+## X^2(3): 150937.2 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model4. &lt;- poLCA(items8, data8, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13722.69 ... best llik = -13722.69
+## Model 2: llik = -13509.34 ... best llik = -13509.34
+## Model 3: llik = -13328.66 ... best llik = -13328.66
+## Model 4: llik = -13322.36 ... best llik = -13322.36
+## Model 5: llik = -13995.15 ... best llik = -13322.36
+## Model 6: llik = -13177.11 ... best llik = -13177.11
+## Model 7: llik = -14118.93 ... best llik = -13177.11
+## Model 8: llik = -13684.24 ... best llik = -13177.11
+## Model 9: llik = -13519.63 ... best llik = -13177.11
+## Model 10: llik = -13347.33 ... best llik = -13177.11
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.8164 0.1558 0.0217 0.0061
+## class 2:  0.7675 0.1601 0.0606 0.0118
+## class 3:  0.7897 0.0997 0.0789 0.0317
+## class 4:  0.9937 0.0057 0.0006 0.0000
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9917 0.0060 0.0023 0.0000
+## class 2:  0.9784 0.0214 0.0001 0.0001
+## class 3:  0.5257 0.2564 0.1557 0.0622
+## class 4:  0.9991 0.0007 0.0002 0.0000
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.8658 0.1306 0.0017 0.0019
+## class 2:  0.8077 0.1681 0.0175 0.0066
+## class 3:  0.8932 0.0464 0.0327 0.0277
+## class 4:  0.9998 0.0002 0.0000 0.0000
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9893 0.0100 0.0006 0.0000
+## class 2:  0.9675 0.0321 0.0004 0.0000
+## class 3:  0.5676 0.2369 0.1404 0.0552
+## class 4:  0.9947 0.0051 0.0002 0.0000
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9907 0.0092 0.0001 0.0000
+## class 2:  0.9908 0.0092 0.0001 0.0000
+## class 3:  0.9771 0.0082 0.0072 0.0074
+## class 4:  1.0000 0.0000 0.0000 0.0000
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9991 0.0009 0.0000 0.0000
+## class 2:  0.9999 0.0000 0.0000 0.0000
+## class 3:  0.9820 0.0047 0.0074 0.0059
+## class 4:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9029 0.0871 0.0081 0.0020
+## class 2:  0.9866 0.0062 0.0045 0.0027
+## class 3:  0.9086 0.0604 0.0158 0.0152
+## class 4:  0.9971 0.0025 0.0004 0.0000
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9863 0.0120 0.0009 0.0008
+## class 2:  0.9978 0.0004 0.0011 0.0008
+## class 3:  0.9308 0.0430 0.0107 0.0155
+## class 4:  0.9992 0.0008 0.0000 0.0000
+## 
+## Estimated class population shares 
+##  0.0456 0.0241 0.0223 0.9045 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0205 0.0041 0.016 0.9595 
+##  
+## ========================================================= 
+## Fit for 4 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 99 
+## residual degrees of freedom: 30402 
+## maximum log-likelihood: -13177.11 
+##  
+## AIC(4): 26552.23
+## BIC(4): 27376.45
+## G^2(4): 1277.644 (Likelihood ratio/deviance statistic) 
+## X^2(4): 926638.8 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model5. &lt;- poLCA(items8, data8, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -14263.89 ... best llik = -14263.89
+## Model 2: llik = -13231.72 ... best llik = -13231.72
+## Model 3: llik = -13379.94 ... best llik = -13231.72
+## Model 4: llik = -13654.8 ... best llik = -13231.72
+## Model 5: llik = -13187.41 ... best llik = -13187.41
+## Model 6: llik = -13045.72 ... best llik = -13045.72
+## Model 7: llik = -13269.84 ... best llik = -13045.72
+## Model 8: llik = -13838.93 ... best llik = -13045.72
+## Model 9: llik = -13677.86 ... best llik = -13045.72
+## Model 10: llik = -13636.33 ... best llik = -13045.72
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.7990 0.0974 0.1029 0.0008
+## class 2:  0.6407 0.0279 0.1318 0.1997
+## class 3:  0.3802 0.3927 0.1727 0.0544
+## class 4:  0.7870 0.2001 0.0123 0.0006
+## class 5:  0.9836 0.0136 0.0023 0.0004
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.1064 0.4763 0.3663 0.0509
+## class 2:  0.4543 0.0049 0.0845 0.4563
+## class 3:  0.9482 0.0056 0.0396 0.0067
+## class 4:  0.6345 0.3270 0.0376 0.0009
+## class 5:  0.9965 0.0026 0.0009 0.0000
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9030 0.0645 0.0270 0.0055
+## class 2:  0.6696 0.0280 0.1258 0.1766
+## class 3:  0.4721 0.4078 0.0743 0.0458
+## class 4:  0.9306 0.0679 0.0003 0.0012
+## class 5:  0.9927 0.0071 0.0001 0.0000
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.2743 0.3598 0.3133 0.0525
+## class 2:  0.4681 0.0271 0.1301 0.3747
+## class 3:  0.9679 0.0041 0.0280 0.0000
+## class 4:  0.5927 0.3818 0.0186 0.0069
+## class 5:  0.9920 0.0071 0.0008 0.0000
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9836 0.0163 0.0002 0.0000
+## class 2:  0.9150 0.0004 0.0087 0.0759
+## class 3:  0.9200 0.0629 0.0170 0.0002
+## class 4:  0.9968 0.0032 0.0000 0.0000
+## class 5:  0.9998 0.0002 0.0000 0.0000
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9868 0.0098 0.0034 0.0000
+## class 2:  0.8859 0.0022 0.0532 0.0587
+## class 3:  0.9980 0.0000 0.0020 0.0000
+## class 4:  0.9904 0.0080 0.0016 0.0000
+## class 5:  0.9999 0.0001 0.0000 0.0000
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9539 0.0459 0.0000 0.0002
+## class 2:  0.6854 0.1391 0.0841 0.0914
+## class 3:  0.7197 0.2198 0.0337 0.0268
+## class 4:  0.9631 0.0346 0.0004 0.0019
+## class 5:  0.9940 0.0052 0.0008 0.0001
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9428 0.0470 0.0059 0.0043
+## class 2:  0.7611 0.1166 0.0305 0.0918
+## class 3:  0.9261 0.0444 0.0155 0.0140
+## class 4:  0.9593 0.0355 0.0001 0.0051
+## class 5:  0.9987 0.0011 0.0001 0.0000
+## 
+## Estimated class population shares 
+##  0.006 0.0023 0.0086 0.005 0.9746 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0095 0.0018 0.007 0.0012 0.9806 
+##  
+## ========================================================= 
+## Fit for 5 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 124 
+## residual degrees of freedom: 30377 
+## maximum log-likelihood: -13045.72 
+##  
+## AIC(5): 26339.45
+## BIC(5): 27371.81
+## G^2(5): 1054.564 (Likelihood ratio/deviance statistic) 
+## X^2(5): 11398.11 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model6. &lt;- poLCA(items8, data8, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13552.46 ... best llik = -13552.46
+## Model 2: llik = -13564.55 ... best llik = -13552.46
+## Model 3: llik = -13152.46 ... best llik = -13152.46
+## Model 4: llik = -13065.94 ... best llik = -13065.94
+## Model 5: llik = -13128.62 ... best llik = -13065.94
+## Model 6: llik = -13149.98 ... best llik = -13065.94
+## Model 7: llik = -13393.59 ... best llik = -13065.94
+## Model 8: llik = -13100.01 ... best llik = -13065.94
+## Model 9: llik = -14035.85 ... best llik = -13065.94
+## Model 10: llik = -13324.49 ... best llik = -13065.94
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.8125 0.1370 0.0505 0.0000
+## class 2:  0.9984 0.0015 0.0002 0.0000
+## class 3:  0.8510 0.1255 0.0215 0.0020
+## class 4:  0.9788 0.0203 0.0006 0.0003
+## class 5:  0.5581 0.0834 0.2176 0.1409
+## class 6:  0.9967 0.0030 0.0003 0.0000
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.2885 0.4649 0.2441 0.0025
+## class 2:  0.9988 0.0010 0.0002 0.0000
+## class 3:  0.9959 0.0030 0.0011 0.0000
+## class 4:  0.9893 0.0105 0.0001 0.0000
+## class 5:  0.7183 0.0036 0.0964 0.1817
+## class 6:  0.9976 0.0019 0.0005 0.0000
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9182 0.0660 0.0126 0.0032
+## class 2:  0.9999 0.0001 0.0000 0.0000
+## class 3:  0.9065 0.0925 0.0010 0.0000
+## class 4:  0.9991 0.0009 0.0000 0.0000
+## class 5:  0.7068 0.0540 0.1301 0.1091
+## class 6:  0.9998 0.0002 0.0000 0.0000
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.4433 0.3497 0.1905 0.0165
+## class 2:  0.9955 0.0041 0.0004 0.0000
+## class 3:  0.9837 0.0156 0.0007 0.0000
+## class 4:  0.9655 0.0331 0.0014 0.0000
+## class 5:  0.7473 0.0177 0.0974 0.1376
+## class 6:  0.9945 0.0051 0.0004 0.0000
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9977 0.0023 0.0000 0.0000
+## class 2:  1.0000 0.0000 0.0000 0.0000
+## class 3:  0.9950 0.0050 0.0000 0.0000
+## class 4:  1.0000 0.0000 0.0000 0.0000
+## class 5:  0.9205 0.0352 0.0221 0.0221
+## class 6:  1.0000 0.0000 0.0000 0.0000
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9916 0.0082 0.0002 0.0000
+## class 2:  1.0000 0.0000 0.0000 0.0000
+## class 3:  0.9999 0.0001 0.0000 0.0000
+## class 4:  0.9994 0.0006 0.0000 0.0000
+## class 5:  0.9602 0.0008 0.0215 0.0175
+## class 6:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9633 0.0367 0.0000 0.0000
+## class 2:  0.9979 0.0017 0.0004 0.0000
+## class 3:  0.9533 0.0445 0.0021 0.0001
+## class 4:  0.9897 0.0066 0.0037 0.0000
+## class 5:  0.7495 0.1275 0.0590 0.0639
+## class 6:  0.9988 0.0006 0.0006 0.0000
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9610 0.0369 0.0021 0.0000
+## class 2:  0.9992 0.0007 0.0001 0.0000
+## class 3:  0.9929 0.0071 0.0000 0.0000
+## class 4:  0.9988 0.0012 0.0000 0.0000
+## class 5:  0.8524 0.0652 0.0298 0.0525
+## class 6:  0.9995 0.0004 0.0001 0.0000
+## 
+## Estimated class population shares 
+##  0.011 0.5848 0.1073 0.0566 0.0076 0.229 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0157 0.9455 0.0335 1e-04 0.0051 
+##  
+## ========================================================= 
+## Fit for 6 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 149 
+## residual degrees of freedom: 30352 
+## maximum log-likelihood: -13065.94 
+##  
+## AIC(6): 26429.87
+## BIC(6): 27670.38
+## G^2(6): 1088.035 (Likelihood ratio/deviance statistic) 
+## X^2(6): 14978.67 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model7. &lt;- poLCA(items8, data8, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13056.11 ... best llik = -13056.11
+## Model 2: llik = -13360.74 ... best llik = -13056.11
+## Model 3: llik = -13333.7 ... best llik = -13056.11
+## Model 4: llik = -13238.48 ... best llik = -13056.11
+## Model 5: llik = -13358.36 ... best llik = -13056.11
+## Model 6: llik = -13003.84 ... best llik = -13003.84
+## Model 7: llik = -13209.09 ... best llik = -13003.84
+## Model 8: llik = -13381.43 ... best llik = -13003.84
+## Model 9: llik = -13209.03 ... best llik = -13003.84
+## Model 10: llik = -13008.65 ... best llik = -13003.84
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.7825 0.1781 0.0318 0.0076
+## class 2:  0.9984 0.0006 0.0008 0.0001
+## class 3:  0.9634 0.0341 0.0025 0.0000
+## class 4:  0.5989 0.0341 0.1807 0.1863
+## class 5:  0.4004 0.4258 0.1669 0.0068
+## class 6:  0.9978 0.0021 0.0000 0.0000
+## class 7:  0.9836 0.0152 0.0012 0.0000
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9770 0.0166 0.0060 0.0003
+## class 2:  0.9979 0.0014 0.0007 0.0000
+## class 3:  0.5275 0.3123 0.1557 0.0045
+## class 4:  0.4922 0.0187 0.1415 0.3476
+## class 5:  0.8795 0.0766 0.0438 0.0000
+## class 6:  0.9995 0.0005 0.0000 0.0000
+## class 7:  0.9979 0.0021 0.0000 0.0000
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9548 0.0427 0.0016 0.0009
+## class 2:  0.9923 0.0077 0.0000 0.0000
+## class 3:  0.9986 0.0008 0.0005 0.0000
+## class 4:  0.6931 0.0253 0.1042 0.1773
+## class 5:  0.4360 0.4877 0.0653 0.0110
+## class 6:  0.9991 0.0009 0.0000 0.0000
+## class 7:  0.9817 0.0182 0.0000 0.0000
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9773 0.0217 0.0011 0.0000
+## class 2:  0.9922 0.0073 0.0004 0.0000
+## class 3:  0.4873 0.3367 0.1587 0.0173
+## class 4:  0.5790 0.0248 0.1446 0.2515
+## class 5:  0.8942 0.0779 0.0279 0.0000
+## class 6:  0.9968 0.0031 0.0000 0.0000
+## class 7:  0.9908 0.0092 0.0000 0.0000
+## 
+## $geweld_col
+##            Pr(1)  Pr(2) Pr(3) Pr(4)
+## class 1:  0.9993 0.0007 0.000 0.000
+## class 2:  0.9999 0.0001 0.000 0.000
+## class 3:  0.9962 0.0038 0.000 0.000
+## class 4:  0.8804 0.0317 0.044 0.044
+## class 5:  0.9536 0.0464 0.000 0.000
+## class 6:  1.0000 0.0000 0.000 0.000
+## class 7:  0.9991 0.0009 0.000 0.000
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  1.0000 0.0000 0.0000 0.0000
+## class 2:  0.9997 0.0003 0.0000 0.0000
+## class 3:  0.9931 0.0066 0.0003 0.0000
+## class 4:  0.9243 0.0000 0.0415 0.0342
+## class 5:  1.0000 0.0000 0.0000 0.0000
+## class 6:  1.0000 0.0000 0.0000 0.0000
+## class 7:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9643 0.0246 0.0099 0.0012
+## class 2:  0.9840 0.0155 0.0005 0.0000
+## class 3:  0.9876 0.0110 0.0012 0.0002
+## class 4:  0.7155 0.1181 0.0689 0.0976
+## class 5:  0.8496 0.1484 0.0004 0.0016
+## class 6:  0.9987 0.0010 0.0003 0.0000
+## class 7:  0.9962 0.0032 0.0005 0.0000
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9976 0.0022 0.0000 0.0002
+## class 2:  0.9960 0.0038 0.0001 0.0000
+## class 3:  0.9621 0.0364 0.0003 0.0012
+## class 4:  0.7682 0.0820 0.0559 0.0939
+## class 5:  0.9852 0.0148 0.0000 0.0000
+## class 6:  0.9994 0.0004 0.0001 0.0000
+## class 7:  0.9995 0.0002 0.0002 0.0001
+## 
+## Estimated class population shares 
+##  0.0602 0.2041 0.0143 0.0039 0.0111 0.6481 0.0548 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0279 0.0066 0.0172 0.0032 0.0072 0.9379 
+##  
+## ========================================================= 
+## Fit for 7 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 174 
+## residual degrees of freedom: 30327 
+## maximum log-likelihood: -13003.84 
+##  
+## AIC(7): 26355.68
+## BIC(7): 27804.32
+## G^2(7): 976.3665 (Likelihood ratio/deviance statistic) 
+## X^2(7): 12473.08 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model8. &lt;- poLCA(items8, data8, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13705.66 ... best llik = -13705.66
+## Model 2: llik = -12994.64 ... best llik = -12994.64
+## Model 3: llik = -13216.55 ... best llik = -12994.64
+## Model 4: llik = -13169.5 ... best llik = -12994.64
+## Model 5: llik = -13417.35 ... best llik = -12994.64
+## Model 6: llik = -13048.33 ... best llik = -12994.64
+## Model 7: llik = -13219.39 ... best llik = -12994.64
+## Model 8: llik = -13292.24 ... best llik = -12994.64
+## Model 9: llik = -13237.38 ... best llik = -12994.64
+## Model 10: llik = -13108.37 ... best llik = -12994.64
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.8931 0.0495 0.0540 0.0034
+## class 2:  0.2297 0.2624 0.3659 0.1420
+## class 3:  0.9940 0.0052 0.0004 0.0004
+## class 4:  0.8763 0.1149 0.0088 0.0000
+## class 5:  0.9957 0.0031 0.0012 0.0000
+## class 6:  0.8389 0.1449 0.0145 0.0017
+## class 7:  0.9171 0.0291 0.0000 0.0538
+## class 8:  0.9916 0.0019 0.0063 0.0002
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.4094 0.1407 0.3586 0.0913
+## class 2:  0.7982 0.0520 0.0962 0.0537
+## class 3:  0.9999 0.0001 0.0000 0.0000
+## class 4:  0.7209 0.2645 0.0146 0.0000
+## class 5:  0.9992 0.0008 0.0000 0.0000
+## class 6:  0.9989 0.0009 0.0002 0.0000
+## class 7:  0.8321 0.0000 0.0006 0.1673
+## class 8:  0.9987 0.0010 0.0003 0.0000
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9937 0.0001 0.0063 0.0000
+## class 2:  0.3748 0.2990 0.2070 0.1192
+## class 3:  0.9995 0.0005 0.0000 0.0000
+## class 4:  0.9447 0.0547 0.0006 0.0000
+## class 5:  0.9998 0.0002 0.0000 0.0000
+## class 6:  0.8876 0.1119 0.0005 0.0000
+## class 7:  0.9032 0.0013 0.0003 0.0952
+## class 8:  0.9972 0.0028 0.0000 0.0000
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.4958 0.0762 0.3376 0.0904
+## class 2:  0.8515 0.0438 0.0703 0.0345
+## class 3:  0.9983 0.0016 0.0000 0.0000
+## class 4:  0.6179 0.3751 0.0070 0.0000
+## class 5:  0.9907 0.0093 0.0000 0.0000
+## class 6:  0.9998 0.0002 0.0000 0.0000
+## class 7:  0.8381 0.0001 0.0217 0.1402
+## class 8:  0.9951 0.0047 0.0002 0.0000
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9902 0.0098 0.0000 0.0000
+## class 2:  0.8937 0.0593 0.0167 0.0303
+## class 3:  1.0000 0.0000 0.0000 0.0000
+## class 4:  1.0000 0.0000 0.0000 0.0000
+## class 5:  1.0000 0.0000 0.0000 0.0000
+## class 6:  0.9941 0.0059 0.0000 0.0000
+## class 7:  0.9659 0.0000 0.0341 0.0000
+## class 8:  0.9999 0.0001 0.0000 0.0000
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9783 0.0121 0.0096 0.0000
+## class 2:  0.9754 0.0000 0.0004 0.0242
+## class 3:  1.0000 0.0000 0.0000 0.0000
+## class 4:  0.9997 0.0003 0.0000 0.0000
+## class 5:  0.9999 0.0001 0.0000 0.0000
+## class 6:  0.9999 0.0001 0.0000 0.0000
+## class 7:  0.9536 0.0081 0.0383 0.0000
+## class 8:  0.9998 0.0002 0.0000 0.0000
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9499 0.0390 0.0097 0.0014
+## class 2:  0.7341 0.1509 0.0600 0.0551
+## class 3:  0.9988 0.0009 0.0003 0.0000
+## class 4:  0.9890 0.0110 0.0000 0.0000
+## class 5:  0.9901 0.0067 0.0031 0.0000
+## class 6:  0.9469 0.0494 0.0033 0.0004
+## class 7:  0.6206 0.3218 0.0001 0.0575
+## class 8:  0.9921 0.0074 0.0004 0.0001
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9412 0.0484 0.0101 0.0003
+## class 2:  0.9443 0.0116 0.0171 0.0269
+## class 3:  0.9998 0.0001 0.0001 0.0000
+## class 4:  0.9852 0.0148 0.0000 0.0000
+## class 5:  0.9981 0.0018 0.0002 0.0000
+## class 6:  0.9983 0.0017 0.0000 0.0000
+## class 7:  0.5151 0.3369 0.0378 0.1102
+## class 8:  0.9971 0.0027 0.0002 0.0000
+## 
+## Estimated class population shares 
+##  0.008 0.0055 0.6646 0.0201 0.1124 0.0694 0.0022 0.114 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0096 0.004 0.9382 0.0146 8e-04 0.0304 0.0012 0.0012 
+##  
+## ========================================================= 
+## Fit for 8 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 199 
+## residual degrees of freedom: 30302 
+## maximum log-likelihood: -12994.64 
+##  
+## AIC(8): 26387.28
+## BIC(8): 28044.06
+## G^2(8): 938.4666 (Likelihood ratio/deviance statistic) 
+## X^2(8): 35340.46 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model9. &lt;- poLCA(items8, data8, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13357.93 ... best llik = -13357.93
+## Model 2: llik = -13002.87 ... best llik = -13002.87
+## Model 3: llik = -13387.5 ... best llik = -13002.87
+## Model 4: llik = -13029.89 ... best llik = -13002.87
+## Model 5: llik = -13019.03 ... best llik = -13002.87
+## Model 6: llik = -13312.42 ... best llik = -13002.87
+## Model 7: llik = -13103.44 ... best llik = -13002.87
+## Model 8: llik = -12992.8 ... best llik = -12992.8
+## Model 9: llik = -12959.73 ... best llik = -12959.73
+## Model 10: llik = -13009.66 ... best llik = -12959.73
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9126 0.0693 0.0173 0.0009
+## class 2:  0.5836 0.3908 0.0194 0.0061
+## class 3:  0.9900 0.0068 0.0028 0.0003
+## class 4:  0.9790 0.0173 0.0031 0.0005
+## class 5:  0.9941 0.0053 0.0006 0.0000
+## class 6:  0.9840 0.0098 0.0054 0.0008
+## class 7:  0.3579 0.1427 0.3717 0.1277
+## class 8:  0.9926 0.0049 0.0023 0.0001
+## class 9:  0.7959 0.1594 0.0133 0.0314
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.5801 0.2575 0.1297 0.0326
+## class 2:  0.9651 0.0220 0.0128 0.0002
+## class 3:  0.9952 0.0040 0.0007 0.0000
+## class 4:  0.9993 0.0003 0.0004 0.0000
+## class 5:  0.9990 0.0009 0.0001 0.0000
+## class 6:  0.9986 0.0001 0.0012 0.0000
+## class 7:  0.7277 0.0808 0.0934 0.0981
+## class 8:  0.9992 0.0004 0.0004 0.0000
+## class 9:  0.9757 0.0022 0.0051 0.0170
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9884 0.0106 0.0010 0.0001
+## class 2:  0.7286 0.2648 0.0056 0.0009
+## class 3:  0.9912 0.0088 0.0000 0.0000
+## class 4:  0.9919 0.0081 0.0000 0.0000
+## class 5:  0.9987 0.0013 0.0000 0.0000
+## class 6:  0.9802 0.0197 0.0000 0.0000
+## class 7:  0.4478 0.2529 0.1754 0.1239
+## class 8:  0.9973 0.0026 0.0000 0.0000
+## class 9:  0.9051 0.0815 0.0014 0.0120
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.5690 0.2697 0.1243 0.0371
+## class 2:  0.9540 0.0454 0.0005 0.0000
+## class 3:  0.9916 0.0081 0.0003 0.0000
+## class 4:  0.9889 0.0107 0.0004 0.0000
+## class 5:  0.9996 0.0002 0.0002 0.0000
+## class 6:  0.9959 0.0038 0.0002 0.0000
+## class 7:  0.8004 0.0497 0.0949 0.0549
+## class 8:  0.9931 0.0067 0.0002 0.0000
+## class 9:  0.9525 0.0273 0.0000 0.0202
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9961 0.0038 0.0000 0.0001
+## class 2:  0.9826 0.0174 0.0000 0.0000
+## class 3:  0.9999 0.0001 0.0000 0.0000
+## class 4:  0.9999 0.0001 0.0000 0.0000
+## class 5:  0.9999 0.0001 0.0000 0.0000
+## class 6:  0.9990 0.0010 0.0000 0.0000
+## class 7:  0.9018 0.0477 0.0238 0.0267
+## class 8:  0.9999 0.0001 0.0000 0.0000
+## class 9:  0.9917 0.0051 0.0030 0.0002
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9915 0.0041 0.0040 0.0004
+## class 2:  0.9996 0.0004 0.0000 0.0000
+## class 3:  0.9997 0.0003 0.0000 0.0000
+## class 4:  0.9999 0.0001 0.0000 0.0000
+## class 5:  1.0000 0.0000 0.0000 0.0000
+## class 6:  1.0000 0.0000 0.0000 0.0000
+## class 7:  0.9705 0.0000 0.0105 0.0189
+## class 8:  1.0000 0.0000 0.0000 0.0000
+## class 9:  0.9957 0.0003 0.0029 0.0011
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9936 0.0005 0.0056 0.0003
+## class 2:  0.9135 0.0801 0.0060 0.0004
+## class 3:  0.9843 0.0139 0.0017 0.0001
+## class 4:  0.9932 0.0067 0.0001 0.0001
+## class 5:  0.9974 0.0018 0.0008 0.0000
+## class 6:  0.9889 0.0066 0.0045 0.0000
+## class 7:  0.7349 0.1665 0.0483 0.0503
+## class 8:  0.9968 0.0031 0.0001 0.0000
+## class 9:  0.8376 0.1311 0.0096 0.0217
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9624 0.0314 0.0043 0.0019
+## class 2:  0.9947 0.0049 0.0000 0.0003
+## class 3:  0.9970 0.0028 0.0001 0.0000
+## class 4:  0.9992 0.0006 0.0002 0.0000
+## class 5:  0.9992 0.0007 0.0000 0.0000
+## class 6:  0.9986 0.0012 0.0001 0.0001
+## class 7:  0.9020 0.0329 0.0247 0.0404
+## class 8:  0.9998 0.0002 0.0000 0.0000
+## class 9:  0.9135 0.0684 0.0044 0.0137
+## 
+## Estimated class population shares 
+##  0.0202 0.0195 0.1084 0.1879 0.4486 0.0097 0.0062 0.1925 0.0069 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.019 0.0244 0.0051 0.0024 0.9433 0.0046 0.0012 
+##  
+## ========================================================= 
+## Fit for 9 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 224 
+## residual degrees of freedom: 30277 
+## maximum log-likelihood: -12959.73 
+##  
+## AIC(9): 26367.46
+## BIC(9): 28232.37
+## G^2(9): 865.5405 (Likelihood ratio/deviance statistic) 
+## X^2(9): 82523.13 (Chi-square goodness of fit) 
+##  
+## ALERT: estimation algorithm automatically restarted with new initial values 
+## </code></pre>
+<pre class="r"><code>model10. &lt;- poLCA(items8, data8, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13058.23 ... best llik = -13058.23
+## Model 2: llik = -13143.04 ... best llik = -13058.23
+## Model 3: llik = -13391.86 ... best llik = -13058.23
+## Model 4: llik = -13878.23 ... best llik = -13058.23
+## Model 5: llik = -13199.86 ... best llik = -13058.23
+## Model 6: llik = -13403.58 ... best llik = -13058.23
+## Model 7: llik = -12895.38 ... best llik = -12895.38
+## Model 8: llik = -13197.4 ... best llik = -12895.38
+## Model 9: llik = -13224.67 ... best llik = -12895.38
+## Model 10: llik = -13365.96 ... best llik = -12895.38
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9851 0.0140 0.0006 0.0003
+## class 2:   0.9098 0.0062 0.0740 0.0100
+## class 3:   0.9981 0.0001 0.0013 0.0005
+## class 4:   0.9963 0.0027 0.0006 0.0004
+## class 5:   0.9936 0.0062 0.0001 0.0001
+## class 6:   0.5223 0.3647 0.1030 0.0100
+## class 7:   0.9924 0.0070 0.0004 0.0002
+## class 8:   0.8457 0.0753 0.0756 0.0033
+## class 9:   0.8722 0.1053 0.0190 0.0036
+## class 10:  0.4559 0.0693 0.1980 0.2767
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9997 0.0002 0.0001 0.0000
+## class 2:   0.9923 0.0038 0.0033 0.0006
+## class 3:   0.9991 0.0005 0.0003 0.0000
+## class 4:   0.9966 0.0026 0.0008 0.0000
+## class 5:   0.9985 0.0012 0.0003 0.0000
+## class 6:   0.9667 0.0267 0.0065 0.0000
+## class 7:   0.9956 0.0040 0.0004 0.0000
+## class 8:   0.1521 0.4391 0.3079 0.1008
+## class 9:   0.9438 0.0401 0.0161 0.0000
+## class 10:  0.7028 0.0000 0.0558 0.2414
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9963 0.0037 0.0000 0.0000
+## class 2:   0.9763 0.0154 0.0075 0.0009
+## class 3:   0.9987 0.0013 0.0000 0.0000
+## class 4:   0.9985 0.0015 0.0000 0.0000
+## class 5:   0.9975 0.0025 0.0000 0.0000
+## class 6:   0.5558 0.4030 0.0365 0.0048
+## class 7:   0.9962 0.0038 0.0000 0.0000
+## class 8:   0.9444 0.0364 0.0149 0.0043
+## class 9:   0.9694 0.0301 0.0004 0.0000
+## class 10:  0.5096 0.0362 0.1605 0.2938
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9953 0.0045 0.0002 0.0000
+## class 2:   0.9720 0.0204 0.0068 0.0009
+## class 3:   0.9990 0.0005 0.0006 0.0000
+## class 4:   0.9929 0.0058 0.0013 0.0001
+## class 5:   0.9938 0.0056 0.0007 0.0000
+## class 6:   0.9408 0.0500 0.0092 0.0000
+## class 7:   0.9772 0.0215 0.0013 0.0000
+## class 8:   0.2647 0.3660 0.2770 0.0922
+## class 9:   0.9589 0.0372 0.0039 0.0000
+## class 10:  0.7633 0.0000 0.0466 0.1901
+## 
+## $geweld_col
+##             Pr(1)  Pr(2) Pr(3) Pr(4)
+## class 1:   1.0000 0.0000 0.000 0.000
+## class 2:   0.9997 0.0003 0.000 0.000
+## class 3:   1.0000 0.0000 0.000 0.000
+## class 4:   1.0000 0.0000 0.000 0.000
+## class 5:   1.0000 0.0000 0.000 0.000
+## class 6:   0.9636 0.0364 0.000 0.000
+## class 7:   0.9999 0.0001 0.000 0.000
+## class 8:   0.9906 0.0094 0.000 0.000
+## class 9:   0.9998 0.0002 0.000 0.000
+## class 10:  0.8276 0.0345 0.069 0.069
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9995 0.0005 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.9999 0.0000 0.0000 0.0000
+## class 7:   0.9999 0.0001 0.0000 0.0000
+## class 8:   0.9802 0.0107 0.0091 0.0000
+## class 9:   1.0000 0.0000 0.0000 0.0000
+## class 10:  0.9102 0.0000 0.0370 0.0528
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9889 0.0079 0.0031 0.0001
+## class 2:   0.9555 0.0095 0.0299 0.0051
+## class 3:   0.9977 0.0022 0.0001 0.0000
+## class 4:   0.9764 0.0235 0.0001 0.0000
+## class 5:   0.9979 0.0020 0.0001 0.0000
+## class 6:   0.8649 0.1288 0.0056 0.0006
+## class 7:   0.9981 0.0018 0.0001 0.0000
+## class 8:   0.9415 0.0583 0.0002 0.0000
+## class 9:   0.9910 0.0080 0.0007 0.0003
+## class 10:  0.6712 0.0560 0.1112 0.1616
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9994 0.0006 0.0000 0.0000
+## class 2:   0.9953 0.0003 0.0037 0.0008
+## class 3:   0.9998 0.0001 0.0001 0.0000
+## class 4:   0.9844 0.0155 0.0001 0.0001
+## class 5:   0.9998 0.0001 0.0001 0.0000
+## class 6:   0.9845 0.0112 0.0000 0.0043
+## class 7:   0.9992 0.0004 0.0003 0.0000
+## class 8:   0.9228 0.0689 0.0072 0.0010
+## class 9:   0.9999 0.0001 0.0000 0.0000
+## class 10:  0.7789 0.0348 0.0632 0.1231
+## 
+## Estimated class population shares 
+##  0.1563 0.0083 0.0764 0.0773 0.553 0.0172 0.0522 0.008 0.0488 0.0025 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  8e-04 2e-04 0.0066 0.9498 0.0132 0.0065 0.0211 0.0019 
+##  
+## ========================================================= 
+## Fit for 10 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 249 
+## residual degrees of freedom: 30252 
+## maximum log-likelihood: -12895.38 
+##  
+## AIC(10): 26288.77
+## BIC(10): 28361.82
+## G^2(10): 766.8243 (Likelihood ratio/deviance statistic) 
+## X^2(10): 17930.67 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model11. &lt;- poLCA(items8, data8, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -12988.67 ... best llik = -12988.67
+## Model 2: llik = -13028.36 ... best llik = -12988.67
+## Model 3: llik = -13099.06 ... best llik = -12988.67
+## Model 4: llik = -13105.37 ... best llik = -12988.67
+## Model 5: llik = -13230.6 ... best llik = -12988.67
+## Model 6: llik = -13165.5 ... best llik = -12988.67
+## Model 7: llik = -13098.07 ... best llik = -12988.67
+## Model 8: llik = -13250.42 ... best llik = -12988.67
+## Model 9: llik = -13037.56 ... best llik = -12988.67
+## Model 10: llik = -12962.69 ... best llik = -12962.69
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9814 0.0164 0.0016 0.0006
+## class 2:   0.2549 0.4878 0.2196 0.0378
+## class 3:   0.9273 0.0693 0.0031 0.0003
+## class 4:   0.5080 0.0686 0.1071 0.3164
+## class 5:   0.9481 0.0388 0.0051 0.0080
+## class 6:   0.9873 0.0106 0.0019 0.0002
+## class 7:   0.5546 0.3388 0.1029 0.0037
+## class 8:   0.9783 0.0154 0.0058 0.0005
+## class 9:   0.7676 0.0527 0.1298 0.0499
+## class 10:  0.9268 0.0674 0.0036 0.0022
+## class 11:  0.9812 0.0163 0.0019 0.0006
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9976 0.0021 0.0003 0.0000
+## class 2:   0.9633 0.0065 0.0301 0.0001
+## class 3:   0.6679 0.2990 0.0330 0.0000
+## class 4:   0.8502 0.0000 0.0001 0.1498
+## class 5:   0.9191 0.0307 0.0482 0.0019
+## class 6:   0.9982 0.0015 0.0003 0.0000
+## class 7:   0.5499 0.3981 0.0503 0.0017
+## class 8:   0.9949 0.0033 0.0017 0.0001
+## class 9:   0.0498 0.1312 0.4964 0.3227
+## class 10:  0.9908 0.0068 0.0024 0.0001
+## class 11:  0.9995 0.0000 0.0004 0.0001
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9914 0.0085 0.0001 0.0000
+## class 2:   0.3645 0.5106 0.1124 0.0125
+## class 3:   0.9722 0.0277 0.0000 0.0000
+## class 4:   0.3958 0.0694 0.0509 0.4839
+## class 5:   0.9915 0.0074 0.0006 0.0005
+## class 6:   0.9957 0.0043 0.0000 0.0000
+## class 7:   0.7357 0.2388 0.0116 0.0140
+## class 8:   0.9892 0.0106 0.0001 0.0001
+## class 9:   0.9007 0.0169 0.0554 0.0271
+## class 10:  0.9420 0.0572 0.0001 0.0006
+## class 11:  0.9700 0.0294 0.0000 0.0006
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9943 0.0054 0.0003 0.0000
+## class 2:   0.9552 0.0252 0.0195 0.0000
+## class 3:   0.5649 0.4080 0.0261 0.0010
+## class 4:   0.8403 0.0277 0.0315 0.1005
+## class 5:   0.9158 0.0337 0.0462 0.0043
+## class 6:   0.9952 0.0045 0.0003 0.0000
+## class 7:   0.5732 0.3754 0.0461 0.0052
+## class 8:   0.9909 0.0082 0.0007 0.0001
+## class 9:   0.2606 0.0344 0.4334 0.2716
+## class 10:  0.9796 0.0182 0.0019 0.0003
+## class 11:  0.9925 0.0074 0.0001 0.0001
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9998 0.0002 0.0000 0.0000
+## class 2:   0.9460 0.0540 0.0000 0.0000
+## class 3:   0.9998 0.0002 0.0000 0.0000
+## class 4:   0.6136 0.0829 0.1518 0.1518
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.9999 0.0001 0.0000 0.0000
+## class 7:   0.9998 0.0002 0.0000 0.0000
+## class 8:   0.9998 0.0002 0.0000 0.0000
+## class 9:   0.9784 0.0216 0.0000 0.0000
+## class 10:  0.9861 0.0139 0.0000 0.0000
+## class 11:  0.9991 0.0009 0.0000 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   0.9980 0.0020 0.0000 0.0000
+## class 4:   0.9118 0.0000 0.0051 0.0830
+## class 5:   0.9964 0.0036 0.0000 0.0000
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   0.9942 0.0000 0.0057 0.0000
+## class 8:   0.9992 0.0008 0.0000 0.0000
+## class 9:   0.9407 0.0125 0.0372 0.0097
+## class 10:  0.9999 0.0001 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9972 0.0021 0.0007 0.0001
+## class 2:   0.7751 0.1918 0.0260 0.0071
+## class 3:   0.9801 0.0190 0.0005 0.0004
+## class 4:   0.6134 0.0009 0.1096 0.2761
+## class 5:   0.9661 0.0266 0.0066 0.0008
+## class 6:   0.9960 0.0034 0.0006 0.0000
+## class 7:   0.9213 0.0764 0.0001 0.0022
+## class 8:   0.9774 0.0198 0.0028 0.0000
+## class 9:   0.8951 0.0806 0.0183 0.0060
+## class 10:  0.9784 0.0131 0.0067 0.0017
+## class 11:  0.9318 0.0671 0.0008 0.0004
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9991 0.0007 0.0002 0.0000
+## class 2:   0.9952 0.0039 0.0008 0.0001
+## class 3:   0.9932 0.0067 0.0001 0.0000
+## class 4:   0.7060 0.0000 0.1195 0.1745
+## class 5:   0.9864 0.0124 0.0010 0.0002
+## class 6:   0.9992 0.0007 0.0001 0.0000
+## class 7:   0.9080 0.0863 0.0001 0.0057
+## class 8:   0.9986 0.0013 0.0001 0.0001
+## class 9:   0.8763 0.0772 0.0185 0.0280
+## class 10:  0.9996 0.0003 0.0000 0.0000
+## class 11:  0.9652 0.0311 0.0007 0.0031
+## 
+## Estimated class population shares 
+##  0.1318 0.0078 0.0098 0.0012 0.0171 0.7603 0.0039 0.0318 0.0037 0.0086 0.0205 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0036 0.0059 0.0023 0.001 0.0028 0.9775 0.0024 0.0038 2e-04 5e-04 
+##  
+## ========================================================= 
+## Fit for 11 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 274 
+## residual degrees of freedom: 30227 
+## maximum log-likelihood: -12962.69 
+##  
+## AIC(11): 26473.39
+## BIC(11): 28754.58
+## G^2(11): 902.4976 (Likelihood ratio/deviance statistic) 
+## X^2(11): 59980.89 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model12. &lt;- poLCA(items8, data8, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13049.58 ... best llik = -13049.58
+## Model 2: llik = -13359.06 ... best llik = -13049.58
+## Model 3: llik = -13531.6 ... best llik = -13049.58
+## Model 4: llik = -13187.98 ... best llik = -13049.58
+## Model 5: llik = -13255.26 ... best llik = -13049.58
+## Model 6: llik = -13314.52 ... best llik = -13049.58
+## Model 7: llik = -13154.02 ... best llik = -13049.58
+## Model 8: llik = -13003.37 ... best llik = -13003.37
+## Model 9: llik = -13537.31 ... best llik = -13003.37
+## Model 10: llik = -12908.82 ... best llik = -12908.82
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9866 0.0039 0.0044 0.0051
+## class 2:   0.7901 0.1669 0.0360 0.0070
+## class 3:   0.9922 0.0072 0.0004 0.0002
+## class 4:   0.8059 0.1359 0.0569 0.0013
+## class 5:   0.5003 0.0867 0.2403 0.1727
+## class 6:   0.9880 0.0112 0.0006 0.0002
+## class 7:   0.8762 0.0637 0.0397 0.0204
+## class 8:   0.4536 0.4319 0.1119 0.0026
+## class 9:   0.9616 0.0347 0.0009 0.0028
+## class 10:  0.9658 0.0236 0.0093 0.0013
+## class 11:  0.9984 0.0004 0.0008 0.0004
+## class 12:  0.9757 0.0225 0.0013 0.0004
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9773 0.0065 0.0103 0.0059
+## class 2:   0.9981 0.0008 0.0011 0.0000
+## class 3:   0.9983 0.0016 0.0001 0.0000
+## class 4:   0.7964 0.1042 0.0989 0.0004
+## class 5:   0.6692 0.0340 0.1306 0.1661
+## class 6:   0.9998 0.0001 0.0001 0.0000
+## class 7:   0.1527 0.5204 0.1831 0.1438
+## class 8:   0.9524 0.0392 0.0084 0.0000
+## class 9:   0.9980 0.0006 0.0006 0.0008
+## class 10:  0.9976 0.0016 0.0008 0.0000
+## class 11:  0.9998 0.0001 0.0001 0.0000
+## class 12:  0.9741 0.0204 0.0052 0.0003
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9857 0.0140 0.0000 0.0003
+## class 2:   0.8000 0.1920 0.0048 0.0033
+## class 3:   0.9976 0.0024 0.0000 0.0000
+## class 4:   0.9478 0.0510 0.0008 0.0004
+## class 5:   0.6144 0.0666 0.1531 0.1660
+## class 6:   0.9966 0.0033 0.0000 0.0000
+## class 7:   0.9246 0.0435 0.0141 0.0177
+## class 8:   0.5712 0.3824 0.0460 0.0003
+## class 9:   0.9941 0.0038 0.0000 0.0021
+## class 10:  0.9964 0.0030 0.0006 0.0000
+## class 11:  0.9985 0.0015 0.0000 0.0000
+## class 12:  0.9949 0.0051 0.0000 0.0000
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9684 0.0140 0.0149 0.0027
+## class 2:   0.9837 0.0156 0.0007 0.0000
+## class 3:   0.9926 0.0074 0.0001 0.0000
+## class 4:   0.8008 0.1302 0.0685 0.0005
+## class 5:   0.7534 0.0234 0.1280 0.0953
+## class 6:   0.9975 0.0024 0.0001 0.0000
+## class 7:   0.0460 0.5547 0.2247 0.1747
+## class 8:   0.9723 0.0252 0.0025 0.0000
+## class 9:   0.9952 0.0034 0.0013 0.0001
+## class 10:  0.9942 0.0053 0.0004 0.0000
+## class 11:  0.9964 0.0036 0.0000 0.0000
+## class 12:  0.9764 0.0185 0.0048 0.0003
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9997 0.0003 0.0000 0.0000
+## class 2:   0.9826 0.0174 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   0.8734 0.0426 0.0421 0.0419
+## class 6:   0.9999 0.0001 0.0000 0.0000
+## class 7:   0.9931 0.0068 0.0000 0.0001
+## class 8:   0.9764 0.0236 0.0000 0.0000
+## class 9:   0.9995 0.0005 0.0000 0.0000
+## class 10:  0.9999 0.0001 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  0.9998 0.0002 0.0000 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9924 0.0076 0.0000 0.0000
+## class 2:   0.9999 0.0000 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9961 0.0034 0.0005 0.0000
+## class 5:   0.9459 0.0003 0.0263 0.0276
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   0.9810 0.0038 0.0105 0.0047
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   0.9998 0.0000 0.0002 0.0000
+## class 10:  1.0000 0.0000 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  0.9996 0.0004 0.0000 0.0000
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.8009 0.1954 0.0024 0.0013
+## class 2:   0.9131 0.0796 0.0028 0.0045
+## class 3:   0.9992 0.0005 0.0003 0.0000
+## class 4:   0.9487 0.0478 0.0034 0.0002
+## class 5:   0.7912 0.0470 0.0736 0.0881
+## class 6:   0.9972 0.0024 0.0004 0.0000
+## class 7:   0.9341 0.0534 0.0085 0.0040
+## class 8:   0.9207 0.0676 0.0117 0.0000
+## class 9:   0.9792 0.0197 0.0007 0.0004
+## class 10:  0.9919 0.0059 0.0021 0.0000
+## class 11:  0.9918 0.0067 0.0014 0.0000
+## class 12:  0.9969 0.0026 0.0005 0.0000
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.8539 0.1421 0.0006 0.0035
+## class 2:   0.9968 0.0015 0.0011 0.0005
+## class 3:   0.9997 0.0003 0.0000 0.0000
+## class 4:   0.9903 0.0094 0.0003 0.0000
+## class 5:   0.8688 0.0098 0.0475 0.0740
+## class 6:   0.9995 0.0004 0.0000 0.0000
+## class 7:   0.8931 0.0949 0.0074 0.0046
+## class 8:   0.9942 0.0057 0.0000 0.0000
+## class 9:   0.9820 0.0137 0.0014 0.0028
+## class 10:  0.9992 0.0008 0.0000 0.0000
+## class 11:  0.9995 0.0005 0.0000 0.0000
+## class 12:  0.9976 0.0021 0.0003 0.0000
+## 
+## Estimated class population shares 
+##  0.0054 0.0202 0.3242 0.0171 0.0041 0.2238 0.0046 0.0091 0.0169 0.0252 0.2618 0.0876 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0017 0.008 0.9487 0.0082 0.0034 0.0127 0.0042 0.004 1e-04 0.0058 0.0033 
+##  
+## ========================================================= 
+## Fit for 12 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 299 
+## residual degrees of freedom: 30202 
+## maximum log-likelihood: -12908.82 
+##  
+## AIC(12): 26415.64
+## BIC(12): 28904.97
+## G^2(12): 789.9362 (Likelihood ratio/deviance statistic) 
+## X^2(12): 154677.4 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model13. &lt;- poLCA(items8, data8, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13307.38 ... best llik = -13307.38
+## Model 2: llik = -13048.83 ... best llik = -13048.83
+## Model 3: llik = -12966.51 ... best llik = -12966.51
+## Model 4: llik = -13358.72 ... best llik = -12966.51
+## Model 5: llik = -13453.89 ... best llik = -12966.51
+## Model 6: llik = -13042.24 ... best llik = -12966.51
+## Model 7: llik = -13544.6 ... best llik = -12966.51
+## Model 8: llik = -13218.02 ... best llik = -12966.51
+## Model 9: llik = -13076.78 ... best llik = -12966.51
+## Model 10: llik = -13308.74 ... best llik = -12966.51
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9890 0.0103 0.0003 0.0005
+## class 2:   0.8525 0.1376 0.0050 0.0049
+## class 3:   0.2368 0.5475 0.2058 0.0099
+## class 4:   0.9931 0.0057 0.0004 0.0007
+## class 5:   0.9938 0.0052 0.0009 0.0001
+## class 6:   0.4066 0.0943 0.1993 0.2998
+## class 7:   0.9626 0.0339 0.0032 0.0003
+## class 8:   0.9981 0.0014 0.0002 0.0002
+## class 9:   0.9969 0.0024 0.0005 0.0003
+## class 10:  0.9930 0.0000 0.0004 0.0066
+## class 11:  0.9837 0.0108 0.0045 0.0011
+## class 12:  0.9323 0.0242 0.0429 0.0007
+## class 13:  0.9866 0.0111 0.0015 0.0007
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9996 0.0002 0.0002 0.0000
+## class 2:   0.9984 0.0016 0.0000 0.0000
+## class 3:   0.8435 0.0920 0.0643 0.0002
+## class 4:   0.9979 0.0008 0.0013 0.0000
+## class 5:   0.9977 0.0019 0.0004 0.0000
+## class 6:   0.7484 0.0000 0.0298 0.2218
+## class 7:   0.9915 0.0080 0.0005 0.0000
+## class 8:   0.9944 0.0056 0.0001 0.0000
+## class 9:   0.9980 0.0004 0.0016 0.0000
+## class 10:  0.9676 0.0051 0.0253 0.0020
+## class 11:  0.9986 0.0009 0.0005 0.0000
+## class 12:  0.1194 0.4677 0.2872 0.1257
+## class 13:  0.9968 0.0015 0.0016 0.0000
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9984 0.0016 0.0000 0.0000
+## class 2:   0.5888 0.4112 0.0000 0.0000
+## class 3:   0.5999 0.3395 0.0605 0.0000
+## class 4:   0.9986 0.0014 0.0000 0.0000
+## class 5:   0.9994 0.0006 0.0000 0.0000
+## class 6:   0.4526 0.0399 0.1737 0.3338
+## class 7:   0.9798 0.0201 0.0000 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   0.9994 0.0006 0.0000 0.0000
+## class 10:  0.9994 0.0006 0.0000 0.0000
+## class 11:  0.9959 0.0041 0.0000 0.0000
+## class 12:  0.9840 0.0020 0.0088 0.0052
+## class 13:  0.9967 0.0032 0.0000 0.0001
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9999 0.0000 0.0000 0.0000
+## class 2:   0.9875 0.0114 0.0011 0.0000
+## class 3:   0.8876 0.0797 0.0327 0.0000
+## class 4:   0.9962 0.0025 0.0013 0.0000
+## class 5:   0.9942 0.0057 0.0002 0.0000
+## class 6:   0.8014 0.0113 0.0392 0.1481
+## class 7:   0.9805 0.0192 0.0003 0.0000
+## class 8:   0.9873 0.0119 0.0007 0.0000
+## class 9:   0.9976 0.0002 0.0023 0.0000
+## class 10:  0.9590 0.0180 0.0219 0.0011
+## class 11:  0.9954 0.0044 0.0002 0.0000
+## class 12:  0.1802 0.4069 0.2860 0.1269
+## class 13:  0.9939 0.0056 0.0004 0.0001
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   0.9100 0.0900 0.0000 0.0000
+## class 3:   0.9881 0.0119 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.8344 0.0268 0.0694 0.0694
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   1.0000 0.0000 0.0000 0.0000
+## class 10:  1.0000 0.0000 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  0.9859 0.0141 0.0000 0.0000
+## class 13:  0.9998 0.0002 0.0000 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   0.9997 0.0003 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.9249 0.0000 0.0302 0.0449
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   0.9998 0.0002 0.0000 0.0000
+## class 9:   1.0000 0.0000 0.0000 0.0000
+## class 10:  0.9943 0.0057 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  0.9734 0.0098 0.0136 0.0032
+## class 13:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9967 0.0032 0.0000 0.0001
+## class 2:   0.7725 0.2133 0.0000 0.0142
+## class 3:   0.8853 0.1011 0.0135 0.0001
+## class 4:   0.9974 0.0018 0.0007 0.0001
+## class 5:   0.9985 0.0010 0.0004 0.0000
+## class 6:   0.7002 0.0609 0.0892 0.1497
+## class 7:   0.9960 0.0030 0.0009 0.0000
+## class 8:   0.9930 0.0063 0.0006 0.0000
+## class 9:   0.9982 0.0011 0.0007 0.0000
+## class 10:  0.8065 0.1927 0.0008 0.0000
+## class 11:  0.9928 0.0045 0.0026 0.0001
+## class 12:  0.9708 0.0190 0.0096 0.0007
+## class 13:  0.9931 0.0036 0.0030 0.0003
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9993 0.0002 0.0004 0.0000
+## class 2:   0.9878 0.0109 0.0000 0.0013
+## class 3:   0.9968 0.0032 0.0000 0.0000
+## class 4:   0.9999 0.0000 0.0001 0.0000
+## class 5:   0.9999 0.0000 0.0001 0.0000
+## class 6:   0.7959 0.0323 0.0598 0.1120
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   0.9995 0.0004 0.0001 0.0000
+## class 9:   0.9997 0.0001 0.0003 0.0000
+## class 10:  0.8830 0.1122 0.0002 0.0046
+## class 11:  0.9999 0.0000 0.0000 0.0000
+## class 12:  0.9231 0.0591 0.0099 0.0079
+## class 13:  0.9995 0.0000 0.0004 0.0000
+## 
+## Estimated class population shares 
+##  0.0413 0.0056 0.0122 0.1016 0.3265 0.0025 0.1892 0.0782 0.1302 0.0141 0.0815 0.0066 0.0068 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0036 0.0012 0.0096 0.9379 0.0024 0.0299 0.001 0.0071 8e-04 0.0066 
+##  
+## ========================================================= 
+## Fit for 13 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 324 
+## residual degrees of freedom: 30177 
+## maximum log-likelihood: -12966.51 
+##  
+## AIC(13): 26581.02
+## BIC(13): 29278.48
+## G^2(13): 911.9545 (Likelihood ratio/deviance statistic) 
+## X^2(13): 19690.14 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model14. &lt;- poLCA(items8, data8, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13075.52 ... best llik = -13075.52
+## Model 2: llik = -12943.75 ... best llik = -12943.75
+## Model 3: llik = -13024.9 ... best llik = -12943.75
+## Model 4: llik = -13202.4 ... best llik = -12943.75
+## Model 5: llik = -13495.79 ... best llik = -12943.75
+## Model 6: llik = -13154.48 ... best llik = -12943.75
+## Model 7: llik = -12934.21 ... best llik = -12934.21
+## Model 8: llik = -13181.97 ... best llik = -12934.21
+## Model 9: llik = -13020.06 ... best llik = -12934.21
+## Model 10: llik = -13087.9 ... best llik = -12934.21
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9908 0.0046 0.0039 0.0006
+## class 2:   0.3917 0.5580 0.0444 0.0059
+## class 3:   0.8946 0.0004 0.0388 0.0663
+## class 4:   0.9677 0.0238 0.0071 0.0014
+## class 5:   0.9044 0.0899 0.0057 0.0001
+## class 6:   0.8582 0.1268 0.0136 0.0014
+## class 7:   0.9934 0.0055 0.0010 0.0001
+## class 8:   0.9347 0.0597 0.0055 0.0001
+## class 9:   0.4382 0.1214 0.1107 0.3296
+## class 10:  0.1131 0.1961 0.5921 0.0987
+## class 11:  0.7760 0.1970 0.0181 0.0089
+## class 12:  0.9763 0.0203 0.0026 0.0009
+## class 13:  0.9953 0.0039 0.0005 0.0003
+## class 14:  0.9945 0.0044 0.0009 0.0002
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9972 0.0024 0.0004 0.0000
+## class 2:   0.9283 0.0599 0.0115 0.0002
+## class 3:   0.3303 0.0021 0.1546 0.5130
+## class 4:   0.9952 0.0026 0.0022 0.0000
+## class 5:   0.4436 0.2297 0.3261 0.0006
+## class 6:   0.9809 0.0186 0.0005 0.0000
+## class 7:   0.9995 0.0004 0.0001 0.0000
+## class 8:   0.5464 0.3852 0.0683 0.0001
+## class 9:   0.9464 0.0000 0.0522 0.0014
+## class 10:  0.6586 0.1111 0.1713 0.0590
+## class 11:  0.9945 0.0033 0.0021 0.0001
+## class 12:  0.9979 0.0018 0.0003 0.0000
+## class 13:  0.9981 0.0016 0.0003 0.0000
+## class 14:  0.9982 0.0017 0.0001 0.0000
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9984 0.0015 0.0000 0.0000
+## class 2:   0.4209 0.5590 0.0103 0.0098
+## class 3:   0.9134 0.0004 0.0218 0.0643
+## class 4:   0.9940 0.0059 0.0001 0.0000
+## class 5:   0.9960 0.0030 0.0010 0.0000
+## class 6:   0.9181 0.0806 0.0013 0.0000
+## class 7:   0.9968 0.0031 0.0000 0.0000
+## class 8:   0.9927 0.0065 0.0008 0.0000
+## class 9:   0.4711 0.0001 0.0452 0.4835
+## class 10:  0.4309 0.2683 0.2785 0.0223
+## class 11:  0.8109 0.1825 0.0039 0.0028
+## class 12:  0.9964 0.0035 0.0001 0.0000
+## class 13:  0.9993 0.0007 0.0000 0.0000
+## class 14:  0.9990 0.0010 0.0000 0.0000
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9873 0.0122 0.0005 0.0000
+## class 2:   0.9135 0.0834 0.0031 0.0000
+## class 3:   0.4356 0.0000 0.2004 0.3640
+## class 4:   0.9930 0.0063 0.0007 0.0000
+## class 5:   0.4466 0.2285 0.3018 0.0231
+## class 6:   0.9611 0.0387 0.0001 0.0000
+## class 7:   0.9998 0.0000 0.0001 0.0000
+## class 8:   0.5131 0.4118 0.0700 0.0051
+## class 9:   0.8725 0.0000 0.0046 0.1228
+## class 10:  0.8050 0.0671 0.1128 0.0151
+## class 11:  0.9926 0.0073 0.0001 0.0000
+## class 12:  0.9914 0.0085 0.0001 0.0000
+## class 13:  0.9910 0.0088 0.0002 0.0000
+## class 14:  0.9879 0.0120 0.0001 0.0000
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   0.9457 0.0543 0.0000 0.0000
+## class 3:   0.9217 0.0167 0.0201 0.0415
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   0.9882 0.0118 0.0000 0.0000
+## class 6:   0.9992 0.0008 0.0000 0.0000
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   0.8232 0.0019 0.1105 0.0645
+## class 10:  0.9807 0.0193 0.0000 0.0000
+## class 11:  0.9607 0.0393 0.0000 0.0000
+## class 12:  1.0000 0.0000 0.0000 0.0000
+## class 13:  1.0000 0.0000 0.0000 0.0000
+## class 14:  1.0000 0.0000 0.0000 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3) Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.000
+## class 2:   1.0000 0.0000 0.0000 0.000
+## class 3:   0.9536 0.0067 0.0397 0.000
+## class 4:   0.9999 0.0001 0.0000 0.000
+## class 5:   0.9912 0.0077 0.0011 0.000
+## class 6:   0.9999 0.0001 0.0000 0.000
+## class 7:   1.0000 0.0000 0.0000 0.000
+## class 8:   0.9928 0.0072 0.0000 0.000
+## class 9:   0.8261 0.0000 0.0580 0.116
+## class 10:  1.0000 0.0000 0.0000 0.000
+## class 11:  1.0000 0.0000 0.0000 0.000
+## class 12:  1.0000 0.0000 0.0000 0.000
+## class 13:  1.0000 0.0000 0.0000 0.000
+## class 14:  1.0000 0.0000 0.0000 0.000
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9855 0.0076 0.0067 0.0002
+## class 2:   0.8202 0.1685 0.0108 0.0005
+## class 3:   0.7448 0.2043 0.0311 0.0198
+## class 4:   0.9928 0.0051 0.0020 0.0000
+## class 5:   0.9942 0.0014 0.0044 0.0000
+## class 6:   0.9604 0.0376 0.0018 0.0002
+## class 7:   0.9944 0.0052 0.0004 0.0000
+## class 8:   0.9755 0.0239 0.0006 0.0000
+## class 9:   0.6394 0.0001 0.2018 0.1588
+## class 10:  0.7764 0.1764 0.0076 0.0396
+## class 11:  0.9728 0.0126 0.0022 0.0124
+## class 12:  0.9931 0.0063 0.0005 0.0001
+## class 13:  0.9993 0.0002 0.0005 0.0000
+## class 14:  0.9965 0.0032 0.0004 0.0000
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9965 0.0032 0.0003 0.0000
+## class 2:   0.9887 0.0087 0.0000 0.0026
+## class 3:   0.6426 0.2332 0.0552 0.0689
+## class 4:   0.9995 0.0004 0.0000 0.0000
+## class 5:   0.9915 0.0029 0.0000 0.0055
+## class 6:   0.9948 0.0050 0.0001 0.0000
+## class 7:   0.9996 0.0004 0.0000 0.0000
+## class 8:   0.9496 0.0504 0.0000 0.0000
+## class 9:   0.8241 0.0000 0.0209 0.1550
+## class 10:  0.9645 0.0158 0.0197 0.0000
+## class 11:  0.9990 0.0004 0.0000 0.0006
+## class 12:  0.9906 0.0085 0.0008 0.0001
+## class 13:  0.9997 0.0001 0.0002 0.0000
+## class 14:  0.9977 0.0020 0.0004 0.0000
+## 
+## Estimated class population shares 
+##  0.031 0.006 0.0024 0.0822 0.0054 0.0393 0.4923 0.0087 0.0012 0.0034 0.007 0.0456 0.1765 0.0955 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0044 0.0042 0.0022 0.0028 0.0044 0.0201 0.9428 0.0133 0.001 0.0031 4e-04 0.0013 
+##  
+## ========================================================= 
+## Fit for 14 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 349 
+## residual degrees of freedom: 30152 
+## maximum log-likelihood: -12934.21 
+##  
+## AIC(14): 26566.42
+## BIC(14): 29472.03
+## G^2(14): 847.5842 (Likelihood ratio/deviance statistic) 
+## X^2(14): 7867.276 (Chi-square goodness of fit) 
+##  
+## ALERT: estimation algorithm automatically restarted with new initial values 
+## </code></pre>
+<pre class="r"><code>model15. &lt;- poLCA(items8, data8, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13300.11 ... best llik = -13300.11
+## Model 2: llik = -13010.58 ... best llik = -13010.58
+## Model 3: llik = -12969.45 ... best llik = -12969.45
+## Model 4: llik = -13314.06 ... best llik = -12969.45
+## Model 5: llik = -13025.89 ... best llik = -12969.45
+## Model 6: llik = -13098.99 ... best llik = -12969.45
+## Model 7: llik = -13103.77 ... best llik = -12969.45
+## Model 8: llik = -12916.6 ... best llik = -12916.6
+## Model 9: llik = -13102.45 ... best llik = -12916.6
+## Model 10: llik = -13115.21 ... best llik = -12916.6
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.4416 0.4698 0.0883 0.0004
+## class 2:   0.7830 0.0000 0.1151 0.1019
+## class 3:   0.9973 0.0003 0.0023 0.0001
+## class 4:   0.9775 0.0199 0.0026 0.0000
+## class 5:   0.9786 0.0212 0.0002 0.0000
+## class 6:   0.5884 0.1338 0.0004 0.2773
+## class 7:   0.4302 0.2604 0.2439 0.0656
+## class 8:   0.9864 0.0130 0.0006 0.0000
+## class 9:   0.9665 0.0332 0.0002 0.0001
+## class 10:  0.9863 0.0129 0.0008 0.0000
+## class 11:  0.9852 0.0147 0.0001 0.0000
+## class 12:  0.9968 0.0031 0.0001 0.0000
+## class 13:  0.8653 0.1025 0.0322 0.0000
+## class 14:  0.9975 0.0001 0.0022 0.0002
+## class 15:  0.9983 0.0015 0.0001 0.0001
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9417 0.0501 0.0082 0.0000
+## class 2:   0.1900 0.0001 0.2756 0.5343
+## class 3:   0.9962 0.0036 0.0002 0.0000
+## class 4:   0.9526 0.0044 0.0400 0.0029
+## class 5:   0.9878 0.0109 0.0013 0.0000
+## class 6:   0.7635 0.0000 0.0000 0.2365
+## class 7:   0.8933 0.0327 0.0651 0.0089
+## class 8:   0.9981 0.0014 0.0001 0.0005
+## class 9:   0.9933 0.0062 0.0005 0.0000
+## class 10:  0.9955 0.0041 0.0003 0.0001
+## class 11:  0.9984 0.0015 0.0001 0.0000
+## class 12:  0.9991 0.0006 0.0003 0.0000
+## class 13:  0.1588 0.5909 0.2503 0.0001
+## class 14:  0.9988 0.0010 0.0002 0.0000
+## class 15:  0.9952 0.0020 0.0027 0.0002
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.3781 0.6175 0.0043 0.0001
+## class 2:   0.9118 0.0027 0.0506 0.0349
+## class 3:   0.9965 0.0035 0.0000 0.0000
+## class 4:   0.9855 0.0145 0.0000 0.0000
+## class 5:   0.9943 0.0057 0.0000 0.0000
+## class 6:   0.3362 0.0375 0.0394 0.5870
+## class 7:   0.8412 0.0577 0.0834 0.0177
+## class 8:   0.9992 0.0008 0.0000 0.0000
+## class 9:   0.9781 0.0219 0.0000 0.0000
+## class 10:  0.9986 0.0014 0.0000 0.0000
+## class 11:  0.9961 0.0039 0.0000 0.0000
+## class 12:  0.9994 0.0006 0.0000 0.0000
+## class 13:  0.9437 0.0421 0.0090 0.0052
+## class 14:  0.9937 0.0063 0.0000 0.0000
+## class 15:  1.0000 0.0000 0.0000 0.0000
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9229 0.0597 0.0174 0.0000
+## class 2:   0.0887 0.0000 0.3587 0.5526
+## class 3:   0.9989 0.0010 0.0001 0.0000
+## class 4:   0.8905 0.0640 0.0441 0.0014
+## class 5:   0.9660 0.0322 0.0018 0.0000
+## class 6:   0.9575 0.0349 0.0002 0.0075
+## class 7:   0.9706 0.0253 0.0041 0.0000
+## class 8:   0.9988 0.0009 0.0001 0.0002
+## class 9:   0.9923 0.0077 0.0001 0.0000
+## class 10:  0.9799 0.0196 0.0005 0.0000
+## class 11:  0.9985 0.0014 0.0000 0.0000
+## class 12:  0.9994 0.0003 0.0003 0.0000
+## class 13:  0.2188 0.5124 0.2513 0.0175
+## class 14:  0.9951 0.0048 0.0001 0.0000
+## class 15:  0.9885 0.0090 0.0024 0.0001
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9543 0.0457 0.0000 0.0000
+## class 2:   0.9339 0.0336 0.0000 0.0324
+## class 3:   0.9996 0.0004 0.0000 0.0000
+## class 4:   0.9989 0.0011 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.6052 0.0927 0.1858 0.1162
+## class 7:   0.9880 0.0120 0.0000 0.0000
+## class 8:   0.9994 0.0006 0.0000 0.0000
+## class 9:   0.9997 0.0003 0.0000 0.0000
+## class 10:  0.9999 0.0001 0.0000 0.0000
+## class 11:  0.9999 0.0001 0.0000 0.0000
+## class 12:  1.0000 0.0000 0.0000 0.0000
+## class 13:  0.9993 0.0007 0.0000 0.0000
+## class 14:  0.9998 0.0002 0.0000 0.0000
+## class 15:  0.9999 0.0001 0.0000 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   0.9166 0.0016 0.0488 0.0330
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9972 0.0028 0.0000 0.0000
+## class 5:   0.9999 0.0001 0.0000 0.0000
+## class 6:   0.8587 0.0000 0.0696 0.0718
+## class 7:   0.9997 0.0000 0.0003 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   0.9992 0.0008 0.0000 0.0000
+## class 10:  0.9998 0.0002 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  1.0000 0.0000 0.0000 0.0000
+## class 13:  0.9894 0.0106 0.0000 0.0000
+## class 14:  1.0000 0.0000 0.0000 0.0000
+## class 15:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.8634 0.1366 0.0001 0.0000
+## class 2:   0.8040 0.0763 0.0692 0.0505
+## class 3:   0.9980 0.0005 0.0014 0.0000
+## class 4:   0.8554 0.1443 0.0002 0.0000
+## class 5:   0.9966 0.0033 0.0001 0.0000
+## class 6:   0.7628 0.0000 0.0763 0.1609
+## class 7:   0.8782 0.0724 0.0303 0.0191
+## class 8:   0.9984 0.0008 0.0005 0.0003
+## class 9:   0.9717 0.0271 0.0013 0.0000
+## class 10:  0.9968 0.0031 0.0001 0.0000
+## class 11:  0.9973 0.0023 0.0004 0.0000
+## class 12:  0.9947 0.0040 0.0013 0.0000
+## class 13:  0.9807 0.0193 0.0000 0.0000
+## class 14:  0.9978 0.0015 0.0007 0.0000
+## class 15:  0.9985 0.0010 0.0005 0.0000
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9921 0.0079 0.0000 0.0000
+## class 2:   0.8271 0.1137 0.0362 0.0230
+## class 3:   0.9997 0.0002 0.0001 0.0000
+## class 4:   0.8745 0.1195 0.0003 0.0057
+## class 5:   0.9995 0.0005 0.0000 0.0000
+## class 6:   0.6190 0.0000 0.0767 0.3044
+## class 7:   0.9909 0.0003 0.0079 0.0009
+## class 8:   0.9990 0.0006 0.0003 0.0001
+## class 9:   0.9958 0.0041 0.0000 0.0001
+## class 10:  0.9997 0.0003 0.0000 0.0000
+## class 11:  0.9996 0.0004 0.0000 0.0000
+## class 12:  0.9995 0.0004 0.0001 0.0000
+## class 13:  0.9605 0.0395 0.0001 0.0000
+## class 14:  0.9999 0.0000 0.0001 0.0000
+## class 15:  0.9994 0.0001 0.0005 0.0000
+## 
+## Estimated class population shares 
+##  0.0091 0.002 0.0208 0.0095 0.1128 0.001 0.012 0.018 0.0641 0.0239 0.29 0.1854 0.006 0.1715 0.0702 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0155 0.0018 0.0042 0.0105 9e-04 0.0056 0.005 0.9506 7e-04 0.0049 1e-04 
+##  
+## ========================================================= 
+## Fit for 15 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 374 
+## residual degrees of freedom: 30127 
+## maximum log-likelihood: -12916.6 
+##  
+## AIC(15): 26581.2
+## BIC(15): 29694.94
+## G^2(15): 827.02 (Likelihood ratio/deviance statistic) 
+## X^2(15): 15984.4 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model16. &lt;- poLCA(items8, data8, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13221.92 ... best llik = -13221.92
+## Model 2: llik = -13043.06 ... best llik = -13043.06
+## Model 3: llik = -13003.49 ... best llik = -13003.49
+## Model 4: llik = -12993.73 ... best llik = -12993.73
+## Model 5: llik = -12950.39 ... best llik = -12950.39
+## Model 6: llik = -13343.71 ... best llik = -12950.39
+## Model 7: llik = -13276.59 ... best llik = -12950.39
+## Model 8: llik = -12863.7 ... best llik = -12863.7
+## Model 9: llik = -13188.83 ... best llik = -12863.7
+## Model 10: llik = -13248.03 ... best llik = -12863.7
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.8187 0.0025 0.1153 0.0636
+## class 2:   0.9823 0.0153 0.0024 0.0001
+## class 3:   0.9942 0.0015 0.0035 0.0009
+## class 4:   0.9107 0.0800 0.0090 0.0003
+## class 5:   0.9898 0.0084 0.0017 0.0001
+## class 6:   0.7865 0.1867 0.0267 0.0000
+## class 7:   0.9333 0.0626 0.0020 0.0021
+## class 8:   0.9892 0.0092 0.0014 0.0002
+## class 9:   0.9320 0.0563 0.0042 0.0075
+## class 10:  0.9945 0.0043 0.0009 0.0003
+## class 11:  0.9960 0.0034 0.0005 0.0000
+## class 12:  0.2092 0.4987 0.2551 0.0369
+## class 13:  0.9931 0.0022 0.0037 0.0010
+## class 14:  0.9748 0.0221 0.0027 0.0003
+## class 15:  0.6248 0.1353 0.0006 0.2393
+## class 16:  0.9822 0.0156 0.0019 0.0003
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.2409 0.0909 0.3878 0.2805
+## class 2:   0.9981 0.0014 0.0005 0.0000
+## class 3:   0.9984 0.0003 0.0013 0.0000
+## class 4:   0.9951 0.0041 0.0008 0.0000
+## class 5:   0.9939 0.0057 0.0003 0.0000
+## class 6:   0.3907 0.4887 0.1206 0.0000
+## class 7:   0.9904 0.0084 0.0012 0.0000
+## class 8:   0.9982 0.0007 0.0010 0.0000
+## class 9:   0.9949 0.0041 0.0010 0.0001
+## class 10:  0.9965 0.0004 0.0031 0.0000
+## class 11:  0.9978 0.0013 0.0009 0.0000
+## class 12:  0.9324 0.0264 0.0355 0.0057
+## class 13:  0.9998 0.0001 0.0002 0.0000
+## class 14:  0.9935 0.0060 0.0005 0.0000
+## class 15:  0.9461 0.0001 0.0038 0.0500
+## class 16:  0.9990 0.0005 0.0006 0.0000
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9078 0.0030 0.0442 0.0450
+## class 2:   0.9940 0.0060 0.0000 0.0000
+## class 3:   0.9998 0.0001 0.0000 0.0000
+## class 4:   0.9432 0.0565 0.0003 0.0000
+## class 5:   0.9962 0.0038 0.0000 0.0000
+## class 6:   0.9239 0.0733 0.0023 0.0005
+## class 7:   0.9226 0.0773 0.0000 0.0001
+## class 8:   0.9951 0.0049 0.0000 0.0000
+## class 9:   0.9711 0.0280 0.0008 0.0000
+## class 10:  0.9987 0.0013 0.0000 0.0000
+## class 11:  0.9998 0.0002 0.0000 0.0000
+## class 12:  0.2936 0.5573 0.1315 0.0176
+## class 13:  0.9944 0.0056 0.0000 0.0000
+## class 14:  0.9897 0.0103 0.0000 0.0000
+## class 15:  0.7165 0.0078 0.0068 0.2689
+## class 16:  0.9948 0.0052 0.0000 0.0000
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.3117 0.0453 0.3698 0.2733
+## class 2:   0.9926 0.0073 0.0000 0.0000
+## class 3:   0.9981 0.0005 0.0015 0.0000
+## class 4:   0.9860 0.0136 0.0004 0.0000
+## class 5:   0.9909 0.0091 0.0000 0.0000
+## class 6:   0.4165 0.4837 0.0998 0.0000
+## class 7:   0.9508 0.0485 0.0007 0.0000
+## class 8:   0.9906 0.0084 0.0009 0.0000
+## class 9:   0.9894 0.0099 0.0008 0.0000
+## class 10:  0.9940 0.0057 0.0003 0.0000
+## class 11:  0.9960 0.0028 0.0011 0.0000
+## class 12:  0.9572 0.0207 0.0221 0.0000
+## class 13:  0.9988 0.0010 0.0002 0.0000
+## class 14:  0.9848 0.0147 0.0005 0.0000
+## class 15:  0.9982 0.0002 0.0003 0.0013
+## class 16:  0.9962 0.0034 0.0004 0.0000
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9445 0.0190 0.0001 0.0364
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   0.9999 0.0001 0.0000 0.0000
+## class 4:   0.9990 0.0010 0.0000 0.0000
+## class 5:   0.9999 0.0001 0.0000 0.0000
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   0.9395 0.0605 0.0000 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   0.9993 0.0007 0.0000 0.0000
+## class 10:  0.9998 0.0002 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  0.9448 0.0552 0.0000 0.0000
+## class 13:  0.9999 0.0001 0.0000 0.0000
+## class 14:  0.9998 0.0002 0.0000 0.0000
+## class 15:  0.9084 0.0035 0.0861 0.0020
+## class 16:  1.0000 0.0000 0.0000 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9532 0.0098 0.0226 0.0145
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9999 0.0001 0.0000 0.0000
+## class 5:   0.9998 0.0002 0.0000 0.0000
+## class 6:   0.9958 0.0042 0.0000 0.0000
+## class 7:   0.9999 0.0001 0.0000 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   0.9998 0.0002 0.0000 0.0000
+## class 10:  0.9999 0.0001 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  1.0000 0.0000 0.0000 0.0000
+## class 13:  0.9992 0.0008 0.0000 0.0000
+## class 14:  1.0000 0.0000 0.0000 0.0000
+## class 15:  0.9330 0.0000 0.0326 0.0344
+## class 16:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.8467 0.0875 0.0413 0.0245
+## class 2:   0.9980 0.0017 0.0003 0.0000
+## class 3:   0.9987 0.0008 0.0005 0.0000
+## class 4:   0.9755 0.0209 0.0036 0.0000
+## class 5:   0.9921 0.0071 0.0007 0.0000
+## class 6:   0.9717 0.0282 0.0000 0.0000
+## class 7:   0.9667 0.0164 0.0012 0.0157
+## class 8:   0.9982 0.0017 0.0001 0.0000
+## class 9:   0.9453 0.0481 0.0060 0.0006
+## class 10:  0.9935 0.0050 0.0014 0.0000
+## class 11:  0.9989 0.0009 0.0002 0.0000
+## class 12:  0.7734 0.1832 0.0230 0.0204
+## class 13:  0.9524 0.0424 0.0050 0.0001
+## class 14:  0.9978 0.0019 0.0003 0.0000
+## class 15:  0.8428 0.0405 0.0366 0.0801
+## class 16:  0.9961 0.0033 0.0006 0.0000
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.8552 0.1044 0.0168 0.0236
+## class 2:   0.9989 0.0010 0.0001 0.0000
+## class 3:   0.9997 0.0001 0.0002 0.0000
+## class 4:   0.9993 0.0007 0.0000 0.0000
+## class 5:   0.9981 0.0018 0.0000 0.0000
+## class 6:   0.9745 0.0255 0.0000 0.0000
+## class 7:   0.9901 0.0002 0.0001 0.0095
+## class 8:   0.9996 0.0004 0.0000 0.0000
+## class 9:   0.9844 0.0141 0.0014 0.0001
+## class 10:  0.9994 0.0001 0.0005 0.0000
+## class 11:  0.9999 0.0001 0.0000 0.0000
+## class 12:  0.9809 0.0098 0.0093 0.0000
+## class 13:  0.9867 0.0132 0.0001 0.0000
+## class 14:  0.9999 0.0001 0.0000 0.0000
+## class 15:  0.8121 0.0001 0.0588 0.1290
+## class 16:  0.9972 0.0026 0.0002 0.0000
+## 
+## Estimated class population shares 
+##  0.0045 0.1831 0.0562 0.0379 0.048 0.0088 0.0037 0.0506 0.0058 0.0119 0.3124 0.0074 0.0696 0.1626 0.002 0.0355 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0038 0.0061 0.01 3e-04 0.9424 0.0064 0.0074 0.0221 0.0015 
+##  
+## ========================================================= 
+## Fit for 16 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 399 
+## residual degrees of freedom: 30102 
+## maximum log-likelihood: -12863.7 
+##  
+## AIC(16): 26525.4
+## BIC(16): 29847.28
+## G^2(16): 703.542 (Likelihood ratio/deviance statistic) 
+## X^2(16): 24906.12 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model17. &lt;- poLCA(items8, data8, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -12844.82 ... best llik = -12844.82
+## Model 2: llik = -13028.8 ... best llik = -12844.82
+## Model 3: llik = -13120.15 ... best llik = -12844.82
+## Model 4: llik = -13168.86 ... best llik = -12844.82
+## Model 5: llik = -12957.85 ... best llik = -12844.82
+## Model 6: llik = -12978.72 ... best llik = -12844.82
+## Model 7: llik = -13007.56 ... best llik = -12844.82
+## Model 8: llik = -13046.34 ... best llik = -12844.82
+## Model 9: llik = -13165.48 ... best llik = -12844.82
+## Model 10: llik = -13051.85 ... best llik = -12844.82
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.8425 0.1445 0.0130 0.0000
+## class 2:   0.9453 0.0444 0.0083 0.0020
+## class 3:   0.9912 0.0080 0.0007 0.0001
+## class 4:   0.9770 0.0179 0.0045 0.0006
+## class 5:   0.9163 0.0751 0.0078 0.0007
+## class 6:   0.9913 0.0071 0.0012 0.0003
+## class 7:   0.9883 0.0099 0.0014 0.0004
+## class 8:   0.5275 0.0842 0.0060 0.3823
+## class 9:   0.8167 0.1760 0.0043 0.0030
+## class 10:  0.9487 0.0411 0.0095 0.0007
+## class 11:  0.1654 0.7123 0.1196 0.0028
+## class 12:  0.9847 0.0145 0.0008 0.0001
+## class 13:  0.8765 0.0154 0.1048 0.0033
+## class 14:  0.9896 0.0024 0.0080 0.0000
+## class 15:  0.9568 0.0123 0.0010 0.0300
+## class 16:  0.2759 0.2001 0.4029 0.1211
+## class 17:  0.9907 0.0003 0.0067 0.0024
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.3088 0.5407 0.1506 0.0000
+## class 2:   0.9226 0.0294 0.0479 0.0001
+## class 3:   0.9976 0.0023 0.0001 0.0000
+## class 4:   0.9910 0.0075 0.0014 0.0000
+## class 5:   0.9908 0.0083 0.0009 0.0000
+## class 6:   0.9989 0.0011 0.0001 0.0000
+## class 7:   0.9984 0.0015 0.0001 0.0000
+## class 8:   0.5976 0.0000 0.0430 0.3594
+## class 9:   0.9926 0.0064 0.0010 0.0000
+## class 10:  0.9979 0.0017 0.0005 0.0000
+## class 11:  0.9292 0.0473 0.0232 0.0002
+## class 12:  0.9996 0.0003 0.0001 0.0000
+## class 13:  0.4889 0.0779 0.2272 0.2061
+## class 14:  0.9916 0.0069 0.0016 0.0000
+## class 15:  0.7523 0.0001 0.1056 0.1420
+## class 16:  0.8832 0.0327 0.0814 0.0027
+## class 17:  0.9970 0.0030 0.0000 0.0000
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9434 0.0500 0.0064 0.0001
+## class 2:   0.9889 0.0109 0.0001 0.0001
+## class 3:   0.9987 0.0013 0.0000 0.0000
+## class 4:   0.9979 0.0020 0.0000 0.0001
+## class 5:   0.9666 0.0333 0.0001 0.0001
+## class 6:   0.9972 0.0028 0.0000 0.0000
+## class 7:   0.9937 0.0063 0.0000 0.0000
+## class 8:   0.4111 0.0297 0.0694 0.4898
+## class 9:   0.8710 0.1289 0.0001 0.0000
+## class 10:  0.9487 0.0512 0.0000 0.0001
+## class 11:  0.2327 0.7341 0.0195 0.0137
+## class 12:  0.9927 0.0073 0.0000 0.0000
+## class 13:  0.9761 0.0099 0.0138 0.0001
+## class 14:  0.9957 0.0042 0.0001 0.0001
+## class 15:  0.7584 0.2399 0.0000 0.0017
+## class 16:  0.5775 0.1679 0.2001 0.0545
+## class 17:  0.9823 0.0173 0.0000 0.0004
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.3518 0.4936 0.1519 0.0026
+## class 2:   0.9111 0.0480 0.0406 0.0003
+## class 3:   0.9984 0.0015 0.0001 0.0000
+## class 4:   0.9940 0.0053 0.0007 0.0000
+## class 5:   0.9846 0.0153 0.0001 0.0000
+## class 6:   0.9978 0.0022 0.0001 0.0000
+## class 7:   0.9908 0.0091 0.0001 0.0000
+## class 8:   0.6638 0.0000 0.0688 0.2674
+## class 9:   0.9732 0.0266 0.0002 0.0000
+## class 10:  0.9882 0.0118 0.0000 0.0000
+## class 11:  0.9296 0.0511 0.0193 0.0000
+## class 12:  0.9930 0.0070 0.0000 0.0000
+## class 13:  0.5421 0.0427 0.2160 0.1992
+## class 14:  0.9925 0.0064 0.0012 0.0000
+## class 15:  0.7470 0.0817 0.1682 0.0031
+## class 16:  0.9419 0.0311 0.0270 0.0000
+## class 17:  0.9793 0.0205 0.0002 0.0000
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   0.9986 0.0014 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9997 0.0003 0.0000 0.0000
+## class 5:   0.9996 0.0004 0.0000 0.0000
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   0.9999 0.0001 0.0000 0.0000
+## class 8:   0.7325 0.0000 0.1003 0.1672
+## class 9:   0.9937 0.0063 0.0000 0.0000
+## class 10:  0.9992 0.0008 0.0000 0.0000
+## class 11:  0.9497 0.0503 0.0000 0.0000
+## class 12:  0.9997 0.0003 0.0000 0.0000
+## class 13:  0.9999 0.0001 0.0000 0.0000
+## class 14:  0.9999 0.0001 0.0000 0.0000
+## class 15:  0.3309 0.5561 0.1130 0.0000
+## class 16:  0.9714 0.0279 0.0006 0.0001
+## class 17:  0.9995 0.0005 0.0000 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9913 0.0087 0.0000 0.0000
+## class 2:   0.9993 0.0007 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9982 0.0018 0.0000 0.0000
+## class 5:   0.9999 0.0001 0.0000 0.0000
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   0.8004 0.0000 0.0748 0.1248
+## class 9:   0.9938 0.0062 0.0000 0.0000
+## class 10:  0.9967 0.0033 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  1.0000 0.0000 0.0000 0.0000
+## class 13:  0.9785 0.0030 0.0185 0.0000
+## class 14:  1.0000 0.0000 0.0000 0.0000
+## class 15:  0.9996 0.0000 0.0003 0.0000
+## class 16:  0.9999 0.0001 0.0000 0.0000
+## class 17:  0.9999 0.0001 0.0000 0.0000
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9896 0.0104 0.0000 0.0000
+## class 2:   0.9950 0.0008 0.0042 0.0001
+## class 3:   0.9979 0.0013 0.0008 0.0000
+## class 4:   0.9872 0.0103 0.0023 0.0002
+## class 5:   0.9811 0.0175 0.0012 0.0001
+## class 6:   0.9971 0.0012 0.0017 0.0000
+## class 7:   0.9913 0.0085 0.0002 0.0000
+## class 8:   0.6347 0.0786 0.1465 0.1402
+## class 9:   0.9218 0.0705 0.0075 0.0002
+## class 10:  0.9619 0.0375 0.0003 0.0004
+## class 11:  0.8310 0.1687 0.0002 0.0001
+## class 12:  0.9965 0.0029 0.0006 0.0000
+## class 13:  0.7938 0.1815 0.0114 0.0133
+## class 14:  0.9952 0.0026 0.0020 0.0003
+## class 15:  0.8235 0.0515 0.0003 0.1246
+## class 16:  0.7761 0.1382 0.0503 0.0353
+## class 17:  0.9880 0.0084 0.0032 0.0005
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9730 0.0269 0.0001 0.0000
+## class 2:   0.9979 0.0008 0.0011 0.0002
+## class 3:   0.9996 0.0004 0.0000 0.0000
+## class 4:   0.9958 0.0038 0.0002 0.0003
+## class 5:   0.9980 0.0018 0.0001 0.0000
+## class 6:   0.9995 0.0003 0.0001 0.0000
+## class 7:   0.9982 0.0017 0.0001 0.0000
+## class 8:   0.6398 0.0734 0.0316 0.2552
+## class 9:   0.9988 0.0010 0.0000 0.0002
+## class 10:  0.9990 0.0006 0.0003 0.0001
+## class 11:  0.9859 0.0141 0.0000 0.0000
+## class 12:  0.9990 0.0010 0.0000 0.0000
+## class 13:  0.7829 0.1851 0.0167 0.0153
+## class 14:  0.9958 0.0020 0.0020 0.0003
+## class 15:  0.8256 0.0000 0.0883 0.0861
+## class 16:  0.9834 0.0000 0.0165 0.0001
+## class 17:  0.9996 0.0003 0.0000 0.0001
+## 
+## Estimated class population shares 
+##  0.0076 0.0173 0.2557 0.0028 0.0343 0.1311 0.3519 0.0011 0.0014 0.0131 0.0047 0.1473 0.0046 0.013 6e-04 0.0048 0.0086 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0094 0.0022 8e-04 0.9734 9e-04 1e-04 0.0047 0.0024 1e-04 6e-04 0.0054 
+##  
+## ========================================================= 
+## Fit for 17 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 424 
+## residual degrees of freedom: 30077 
+## maximum log-likelihood: -12844.82 
+##  
+## AIC(17): 26537.64
+## BIC(17): 30067.65
+## G^2(17): 677.3842 (Likelihood ratio/deviance statistic) 
+## X^2(17): 8038.748 (Chi-square goodness of fit) 
+## </code></pre>
+<pre class="r"><code>model18. &lt;- poLCA(items8, data8, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre><code>## Model 1: llik = -13032.74 ... best llik = -13032.74
+## Model 2: llik = -13019.48 ... best llik = -13019.48
+## Model 3: llik = -12966.61 ... best llik = -12966.61
+## Model 4: llik = -12973.5 ... best llik = -12966.61
+## Model 5: llik = -12982.25 ... best llik = -12966.61
+## Model 6: llik = -13038.28 ... best llik = -12966.61
+## Model 7: llik = -13019.19 ... best llik = -12966.61
+## Model 8: llik = -13110.67 ... best llik = -12966.61
+## Model 9: llik = -13093.65 ... best llik = -12966.61
+## Model 10: llik = -13207.14 ... best llik = -12966.61
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9165 0.0318 0.0401 0.0116
+## class 2:   0.9952 0.0030 0.0009 0.0010
+## class 3:   0.9223 0.0648 0.0128 0.0001
+## class 4:   0.9828 0.0129 0.0037 0.0007
+## class 5:   0.9750 0.0150 0.0079 0.0021
+## class 6:   0.9863 0.0099 0.0033 0.0005
+## class 7:   0.8402 0.0011 0.1158 0.0429
+## class 8:   0.9422 0.0479 0.0098 0.0001
+## class 9:   0.9485 0.0479 0.0026 0.0010
+## class 10:  0.9912 0.0084 0.0003 0.0001
+## class 11:  0.9699 0.0201 0.0062 0.0038
+## class 12:  0.6498 0.0548 0.0014 0.2941
+## class 13:  0.9251 0.0470 0.0205 0.0074
+## class 14:  0.9102 0.0823 0.0065 0.0010
+## class 15:  0.6673 0.1694 0.1451 0.0183
+## class 16:  0.9932 0.0050 0.0014 0.0003
+## class 17:  0.0284 0.5699 0.3098 0.0918
+## class 18:  0.8840 0.1014 0.0145 0.0000
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9264 0.0167 0.0360 0.0210
+## class 2:   0.9990 0.0004 0.0005 0.0001
+## class 3:   0.9959 0.0032 0.0008 0.0001
+## class 4:   0.9948 0.0040 0.0012 0.0000
+## class 5:   0.9865 0.0044 0.0087 0.0004
+## class 6:   0.9981 0.0016 0.0002 0.0001
+## class 7:   0.0722 0.0030 0.3284 0.5964
+## class 8:   0.9949 0.0037 0.0014 0.0000
+## class 9:   0.9966 0.0026 0.0006 0.0001
+## class 10:  0.9969 0.0020 0.0011 0.0000
+## class 11:  0.9614 0.0182 0.0024 0.0180
+## class 12:  0.7019 0.0001 0.0008 0.2972
+## class 13:  0.9963 0.0016 0.0011 0.0010
+## class 14:  0.9945 0.0028 0.0024 0.0003
+## class 15:  0.5098 0.0505 0.4344 0.0052
+## class 16:  0.9993 0.0005 0.0002 0.0000
+## class 17:  0.9048 0.0590 0.0244 0.0117
+## class 18:  0.5883 0.3687 0.0418 0.0012
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9733 0.0217 0.0031 0.0019
+## class 2:   0.9960 0.0038 0.0000 0.0001
+## class 3:   0.9192 0.0795 0.0009 0.0004
+## class 4:   0.9953 0.0045 0.0001 0.0001
+## class 5:   0.9990 0.0001 0.0008 0.0001
+## class 6:   0.9981 0.0017 0.0002 0.0000
+## class 7:   0.9596 0.0000 0.0403 0.0001
+## class 8:   0.9815 0.0175 0.0008 0.0002
+## class 9:   0.9566 0.0431 0.0002 0.0001
+## class 10:  0.9979 0.0021 0.0000 0.0000
+## class 11:  0.9990 0.0004 0.0002 0.0004
+## class 12:  0.3883 0.0056 0.0600 0.5461
+## class 13:  0.9272 0.0671 0.0014 0.0043
+## class 14:  0.9603 0.0390 0.0005 0.0002
+## class 15:  0.8970 0.0814 0.0216 0.0000
+## class 16:  0.9991 0.0009 0.0000 0.0000
+## class 17:  0.1603 0.5938 0.1773 0.0686
+## class 18:  0.9527 0.0428 0.0044 0.0001
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9444 0.0186 0.0260 0.0110
+## class 2:   0.9995 0.0001 0.0003 0.0001
+## class 3:   0.9884 0.0109 0.0006 0.0000
+## class 4:   0.9775 0.0219 0.0006 0.0000
+## class 5:   0.9847 0.0072 0.0080 0.0001
+## class 6:   0.9984 0.0014 0.0002 0.0000
+## class 7:   0.1079 0.0004 0.3616 0.5301
+## class 8:   0.9967 0.0030 0.0003 0.0000
+## class 9:   0.9971 0.0023 0.0006 0.0000
+## class 10:  0.9899 0.0091 0.0009 0.0000
+## class 11:  0.9664 0.0192 0.0064 0.0080
+## class 12:  0.7344 0.0328 0.0314 0.2014
+## class 13:  0.9916 0.0053 0.0004 0.0026
+## class 14:  0.9983 0.0003 0.0014 0.0000
+## class 15:  0.6302 0.0557 0.3115 0.0026
+## class 16:  0.9969 0.0030 0.0001 0.0000
+## class 17:  0.9212 0.0605 0.0182 0.0001
+## class 18:  0.5473 0.3910 0.0537 0.0080
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9984 0.0016 0.0000 0.0000
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   0.9925 0.0075 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   0.9999 0.0001 0.0000 0.0000
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   0.9388 0.0287 0.0236 0.0090
+## class 8:   0.9983 0.0017 0.0000 0.0000
+## class 9:   0.9978 0.0022 0.0000 0.0000
+## class 10:  0.9999 0.0001 0.0000 0.0000
+## class 11:  0.9992 0.0005 0.0004 0.0000
+## class 12:  0.7108 0.0447 0.0489 0.1956
+## class 13:  0.9851 0.0113 0.0036 0.0000
+## class 14:  0.9992 0.0008 0.0000 0.0000
+## class 15:  0.9853 0.0147 0.0000 0.0000
+## class 16:  1.0000 0.0000 0.0000 0.0000
+## class 17:  0.9399 0.0466 0.0135 0.0000
+## class 18:  0.9991 0.0009 0.0000 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9941 0.0057 0.0002 0.0000
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   0.9997 0.0003 0.0000 0.0000
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   0.9133 0.0071 0.0562 0.0234
+## class 8:   0.9996 0.0004 0.0000 0.0000
+## class 9:   0.9999 0.0001 0.0000 0.0000
+## class 10:  1.0000 0.0000 0.0000 0.0000
+## class 11:  0.9972 0.0028 0.0000 0.0000
+## class 12:  0.8265 0.0000 0.0605 0.1129
+## class 13:  0.9999 0.0001 0.0000 0.0000
+## class 14:  0.9999 0.0001 0.0000 0.0000
+## class 15:  0.9870 0.0116 0.0014 0.0000
+## class 16:  0.9999 0.0001 0.0000 0.0000
+## class 17:  0.9967 0.0000 0.0033 0.0000
+## class 18:  0.9968 0.0031 0.0000 0.0000
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9175 0.0592 0.0230 0.0003
+## class 2:   0.9940 0.0053 0.0006 0.0000
+## class 3:   0.9822 0.0151 0.0027 0.0000
+## class 4:   0.9957 0.0037 0.0006 0.0000
+## class 5:   0.9880 0.0099 0.0020 0.0001
+## class 6:   0.9954 0.0045 0.0002 0.0000
+## class 7:   0.8972 0.0215 0.0553 0.0259
+## class 8:   0.9715 0.0217 0.0063 0.0004
+## class 9:   0.9799 0.0198 0.0002 0.0001
+## class 10:  0.9975 0.0015 0.0010 0.0000
+## class 11:  0.9372 0.0566 0.0056 0.0005
+## class 12:  0.5785 0.1557 0.1051 0.1606
+## class 13:  0.8955 0.0654 0.0178 0.0213
+## class 14:  0.9846 0.0151 0.0002 0.0001
+## class 15:  0.7507 0.2267 0.0211 0.0014
+## class 16:  0.9930 0.0065 0.0005 0.0000
+## class 17:  0.8180 0.1382 0.0157 0.0280
+## class 18:  0.9927 0.0072 0.0000 0.0000
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9637 0.0293 0.0001 0.0068
+## class 2:   0.9967 0.0028 0.0005 0.0000
+## class 3:   0.9989 0.0007 0.0001 0.0003
+## class 4:   0.9937 0.0061 0.0002 0.0000
+## class 5:   0.9890 0.0088 0.0022 0.0000
+## class 6:   0.9989 0.0011 0.0000 0.0000
+## class 7:   0.8326 0.0784 0.0636 0.0255
+## class 8:   0.9966 0.0033 0.0001 0.0000
+## class 9:   0.9982 0.0017 0.0001 0.0000
+## class 10:  0.9997 0.0002 0.0001 0.0000
+## class 11:  0.9390 0.0427 0.0148 0.0035
+## class 12:  0.5426 0.1218 0.0000 0.3356
+## class 13:  0.9930 0.0055 0.0010 0.0005
+## class 14:  0.9976 0.0020 0.0001 0.0003
+## class 15:  0.9119 0.0868 0.0011 0.0001
+## class 16:  0.9997 0.0003 0.0000 0.0000
+## class 17:  0.9612 0.0120 0.0204 0.0064
+## class 18:  0.9722 0.0270 0.0001 0.0008
+## 
+## Estimated class population shares 
+##  0.0017 0.0851 0.0278 0.0426 0.0056 0.2012 0.0016 0.0109 0.0419 0.3243 0.0012 8e-04 0.0069 0.0266 0.0042 0.1958 0.0048 0.0133 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0036 1e-04 0.0068 0.0011 0.003 0.0014 5e-04 0.9593 8e-04 3e-04 0.0044 0.005 0.0053 0.0083 
+##  
+## ========================================================= 
+## Fit for 18 latent classes: 
+## ========================================================= 
+## number of observations: 30501 
+## number of fully observed cases: 29920 
+## number of estimated parameters: 449 
+## residual degrees of freedom: 30052 
+## maximum log-likelihood: -12966.61 
+##  
+## AIC(18): 26831.23
+## BIC(18): 30569.38
+## G^2(18): 918.964 (Likelihood ratio/deviance statistic) 
+## X^2(18): 9824.716 (Chi-square goodness of fit) 
+## </code></pre>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkxDQSB1bmRlc2lyYWJsZSBiZWhhdmlvcnMiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCmRhdGU6ICIyMDI1LTAyLTIxIg0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGNhY2hlPVRSVUUsIGVjaG8gPSBUUlVFKQ0KYGBgDQoNCg0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCg0KDQoNCmNvbG9yaXplIDwtIGZ1bmN0aW9uKHgsIGNvbG9yKSB7c3ByaW50ZigiPHNwYW4gc3R5bGU9J2NvbG9yOiAlczsnPiVzPC9zcGFuPiIsIGNvbG9yLCB4KSB9DQoNCmBgYA0KDQoNCg0KYGBge3Iga2xpcHB5NSwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFfQ0Ka2xpcHB5OjprbGlwcHkocG9zaXRpb24gPSBjKCd0b3AnLCAncmlnaHQnKSkNCiNrbGlwcHk6OmtsaXBweShjb2xvciA9ICdkYXJrcmVkJykNCiNrbGlwcHk6OmtsaXBweSh0b29sdGlwX21lc3NhZ2UgPSAnQ2xpY2sgdG8gY29weScsIHRvb2x0aXBfc3VjY2VzcyA9ICdEb25lJykNCmBgYA0KDQoNCmBgYHtyfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmBgYA0KDQoNCmBgYHtyIGtsaXBweTYsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQpORUEyMDIyX2NsdXN0MSA8LXJlYWQuc3BzcygiZGF0YS9wcm9jZXNzZWQvTkVBMjAyMl9jbHVzdDEuc2F2IiwgdXNlLnZhbHVlLmxhYmVscyA9IFQsIHRvLmRhdGEuZnJhbWUgPSBUKQ0KYXR0YWNoKE5FQTIwMjJfY2x1c3QxKQ0KDQojTkVBMjAxNDIwMjIgPC1yZWFkLnNwc3MoImRhdGEvcmF3L0RhdGEgMjAxNC0yMDIyLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCmBgYA0KDQpgYGB7cn0NCnNldC5zZWVkKDEyMykNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCmF0dGFjaChORUEyMDIyX2NsdXN0MSkNCmRhdGE4IDwtIGRhdGEuZnJhbWUocGVzdGVuX2NvbCwgcGVzdGVuX2xlaWQsIGludGltaWRhdGlvbl9jb2wsIGludGltaWRhdGlvbl9sZWlkLCBnZXdlbGRfY29sLCBnZXdlbGRfbGVpZCwgc2Vrc19jb2wsIHNla3NfbGVpZCkNCg0KaXRlbXM4IDwtIGNiaW5kKHBlc3Rlbl9jb2wsIHBlc3Rlbl9sZWlkLCBpbnRpbWlkYXRpb25fY29sLCBpbnRpbWlkYXRpb25fbGVpZCwgZ2V3ZWxkX2NvbCwgZ2V3ZWxkX2xlaWQsIHNla3NfY29sLCBzZWtzX2xlaWQpIH4gMQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWwxLiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSAxLCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDIuIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDIsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsMy4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMywgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw0LiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSA0LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDUuIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDUsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsNi4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gNiwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw3LiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSA3LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDguIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDgsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsOS4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gOSwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLGNhY2hlPVRSVUV9DQptb2RlbDEwLiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSAxMCwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWwxMS4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMTEsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsMTIuIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDEyLCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDEzLiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSAxMywgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWwxNC4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMTQsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsMTUuIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDE1LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDE2LiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSAxNiwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWwxNy4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMTcsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsMTguIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDE4LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("LCA_8items.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
