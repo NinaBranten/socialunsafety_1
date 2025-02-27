@@ -1,0 +1,159 @@
+---
+title: "LCA_conflict"
+output: html_document
+date: "2025-02-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE, echo = TRUE)
+```
+
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"))
+options(width = 100)
+rgl::setupKnitr()
+
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+
+
+```{r klippy5, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+
+```{r}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+library("dplyr")
+library("haven")
+```
+
+
+```{r klippy6, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022_clust1 <-read.spss("data/processed/NEA2022_clust1.sav", use.value.labels = T, to.data.frame = T)
+attach(NEA2022_clust1)
+
+#NEA20142022 <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
+```
+
+```{r}
+set.seed(123)
+```
+
+```{r}
+data <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, steunleid_welzijn, steunleid_aandacht, steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout)
+
+items <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, steunleid_welzijn, steunleid_aandacht, steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout) ~ 1
+```
+<br><br> Variabelen:
+
+<br><br> Pesten_col: **pesten door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Pesten_leid: **pesten door leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Intimidation_col: **intimidatie door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Intimidation_leid: *intimidatie door leidinggevenden.* (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Geweld_col: **fysiek geweld door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Geweld_leid: **fysiek geweld door leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Seks_col: **ongewenste seksuele aandacht collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Seks_leid: **ongewenste seksuele aandacht leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Conflict_col: **conflict collega's.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Conflict_leid: **conflict leidinggevenden.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Conflict_werk: **conflict werkgever.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Steunleid_welzijn: **mijn leidinggevende heeft oog voor het welzijn van de medewerker.** (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
+<br><br> Steunleid_aandacht: **mijn leidinggevende besteedt aandacht aan wat ik zeg.** (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
+<br><br> Steuncol_belang: **mijn collega's hebben persoonlijke belangstelling voor me.** (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
+<br><br> Steuncol_vriendelijk: **mijn collega's zijn vriendelijk.** (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
+<br><br> Psyveil_last: **op mijn werk kun je lastige kwesties naar voren brengen.** (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
+<br><br> Psyveil_hulp: **op mijn werk is het gemakkelijk om hulp te vragen.** (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
+<br><br> Psyveil_fout: **op mijn werk is het niet erg om een fout te maken.** (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
+
+
+
+```{r, cache=TRUE}
+model1_ <- poLCA(items, data, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model2_ <- poLCA(items, data, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model3_ <- poLCA(items, data, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model4_ <- poLCA(items, data, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model5_ <- poLCA(items, data, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model6_ <- poLCA(items, data, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model7_ <- poLCA(items, data, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model8_ <- poLCA(items, data, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model9_ <- poLCA(items, data, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model10_ <- poLCA(items, data, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model11_ <- poLCA(items, data, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model12_ <- poLCA(items, data, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model13_ <- poLCA(items, data, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model14_ <- poLCA(items, data, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model15_ <- poLCA(items, data, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model16_ <- poLCA(items, data, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model17_ <- poLCA(items, data, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model18_ <- poLCA(items, data, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+
