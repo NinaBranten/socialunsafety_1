@@ -28,6 +28,8 @@ navbar:
       href: LCA_schaalsteun.html
     - text: "LCA conflict"
       href: LCA_conflict.html
+    - text: "LCA without missings"
+      href: LCA_missings.html
     - text: "Factoranalyse"
       href: Factoranalyse.html
         
