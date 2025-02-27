@@ -26,7 +26,7 @@ navbar:
       href: LCA_schaal.html
     - text: "LCA schaal steun"
       href: LCA_schaalsteun.html
-    - text: "LCA conflict steun"
+    - text: "LCA conflict"
       href: LCA_conflict.html
     - text: "Factoranalyse"
       href: Factoranalyse.html
