@@ -26,6 +26,11 @@ library(janitor)
 table(NEA2022_clust1$afl_sb_2[NEA2022_clust1$class2 == 1])
 
 table(NEA2022_clust1$afl_sb_3[NEA2022_clust1$class2 == 1])
+table(NEA2022_clust1$m_v[NEA2022_clust1$class2 == 1])
+table(NEA2022_clust1$afl_soi3[NEA2022_clust1$class2 == 1])
+table(NEA2022_clust1$vrllandd[NEA2022_clust1$class2 == 1])
+table(NEA2022_clust1$afl_lftc[NEA2022_clust1$class2 == 1])
+
 
 
 
