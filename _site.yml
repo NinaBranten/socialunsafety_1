@@ -24,6 +24,8 @@ navbar:
       href: LCA_8items.html
     - text: "LCA schaal"
       href: LCA_schaal.html
+    - text: "LCA schaal2"
+      href: LCA_schaal2.html
     - text: "LCA schaal steun"
       href: LCA_schaalsteun.html
     - text: "LCA conflict"

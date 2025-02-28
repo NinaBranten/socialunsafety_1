@@ -81,7 +81,7 @@ NEA2022_clust1$steuncol_R[NEA2022_clust1$steuncol_R == "8"] <- NA
 summarytools::freq(NEA2022_clust1$steuncol_R)
 ```
 
-```{r klippy23, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+```{r klippy23, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
 attach(NEA2022_clust1)
 psyveil <- data.frame(psyveil_last, psyveil_hulp, psyveil_fout)
 
