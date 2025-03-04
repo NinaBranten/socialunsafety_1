@@ -364,10 +364,16 @@ div.tocify {
   <a href="LCA_schaal.html">LCA schaal</a>
 </li>
 <li>
+  <a href="LCA_schaal2.html">LCA schaal2</a>
+</li>
+<li>
   <a href="LCA_schaalsteun.html">LCA schaal steun</a>
 </li>
 <li>
   <a href="LCA_conflict.html">LCA conflict</a>
+</li>
+<li>
+  <a href="LCA_missings.html">LCA without missings</a>
 </li>
 <li>
   <a href="Factoranalyse.html">Factoranalyse</a>
@@ -1443,8 +1449,105 @@ print(efa, digits = 2)</code></pre>
 #&gt; Correlation of (regression) scores with factors   0.96 0.90 0.97 0.87 0.83 0.77  0.68
 #&gt; Multiple R square of scores with factors          0.92 0.82 0.94 0.75 0.70 0.59  0.46
 #&gt; Minimum correlation of possible factor scores     0.84 0.64 0.88 0.51 0.39 0.17 -0.08</code></pre>
+<pre class="r test"><code>attach(NEA2022_clust1)
+psyveil &lt;- data.frame(psyveil_last, psyveil_hulp, psyveil_fout)
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZhY3RvcmFuYWx5c2UiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCmRhdGU6ICIyMDI1LTAyLTA0Ig0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0KDQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpDQpvcHRzX2NodW5rJHNldCh0aWR5Lm9wdHM9bGlzdCh3aWR0aC5jdXRvZmY9MTAwKSx0aWR5PVRSVUUsIHdhcm5pbmcgPSBGQUxTRSwgbWVzc2FnZSA9IEZBTFNFLGNvbW1lbnQgPSAiIz4iLCBjYWNoZT1UUlVFLCBjbGFzcy5zb3VyY2U9YygidGVzdCIpLCBjbGFzcy5vdXRwdXQ9YygidGVzdDIiKSkNCm9wdGlvbnMod2lkdGggPSAxMDApDQpyZ2w6OnNldHVwS25pdHIoKQ0KDQoNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCg0KYGBgDQoNCmBgYHtyIGtsaXBweTYsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KYGBge3J9DQpsaWJyYXJ5KCJmb3JtYXRSIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ2dwbG90MiIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoInBvTENBIikNCmxpYnJhcnkoInJlcHJleCIpDQpsaWJyYXJ5KCJ0aWR5ciIpDQpsaWJyYXJ5KCJrbGlwcHkiKQ0KbGlicmFyeSgiZHBseXIiKQ0KbGlicmFyeSgiaGF2ZW4iKQ0KbGlicmFyeSgicHN5Y2giKQ0KbGlicmFyeSgiR1BBcm90YXRpb24iKQ0KbGlicmFyeSgiSG1pc2MiKQ0KDQpgYGANCg0KYGBge3Iga2xpcHB5NywgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCk5FQTIwMjJfY2x1c3QxIDwtcmVhZC5zcHNzKCJkYXRhL3Byb2Nlc3NlZC9ORUEyMDIyX2NsdXN0MS5zYXYiLCB1c2UudmFsdWUubGFiZWxzID0gVCwgdG8uZGF0YS5mcmFtZSA9IFQpDQphdHRhY2goTkVBMjAyMl9jbHVzdDEpDQpgYGANCg0KYGBge3J9DQpkYXRhIDwtIGRhdGEuZnJhbWUocGVzdGVuX2NvbCwgcGVzdGVuX2xlaWQsIGludGltaWRhdGlvbl9jb2wsIGludGltaWRhdGlvbl9sZWlkLCBnZXdlbGRfY29sLCBnZXdlbGRfbGVpZCwgc2Vrc19jb2wsIHNla3NfbGVpZCwgY29uZmxpY3RfY29sLCBjb25mbGljdF9sZWlkLCBjb25mbGljdF93ZXJrLCBzdGV1bmxlaWRfd2Vsemlqbiwgc3RldW5sZWlkX2FhbmRhY2h0LCBzdGV1bmNvbF9iZWxhbmcsIHN0ZXVuY29sX3ZyaWVuZGVsaWprLCBwc3l2ZWlsX2xhc3QsIHBzeXZlaWxfaHVscCwgcHN5dmVpbF9mb3V0KQ0KYGBgDQoNCmBgYHtyfQ0KY29yX21hdHJpeCA8LSBjb3IoZGF0YSwgdXNlID0gInBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpDQpwcmludChjb3JfbWF0cml4KQ0KYGBgDQoNCmBgYHtyfQ0Ka2FibGUocm91bmQoY29yX21hdHJpeCwgMykpDQpgYGANCmBgYHtyfQ0KY29yX3Jlc3VsdHMgPC0gcmNvcnIoYXMubWF0cml4KGRhdGEpKQ0KDQpjb3JfbWF0cml4IDwtIHJvdW5kKGNvcl9yZXN1bHRzJHIsIDMpDQpwX21hdHJpeCA8LSBjb3JfcmVzdWx0cyRQDQoNCmNvcl93aXRoX3N0YXJzIDwtIGZ1bmN0aW9uKGNvcl9tYXRyaXgsIHBfbWF0cml4KSB7DQogIHN0YXJzIDwtIGlmZWxzZShpcy5uYShwX21hdHJpeCksICIiLA0KICAgICAgICAgICBpZmVsc2UocF9tYXRyaXggPCAwLjAwMSwgIioqKiIsDQogICAgICAgICAgIGlmZWxzZShwX21hdHJpeCA8IDAuMDEsICIqKiIsDQogICAgICAgICAgIGlmZWxzZShwX21hdHJpeCA8IDAuMDUsICIqIiwgIiIpKSkpDQogIA0KICBjb3JfbWF0cml4X2Zvcm1hdHRlZCA8LSBtYXRyaXgoDQogICAgcGFzdGUwKGZvcm1hdChjb3JfbWF0cml4LCBuc21hbGwgPSAzKSwgc3RhcnMpLA0KICAgIG5yb3cgPSBucm93KGNvcl9tYXRyaXgpLCANCiAgICBkaW1uYW1lcyA9IGRpbW5hbWVzKGNvcl9tYXRyaXgpDQogICkNCiAgDQogIHJldHVybihjb3JfbWF0cml4X2Zvcm1hdHRlZCkNCn0NCg0KY29yX21hdHJpeF9zdGFycyA8LSBjb3Jfd2l0aF9zdGFycyhjb3JfbWF0cml4LCBwX21hdHJpeCkNCg0Ka2FibGUoY29yX21hdHJpeF9zdGFycykNCg0KYGBgDQoNCmBgYHtyfQ0KZmEucGFyYWxsZWwoZGF0YSwgZmEgPSAiZmEiLCBuLml0ZXIgPSAxMDAsIHNob3cubGVnZW5kID0gRkFMU0UpDQpgYGANCg0KYGBge3J9DQpmYS5wYXJhbGxlbChkYXRhLCBmYSA9ICJib3RoIiwgbi5pdGVyID0gMTAwLCBzaG93LmxlZ2VuZCA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyfQ0KZWZhIDwtIGZhKGRhdGEsIG5mYWN0b3JzID0gNywgcm90YXRlID0gIm9ibGltaW4iLCBmbSA9ICJtbCIpDQpwcmludChlZmEsIGRpZ2l0cyA9IDIpDQpgYGA=</div>
+alpha_result &lt;- alpha(psyveil)
+
+print(alpha_result)</code></pre>
+<pre class="test2"><code>#&gt; 
+#&gt; Reliability analysis   
+#&gt; Call: alpha(x = psyveil)
+#&gt; 
+#&gt;   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+#&gt;       0.71      0.72    0.64      0.46 2.5 0.0029  2.3 0.77     0.48
+#&gt; 
+#&gt;     95% confidence boundaries 
+#&gt;          lower alpha upper
+#&gt; Feldt     0.71  0.71  0.72
+#&gt; Duhachek  0.71  0.71  0.72
+#&gt; 
+#&gt;  Reliability if an item is dropped:
+#&gt;              raw_alpha std.alpha G6(smc) average_r S/N alpha se var.r med.r
+#&gt; psyveil_last      0.65      0.65    0.48      0.48 1.9   0.0040    NA  0.48
+#&gt; psyveil_hulp      0.52      0.52    0.35      0.35 1.1   0.0055    NA  0.35
+#&gt; psyveil_fout      0.70      0.70    0.54      0.54 2.3   0.0034    NA  0.54
+#&gt; 
+#&gt;  Item statistics 
+#&gt;                  n raw.r std.r r.cor r.drop mean   sd
+#&gt; psyveil_last 29707  0.79  0.79  0.62   0.51  2.3 1.00
+#&gt; psyveil_hulp 30119  0.83  0.84  0.74   0.62  2.1 0.88
+#&gt; psyveil_fout 30091  0.78  0.77  0.56   0.47  2.5 1.02
+#&gt; 
+#&gt; Non missing response frequency for each item
+#&gt;                 1    2    3    4    5 miss
+#&gt; psyveil_last 0.18 0.52 0.17 0.08 0.04 0.03
+#&gt; psyveil_hulp 0.22 0.56 0.13 0.06 0.02 0.01
+#&gt; psyveil_fout 0.13 0.47 0.24 0.11 0.05 0.01</code></pre>
+<pre class="r test"><code>steuncol &lt;- data.frame(steuncol_belang, steuncol_vriendelijk)
+
+alpha_result2 &lt;- alpha(steuncol)
+
+print(alpha_result2)</code></pre>
+<pre class="test2"><code>#&gt; 
+#&gt; Reliability analysis   
+#&gt; Call: alpha(x = steuncol)
+#&gt; 
+#&gt;   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+#&gt;        0.8       0.8    0.67      0.67 4.1 0.0023  1.6 0.54     0.67
+#&gt; 
+#&gt;     95% confidence boundaries 
+#&gt;          lower alpha upper
+#&gt; Feldt     0.79   0.8   0.8
+#&gt; Duhachek  0.79   0.8   0.8
+#&gt; 
+#&gt;  Reliability if an item is dropped:
+#&gt;                      raw_alpha std.alpha G6(smc) average_r S/N alpha se var.r med.r
+#&gt; steuncol_belang           0.76      0.67    0.45      0.67   2       NA     0  0.67
+#&gt; steuncol_vriendelijk      0.59      0.67    0.45      0.67   2       NA     0  0.67
+#&gt; 
+#&gt;  Item statistics 
+#&gt;                          n raw.r std.r r.cor r.drop mean   sd
+#&gt; steuncol_belang      29485  0.93  0.91  0.75   0.67  1.7 0.62
+#&gt; steuncol_vriendelijk 29860  0.91  0.91  0.75   0.67  1.5 0.55
+#&gt; 
+#&gt; Non missing response frequency for each item
+#&gt;                         1    2    3    4 miss
+#&gt; steuncol_belang      0.36 0.57 0.06 0.01 0.03
+#&gt; steuncol_vriendelijk 0.48 0.50 0.01 0.00 0.02</code></pre>
+<pre class="r test"><code>steunleid &lt;- data.frame(steunleid_aandacht, steunleid_welzijn)
+
+alpha_result3 &lt;- alpha(steunleid)
+
+print(alpha_result3)</code></pre>
+<pre class="test2"><code>#&gt; 
+#&gt; Reliability analysis   
+#&gt; Call: alpha(x = steunleid)
+#&gt; 
+#&gt;   raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+#&gt;       0.87      0.87    0.77      0.77 6.7 0.0015  1.9 0.67     0.77
+#&gt; 
+#&gt;     95% confidence boundaries 
+#&gt;          lower alpha upper
+#&gt; Feldt     0.87  0.87  0.87
+#&gt; Duhachek  0.87  0.87  0.87
+#&gt; 
+#&gt;  Reliability if an item is dropped:
+#&gt;                    raw_alpha std.alpha G6(smc) average_r S/N alpha se var.r med.r
+#&gt; steunleid_aandacht      0.74      0.77    0.59      0.77 3.4       NA     0  0.77
+#&gt; steunleid_welzijn       0.80      0.77    0.59      0.77 3.4       NA     0  0.77
+#&gt; 
+#&gt;  Item statistics 
+#&gt;                        n raw.r std.r r.cor r.drop mean   sd
+#&gt; steunleid_aandacht 29342  0.94  0.94  0.83   0.77  1.9 0.70
+#&gt; steunleid_welzijn  29402  0.94  0.94  0.83   0.77  1.9 0.72
+#&gt; 
+#&gt; Non missing response frequency for each item
+#&gt;                       1    2    3    4 miss
+#&gt; steunleid_aandacht 0.29 0.57 0.12 0.02 0.04
+#&gt; steunleid_welzijn  0.31 0.54 0.13 0.03 0.04</code></pre>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZhY3RvcmFuYWx5c2UiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCmRhdGU6ICIyMDI1LTAyLTA0Ig0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0KDQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpDQpvcHRzX2NodW5rJHNldCh0aWR5Lm9wdHM9bGlzdCh3aWR0aC5jdXRvZmY9MTAwKSx0aWR5PVRSVUUsIHdhcm5pbmcgPSBGQUxTRSwgbWVzc2FnZSA9IEZBTFNFLGNvbW1lbnQgPSAiIz4iLCBjYWNoZT1UUlVFLCBjbGFzcy5zb3VyY2U9YygidGVzdCIpLCBjbGFzcy5vdXRwdXQ9YygidGVzdDIiKSkNCm9wdGlvbnMod2lkdGggPSAxMDApDQpyZ2w6OnNldHVwS25pdHIoKQ0KDQoNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCg0KYGBgDQoNCmBgYHtyIGtsaXBweTYsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KYGBge3J9DQpsaWJyYXJ5KCJmb3JtYXRSIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ2dwbG90MiIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoInBvTENBIikNCmxpYnJhcnkoInJlcHJleCIpDQpsaWJyYXJ5KCJ0aWR5ciIpDQpsaWJyYXJ5KCJrbGlwcHkiKQ0KbGlicmFyeSgiZHBseXIiKQ0KbGlicmFyeSgiaGF2ZW4iKQ0KbGlicmFyeSgicHN5Y2giKQ0KbGlicmFyeSgiR1BBcm90YXRpb24iKQ0KbGlicmFyeSgiSG1pc2MiKQ0KDQpgYGANCg0KYGBge3Iga2xpcHB5NywgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCk5FQTIwMjJfY2x1c3QxIDwtcmVhZC5zcHNzKCJkYXRhL3Byb2Nlc3NlZC9ORUEyMDIyX2NsdXN0MS5zYXYiLCB1c2UudmFsdWUubGFiZWxzID0gVCwgdG8uZGF0YS5mcmFtZSA9IFQpDQphdHRhY2goTkVBMjAyMl9jbHVzdDEpDQpgYGANCg0KYGBge3J9DQpkYXRhIDwtIGRhdGEuZnJhbWUocGVzdGVuX2NvbCwgcGVzdGVuX2xlaWQsIGludGltaWRhdGlvbl9jb2wsIGludGltaWRhdGlvbl9sZWlkLCBnZXdlbGRfY29sLCBnZXdlbGRfbGVpZCwgc2Vrc19jb2wsIHNla3NfbGVpZCwgY29uZmxpY3RfY29sLCBjb25mbGljdF9sZWlkLCBjb25mbGljdF93ZXJrLCBzdGV1bmxlaWRfd2Vsemlqbiwgc3RldW5sZWlkX2FhbmRhY2h0LCBzdGV1bmNvbF9iZWxhbmcsIHN0ZXVuY29sX3ZyaWVuZGVsaWprLCBwc3l2ZWlsX2xhc3QsIHBzeXZlaWxfaHVscCwgcHN5dmVpbF9mb3V0KQ0KYGBgDQoNCmBgYHtyfQ0KY29yX21hdHJpeCA8LSBjb3IoZGF0YSwgdXNlID0gInBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpDQpwcmludChjb3JfbWF0cml4KQ0KYGBgDQoNCmBgYHtyfQ0Ka2FibGUocm91bmQoY29yX21hdHJpeCwgMykpDQpgYGANCmBgYHtyfQ0KY29yX3Jlc3VsdHMgPC0gcmNvcnIoYXMubWF0cml4KGRhdGEpKQ0KDQpjb3JfbWF0cml4IDwtIHJvdW5kKGNvcl9yZXN1bHRzJHIsIDMpDQpwX21hdHJpeCA8LSBjb3JfcmVzdWx0cyRQDQoNCmNvcl93aXRoX3N0YXJzIDwtIGZ1bmN0aW9uKGNvcl9tYXRyaXgsIHBfbWF0cml4KSB7DQogIHN0YXJzIDwtIGlmZWxzZShpcy5uYShwX21hdHJpeCksICIiLA0KICAgICAgICAgICBpZmVsc2UocF9tYXRyaXggPCAwLjAwMSwgIioqKiIsDQogICAgICAgICAgIGlmZWxzZShwX21hdHJpeCA8IDAuMDEsICIqKiIsDQogICAgICAgICAgIGlmZWxzZShwX21hdHJpeCA8IDAuMDUsICIqIiwgIiIpKSkpDQogIA0KICBjb3JfbWF0cml4X2Zvcm1hdHRlZCA8LSBtYXRyaXgoDQogICAgcGFzdGUwKGZvcm1hdChjb3JfbWF0cml4LCBuc21hbGwgPSAzKSwgc3RhcnMpLA0KICAgIG5yb3cgPSBucm93KGNvcl9tYXRyaXgpLCANCiAgICBkaW1uYW1lcyA9IGRpbW5hbWVzKGNvcl9tYXRyaXgpDQogICkNCiAgDQogIHJldHVybihjb3JfbWF0cml4X2Zvcm1hdHRlZCkNCn0NCg0KY29yX21hdHJpeF9zdGFycyA8LSBjb3Jfd2l0aF9zdGFycyhjb3JfbWF0cml4LCBwX21hdHJpeCkNCg0Ka2FibGUoY29yX21hdHJpeF9zdGFycykNCg0KYGBgDQoNCmBgYHtyfQ0KZmEucGFyYWxsZWwoZGF0YSwgZmEgPSAiZmEiLCBuLml0ZXIgPSAxMDAsIHNob3cubGVnZW5kID0gRkFMU0UpDQpgYGANCg0KYGBge3J9DQpmYS5wYXJhbGxlbChkYXRhLCBmYSA9ICJib3RoIiwgbi5pdGVyID0gMTAwLCBzaG93LmxlZ2VuZCA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyfQ0KZWZhIDwtIGZhKGRhdGEsIG5mYWN0b3JzID0gNywgcm90YXRlID0gIm9ibGltaW4iLCBmbSA9ICJtbCIpDQpwcmludChlZmEsIGRpZ2l0cyA9IDIpDQpgYGANCg0KDQpgYGB7cn0NCmF0dGFjaChORUEyMDIyX2NsdXN0MSkNCnBzeXZlaWwgPC0gZGF0YS5mcmFtZShwc3l2ZWlsX2xhc3QsIHBzeXZlaWxfaHVscCwgcHN5dmVpbF9mb3V0KQ0KDQphbHBoYV9yZXN1bHQgPC0gYWxwaGEocHN5dmVpbCkNCg0KcHJpbnQoYWxwaGFfcmVzdWx0KQ0KYGBgDQoNCmBgYHtyfQ0Kc3RldW5jb2wgPC0gZGF0YS5mcmFtZShzdGV1bmNvbF9iZWxhbmcsIHN0ZXVuY29sX3ZyaWVuZGVsaWprKQ0KDQphbHBoYV9yZXN1bHQyIDwtIGFscGhhKHN0ZXVuY29sKQ0KDQpwcmludChhbHBoYV9yZXN1bHQyKQ0KYGBgDQoNCmBgYHtyfQ0Kc3RldW5sZWlkIDwtIGRhdGEuZnJhbWUoc3RldW5sZWlkX2FhbmRhY2h0LCBzdGV1bmxlaWRfd2VsemlqbikNCg0KYWxwaGFfcmVzdWx0MyA8LSBhbHBoYShzdGV1bmxlaWQpDQoNCnByaW50KGFscGhhX3Jlc3VsdDMpDQpgYGA=</div>
 
 
 </div>

@@ -101,3 +101,29 @@ fa.parallel(data, fa = "both", n.iter = 100, show.legend = FALSE)
 efa <- fa(data, nfactors = 7, rotate = "oblimin", fm = "ml")
 print(efa, digits = 2)
 ```
+
+
+```{r}
+attach(NEA2022_clust1)
+psyveil <- data.frame(psyveil_last, psyveil_hulp, psyveil_fout)
+
+alpha_result <- alpha(psyveil)
+
+print(alpha_result)
+```
+
+```{r}
+steuncol <- data.frame(steuncol_belang, steuncol_vriendelijk)
+
+alpha_result2 <- alpha(steuncol)
+
+print(alpha_result2)
+```
+
+```{r}
+steunleid <- data.frame(steunleid_aandacht, steunleid_welzijn)
+
+alpha_result3 <- alpha(steunleid)
+
+print(alpha_result3)
+```
