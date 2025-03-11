@@ -1,7 +1,7 @@
 ---
-title: "LCA_schaal2"
+title: "LCA_schaal3"
 output: html_document
-date: "2025-02-28"
+date: "2025-03-07"
 ---
 
 ```{r setup, include=FALSE}
@@ -64,10 +64,17 @@ NEA2022_clust1$steunleid_scale <- rowMeans(NEA2022_clust1[c("steunleid_aandacht"
 summarytools::freq(NEA2022_clust1$steunleid_scale)
 summarytools::freq(NEA2022_clust1$afl_socs)
 
-NEA2022_clust1$steunleid_R <- as.numeric(factor(NEA2022_clust1$steunleid_scale))
-summarytools::freq(NEA2022_clust1$steunleid_R)
-NEA2022_clust1$steunleid_R[NEA2022_clust1$steunleid_R == "8"] <- NA
-summarytools::freq(NEA2022_clust1$steunleid_R)
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(steunleid_RR = case_when(
+    steunleid_scale %in% c(1) ~ 1,
+    steunleid_scale %in% c(1.5, 2) ~ 2,
+    steunleid_scale %in% c(2.5, 3) ~ 3,
+    steunleid_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEA2022_clust1$steunleid_scale)
+summarytools::freq(NEA2022_clust1$steunleid_RR)
 
 summarytools::freq(NEA2022_clust1$steuncol_belang)
 summarytools::freq(NEA2022_clust1$steuncol_vriendelijk)
@@ -75,10 +82,17 @@ NEA2022_clust1$steuncol_scale <- rowMeans(NEA2022_clust1[c("steuncol_belang", "s
 summarytools::freq(NEA2022_clust1$steuncol_scale)
 summarytools::freq(NEA2022_clust1$afl_so_2)
 
-NEA2022_clust1$steuncol_R <- as.numeric(factor(NEA2022_clust1$steuncol_scale))
-summarytools::freq(NEA2022_clust1$steuncol_R)
-NEA2022_clust1$steuncol_R[NEA2022_clust1$steuncol_R == "8"] <- NA
-summarytools::freq(NEA2022_clust1$steuncol_R)
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(steuncol_RR = case_when(
+    steuncol_scale %in% c(1) ~ 1,
+    steuncol_scale %in% c(1.5, 2) ~ 2,
+    steuncol_scale %in% c(2.5, 3) ~ 3,
+    steuncol_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEA2022_clust1$steuncol_scale)
+summarytools::freq(NEA2022_clust1$steuncol_RR)
 ```
 
 ```{r klippy23, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
@@ -128,9 +142,9 @@ set.seed(123)
 
 ```{r, cache=TRUE}
 attach(NEA2022_clust1)
-datas2 <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_R, steuncol_R, psyveil_RR)
+datas3 <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_RR, steuncol_RR, psyveil_RR)
 
-itemss2 <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_R, steuncol_R, psyveil_RR) ~ 1
+itemss3 <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_RR, steuncol_RR, psyveil_RR) ~ 1
 ```
 <br><br> Variabelen:
 
@@ -152,75 +166,75 @@ itemss2 <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, g
 
 
 ```{r, cache=TRUE}
-model1s2 <- poLCA(itemss2, datas2, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model1s3 <- poLCA(itemss3, datas3, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model2s2 <- poLCA(itemss2, datas2, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model2s3 <- poLCA(itemss3, datas3, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model3s2 <- poLCA(itemss2, datas2, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model3s3 <- poLCA(itemss3, datas3, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model4s2 <- poLCA(itemss2, datas2, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model4s3 <- poLCA(itemss3, datas3, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model5s2 <- poLCA(itemss2, datas2, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model5s3 <- poLCA(itemss3, datas3, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model6s2 <- poLCA(itemss2, datas2, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model6s3 <- poLCA(itemss3, datas3, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model7s2<- poLCA(itemss2, datas2, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model7s3<- poLCA(itemss3, datas3, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model8s2 <- poLCA(itemss2, datas2, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model8s3 <- poLCA(itemss3, datas3, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model9s2 <- poLCA(itemss2, datas2, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model9s3 <- poLCA(itemss3, datas3, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model10s2 <- poLCA(itemss2, datas2, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model10s3 <- poLCA(itemss3, datas3, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model11s2 <- poLCA(itemss2, datas2, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model11s3 <- poLCA(itemss3, datas3, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model12s2 <- poLCA(itemss2, datas2, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model12s3 <- poLCA(itemss3, datas3, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model13s2 <- poLCA(itemss2, datas2, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model13s3 <- poLCA(itemss3, datas3, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model14s2 <- poLCA(itemss2, datas2, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model14s3 <- poLCA(itemss3, datas3, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model15s2 <- poLCA(itemss2, datas2, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model15s3 <- poLCA(itemss3, datas3, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model16s2 <- poLCA(itemss2, datas2, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model16s3 <- poLCA(itemss3, datas3, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model17s2 <- poLCA(itemss2, datas2, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model17s3 <- poLCA(itemss3, datas3, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 ```{r, cache=TRUE}
-model18s2 <- poLCA(itemss2, datas2, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model18s3 <- poLCA(itemss3, datas3, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 
