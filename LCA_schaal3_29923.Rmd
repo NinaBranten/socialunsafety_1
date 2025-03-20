@@ -1,0 +1,546 @@
+---
+title: "LCA_schaal3_29923"
+output: html_document
+date: "2025-03-12"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE, echo = TRUE)
+```
+
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"))
+options(width = 100)
+rgl::setupKnitr()
+
+
+
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+
+
+```{r klippy20, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+
+```{r}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+library("dplyr")
+library("haven")
+library("psych")
+```
+
+
+```{r klippy21, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022_clust1 <-read.spss("data/processed/NEA2022_clust1.sav", use.value.labels = T, to.data.frame = T)
+attach(NEA2022_clust1)
+set.seed(123)
+
+#NEA20142022 <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
+```
+
+
+```{r klippy22, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+summarytools::freq(NEA2022_clust1$steunleid_aandacht)
+summarytools::freq(NEA2022_clust1$steunleid_welzijn)
+NEA2022_clust1$steunleid_scale <- rowMeans(NEA2022_clust1[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
+summarytools::freq(NEA2022_clust1$steunleid_scale)
+summarytools::freq(NEA2022_clust1$afl_socs)
+
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(steunleid_RR = case_when(
+    steunleid_scale %in% c(1) ~ 1,
+    steunleid_scale %in% c(1.5, 2) ~ 2,
+    steunleid_scale %in% c(2.5, 3) ~ 3,
+    steunleid_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEA2022_clust1$steunleid_scale)
+summarytools::freq(NEA2022_clust1$steunleid_RR)
+
+summarytools::freq(NEA2022_clust1$steuncol_belang)
+summarytools::freq(NEA2022_clust1$steuncol_vriendelijk)
+NEA2022_clust1$steuncol_scale <- rowMeans(NEA2022_clust1[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
+summarytools::freq(NEA2022_clust1$steuncol_scale)
+summarytools::freq(NEA2022_clust1$afl_so_2)
+
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(steuncol_RR = case_when(
+    steuncol_scale %in% c(1) ~ 1,
+    steuncol_scale %in% c(1.5, 2) ~ 2,
+    steuncol_scale %in% c(2.5, 3) ~ 3,
+    steuncol_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEA2022_clust1$steuncol_scale)
+summarytools::freq(NEA2022_clust1$steuncol_RR)
+```
+
+```{r klippy23, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+attach(NEA2022_clust1)
+psyveil <- data.frame(psyveil_last, psyveil_hulp, psyveil_fout)
+
+alpha_result <- alpha(psyveil)
+
+print(alpha_result)
+
+raw_alpha_value <- alpha_result$total$raw_alpha
+print(raw_alpha_value)
+```
+
+```{r klippy24, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022_clust1$psyveil_scale <- rowMeans(NEA2022_clust1[c("psyveil_last", "psyveil_hulp", "psyveil_fout")], na.rm = TRUE)
+
+summarytools::freq(NEA2022_clust1$psyveil_scale)
+
+NEA2022_clust1$psyveil_R <- as.numeric(factor(NEA2022_clust1$psyveil_scale))
+
+summarytools::freq(NEA2022_clust1$psyveil_R)
+
+NEA2022_clust1$psyveil_R[NEA2022_clust1$psyveil_R == "18"] <- NA
+
+
+summarytools::freq(NEA2022_clust1$psyveil_scale)
+summarytools::freq(NEA2022_clust1$psyveil_R)
+
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(psyveil_RR = case_when(
+    psyveil_R %in% c(1, 2) ~ 1,
+    psyveil_R %in% c(3, 4, 5, 6) ~ 2,
+    psyveil_R %in% c(7, 8, 9, 10) ~ 3,
+    psyveil_R %in% c(11, 12, 13, 14) ~ 4,
+    psyveil_R %in% c(15, 16, 17) ~ 5,
+    TRUE ~ NA_real_
+  ))
+summarytools::freq(NEA2022_clust1$psyveil_scale)
+summarytools::freq(NEA2022_clust1$psyveil_RR)
+attach(NEA2022_clust1)
+```
+
+```{r}
+NEA2022_clust1$afl_soi3[NEA2022_clust1$afl_soi3 == "onbekend"] <- NA
+
+NEA2022_clust1_29923 <- NEA2022_clust1 %>%
+  filter(!is.na(afl_soi3))
+```
+
+```{r}
+set.seed(123)
+```
+
+```{r, cache=TRUE}
+attach(NEA2022_clust1_29923)
+datas3_29923 <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_RR, steuncol_RR, psyveil_RR)
+
+itemss3_29923 <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_RR, steuncol_RR, psyveil_RR) ~ 1
+```
+<br><br> Variabelen:
+
+<br><br> Pesten_col: **pesten door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Pesten_leid: **pesten door leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Intimidation_col: **intimidatie door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Intimidation_leid: *intimidatie door leidinggevenden.* (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Geweld_col: **fysiek geweld door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Geweld_leid: **fysiek geweld door leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Seks_col: **ongewenste seksuele aandacht collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Seks_leid: **ongewenste seksuele aandacht leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
+<br><br> Conflict_col: **conflict collega's.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Conflict_leid: **conflict leidinggevenden.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Conflict_werk: **conflict werkgever.** (1) nee (2) ja, kortdurend (3) ja, langdurend
+<br><br> Steunleid_R: **mijn leidinggevende besteedt aandacht aan wat ik zeg.** **mijn leidinggevende heeft oog voor het welzijn van de medewerker.** Gemiddelde score van deze twee items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.5, (3) 2, (4) 2.5, (5) 3 (6) 3.5 (7) 4
+<br><br> Steuncol_R: **mijn collega's hebben persoonlijke belangstelling voor me.** **mijn collega's zijn vriendelijk.** Gemiddelde score van deze twee items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.5, (3) 2, (4) 2.5, (5) 3 (6) 3.5 (7) 4
+<br><br> Psyveil_R: **op mijn werk kun je lastige kwesties naar voren brengen.** **op mijn werk is het gemakkelijk om hulp te vragen.** **op mijn werk is het niet erg om een fout te maken.** Gemiddelde score van deze drie items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.33 (3) 1.5 (4) 1.67, (5) 2,0 (6) 2.33, (7) 2.5, (8) 2.67, (9) 3, (10) 3.33, (11) 3.5, (12) 3.67, (13) 4, (14) 4.33, (15) 4.5, (16) 4.67, (17) 5.
+
+
+
+```{r, cache=TRUE}
+model1s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model2s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model3s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model4s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model5s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model6s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model7s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model8s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model9s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model10s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model11s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model12s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model13s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model14s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model15s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model16s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model17s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r, cache=TRUE}
+model18s3_29923 <- poLCA(itemss3_29923, datas3_29923, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+
+
+```{r, cache=TRUE, eval=FALSE}
+model3s3_29923pred <- model3s3_29923$predclass
+model3s3_29923post <- model3s3_29923$posterior
+
+lposteriorsmodel3s3_29923 <- as.list(as.data.frame(model3s3_29923post))
+
+pmodel3s3_29923v1 <- lposteriorsmodel3s3_29923[[1]]
+pmodel3s3_29923v2 <- lposteriorsmodel3s3_29923[[2]]
+pmodel3s3_29923v3 <- lposteriorsmodel3s3_29923[[3]]
+
+model4s3_29923pred <- model4s3_29923$predclass
+model4s3_29923post <- model4s3_29923$posterior
+
+lposteriorsmodel4s3_29923 <- as.list(as.data.frame(model4s3_29923post))
+
+pmodel4s3_29923v1 <- lposteriorsmodel4s3_29923[[1]]
+pmodel4s3_29923v2 <- lposteriorsmodel4s3_29923[[2]]
+pmodel4s3_29923v3 <- lposteriorsmodel4s3_29923[[3]]
+pmodel4s3_29923v4 <- lposteriorsmodel4s3_29923[[4]]
+
+
+model5s3_29923pred <- model5s3_29923$predclass
+model5s3_29923post <- model5s3_29923$posterior
+
+lposteriorsmodel5s3_29923 <- as.list(as.data.frame(model5s3_29923post))
+
+pmodel5s3_29923v1 <- lposteriorsmodel5s3_29923[[1]]
+pmodel5s3_29923v2 <- lposteriorsmodel5s3_29923[[2]]
+pmodel5s3_29923v3 <- lposteriorsmodel5s3_29923[[3]]
+pmodel5s3_29923v4 <- lposteriorsmodel5s3_29923[[4]]
+pmodel5s3_29923v5 <- lposteriorsmodel5s3_29923[[5]]
+
+model6s3_29923pred <- model6s3_29923$predclass
+model6s3_29923post <- model6s3_29923$posterior
+
+lposteriorsmodel6s3_29923 <- as.list(as.data.frame(model6s3_29923post))
+
+pmodel6s3_29923v1 <- lposteriorsmodel6s3_29923[[1]]
+pmodel6s3_29923v2 <- lposteriorsmodel6s3_29923[[2]]
+pmodel6s3_29923v3 <- lposteriorsmodel6s3_29923[[3]]
+pmodel6s3_29923v4 <- lposteriorsmodel6s3_29923[[4]]
+pmodel6s3_29923v5 <- lposteriorsmodel6s3_29923[[5]]
+pmodel6s3_29923v6 <- lposteriorsmodel6s3_29923[[6]]
+
+model7s3_29923pred <- model7s3_29923$predclass
+model7s3_29923post <- model7s3_29923$posterior
+
+lposteriorsmodel7s3_29923 <- as.list(as.data.frame(model7s3_29923post))
+
+pmodel7s3_29923v1 <- lposteriorsmodel7s3_29923[[1]]
+pmodel7s3_29923v2 <- lposteriorsmodel7s3_29923[[2]]
+pmodel7s3_29923v3 <- lposteriorsmodel7s3_29923[[3]]
+pmodel7s3_29923v4 <- lposteriorsmodel7s3_29923[[4]]
+pmodel7s3_29923v5 <- lposteriorsmodel7s3_29923[[5]]
+pmodel7s3_29923v6 <- lposteriorsmodel7s3_29923[[6]]
+pmodel7s3_29923v7 <- lposteriorsmodel7s3_29923[[7]]
+
+model8s3_29923pred <- model8s3_29923$predclass
+model8s3_29923post <- model8s3_29923$posterior
+
+lposteriorsmodel8s3_29923 <- as.list(as.data.frame(model8s3_29923post))
+
+pmodel8s3_29923v1 <- lposteriorsmodel8s3_29923[[1]]
+pmodel8s3_29923v2 <- lposteriorsmodel8s3_29923[[2]]
+pmodel8s3_29923v3 <- lposteriorsmodel8s3_29923[[3]]
+pmodel8s3_29923v4 <- lposteriorsmodel8s3_29923[[4]]
+pmodel8s3_29923v5 <- lposteriorsmodel8s3_29923[[5]]
+pmodel8s3_29923v6 <- lposteriorsmodel8s3_29923[[6]]
+pmodel8s3_29923v7 <- lposteriorsmodel8s3_29923[[7]]
+pmodel8s3_29923v8 <- lposteriorsmodel8s3_29923[[8]]
+
+model9s3_29923pred <- model9s3_29923$predclass
+model9s3_29923post <- model9s3_29923$posterior
+
+lposteriorsmodel9s3_29923 <- as.list(as.data.frame(model9s3_29923post))
+
+pmodel9s3_29923v1 <- lposteriorsmodel9s3_29923[[1]]
+pmodel9s3_29923v2 <- lposteriorsmodel9s3_29923[[2]]
+pmodel9s3_29923v3 <- lposteriorsmodel9s3_29923[[3]]
+pmodel9s3_29923v4 <- lposteriorsmodel9s3_29923[[4]]
+pmodel9s3_29923v5 <- lposteriorsmodel9s3_29923[[5]]
+pmodel9s3_29923v6 <- lposteriorsmodel9s3_29923[[6]]
+pmodel9s3_29923v7 <- lposteriorsmodel9s3_29923[[7]]
+pmodel9s3_29923v8 <- lposteriorsmodel9s3_29923[[8]]
+pmodel9s3_29923v9 <- lposteriorsmodel9s3_29923[[9]]
+
+model10s3_29923pred <- model10s3_29923$predclass
+model10s3_29923post <- model10s3_29923$posterior
+
+lposteriorsmodel10s3_29923 <- as.list(as.data.frame(model10s3_29923post))
+
+pmodel10s3_29923v1 <- lposteriorsmodel10s3_29923[[1]]
+pmodel10s3_29923v2 <- lposteriorsmodel10s3_29923[[2]]
+pmodel10s3_29923v3 <- lposteriorsmodel10s3_29923[[3]]
+pmodel10s3_29923v4 <- lposteriorsmodel10s3_29923[[4]]
+pmodel10s3_29923v5 <- lposteriorsmodel10s3_29923[[5]]
+pmodel10s3_29923v6 <- lposteriorsmodel10s3_29923[[6]]
+pmodel10s3_29923v7 <- lposteriorsmodel10s3_29923[[7]]
+pmodel10s3_29923v8 <- lposteriorsmodel10s3_29923[[8]]
+pmodel10s3_29923v9 <- lposteriorsmodel10s3_29923[[9]]
+pmodel10s3_29923v10 <- lposteriorsmodel10s3_29923[[10]]
+
+model11s3_29923pred <- model11s3_29923$predclass
+model11s3_29923post <- model11s3_29923$posterior
+
+lposteriorsmodel11s3_29923 <- as.list(as.data.frame(model11s3_29923post))
+
+pmodel11s3_29923v1 <- lposteriorsmodel11s3_29923[[1]]
+pmodel11s3_29923v2 <- lposteriorsmodel11s3_29923[[2]]
+pmodel11s3_29923v3 <- lposteriorsmodel11s3_29923[[3]]
+pmodel11s3_29923v4 <- lposteriorsmodel11s3_29923[[4]]
+pmodel11s3_29923v5 <- lposteriorsmodel11s3_29923[[5]]
+pmodel11s3_29923v6 <- lposteriorsmodel11s3_29923[[6]]
+pmodel11s3_29923v7 <- lposteriorsmodel11s3_29923[[7]]
+pmodel11s3_29923v8 <- lposteriorsmodel11s3_29923[[8]]
+pmodel11s3_29923v9 <- lposteriorsmodel11s3_29923[[9]]
+pmodel11s3_29923v10 <- lposteriorsmodel11s3_29923[[10]]
+pmodel11s3_29923v11 <- lposteriorsmodel11s3_29923[[11]]
+
+model12s3_29923pred <- model12s3_29923$predclass
+model12s3_29923post <- model12s3_29923$posterior
+
+lposteriorsmodel12s3_29923 <- as.list(as.data.frame(model12s3_29923post))
+
+pmodel12s3_29923v1 <- lposteriorsmodel12s3_29923[[1]]
+pmodel12s3_29923v2 <- lposteriorsmodel12s3_29923[[2]]
+pmodel12s3_29923v3 <- lposteriorsmodel12s3_29923[[3]]
+pmodel12s3_29923v4 <- lposteriorsmodel12s3_29923[[4]]
+pmodel12s3_29923v5 <- lposteriorsmodel12s3_29923[[5]]
+pmodel12s3_29923v6 <- lposteriorsmodel12s3_29923[[6]]
+pmodel12s3_29923v7 <- lposteriorsmodel12s3_29923[[7]]
+pmodel12s3_29923v8 <- lposteriorsmodel12s3_29923[[8]]
+pmodel12s3_29923v9 <- lposteriorsmodel12s3_29923[[9]]
+pmodel12s3_29923v10 <- lposteriorsmodel12s3_29923[[10]]
+pmodel12s3_29923v11 <- lposteriorsmodel12s3_29923[[11]]
+pmodel12s3_29923v12 <- lposteriorsmodel12s3_29923[[12]]
+
+model13s3_29923pred <- model13s3_29923$predclass
+model13s3_29923post <- model13s3_29923$posterior
+
+lposteriorsmodel13s3_29923 <- as.list(as.data.frame(model13s3_29923post))
+
+pmodel13s3_29923v1 <- lposteriorsmodel13s3_29923[[1]]
+pmodel13s3_29923v2 <- lposteriorsmodel13s3_29923[[2]]
+pmodel13s3_29923v3 <- lposteriorsmodel13s3_29923[[3]]
+pmodel13s3_29923v4 <- lposteriorsmodel13s3_29923[[4]]
+pmodel13s3_29923v5 <- lposteriorsmodel13s3_29923[[5]]
+pmodel13s3_29923v6 <- lposteriorsmodel13s3_29923[[6]]
+pmodel13s3_29923v7 <- lposteriorsmodel13s3_29923[[7]]
+pmodel13s3_29923v8 <- lposteriorsmodel13s3_29923[[8]]
+pmodel13s3_29923v9 <- lposteriorsmodel13s3_29923[[9]]
+pmodel13s3_29923v10 <- lposteriorsmodel13s3_29923[[10]]
+pmodel13s3_29923v11 <- lposteriorsmodel13s3_29923[[11]]
+pmodel13s3_29923v12 <- lposteriorsmodel13s3_29923[[12]]
+pmodel13s3_29923v13 <- lposteriorsmodel13s3_29923[[13]]
+
+model14s3_29923pred <- model14s3_29923$predclass
+model14s3_29923post <- model14s3_29923$posterior
+
+lposteriorsmodel14s3_29923 <- as.list(as.data.frame(model14s3_29923post))
+
+pmodel14s3_29923v1 <- lposteriorsmodel14s3_29923[[1]]
+pmodel14s3_29923v2 <- lposteriorsmodel14s3_29923[[2]]
+pmodel14s3_29923v3 <- lposteriorsmodel14s3_29923[[3]]
+pmodel14s3_29923v4 <- lposteriorsmodel14s3_29923[[4]]
+pmodel14s3_29923v5 <- lposteriorsmodel14s3_29923[[5]]
+pmodel14s3_29923v6 <- lposteriorsmodel14s3_29923[[6]]
+pmodel14s3_29923v7 <- lposteriorsmodel14s3_29923[[7]]
+pmodel14s3_29923v8 <- lposteriorsmodel14s3_29923[[8]]
+pmodel14s3_29923v9 <- lposteriorsmodel14s3_29923[[9]]
+pmodel14s3_29923v10 <- lposteriorsmodel14s3_29923[[10]]
+pmodel14s3_29923v11 <- lposteriorsmodel14s3_29923[[11]]
+pmodel14s3_29923v12 <- lposteriorsmodel14s3_29923[[12]]
+pmodel14s3_29923v13 <- lposteriorsmodel14s3_29923[[13]]
+pmodel14s3_29923v14 <- lposteriorsmodel14s3_29923[[14]]
+```
+
+```{r, cache=TRUE, eval=FALSE}
+Modelss3_29923 <- cbind (volgnumm, model3s3_29923pred	,
+                 pmodel3s3_29923v1	,
+                 pmodel3s3_29923v2	,
+                 pmodel3s3_29923v3	,
+                 model4s3_29923pred	,
+                 pmodel4s3_29923v1	,
+                 pmodel4s3_29923v2	,
+                 pmodel4s3_29923v3	,
+                 pmodel4s3_29923v4	,
+                 model5s3_29923pred	,
+                 pmodel5s3_29923v1	,
+                 pmodel5s3_29923v2	,
+                 pmodel5s3_29923v3	,
+                 pmodel5s3_29923v4	,
+                 pmodel5s3_29923v5	,
+                 model6s3_29923pred	,
+                 pmodel6s3_29923v1	,
+                 pmodel6s3_29923v2	,
+                 pmodel6s3_29923v3	,
+                 pmodel6s3_29923v4	,
+                 pmodel6s3_29923v5	,
+                 pmodel6s3_29923v6	,
+                 model7s3_29923pred	,
+                 pmodel7s3_29923v1	,
+                 pmodel7s3_29923v2	,
+                 pmodel7s3_29923v3	,
+                 pmodel7s3_29923v4	,
+                 pmodel7s3_29923v5	,
+                 pmodel7s3_29923v6	,
+                 pmodel7s3_29923v7	,
+                 model8s3_29923pred	,
+                 pmodel8s3_29923v1	,
+                 pmodel8s3_29923v2	,
+                 pmodel8s3_29923v3	,
+                 pmodel8s3_29923v4	,
+                 pmodel8s3_29923v5	,
+                 pmodel8s3_29923v6	,
+                 pmodel8s3_29923v7	,
+                 pmodel8s3_29923v8 ,
+                 model9s3_29923pred	,
+                 pmodel9s3_29923v1	,
+                 pmodel9s3_29923v2	,
+                 pmodel9s3_29923v3	,
+                 pmodel9s3_29923v4	,
+                 pmodel9s3_29923v5	,
+                 pmodel9s3_29923v6	,
+                 pmodel9s3_29923v7	,
+                 pmodel9s3_29923v8	,
+                 pmodel9s3_29923v9 ,
+                 model10s3_29923pred	,
+                 pmodel10s3_29923v1 ,
+                 pmodel10s3_29923v2 ,
+                 pmodel10s3_29923v3 ,
+                 pmodel10s3_29923v4 ,
+                 pmodel10s3_29923v5 ,
+                 pmodel10s3_29923v6 ,
+                 pmodel10s3_29923v7 ,
+                 pmodel10s3_29923v8 ,
+                 pmodel10s3_29923v9 ,
+                 pmodel10s3_29923v10 ,
+                 model11s3_29923pred	,
+                 pmodel11s3_29923v1 ,
+                 pmodel11s3_29923v2 ,
+                 pmodel11s3_29923v3 ,
+                 pmodel11s3_29923v4 ,
+                 pmodel11s3_29923v5 ,
+                 pmodel11s3_29923v6 ,
+                 pmodel11s3_29923v7 ,
+                 pmodel11s3_29923v8 ,
+                 pmodel11s3_29923v9 ,
+                 pmodel11s3_29923v10 ,
+                 pmodel11s3_29923v11 ,
+                 model12s3_29923pred	,
+                 pmodel12s3_29923v1 ,
+                 pmodel12s3_29923v2 ,
+                 pmodel12s3_29923v3 ,
+                 pmodel12s3_29923v4 ,
+                 pmodel12s3_29923v5 ,
+                 pmodel12s3_29923v6 ,
+                 pmodel12s3_29923v7 ,
+                 pmodel12s3_29923v8 ,
+                 pmodel12s3_29923v9 ,
+                 pmodel12s3_29923v10 ,
+                 pmodel12s3_29923v11 ,
+                 pmodel12s3_29923v12 ,
+                 model13s3_29923pred	,
+                 pmodel13s3_29923v1 ,
+                 pmodel13s3_29923v2 ,
+                 pmodel13s3_29923v3 ,
+                 pmodel13s3_29923v4 ,
+                 pmodel13s3_29923v5 ,
+                 pmodel13s3_29923v6 ,
+                 pmodel13s3_29923v7 ,
+                 pmodel13s3_29923v8 ,
+                 pmodel13s3_29923v9 ,
+                 pmodel13s3_29923v10 ,
+                 pmodel13s3_29923v11 ,
+                 pmodel13s3_29923v12 ,
+                 pmodel13s3_29923v13 ,
+                 model14s3_29923pred	,
+                 pmodel14s3_29923v1 ,
+                 pmodel14s3_29923v2 ,
+                 pmodel14s3_29923v3 ,
+                 pmodel14s3_29923v4 ,
+                 pmodel14s3_29923v5 ,
+                 pmodel14s3_29923v6 ,
+                 pmodel14s3_29923v7 ,
+                 pmodel14s3_29923v8 ,
+                 pmodel14s3_29923v9 ,
+                 pmodel14s3_29923v10 ,
+                 pmodel14s3_29923v11 ,
+                 pmodel14s3_29923v12 ,
+                 pmodel14s3_29923v13 ,
+                 pmodel14s3_29923v14 )
+
+```
+
+```{r}
+#write.csv(Modelss3_29923, "data/processed/modelss3_29923.sav")
+```

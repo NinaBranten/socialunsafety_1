@@ -159,3 +159,5 @@ model18_ <- poLCA(items, data, nclass = 18, maxiter = 5000, nrep = 10, graphs=FA
 ```
 
 
+
+

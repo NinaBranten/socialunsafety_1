@@ -140,7 +140,7 @@ attach(NEA2022_clust1)
 set.seed(123)
 ```
 
-```{r, cache=TRUE}
+```{r, cache=TRUE, results="hide", warning=FALSE, message=FALSE}
 attach(NEA2022_clust1)
 datas3 <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_RR, steuncol_RR, psyveil_RR)
 
@@ -159,9 +159,9 @@ itemss3 <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, g
 <br><br> Conflict_col: **conflict collega's.** (1) nee (2) ja, kortdurend (3) ja, langdurend
 <br><br> Conflict_leid: **conflict leidinggevenden.** (1) nee (2) ja, kortdurend (3) ja, langdurend
 <br><br> Conflict_werk: **conflict werkgever.** (1) nee (2) ja, kortdurend (3) ja, langdurend
-<br><br> Steunleid_R: **mijn leidinggevende besteedt aandacht aan wat ik zeg.** **mijn leidinggevende heeft oog voor het welzijn van de medewerker.** Gemiddelde score van deze twee items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.5, (3) 2, (4) 2.5, (5) 3 (6) 3.5 (7) 4
-<br><br> Steuncol_R: **mijn collega's hebben persoonlijke belangstelling voor me.** **mijn collega's zijn vriendelijk.** Gemiddelde score van deze twee items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.5, (3) 2, (4) 2.5, (5) 3 (6) 3.5 (7) 4
-<br><br> Psyveil_R: **op mijn werk kun je lastige kwesties naar voren brengen.** **op mijn werk is het gemakkelijk om hulp te vragen.** **op mijn werk is het niet erg om een fout te maken.** Gemiddelde score van deze drie items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.33 (3) 1.5 (4) 1.67, (5) 2,0 (6) 2.33, (7) 2.5, (8) 2.67, (9) 3, (10) 3.33, (11) 3.5, (12) 3.67, (13) 4, (14) 4.33, (15) 4.5, (16) 4.67, (17) 5.
+<br><br> Steunleid_R: **mijn leidinggevende besteedt aandacht aan wat ik zeg.** **mijn leidinggevende heeft oog voor het welzijn van de medewerker.** Gemiddelde score van deze twee items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.5, 2, (3) 2.5, 3 (4) 3.5, 4
+<br><br> Steuncol_R: **mijn collega's hebben persoonlijke belangstelling voor me.** **mijn collega's zijn vriendelijk.** Gemiddelde score van deze twee items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.5, 2, (3) 2.5, 3 (4) 3.5, 4
+<br><br> Psyveil_R: **op mijn werk kun je lastige kwesties naar voren brengen.** **op mijn werk is het gemakkelijk om hulp te vragen.** **op mijn werk is het niet erg om een fout te maken.** Gemiddelde score van deze drie items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, 1.33 (2) 1.5, 1.67, 2.0, 2.33, (3) 2.5, 2.67, 3, 3.33, (4) 3.5, 3.67, 4, 4.33, (5) 4.5, 4.67, 5.
 
 
 
@@ -238,3 +238,303 @@ model18s3 <- poLCA(itemss3, datas3, nclass = 18, maxiter = 5000, nrep = 10, grap
 ```
 
 
+```{r, cache=TRUE, eval=FALSE}
+model3s3pred <- model3s3$predclass
+model3s3post <- model3s3$posterior
+
+lposteriorsmodel3s3 <- as.list(as.data.frame(model3s3post))
+
+pmodel3s3v1 <- lposteriorsmodel3s3[[1]]
+pmodel3s3v2 <- lposteriorsmodel3s3[[2]]
+pmodel3s3v3 <- lposteriorsmodel3s3[[3]]
+
+model4s3pred <- model4s3$predclass
+model4s3post <- model4s3$posterior
+
+lposteriorsmodel4s3 <- as.list(as.data.frame(model4s3post))
+
+pmodel4s3v1 <- lposteriorsmodel4s3[[1]]
+pmodel4s3v2 <- lposteriorsmodel4s3[[2]]
+pmodel4s3v3 <- lposteriorsmodel4s3[[3]]
+pmodel4s3v4 <- lposteriorsmodel4s3[[4]]
+
+
+model5s3pred <- model5s3$predclass
+model5s3post <- model5s3$posterior
+
+lposteriorsmodel5s3 <- as.list(as.data.frame(model5s3post))
+
+pmodel5s3v1 <- lposteriorsmodel5s3[[1]]
+pmodel5s3v2 <- lposteriorsmodel5s3[[2]]
+pmodel5s3v3 <- lposteriorsmodel5s3[[3]]
+pmodel5s3v4 <- lposteriorsmodel5s3[[4]]
+pmodel5s3v5 <- lposteriorsmodel5s3[[5]]
+
+model6s3pred <- model6s3$predclass
+model6s3post <- model6s3$posterior
+
+lposteriorsmodel6s3 <- as.list(as.data.frame(model6s3post))
+
+pmodel6s3v1 <- lposteriorsmodel6s3[[1]]
+pmodel6s3v2 <- lposteriorsmodel6s3[[2]]
+pmodel6s3v3 <- lposteriorsmodel6s3[[3]]
+pmodel6s3v4 <- lposteriorsmodel6s3[[4]]
+pmodel6s3v5 <- lposteriorsmodel6s3[[5]]
+pmodel6s3v6 <- lposteriorsmodel6s3[[6]]
+
+model7s3pred <- model7s3$predclass
+model7s3post <- model7s3$posterior
+
+lposteriorsmodel7s3 <- as.list(as.data.frame(model7s3post))
+
+pmodel7s3v1 <- lposteriorsmodel7s3[[1]]
+pmodel7s3v2 <- lposteriorsmodel7s3[[2]]
+pmodel7s3v3 <- lposteriorsmodel7s3[[3]]
+pmodel7s3v4 <- lposteriorsmodel7s3[[4]]
+pmodel7s3v5 <- lposteriorsmodel7s3[[5]]
+pmodel7s3v6 <- lposteriorsmodel7s3[[6]]
+pmodel7s3v7 <- lposteriorsmodel7s3[[7]]
+
+model8s3pred <- model8s3$predclass
+model8s3post <- model8s3$posterior
+
+lposteriorsmodel8s3 <- as.list(as.data.frame(model8s3post))
+
+pmodel8s3v1 <- lposteriorsmodel8s3[[1]]
+pmodel8s3v2 <- lposteriorsmodel8s3[[2]]
+pmodel8s3v3 <- lposteriorsmodel8s3[[3]]
+pmodel8s3v4 <- lposteriorsmodel8s3[[4]]
+pmodel8s3v5 <- lposteriorsmodel8s3[[5]]
+pmodel8s3v6 <- lposteriorsmodel8s3[[6]]
+pmodel8s3v7 <- lposteriorsmodel8s3[[7]]
+pmodel8s3v8 <- lposteriorsmodel8s3[[8]]
+
+model9s3pred <- model9s3$predclass
+model9s3post <- model9s3$posterior
+
+lposteriorsmodel9s3 <- as.list(as.data.frame(model9s3post))
+
+pmodel9s3v1 <- lposteriorsmodel9s3[[1]]
+pmodel9s3v2 <- lposteriorsmodel9s3[[2]]
+pmodel9s3v3 <- lposteriorsmodel9s3[[3]]
+pmodel9s3v4 <- lposteriorsmodel9s3[[4]]
+pmodel9s3v5 <- lposteriorsmodel9s3[[5]]
+pmodel9s3v6 <- lposteriorsmodel9s3[[6]]
+pmodel9s3v7 <- lposteriorsmodel9s3[[7]]
+pmodel9s3v8 <- lposteriorsmodel9s3[[8]]
+pmodel9s3v9 <- lposteriorsmodel9s3[[9]]
+
+model10s3pred <- model10s3$predclass
+model10s3post <- model10s3$posterior
+
+lposteriorsmodel10s3 <- as.list(as.data.frame(model10s3post))
+
+pmodel10s3v1 <- lposteriorsmodel10s3[[1]]
+pmodel10s3v2 <- lposteriorsmodel10s3[[2]]
+pmodel10s3v3 <- lposteriorsmodel10s3[[3]]
+pmodel10s3v4 <- lposteriorsmodel10s3[[4]]
+pmodel10s3v5 <- lposteriorsmodel10s3[[5]]
+pmodel10s3v6 <- lposteriorsmodel10s3[[6]]
+pmodel10s3v7 <- lposteriorsmodel10s3[[7]]
+pmodel10s3v8 <- lposteriorsmodel10s3[[8]]
+pmodel10s3v9 <- lposteriorsmodel10s3[[9]]
+pmodel10s3v10 <- lposteriorsmodel10s3[[10]]
+
+model11s3pred <- model11s3$predclass
+model11s3post <- model11s3$posterior
+
+lposteriorsmodel11s3 <- as.list(as.data.frame(model11s3post))
+
+pmodel11s3v1 <- lposteriorsmodel11s3[[1]]
+pmodel11s3v2 <- lposteriorsmodel11s3[[2]]
+pmodel11s3v3 <- lposteriorsmodel11s3[[3]]
+pmodel11s3v4 <- lposteriorsmodel11s3[[4]]
+pmodel11s3v5 <- lposteriorsmodel11s3[[5]]
+pmodel11s3v6 <- lposteriorsmodel11s3[[6]]
+pmodel11s3v7 <- lposteriorsmodel11s3[[7]]
+pmodel11s3v8 <- lposteriorsmodel11s3[[8]]
+pmodel11s3v9 <- lposteriorsmodel11s3[[9]]
+pmodel11s3v10 <- lposteriorsmodel11s3[[10]]
+pmodel11s3v11 <- lposteriorsmodel11s3[[11]]
+
+model12s3pred <- model12s3$predclass
+model12s3post <- model12s3$posterior
+
+lposteriorsmodel12s3 <- as.list(as.data.frame(model12s3post))
+
+pmodel12s3v1 <- lposteriorsmodel12s3[[1]]
+pmodel12s3v2 <- lposteriorsmodel12s3[[2]]
+pmodel12s3v3 <- lposteriorsmodel12s3[[3]]
+pmodel12s3v4 <- lposteriorsmodel12s3[[4]]
+pmodel12s3v5 <- lposteriorsmodel12s3[[5]]
+pmodel12s3v6 <- lposteriorsmodel12s3[[6]]
+pmodel12s3v7 <- lposteriorsmodel12s3[[7]]
+pmodel12s3v8 <- lposteriorsmodel12s3[[8]]
+pmodel12s3v9 <- lposteriorsmodel12s3[[9]]
+pmodel12s3v10 <- lposteriorsmodel12s3[[10]]
+pmodel12s3v11 <- lposteriorsmodel12s3[[11]]
+pmodel12s3v12 <- lposteriorsmodel12s3[[12]]
+
+model13s3pred <- model13s3$predclass
+model13s3post <- model13s3$posterior
+
+lposteriorsmodel13s3 <- as.list(as.data.frame(model13s3post))
+
+pmodel13s3v1 <- lposteriorsmodel13s3[[1]]
+pmodel13s3v2 <- lposteriorsmodel13s3[[2]]
+pmodel13s3v3 <- lposteriorsmodel13s3[[3]]
+pmodel13s3v4 <- lposteriorsmodel13s3[[4]]
+pmodel13s3v5 <- lposteriorsmodel13s3[[5]]
+pmodel13s3v6 <- lposteriorsmodel13s3[[6]]
+pmodel13s3v7 <- lposteriorsmodel13s3[[7]]
+pmodel13s3v8 <- lposteriorsmodel13s3[[8]]
+pmodel13s3v9 <- lposteriorsmodel13s3[[9]]
+pmodel13s3v10 <- lposteriorsmodel13s3[[10]]
+pmodel13s3v11 <- lposteriorsmodel13s3[[11]]
+pmodel13s3v12 <- lposteriorsmodel13s3[[12]]
+pmodel13s3v13 <- lposteriorsmodel13s3[[13]]
+
+model14s3pred <- model14s3$predclass
+model14s3post <- model14s3$posterior
+
+lposteriorsmodel14s3 <- as.list(as.data.frame(model14s3post))
+
+pmodel14s3v1 <- lposteriorsmodel14s3[[1]]
+pmodel14s3v2 <- lposteriorsmodel14s3[[2]]
+pmodel14s3v3 <- lposteriorsmodel14s3[[3]]
+pmodel14s3v4 <- lposteriorsmodel14s3[[4]]
+pmodel14s3v5 <- lposteriorsmodel14s3[[5]]
+pmodel14s3v6 <- lposteriorsmodel14s3[[6]]
+pmodel14s3v7 <- lposteriorsmodel14s3[[7]]
+pmodel14s3v8 <- lposteriorsmodel14s3[[8]]
+pmodel14s3v9 <- lposteriorsmodel14s3[[9]]
+pmodel14s3v10 <- lposteriorsmodel14s3[[10]]
+pmodel14s3v11 <- lposteriorsmodel14s3[[11]]
+pmodel14s3v12 <- lposteriorsmodel14s3[[12]]
+pmodel14s3v13 <- lposteriorsmodel14s3[[13]]
+pmodel14s3v14 <- lposteriorsmodel14s3[[14]]
+```
+
+```{r, cache=TRUE, eval=FALSE}
+Modelss3 <- cbind (volgnumm, model3s3pred	,
+                 pmodel3s3v1	,
+                 pmodel3s3v2	,
+                 pmodel3s3v3	,
+                 model4s3pred	,
+                 pmodel4s3v1	,
+                 pmodel4s3v2	,
+                 pmodel4s3v3	,
+                 pmodel4s3v4	,
+                 model5s3pred	,
+                 pmodel5s3v1	,
+                 pmodel5s3v2	,
+                 pmodel5s3v3	,
+                 pmodel5s3v4	,
+                 pmodel5s3v5	,
+                 model6s3pred	,
+                 pmodel6s3v1	,
+                 pmodel6s3v2	,
+                 pmodel6s3v3	,
+                 pmodel6s3v4	,
+                 pmodel6s3v5	,
+                 pmodel6s3v6	,
+                 model7s3pred	,
+                 pmodel7s3v1	,
+                 pmodel7s3v2	,
+                 pmodel7s3v3	,
+                 pmodel7s3v4	,
+                 pmodel7s3v5	,
+                 pmodel7s3v6	,
+                 pmodel7s3v7	,
+                 model8s3pred	,
+                 pmodel8s3v1	,
+                 pmodel8s3v2	,
+                 pmodel8s3v3	,
+                 pmodel8s3v4	,
+                 pmodel8s3v5	,
+                 pmodel8s3v6	,
+                 pmodel8s3v7	,
+                 pmodel8s3v8 ,
+                 model9s3pred	,
+                 pmodel9s3v1	,
+                 pmodel9s3v2	,
+                 pmodel9s3v3	,
+                 pmodel9s3v4	,
+                 pmodel9s3v5	,
+                 pmodel9s3v6	,
+                 pmodel9s3v7	,
+                 pmodel9s3v8	,
+                 pmodel9s3v9 ,
+                 model10s3pred	,
+                 pmodel10s3v1 ,
+                 pmodel10s3v2 ,
+                 pmodel10s3v3 ,
+                 pmodel10s3v4 ,
+                 pmodel10s3v5 ,
+                 pmodel10s3v6 ,
+                 pmodel10s3v7 ,
+                 pmodel10s3v8 ,
+                 pmodel10s3v9 ,
+                 pmodel10s3v10 ,
+                 model11s3pred	,
+                 pmodel11s3v1 ,
+                 pmodel11s3v2 ,
+                 pmodel11s3v3 ,
+                 pmodel11s3v4 ,
+                 pmodel11s3v5 ,
+                 pmodel11s3v6 ,
+                 pmodel11s3v7 ,
+                 pmodel11s3v8 ,
+                 pmodel11s3v9 ,
+                 pmodel11s3v10 ,
+                 pmodel11s3v11 ,
+                 model12s3pred	,
+                 pmodel12s3v1 ,
+                 pmodel12s3v2 ,
+                 pmodel12s3v3 ,
+                 pmodel12s3v4 ,
+                 pmodel12s3v5 ,
+                 pmodel12s3v6 ,
+                 pmodel12s3v7 ,
+                 pmodel12s3v8 ,
+                 pmodel12s3v9 ,
+                 pmodel12s3v10 ,
+                 pmodel12s3v11 ,
+                 pmodel12s3v12 ,
+                 model13s3pred	,
+                 pmodel13s3v1 ,
+                 pmodel13s3v2 ,
+                 pmodel13s3v3 ,
+                 pmodel13s3v4 ,
+                 pmodel13s3v5 ,
+                 pmodel13s3v6 ,
+                 pmodel13s3v7 ,
+                 pmodel13s3v8 ,
+                 pmodel13s3v9 ,
+                 pmodel13s3v10 ,
+                 pmodel13s3v11 ,
+                 pmodel13s3v12 ,
+                 pmodel13s3v13 ,
+                 model14s3pred	,
+                 pmodel14s3v1 ,
+                 pmodel14s3v2 ,
+                 pmodel14s3v3 ,
+                 pmodel14s3v4 ,
+                 pmodel14s3v5 ,
+                 pmodel14s3v6 ,
+                 pmodel14s3v7 ,
+                 pmodel14s3v8 ,
+                 pmodel14s3v9 ,
+                 pmodel14s3v10 ,
+                 pmodel14s3v11 ,
+                 pmodel14s3v12 ,
+                 pmodel14s3v13 ,
+                 pmodel14s3v14 )
+
+```
+
+
+
+```{r, include=FALSE, eval=FALSE}
+write.csv(Modelss3, "data/processed/modelss3.sav")
+```

@@ -28,6 +28,8 @@ navbar:
       href: LCA_schaal2.html
     - text: "LCA schaal3"
       href: LCA_schaal3.html
+    - text: "LCA schaal3_29923"
+      href: LCA_schaal3_29923.html
     - text: "LCA schaal steun"
       href: LCA_schaalsteun.html
     - text: "LCA conflict"
@@ -38,6 +40,8 @@ navbar:
       href: LCA_geweld.html      
     - text: "Factoranalyse"
       href: Factoranalyse.html
+    - text: "Plotjes"
+      href: plotjes.html
         
         # here, other .Rmds can be added
 
