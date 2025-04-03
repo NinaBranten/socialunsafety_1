@@ -4,12 +4,6 @@ output: html_document
 date: "2025-02-27"
 ---
 
----
-title: "LCA2022"
-output: html_document
-date: "2025-02-04"
----
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(cache=TRUE, echo = TRUE)
 ```
