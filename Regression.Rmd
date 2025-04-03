@@ -1,0 +1,45 @@
+---
+title: "Regression"
+output: html_document
+date: "2025-03-20"
+---
+```{r}
+library(tidyverse)
+library(nnet) # For multinom function
+library(foreign)
+```
+
+```{r}
+NEA2022_clust1_29923 <-read.spss("data/processed/NEA2022_clust1_29923.sav", use.value.labels = T, to.data.frame = T)
+
+```
+
+
+
+```{r}
+NEA2022_final <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
+```
+```
+
+
+```{r}
+table(NEA2022_clust1_29923$gender)
+table(NEA2022_clust1_29923$migration)
+table(NEA2022_clust1_29923$education)
+table(NEA2022_clust1_29923$leeftijd_)
+
+table(NEA2022_clust1_29923$gender_m)
+table(NEA2022_clust1_29923$migration_nl)
+table(NEA2022_clust1_29923$education_laag)
+table(NEA2022_clust1_29923$leeftijd__15.35)
+```
+
+```{r}
+table(NEA2022_clust1_29923$model8s3_29923pred)
+```
+
+
+```{r}
+model1 <- multinom(as.factor(model8s3_29923pred) ~ gender_v + migration_noeu + migration_eu + education_middel + education_hoog + leeftijd__15.35 + leeftijd__55.75, data = NEA2022_clust1_29923)
+summary(model1)
+```

@@ -18,30 +18,27 @@ navbar:
       href: Recoding_variables.html
     - text: "LCA 30501"
       href: LCA_30501.html
-    - text: "LCA 29923"
-      href: LCA_29923.html
-    - text: "LCA 8 items"
-      href: LCA_8items.html
     - text: "LCA schaal"
       href: LCA_schaal.html
-    - text: "LCA schaal2"
-      href: LCA_schaal2.html
     - text: "LCA schaal3"
-      href: LCA_schaal3.html
+      href: LCA_schaal3.html     
+    - text: "LCA 29923"
+      href: LCA_29923.html
     - text: "LCA schaal3_29923"
-      href: LCA_schaal3_29923.html
-    - text: "LCA schaal steun"
-      href: LCA_schaalsteun.html
+      href: LCA_schaal3_29923.html      
+    - text: "LCA 8 items"
+      href: LCA_8items.html
     - text: "LCA conflict"
       href: LCA_conflict.html
     - text: "LCA without missings"
       href: LCA_missings.html
     - text: "LCA zonder geweld"
-      href: LCA_geweld.html      
+      href: LCA_geweld.html
+    - text: "Zonder employer"
+      href: LCA_employer.html
     - text: "Factoranalyse"
       href: Factoranalyse.html
-    - text: "Plotjes"
-      href: plotjes.html
+
         
         # here, other .Rmds can be added
 

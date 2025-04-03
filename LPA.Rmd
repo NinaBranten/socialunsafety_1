@@ -1,0 +1,84 @@
+---
+title: "LPA"
+output: html_document
+date: "2025-03-25"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+install.packages("tidyLPA")
+install.packages("dplyr")
+```
+
+```{r}
+set.seed(123)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
+attach(NEAfinal)
+```
+
+```{r}
+summarytools::freq(NEAfinal$steunleid_aandacht)
+summarytools::freq(NEAfinal$steunleid_welzijn)
+NEAfinal$steunleid_scale <- rowMeans(NEAfinal[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
+summarytools::freq(NEAfinal$steunleid_scale)
+summarytools::freq(NEAfinal$afl_socs)
+
+NEAfinal$steunleid_R <- as.numeric(factor(NEAfinal$steunleid_scale))
+summarytools::freq(NEAfinal$steunleid_R)
+NEAfinal$steunleid_R[NEAfinal$steunleid_R == "8"] <- NA
+summarytools::freq(NEAfinal$steunleid_R)
+
+summarytools::freq(NEAfinal$steuncol_belang)
+summarytools::freq(NEAfinal$steuncol_vriendelijk)
+NEAfinal$steuncol_scale <- rowMeans(NEAfinal[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
+summarytools::freq(NEAfinal$steuncol_scale)
+summarytools::freq(NEAfinal$afl_so_2)
+
+NEAfinal$steuncol_R <- as.numeric(factor(NEAfinal$steuncol_scale))
+summarytools::freq(NEAfinal$steuncol_R)
+NEAfinal$steuncol_R[NEAfinal$steuncol_R == "8"] <- NA
+summarytools::freq(NEAfinal$steuncol_R)
+
+```
+
+```{r}
+NEAfinal$psyveil_scale <- rowMeans(NEAfinal[c("psyveil_last", "psyveil_hulp", "psyveil_fout")], na.rm = TRUE)
+
+summarytools::freq(NEAfinal$psyveil_scale)
+
+NEAfinal$psyveil_R <- as.numeric(factor(NEAfinal$psyveil_scale))
+
+NEAfinal$psyveil_R[NEAfinal$psyveil_R == "18"] <- NA
+
+summarytools::freq(NEAfinal$psyveil_R)
+
+```
+
+```{r}
+write.csv(NEAfinal, "data/processed/NEAfinal2503.sav")
+```
+
+```{r}
+attach(NEAfinal)
+```
+
+
+```{r}
+data_lpa <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_R, steuncol_R, psyveil_R)
+```
+
+```{r}
+results_lpa <- data_lpa %>%
+  estimate_profiles(2:9, 
+                    models = 1, # 1 means variances are equal across classes
+                    variances = "equal", 
+                    covariances = "zero") 
+
+```
+

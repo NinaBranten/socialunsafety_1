@@ -85,7 +85,7 @@ summarytools::freq(NEA2022_clust1$steuncol_R)
 set.seed(123)
 ```
 
-```{r, cache=TRUE}
+```{r, cache=TRUE, warning=FALSE}
 attach(NEA2022_clust1)
 datass <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_R, steuncol_R, psyveil_hulp, psyveil_fout, psyveil_last)
 

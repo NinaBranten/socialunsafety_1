@@ -355,25 +355,19 @@ div.tocify {
   <a href="LCA_30501.html">LCA 30501</a>
 </li>
 <li>
-  <a href="LCA_29923.html">LCA 29923</a>
-</li>
-<li>
-  <a href="LCA_8items.html">LCA 8 items</a>
-</li>
-<li>
   <a href="LCA_schaal.html">LCA schaal</a>
-</li>
-<li>
-  <a href="LCA_schaal2.html">LCA schaal2</a>
 </li>
 <li>
   <a href="LCA_schaal3.html">LCA schaal3</a>
 </li>
 <li>
+  <a href="LCA_29923.html">LCA 29923</a>
+</li>
+<li>
   <a href="LCA_schaal3_29923.html">LCA schaal3_29923</a>
 </li>
 <li>
-  <a href="LCA_schaalsteun.html">LCA schaal steun</a>
+  <a href="LCA_8items.html">LCA 8 items</a>
 </li>
 <li>
   <a href="LCA_conflict.html">LCA conflict</a>
@@ -385,10 +379,10 @@ div.tocify {
   <a href="LCA_geweld.html">LCA zonder geweld</a>
 </li>
 <li>
-  <a href="Factoranalyse.html">Factoranalyse</a>
+  <a href="LCA_employer.html">Zonder employer</a>
 </li>
 <li>
-  <a href="plotjes.html">Plotjes</a>
+  <a href="Factoranalyse.html">Factoranalyse</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -438,129 +432,11 @@ library(&quot;klippy&quot;)
 library(&quot;dplyr&quot;)
 library(&quot;haven&quot;)</code></pre>
 <pre class="r"><code>set.seed(123)</code></pre>
-<pre class="r"><code>attach(NEA2022_clust1)</code></pre>
-<pre><code>## The following objects are masked from NEA2022_clust1 (pos = 3):
-## 
-##     aandac_1, aandac_2, aandac_3, aandac_4, aandacht, aanpas_1,
-##     aanpas_2, aanpas_3, aanpas_4, aanpas_5, aanpas_6, aanpas_j,
-##     aanpas_n, aansluit, aanspr, aantplek, aantuurt, afl_aa_1, afl_aant,
-##     afl_acto, afl_algg, afl_an_1, afl_anci, afl_arbd, afl_atec,
-##     afl_au_1, afl_au_2, afl_au_3, afl_auto, afl_b_10, afl_b_11,
-##     afl_bala, afl_be_1, afl_be_2, afl_be_3, afl_be_4, afl_be_5,
-##     afl_be_6, afl_be_7, afl_be_8, afl_be_9, afl_bedr, afl_beel,
-##     afl_bela, afl_bele, afl_bero, afl_bevl, afl_bu_1, afl_burn,
-##     afl_conf, afl_cont, afl_covi, afl_da_1, afl_dagl, afl_disc,
-##     afl_em_1, afl_em_2, afl_emot, afl_empl, afl_f_10, afl_f_11,
-##     afl_f_12, afl_f_13, afl_f_14, afl_f_15, afl_f_16, afl_f_17,
-##     afl_f_18, afl_f_19, afl_fr_1, afl_fr_2, afl_fr_3, afl_fr_4,
-##     afl_fr_5, afl_fr_6, afl_fr_7, afl_fr_8, afl_fr_9, afl_freq,
-##     afl_ge_1, afl_ge_2, afl_ge_3, afl_ge_4, afl_geva, afl_gevs,
-##     afl_gew_, afl_hi_1, afl_high, afl_hitt, afl_in_1, afl_in_2,
-##     afl_inno, afl_inro, afl_kl_1, afl_kl_2, afl_kl_3, afl_klac,
-##     afl_koum, afl_kour, afl_kw_1, afl_kwav, afl_lf_1, afl_lf_2,
-##     afl_lftc, afl_lfts, afl_lftw, afl_lu_1, afl_luch, afl_marg,
-##     afl_mo_1, afl_moei, afl_n_le, afl_o_10, afl_o_11, afl_o_12,
-##     afl_o_13, afl_o_14, afl_o_15, afl_o_16, afl_o_17, afl_o_18,
-##     afl_o_19, afl_o_20, afl_o_21, afl_o_22, afl_o_23, afl_o_24,
-##     afl_o_25, afl_og_o, afl_on_1, afl_on_2, afl_on_3, afl_on_4,
-##     afl_on_5, afl_on_6, afl_on_7, afl_on_8, afl_on_9, afl_ong_,
-##     afl_onge, afl_ongr, afl_ooex, afl_ooin, afl_over, afl_pe_1,
-##     afl_pe_2, afl_pest, afl_po_1, afl_posw, afl_rede, afl_redf,
-##     afl_rsi, afl_sb_1, afl_sb_2, afl_sb_3, afl_sb_4, afl_sb_5,
-##     afl_sb_6, afl_sb_7, afl_sb_8, afl_sb_9, afl_sbi_, afl_se_1,
-##     afl_se_2, afl_se_3, afl_seks, afl_so_1, afl_so_2, afl_so_3,
-##     afl_socs, afl_soi3, afl_stof, afl_tele, afl_th_1, afl_thui,
-##     afl_to_1, afl_tota, afl_uren, afl_vast, afl_verz, afl_vtdt,
-##     afl_wa_1, afl_wa_2, afl_waar, afl_we_1, afl_we_2, afl_we_3,
-##     afl_werk, afl_zitw, afl_zwaa, altstofv, altstofz, andwer_1,
-##     andwer_2, andwer_3, andwer_4, andwerk_, arbhand, arbo_a, arbo_b,
-##     arbo_c, arbo_d, arbo_e, arbo_g, arbo_h, arbo_i, arbo_j, arbo_k,
-##     arts, arts_and, arts_ast, arts_bur, arts_cop, arts_dep, arts_ecz,
-##     arts_geh, arts_heu, arts_i_1, arts_inf, arts_kni, arts_lag,
-##     arts_pts, arts_rsi, arts_tno, atech_ho, atech_in, atech_le,
-##     atech_li, atech_me, atech_mo, atech_to, atech_ve, auto_a, auto_b,
-##     auto_c, auto_d, auto_e, auto_f, auto_g, avbel_10, avbel_11,
-##     avbel_12, avbel_13, avbel_14, avbel_15, avbela_1, avbela_2,
-##     avbela_3, avbela_4, avbela_5, avbela_6, avbela_7, avbela_8,
-##     avbela_9, avbelang, avond, avtevr_a, avtevr_b, avtevr_c, avtevr_d,
-##     avtevr_e, avtevr_f, avtevr_g, avtevr_h, avtevr_i, avtevr_j,
-##     avtevr_k, avtevr_l, avtevr_m, avtevr_n, avtevr_o, avtevr_p, baooit,
-##     bavertro, bedrarts, beeldsch, behoef_1, behoef_2, behoef_3,
-##     behoefso, behoefte, belang_1, belang_2, belang_3, belang_4,
-##     belangwe, belgev_1, belgev_2, belgev_3, belgev_4, belgev_5,
-##     belgev_a, belgev_b, belgev_g, belgev_s, belgev_v, berzi_10,
-##     berzi_11, berzi_12, berzi_13, berzie_1, berzie_2, berzie_3,
-##     berzie_4, berzie_5, berzie_6, berzie_7, berzie_8, berzie_9,
-##     berziek_, besmet_1, besmet_2, besmet_3, besmet_4, besmet_5,
-##     besmet_j, besmet_n, bevlog_1, bevlog_2, bevlogen, bewegi_1,
-##     bewegi_2, bewegi_3, bewegi_4, bewegi_5, beweging, bijzcatw,
-##     buitwerk, burnou_1, burnou_2, burnou_3, burnou_4, burnout_,
-##     colleg_1, collega_, compet_a, compet_b, compet_c, compet_d,
-##     compet_e, confli_1, confli_2, conflict, conflict_col,
-##     conflict_leid, conflict_werk, contdigi, contdire, controle,
-##     coron_10, corona_1, corona_2, corona_3, corona_4, corona_5,
-##     corona_6, corona_7, corona_8, corona_9, coronafi, coronm_1,
-##     coronm_2, coronm_3, coronm_4, coronm_5, coronm_6, coronm_7,
-##     coronm_8, coronm_9, coronmaa, covid, covid19, creati_a, creati_b,
-##     creati_c, detachee, disbed_1, disbed_2, disbedr_, discma_1,
-##     discma_2, discma_3, discma_4, discma_5, discma_6, discmani,
-##     discr_10, discr_11, discr_12, discr_13, discr_14, discri_1,
-##     discri_2, discri_3, discri_4, discri_5, discri_6, discri_7,
-##     discri_8, discri_9, discrim_, discrim2, disopm_1, disopm_2,
-##     disopm_w, doelopl, eenmeerb, emotie_a, emotie_b, emotie_c,
-##     flexplek, freqge_1, freqge_2, freqge_3, freqge_4, freqge_5,
-##     freqge_6, freqge_7, freqge_8, freqge_9, freqgev_, geaardh,
-##     gevar_10, gevare_1, gevare_2, gevare_3, gevare_4, gevare_5,
-##     gevare_6, gevare_7, gevare_8, gevare_9, gevaren_, gevolgw, gevstof,
-##     gevwerk, geweld_col, geweld_leid, gezonea, gs_man_1, gs_man_2,
-##     gs_man_3, gs_manie, gs_srt_1, gs_srt_2, gs_srt_3, gs_srt_4,
-##     gs_srt_a, gs_srt_b, gs_srt_d, gs_srt_g, gs_srt_h, gs_srt_k,
-##     gs_srt_l, gs_srt_m, gs_srt_o, gs_srt_p, gs_srt_s, hardw_a, hardw_b,
-##     hardw_c, haspec, hhztaak, hitteblo, hoevaakv, hoevdagv, hoevdagw,
-##     hoeveel, innov_a, innov_b, innov_c, innov_d, intimidation_col,
-##     intimidation_leid, jaar, kantoorw, klachtv, klachtve, koubloot,
-##     kwaver_a, kwaver_b, kwaver_c, leidin_1, leiding, leiding_,
-##     lerenmen, lerennie, lerentak, luchtblo, m_v, misver_1, misverw_,
-##     n_leidw, n_leidw_, nacht, nachtmaa, nachtuur, nietwerk, nodig__1,
-##     nodig_aa, nodig_an, nodig_be, nodig_ge, nodig_op, nodig_ty,
-##     ntwkre_1, ntwkre_2, ntwkre_3, ntwkre_4, ntwkre_5, ntwkrege,
-##     omstst_1, omstst_2, omstst_3, omstst_4, omstst_5, omstst_6,
-##     omstst_7, omstst_8, omststaa, omstw_10, omstw_11, omstwi_1,
-##     omstwi_2, omstwi_3, omstwi_4, omstwi_5, omstwi_6, omstwi_7,
-##     omstwi_8, omstwi_9, omstwil_, ondgez, ongwge_1, ongwge_2, ongwge_3,
-##     ongwge_4, ongwge_5, ongwge_6, ongwge_7, ongwgedr, onvldm_1,
-##     onvldm_2, onvldm_3, onvldm_4, onvldm_5, onvldm_6, onvldm_7,
-##     onvldmtr, oorbesch, oplcursu, oproep, ormrpv, overl2_1, overl2_2,
-##     overl2_3, overl2_4, overl2jr, overwerk, partic_1, partic_2,
-##     partic_3, particip, pb1_gebl, persbe_1, persbedr, pesten_col,
-##     pesten_leid, plekvast, ploegend, poshh, preste_1, preste_2,
-##     presteer, prodem_a, prodem_b, prodem_c, prodem_d, psyvei_1,
-##     psyvei_2, psyveil_, psyveil_fout, psyveil_hulp, psyveil_last,
-##     redenw, redenwer, redflex, redmeerb, reg_leef, ruimte_1, ruimte_2,
-##     ruimtefl, ruimteva, samhh, se_clust, secopin, seks_col, seks_leid,
-##     stedgem, stedgem_, steuncol_belang, steuncol_vriendelijk,
-##     steunleid_aandacht, steunleid_welzijn, stimul, stoffe_1, stoffe_2,
-##     stoffe_3, stoffen_, tech_con, tech_dig, tech_ele, tech_gee,
-##     tech_pro, tech_rob, tech_tec, tech_wer, telewerk, tevrao, tevrwrk,
-##     thuiswrk, uitzdeta, vakbond, veil_col, veil_hoo, veil_lei,
-##     veil_reg, veilge_1, veilge_2, veilge_3, veilge_4, veilge_5,
-##     veilge_6, veilgez_, verbed_1, verbed_2, verbed_3, verbed_4,
-##     verbed_5, verbed_6, verbed_7, verbed_8, verbed_9, verbedr_,
-##     verbonde, verbwerk, vertrouw, verzuim, vldmtr_1, vldmtr_2,
-##     vldmtr_3, vldmtr_4, vldmtr_5, vldmtr_6, vldmtr_7, vldmtr_s,
-##     voldsteu, volgnumm, vp_intex, vrlgbage, vrllandd, waarde_1,
-##     waarde_2, waardewe, waarwrk, weeg, weeg_a, weeg_b, weegpo_1,
-##     weegpo_2, weegpo_3, weegpop, weegpop_, weekend, wk_deeln, wk_volnt,
-##     woonwerk, wrktmp_1, wrktmp_2, wrktmp_3, wrktmp_4, wrktmp_5,
-##     wrktmp_6, wrktmpo_, wrntvakb, zaterdag, zelfafsp, zelfst, zieka_10,
-##     zieka_11, zieka_12, zieka_13, zieka_14, zieka_15, ziekaa_1,
-##     ziekaa_2, ziekaa_3, ziekaa_4, ziekaa_5, ziekaa_6, ziekaa_7,
-##     ziekaa_8, ziekaa_9, ziekaand, ziekgev, zitvt, zitwerk, zitwwv,
-##     zondag, zwaar_a, zwaar_b, zwaar_c, zwaar_d, zwaar_e</code></pre>
-<pre class="r"><code>data8 &lt;- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid)
+<pre class="r"><code>attach(NEA2022_clust1)
+data8 &lt;- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid)
 
 items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid) ~ 1</code></pre>
-<pre class="r"><code>model1. &lt;- poLCA(items8, data8, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_1 &lt;- poLCA(items8, data8, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Conditional item response (column) probabilities,
 ##  by outcome variable, for each class (row) 
 ##  
@@ -616,7 +492,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(1): 3396.99 (Likelihood ratio/deviance statistic) 
 ## X^2(1): 4.259657e+12 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model2. &lt;- poLCA(items8, data8, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_2 &lt;- poLCA(items8, data8, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -14101.54 ... best llik = -14101.54
 ## Model 2: llik = -13447.71 ... best llik = -13447.71
 ## Model 3: llik = -14208.9 ... best llik = -13447.71
@@ -690,7 +566,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(2): 1681.109 (Likelihood ratio/deviance statistic) 
 ## X^2(2): 25732383 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model3. &lt;- poLCA(items8, data8, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_3 &lt;- poLCA(items8, data8, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13491.29 ... best llik = -13491.29
 ## Model 2: llik = -13344.81 ... best llik = -13344.81
 ## Model 3: llik = -13738.08 ... best llik = -13344.81
@@ -772,7 +648,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(3): 1616.994 (Likelihood ratio/deviance statistic) 
 ## X^2(3): 150937.2 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model4. &lt;- poLCA(items8, data8, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_4 &lt;- poLCA(items8, data8, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13722.69 ... best llik = -13722.69
 ## Model 2: llik = -13509.34 ... best llik = -13509.34
 ## Model 3: llik = -13328.66 ... best llik = -13328.66
@@ -862,7 +738,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(4): 1277.644 (Likelihood ratio/deviance statistic) 
 ## X^2(4): 926638.8 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model5. &lt;- poLCA(items8, data8, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_5 &lt;- poLCA(items8, data8, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -14263.89 ... best llik = -14263.89
 ## Model 2: llik = -13231.72 ... best llik = -13231.72
 ## Model 3: llik = -13379.94 ... best llik = -13231.72
@@ -960,7 +836,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(5): 1054.564 (Likelihood ratio/deviance statistic) 
 ## X^2(5): 11398.11 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model6. &lt;- poLCA(items8, data8, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_6 &lt;- poLCA(items8, data8, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13552.46 ... best llik = -13552.46
 ## Model 2: llik = -13564.55 ... best llik = -13552.46
 ## Model 3: llik = -13152.46 ... best llik = -13152.46
@@ -1066,7 +942,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(6): 1088.035 (Likelihood ratio/deviance statistic) 
 ## X^2(6): 14978.67 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model7. &lt;- poLCA(items8, data8, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_7 &lt;- poLCA(items8, data8, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13056.11 ... best llik = -13056.11
 ## Model 2: llik = -13360.74 ... best llik = -13056.11
 ## Model 3: llik = -13333.7 ... best llik = -13056.11
@@ -1180,7 +1056,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(7): 976.3665 (Likelihood ratio/deviance statistic) 
 ## X^2(7): 12473.08 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model8. &lt;- poLCA(items8, data8, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_8 &lt;- poLCA(items8, data8, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13705.66 ... best llik = -13705.66
 ## Model 2: llik = -12994.64 ... best llik = -12994.64
 ## Model 3: llik = -13216.55 ... best llik = -12994.64
@@ -1302,7 +1178,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(8): 938.4666 (Likelihood ratio/deviance statistic) 
 ## X^2(8): 35340.46 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model9. &lt;- poLCA(items8, data8, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_9 &lt;- poLCA(items8, data8, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13357.93 ... best llik = -13357.93
 ## Model 2: llik = -13002.87 ... best llik = -13002.87
 ## Model 3: llik = -13387.5 ... best llik = -13002.87
@@ -1434,7 +1310,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ##  
 ## ALERT: estimation algorithm automatically restarted with new initial values 
 ## </code></pre>
-<pre class="r"><code>model10. &lt;- poLCA(items8, data8, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_10 &lt;- poLCA(items8, data8, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13058.23 ... best llik = -13058.23
 ## Model 2: llik = -13143.04 ... best llik = -13058.23
 ## Model 3: llik = -13391.86 ... best llik = -13058.23
@@ -1572,7 +1448,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(10): 766.8243 (Likelihood ratio/deviance statistic) 
 ## X^2(10): 17930.67 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model11. &lt;- poLCA(items8, data8, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_11 &lt;- poLCA(items8, data8, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -12988.67 ... best llik = -12988.67
 ## Model 2: llik = -13028.36 ... best llik = -12988.67
 ## Model 3: llik = -13099.06 ... best llik = -12988.67
@@ -1718,7 +1594,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(11): 902.4976 (Likelihood ratio/deviance statistic) 
 ## X^2(11): 59980.89 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model12. &lt;- poLCA(items8, data8, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_12 &lt;- poLCA(items8, data8, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13049.58 ... best llik = -13049.58
 ## Model 2: llik = -13359.06 ... best llik = -13049.58
 ## Model 3: llik = -13531.6 ... best llik = -13049.58
@@ -1872,7 +1748,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(12): 789.9362 (Likelihood ratio/deviance statistic) 
 ## X^2(12): 154677.4 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model13. &lt;- poLCA(items8, data8, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_13 &lt;- poLCA(items8, data8, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13307.38 ... best llik = -13307.38
 ## Model 2: llik = -13048.83 ... best llik = -13048.83
 ## Model 3: llik = -12966.51 ... best llik = -12966.51
@@ -2034,7 +1910,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(13): 911.9545 (Likelihood ratio/deviance statistic) 
 ## X^2(13): 19690.14 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model14. &lt;- poLCA(items8, data8, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_14 &lt;- poLCA(items8, data8, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13075.52 ... best llik = -13075.52
 ## Model 2: llik = -12943.75 ... best llik = -12943.75
 ## Model 3: llik = -13024.9 ... best llik = -12943.75
@@ -2206,7 +2082,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ##  
 ## ALERT: estimation algorithm automatically restarted with new initial values 
 ## </code></pre>
-<pre class="r"><code>model15. &lt;- poLCA(items8, data8, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_15 &lt;- poLCA(items8, data8, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13300.11 ... best llik = -13300.11
 ## Model 2: llik = -13010.58 ... best llik = -13010.58
 ## Model 3: llik = -12969.45 ... best llik = -12969.45
@@ -2384,7 +2260,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(15): 827.02 (Likelihood ratio/deviance statistic) 
 ## X^2(15): 15984.4 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model16. &lt;- poLCA(items8, data8, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_16 &lt;- poLCA(items8, data8, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13221.92 ... best llik = -13221.92
 ## Model 2: llik = -13043.06 ... best llik = -13043.06
 ## Model 3: llik = -13003.49 ... best llik = -13003.49
@@ -2570,7 +2446,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(16): 703.542 (Likelihood ratio/deviance statistic) 
 ## X^2(16): 24906.12 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model17. &lt;- poLCA(items8, data8, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_17 &lt;- poLCA(items8, data8, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -12844.82 ... best llik = -12844.82
 ## Model 2: llik = -13028.8 ... best llik = -12844.82
 ## Model 3: llik = -13120.15 ... best llik = -12844.82
@@ -2764,7 +2640,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## G^2(17): 677.3842 (Likelihood ratio/deviance statistic) 
 ## X^2(17): 8038.748 (Chi-square goodness of fit) 
 ## </code></pre>
-<pre class="r"><code>model18. &lt;- poLCA(items8, data8, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
+<pre class="r"><code>model8_18 &lt;- poLCA(items8, data8, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)</code></pre>
 <pre><code>## Model 1: llik = -13032.74 ... best llik = -13032.74
 ## Model 2: llik = -13019.48 ... best llik = -13019.48
 ## Model 3: llik = -12966.61 ... best llik = -12966.61
@@ -2967,7 +2843,7 @@ items8 &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 ## X^2(18): 9824.716 (Chi-square goodness of fit) 
 ## </code></pre>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkxDQSB1bmRlc2lyYWJsZSBiZWhhdmlvcnMiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCmRhdGU6ICIyMDI1LTAyLTIxIg0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGNhY2hlPVRSVUUsIGVjaG8gPSBUUlVFKQ0KYGBgDQoNCg0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCg0KDQoNCmNvbG9yaXplIDwtIGZ1bmN0aW9uKHgsIGNvbG9yKSB7c3ByaW50ZigiPHNwYW4gc3R5bGU9J2NvbG9yOiAlczsnPiVzPC9zcGFuPiIsIGNvbG9yLCB4KSB9DQoNCmBgYA0KDQoNCg0KYGBge3Iga2xpcHB5NSwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFfQ0Ka2xpcHB5OjprbGlwcHkocG9zaXRpb24gPSBjKCd0b3AnLCAncmlnaHQnKSkNCiNrbGlwcHk6OmtsaXBweShjb2xvciA9ICdkYXJrcmVkJykNCiNrbGlwcHk6OmtsaXBweSh0b29sdGlwX21lc3NhZ2UgPSAnQ2xpY2sgdG8gY29weScsIHRvb2x0aXBfc3VjY2VzcyA9ICdEb25lJykNCmBgYA0KDQoNCmBgYHtyfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmBgYA0KDQoNCmBgYHtyIGtsaXBweTYsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQpORUEyMDIyX2NsdXN0MSA8LXJlYWQuc3BzcygiZGF0YS9wcm9jZXNzZWQvTkVBMjAyMl9jbHVzdDEuc2F2IiwgdXNlLnZhbHVlLmxhYmVscyA9IFQsIHRvLmRhdGEuZnJhbWUgPSBUKQ0KYXR0YWNoKE5FQTIwMjJfY2x1c3QxKQ0KDQojTkVBMjAxNDIwMjIgPC1yZWFkLnNwc3MoImRhdGEvcmF3L0RhdGEgMjAxNC0yMDIyLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCmBgYA0KDQpgYGB7cn0NCnNldC5zZWVkKDEyMykNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCmF0dGFjaChORUEyMDIyX2NsdXN0MSkNCmRhdGE4IDwtIGRhdGEuZnJhbWUocGVzdGVuX2NvbCwgcGVzdGVuX2xlaWQsIGludGltaWRhdGlvbl9jb2wsIGludGltaWRhdGlvbl9sZWlkLCBnZXdlbGRfY29sLCBnZXdlbGRfbGVpZCwgc2Vrc19jb2wsIHNla3NfbGVpZCkNCg0KaXRlbXM4IDwtIGNiaW5kKHBlc3Rlbl9jb2wsIHBlc3Rlbl9sZWlkLCBpbnRpbWlkYXRpb25fY29sLCBpbnRpbWlkYXRpb25fbGVpZCwgZ2V3ZWxkX2NvbCwgZ2V3ZWxkX2xlaWQsIHNla3NfY29sLCBzZWtzX2xlaWQpIH4gMQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWwxLiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSAxLCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDIuIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDIsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsMy4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMywgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw0LiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSA0LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDUuIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDUsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsNi4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gNiwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw3LiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSA3LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDguIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDgsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsOS4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gOSwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLGNhY2hlPVRSVUV9DQptb2RlbDEwLiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSAxMCwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWwxMS4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMTEsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsMTIuIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDEyLCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDEzLiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSAxMywgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWwxNC4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMTQsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsMTUuIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDE1LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDE2LiA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSAxNiwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWwxNy4gPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMTcsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsMTguIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDE4LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkxDQSB1bmRlc2lyYWJsZSBiZWhhdmlvcnMiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCmRhdGU6ICIyMDI1LTAyLTIxIg0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGNhY2hlPVRSVUUsIGVjaG8gPSBUUlVFKQ0KYGBgDQoNCg0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCg0KDQoNCmNvbG9yaXplIDwtIGZ1bmN0aW9uKHgsIGNvbG9yKSB7c3ByaW50ZigiPHNwYW4gc3R5bGU9J2NvbG9yOiAlczsnPiVzPC9zcGFuPiIsIGNvbG9yLCB4KSB9DQoNCmBgYA0KDQoNCg0KYGBge3Iga2xpcHB5NSwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFfQ0Ka2xpcHB5OjprbGlwcHkocG9zaXRpb24gPSBjKCd0b3AnLCAncmlnaHQnKSkNCiNrbGlwcHk6OmtsaXBweShjb2xvciA9ICdkYXJrcmVkJykNCiNrbGlwcHk6OmtsaXBweSh0b29sdGlwX21lc3NhZ2UgPSAnQ2xpY2sgdG8gY29weScsIHRvb2x0aXBfc3VjY2VzcyA9ICdEb25lJykNCmBgYA0KDQoNCmBgYHtyfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmBgYA0KDQoNCmBgYHtyIGtsaXBweTYsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQpORUEyMDIyX2NsdXN0MSA8LXJlYWQuc3BzcygiZGF0YS9wcm9jZXNzZWQvTkVBMjAyMl9jbHVzdDEuc2F2IiwgdXNlLnZhbHVlLmxhYmVscyA9IFQsIHRvLmRhdGEuZnJhbWUgPSBUKQ0KYXR0YWNoKE5FQTIwMjJfY2x1c3QxKQ0KDQojTkVBMjAxNDIwMjIgPC1yZWFkLnNwc3MoImRhdGEvcmF3L0RhdGEgMjAxNC0yMDIyLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCmBgYA0KDQpgYGB7cn0NCnNldC5zZWVkKDEyMykNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRSwgd2FybmluZz1GQUxTRX0NCmF0dGFjaChORUEyMDIyX2NsdXN0MSkNCmRhdGE4IDwtIGRhdGEuZnJhbWUocGVzdGVuX2NvbCwgcGVzdGVuX2xlaWQsIGludGltaWRhdGlvbl9jb2wsIGludGltaWRhdGlvbl9sZWlkLCBnZXdlbGRfY29sLCBnZXdlbGRfbGVpZCwgc2Vrc19jb2wsIHNla3NfbGVpZCkNCg0KaXRlbXM4IDwtIGNiaW5kKHBlc3Rlbl9jb2wsIHBlc3Rlbl9sZWlkLCBpbnRpbWlkYXRpb25fY29sLCBpbnRpbWlkYXRpb25fbGVpZCwgZ2V3ZWxkX2NvbCwgZ2V3ZWxkX2xlaWQsIHNla3NfY29sLCBzZWtzX2xlaWQpIH4gMQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzEgPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMSwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzIgPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMiwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzMgPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMywgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzQgPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gNCwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzUgPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gNSwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzYgPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gNiwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzcgPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gNywgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzggPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gOCwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzkgPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gOSwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLGNhY2hlPVRSVUV9DQptb2RlbDhfMTAgPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMTAsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsOF8xMSA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSAxMSwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzEyIDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDEyLCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDhfMTMgPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMTMsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsOF8xNCA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSAxNCwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzE1IDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDE1LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg0KYGBge3IsIGNhY2hlPVRSVUV9DQptb2RlbDhfMTYgPC0gcG9MQ0EoaXRlbXM4LCBkYXRhOCwgbmNsYXNzID0gMTYsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBGQUxTRSkNCmBgYA0KDQpgYGB7ciwgY2FjaGU9VFJVRX0NCm1vZGVsOF8xNyA8LSBwb0xDQShpdGVtczgsIGRhdGE4LCBuY2xhc3MgPSAxNywgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyLCBjYWNoZT1UUlVFfQ0KbW9kZWw4XzE4IDwtIHBvTENBKGl0ZW1zOCwgZGF0YTgsIG5jbGFzcyA9IDE4LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gRkFMU0UpDQpgYGANCg==</div>
 
 
 </div>

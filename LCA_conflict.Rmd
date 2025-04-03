@@ -71,9 +71,6 @@ itemsc <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, ge
 <br><br> Geweld_leid: **fysiek geweld door leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
 <br><br> Seks_col: **ongewenste seksuele aandacht collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
 <br><br> Seks_leid: **ongewenste seksuele aandacht leidinggevenden.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
-<br><br> Conflict_col: **conflict collega's.** (1) nee (2) ja, kortdurend (3) ja, langdurend
-<br><br> Conflict_leid: **conflict leidinggevenden.** (1) nee (2) ja, kortdurend (3) ja, langdurend
-<br><br> Conflict_werk: **conflict werkgever.** (1) nee (2) ja, kortdurend (3) ja, langdurend
 <br><br> Steunleid_welzijn: **mijn leidinggevende heeft oog voor het welzijn van de medewerker.** (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
 <br><br> Steunleid_aandacht: **mijn leidinggevende besteedt aandacht aan wat ik zeg.** (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
 <br><br> Steuncol_belang: **mijn collega's hebben persoonlijke belangstelling voor me.** (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens

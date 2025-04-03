@@ -189,546 +189,6 @@ summarytools::freq(NEA2022_clust1$psyveil_plot)
 ```
 
 
-LCA: schaal2 -> with steun with 7 categories and psyveil with 5.
-
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1$classs2_2 <- model2s2$predclass
-table(NEA2022_clust1$classs2_2)
-```
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1$classs2_3 <- model3s2$predclass
-table(NEA2022_clust1$classs2_3)
-```
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1$classs2_4 <- model4s2$predclass
-table(NEA2022_clust1$classs2_4)
-```
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1$classs2_5 <- model5s2$predclass
-table(NEA2022_clust1$classs2_5)
-```
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1$classs2_6 <- model6s2$predclass
-table(NEA2022_clust1$classs2_6)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1$classs2_7 <- model7s2$predclass
-table(NEA2022_clust1$classs2_7)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1$classs2_8 <- model8s2$predclass
-table(NEA2022_clust1$classs2_8)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1$classs2_9 <- model9s2$predclass
-table(NEA2022_clust1$classs2_9)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1$classs2_10 <- model10s2$predclass
-table(NEA2022_clust1$classs2_10)
-```
-
-
-
-```{r}
-tapply(NEA2022_clust1$pesten_col_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$pesten_leid_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_col_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_leid_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_col_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_leid_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_col_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_leid_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_col_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_leid_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs2_2, mean, na.rm = TRUE)
-```
-
-
-Class 3
-
-```{r}
-tapply(NEA2022_clust1$pesten_col_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$pesten_leid_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_col_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_leid_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_col_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_leid_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_col_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_leid_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_col_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_leid_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs2_3, mean, na.rm = TRUE)
-```
-
-Class 4
-
-```{r}
-tapply(NEA2022_clust1$pesten_col_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$pesten_leid_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_col_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_leid_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_col_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_leid_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_col_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_leid_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_col_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_leid_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs2_4, mean, na.rm = TRUE)
-```
-
-Class 5
-
-```{r}
-tapply(NEA2022_clust1$pesten_col_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$pesten_leid_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_col_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_leid_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_col_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_leid_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_col_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_leid_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_col_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_leid_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs2_5, mean, na.rm = TRUE)
-```
-
-Class 6
-
-```{r}
-tapply(NEA2022_clust1$pesten_col_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$pesten_leid_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_col_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_leid_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_col_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_leid_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_col_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_leid_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_col_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_leid_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs2_6, mean, na.rm = TRUE)
-```
-
-Class 7
-
-```{r}
-tapply(NEA2022_clust1$pesten_col_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$pesten_leid_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_col_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_leid_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_col_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_leid_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_col_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_leid_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_col_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_leid_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs2_7, mean, na.rm = TRUE)
-```
-
-Class 8
-
-```{r}
-tapply(NEA2022_clust1$pesten_col_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$pesten_leid_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_col_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_leid_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_col_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_leid_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_col_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_leid_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_col_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_leid_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs2_8, mean, na.rm = TRUE)
-```
-
-Class 9
-
-```{r}
-tapply(NEA2022_clust1$pesten_col_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$pesten_leid_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_col_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$int_leid_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_col_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$gew_leid_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_col_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$seks_leid_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_col_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_leid_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
-```
-```{r}
-table(NEA2022_clust1$classs2_2, NEA2022_clust1$classs2_3)
-```
-
-```{r}
-table(NEA2022_clust1$classs2_3, NEA2022_clust1$classs2_4)
-```
-
-```{r}
-table(NEA2022_clust1$classs2_4, NEA2022_clust1$classs2_5)
-```
-
-```{r}
-table(NEA2022_clust1$classs2_5, NEA2022_clust1$classs2_6)
-```
-
-```{r}
-table(NEA2022_clust1$classs2_6, NEA2022_clust1$classs2_7)
-```
-
-```{r}
-table(NEA2022_clust1$classs2_7, NEA2022_clust1$classs2_8)
-```
-
-```{r}
-table(NEA2022_clust1$classs2_8, NEA2022_clust1$classs2_9)
-```
-
-```{r}
-table(NEA2022_clust1$classs2_9, NEA2022_clust1$classs2_10)
-```
-
 
 
 LCA: schaal -> with steun with 7 categories and psyveil with 14.
@@ -1275,7 +735,108 @@ table(NEA2022_clust1$classs9, NEA2022_clust1$classs10)
 ```
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 LCA: schaal3 -> with steun with 4 categories and psyveil with 5.
+
+```{r}
+NEA2022_clust1$steunleid_scale <- rowMeans(NEA2022_clust1[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
+summarytools::freq(NEA2022_clust1$steunleid_scale)
+summarytools::freq(NEA2022_clust1$afl_socs)
+
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(steunleid_RR = case_when(
+    steunleid_scale %in% c(1) ~ 1,
+    steunleid_scale %in% c(1.5, 2) ~ 2,
+    steunleid_scale %in% c(2.5, 3) ~ 3,
+    steunleid_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEA2022_clust1$steunleid_RR)
+
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(steunleid_plot3 = (steunleid_RR - 1) / 3)
+
+summarytools::freq(NEA2022_clust1$steunleid_plot3)
+
+```
+
+```{r}
+NEA2022_clust1$steuncol_scale <- rowMeans(NEA2022_clust1[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
+summarytools::freq(NEA2022_clust1$steuncol_scale)
+summarytools::freq(NEA2022_clust1$afl_so_2)
+
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(steuncol_RR = case_when(
+    steuncol_scale %in% c(1) ~ 1,
+    steuncol_scale %in% c(1.5, 2) ~ 2,
+    steuncol_scale %in% c(2.5, 3) ~ 3,
+    steuncol_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEA2022_clust1$steuncol_RR)
+
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(steuncol_plot3 = (steuncol_RR - 1) / 3)
+
+summarytools::freq(NEA2022_clust1$steuncol_plot3)
+```
+
+
+```{r}
+NEA2022_clust1$psyveil_scale <- rowMeans(NEA2022_clust1[c("psyveil_last", "psyveil_hulp", "psyveil_fout")], na.rm = TRUE)
+
+summarytools::freq(NEA2022_clust1$psyveil_scale)
+
+NEA2022_clust1$psyveil_R <- as.numeric(factor(NEA2022_clust1$psyveil_scale))
+
+summarytools::freq(NEA2022_clust1$psyveil_R)
+
+NEA2022_clust1$psyveil_R[NEA2022_clust1$psyveil_R == "18"] <- NA
+
+
+summarytools::freq(NEA2022_clust1$psyveil_scale)
+summarytools::freq(NEA2022_clust1$psyveil_R)
+
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(psyveil_RR = case_when(
+    psyveil_R %in% c(1, 2) ~ 1,
+    psyveil_R %in% c(3, 4, 5, 6) ~ 2,
+    psyveil_R %in% c(7, 8, 9, 10) ~ 3,
+    psyveil_R %in% c(11, 12, 13, 14) ~ 4,
+    psyveil_R %in% c(15, 16, 17) ~ 5,
+    TRUE ~ NA_real_
+  ))
+summarytools::freq(NEA2022_clust1$psyveil_scale)
+summarytools::freq(NEA2022_clust1$psyveil_RR)
+
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  mutate(psyveil_plot3 = (psyveil_RR - 1) / 4)
+
+summarytools::freq(NEA2022_clust1$psyveil_plot3)
+
+```
+
+
+
 
 ```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEA2022_clust1$classs3_2 <- model2s3$predclass
@@ -1365,15 +926,15 @@ tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs3_2, mean, na.rm 
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs3_2, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steunleid_plot3, NEA2022_clust1$classs3_2, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs3_2, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steuncol_plot3, NEA2022_clust1$classs3_2, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs3_2, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$psyveil_plot3, NEA2022_clust1$classs3_2, mean, na.rm = TRUE)
 ```
 
 
@@ -1424,15 +985,15 @@ tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs3_3, mean, na.rm 
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs3_3, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steunleid_plot3, NEA2022_clust1$classs3_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs3_3, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steuncol_plot3, NEA2022_clust1$classs3_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs3_3, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$psyveil_plot3, NEA2022_clust1$classs3_3, mean, na.rm = TRUE)
 ```
 
 Class 4
@@ -1482,15 +1043,15 @@ tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs3_4, mean, na.rm 
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs3_4, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steunleid_plot3, NEA2022_clust1$classs3_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs3_4, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steuncol_plot3, NEA2022_clust1$classs3_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs3_4, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$psyveil_plot3, NEA2022_clust1$classs3_4, mean, na.rm = TRUE)
 ```
 
 Class 5
@@ -1540,15 +1101,15 @@ tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs3_5, mean, na.rm 
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs3_5, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steunleid_plot3, NEA2022_clust1$classs3_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs3_5, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steuncol_plot3, NEA2022_clust1$classs3_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs3_5, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$psyveil_plot3, NEA2022_clust1$classs3_5, mean, na.rm = TRUE)
 ```
 
 Class 6
@@ -1598,15 +1159,15 @@ tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs3_6, mean, na.rm 
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs3_6, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steunleid_plot3, NEA2022_clust1$classs3_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs3_6, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steuncol_plot3, NEA2022_clust1$classs3_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs3_6, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$psyveil_plot3, NEA2022_clust1$classs3_6, mean, na.rm = TRUE)
 ```
 
 Class 7
@@ -1656,20 +1217,20 @@ tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs3_7, mean, na.rm 
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs3_7, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steunleid_plot3, NEA2022_clust1$classs3_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs3_7, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steuncol_plot3, NEA2022_clust1$classs3_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs3_7, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$psyveil_plot3, NEA2022_clust1$classs3_7, mean, na.rm = TRUE)
 ```
 
 Class 8
 
-```{r}
+```{r, results='hide', warning=FALSE}
 attach(NEA2022_clust1)
 tapply(NEA2022_clust1$pesten_col_plot, NEA2022_clust1$classs3_8, mean, na.rm = TRUE)
 ```
@@ -1715,15 +1276,15 @@ tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs3_8, mean, na.rm 
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs3_8, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steunleid_plot3, NEA2022_clust1$classs3_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs3_8, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steuncol_plot3, NEA2022_clust1$classs3_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs3_8, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$psyveil_plot3, NEA2022_clust1$classs3_8, mean, na.rm = TRUE)
 ```
 
 Class 9
@@ -1773,15 +1334,15 @@ tapply(NEA2022_clust1$conflict_werk_plot, NEA2022_clust1$classs3_9, mean, na.rm 
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steunleid_plot, NEA2022_clust1$classs2_9, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steunleid_plot3, NEA2022_clust1$classs3_9, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$steuncol_plot, NEA2022_clust1$classs3_9, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$steuncol_plot3, NEA2022_clust1$classs3_9, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1$psyveil_plot, NEA2022_clust1$classs3_9, mean, na.rm = TRUE)
+tapply(NEA2022_clust1$psyveil_plot3, NEA2022_clust1$classs3_9, mean, na.rm = TRUE)
 ```
 
 ```{r}
@@ -1819,618 +1380,2033 @@ table(NEA2022_clust1$classs3_9, NEA2022_clust1$classs3_10)
 
 
 
-LCA: schaal3 -> with steun with 4 categories and psyveil with 5.
+
+
+
+
+
+
+
+LCA: schaal 29923
+
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
+attach(NEAfinal)
+```
 
 
 ```{r}
 #pesten collega's
-table(NEA2022_clust1_29923$pesten_col)
+table(NEAfinal$pesten_col)
 
 
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+NEAfinal <- NEAfinal %>%
   mutate(pesten_col_plot = recode(pesten_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
-table(NEA2022_clust1_29923$pesten_col_plot)
-summary(NEA2022_clust1_29923$pesten_col_plot)
+table(NEAfinal$pesten_col_plot)
+summary(NEAfinal$pesten_col_plot)
 
 ```
 
 ```{r}
 #pesten leidinggevenden
-table(NEA2022_clust1_29923$pesten_leid)
+table(NEAfinal$pesten_leid)
 
 
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+NEAfinal <- NEAfinal %>%
   mutate(pesten_leid_plot = recode(pesten_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
-table(NEA2022_clust1_29923$pesten_leid_plot)
+table(NEAfinal$pesten_leid_plot)
 
 ```
 
 ```{r}
 #intimidatie collega's
-table(NEA2022_clust1_29923$intimidation_col)
+table(NEAfinal$intimidation_col)
 
 
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+NEAfinal <- NEAfinal %>%
   mutate(int_col_plot = recode(intimidation_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
-table(NEA2022_clust1_29923$int_col_plot)
+table(NEAfinal$int_col_plot)
 
 ```
 
 ```{r}
 #intimidatie leidinggevenden
-table(NEA2022_clust1_29923$intimidation_leid)
+table(NEAfinal$intimidation_leid)
 
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+NEAfinal <- NEAfinal %>%
   mutate(int_leid_plot = recode(intimidation_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
-table(NEA2022_clust1_29923$int_leid_plot)
+table(NEAfinal$int_leid_plot)
 ```
 
 ```{r}
 #fysiek geweld collega's
-table(NEA2022_clust1_29923$geweld_col)
+table(NEAfinal$geweld_col)
 
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+NEAfinal <- NEAfinal %>%
   mutate(gew_col_plot = recode(geweld_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
-table(NEA2022_clust1_29923$gew_col_plot)
+table(NEAfinal$gew_col_plot)
 ```
 
 ```{r}
 #fysiek geweld leidinggevenden
-table(NEA2022_clust1_29923$geweld_leid)
+table(NEAfinal$geweld_leid)
 
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+NEAfinal <- NEAfinal %>%
   mutate(gew_leid_plot = recode(geweld_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
-table(NEA2022_clust1_29923$gew_leid_plot)
+table(NEAfinal$gew_leid_plot)
 ```
 
 ```{r}
 #ongewenste seksuele aandacht collega's
-table(NEA2022_clust1_29923$seks_col)
+table(NEAfinal$seks_col)
 
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+NEAfinal <- NEAfinal %>%
   mutate(seks_col_plot = recode(seks_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
-table(NEA2022_clust1_29923$seks_col_plot)
+table(NEAfinal$seks_col_plot)
 ```
+
 ```{r}
 #ongewenste seksuele aandacht leidinggevenden
-table(NEA2022_clust1_29923$seks_leid)
+table(NEAfinal$seks_leid)
 
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+NEAfinal <- NEAfinal %>%
   mutate(seks_leid_plot = recode(seks_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
-table(NEA2022_clust1_29923$seks_leid_plot)
+table(NEAfinal$seks_leid_plot)
 ```
+
 ```{r}
 #conflict collega
-table(NEA2022_clust1_29923$conflict_col)
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+table(NEAfinal$conflict_col)
+NEAfinal <- NEAfinal %>%
   mutate(conflict_col_plot = recode(conflict_col, `1` = 0, `2` = 0.50, `3` = 1))
-table(NEA2022_clust1_29923$conflict_col_plot)
+table(NEAfinal$conflict_col_plot)
 ```
+
 ```{r}
 #conflict leidinggevende
-table(NEA2022_clust1_29923$conflict_leid)
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+table(NEAfinal$conflict_leid)
+NEAfinal <- NEAfinal %>%
   mutate(conflict_leid_plot = recode(conflict_leid, `1` = 0, `2` = 0.50, `3` = 1))
-table(NEA2022_clust1_29923$conflict_leid_plot)
+table(NEAfinal$conflict_leid_plot)
 ```
+
 ```{r}
 #conflict collega
-table(NEA2022_clust1_29923$conflict_werk)
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+table(NEAfinal$conflict_werk)
+NEAfinal <- NEAfinal %>%
   mutate(conflict_werk_plot = recode(conflict_werk, `1` = 0, `2` = 0.50, `3` = 1))
-table(NEA2022_clust1_29923$conflict_werk_plot)
+table(NEAfinal$conflict_werk_plot)
 ```
+
 ```{r}
 #steun leidinggevenden
-summarytools::freq(NEA2022_clust1_29923$steunleid_aandacht)
-summarytools::freq(NEA2022_clust1_29923$steunleid_welzijn)
-NEA2022_clust1_29923$steunleid_scale <- rowMeans(NEA2022_clust1_29923[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
-summarytools::freq(NEA2022_clust1_29923$steunleid_scale)
 
-NEA2022_clust1_29923$steunleid_R <- as.numeric(factor(NEA2022_clust1_29923$steunleid_scale))
-summarytools::freq(NEA2022_clust1_29923$steunleid_R)
-NEA2022_clust1_29923$steunleid_R[NEA2022_clust1_29923$steunleid_R == "8"] <- NA
-summarytools::freq(NEA2022_clust1_29923$steunleid_R)
-
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+NEAfinal$steunleid_R <- as.numeric(factor(NEAfinal$steunleid_scale))
+summarytools::freq(NEAfinal$steunleid_R)
+NEAfinal$steunleid_R[NEAfinal$steunleid_R == "8"] <- NA
+summarytools::freq(NEAfinal$steunleid_R)
+NEAfinal <- NEAfinal %>%
   mutate(steunleid_plot = (steunleid_R - 1) / 6)
 
-summarytools::freq(NEA2022_clust1_29923$steunleid_plot)
+summarytools::freq(NEAfinal$steunleid_plot)
 ```
+
 ```{r}
 #steun collega's
-summarytools::freq(NEA2022_clust1_29923$steuncol_belang)
-summarytools::freq(NEA2022_clust1_29923$steuncol_vriendelijk)
-NEA2022_clust1_29923$steuncol_scale <- rowMeans(NEA2022_clust1_29923[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
-summarytools::freq(NEA2022_clust1_29923$steuncol_scale)
-
-NEA2022_clust1_29923$steuncol_R <- as.numeric(factor(NEA2022_clust1_29923$steuncol_scale))
-summarytools::freq(NEA2022_clust1_29923$steuncol_R)
-NEA2022_clust1_29923$steuncol_R[NEA2022_clust1_29923$steuncol_R == "8"] <- NA
-summarytools::freq(NEA2022_clust1_29923$steuncol_R)
-
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+NEAfinal$steuncol_R <- as.numeric(factor(NEAfinal$steuncol_scale))
+summarytools::freq(NEAfinal$steuncol_R)
+NEAfinal$steuncol_R[NEAfinal$steuncol_R == "8"] <- NA
+summarytools::freq(NEAfinal$steuncol_R)
+NEAfinal <- NEAfinal %>%
   mutate(steuncol_plot = (steuncol_R - 1) / 6)
 
-summarytools::freq(NEA2022_clust1_29923$steuncol_plot)
+summarytools::freq(NEAfinal$steuncol_plot)
 
 ```
 
 ```{r}
-NEA2022_clust1_29923$psyveil_scale <- rowMeans(NEA2022_clust1_29923[c("psyveil_last", "psyveil_hulp", "psyveil_fout")], na.rm = TRUE)
-
-summarytools::freq(NEA2022_clust1_29923$psyveil_scale)
-
-NEA2022_clust1_29923$psyveil_R <- as.numeric(factor(NEA2022_clust1_29923$psyveil_scale))
-
-NEA2022_clust1_29923$psyveil_R[NEA2022_clust1_29923$psyveil_R == "18"] <- NA
-
-summarytools::freq(NEA2022_clust1_29923$psyveil_R)
-
-NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
+summarytools::freq(NEAfinal$psyveil_R)
+NEAfinal <- NEAfinal %>%
   mutate(psyveil_plot = (psyveil_R - 1) / 16)
 
-summarytools::freq(NEA2022_clust1_29923$psyveil_plot)
-
+summarytools::freq(NEAfinal$psyveil_plot)
 ```
 
 ```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-attach(NEA2022_clust1_29923)
-```
-
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1_29923$classs3_29923_2 <- model2s3_29923$predclass
-table(NEA2022_clust1_29923$classs3_29923_2)
-```
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1_29923$classs3_29923_3 <- model3s3_29923$predclass
-table(NEA2022_clust1_29923$classs3_29923_3)
-```
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1_29923$classs3_29923_4 <- model4s3_29923$predclass
-table(NEA2022_clust1_29923$classs3_29923_4)
-```
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1_29923$classs3_29923_5 <- model5s3_29923$predclass
-table(NEA2022_clust1_29923$classs3_29923_5)
-```
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1_29923$classs3_29923_6 <- model6s3_29923$predclass
-table(NEA2022_clust1_29923$classs3_29923_6)
+NEAfinal$classs_29923_2 <- model2s29923$predclass
+table(NEAfinal$classs_29923_2)
 ```
 
 ```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1_29923$classs3_29923_7 <- model7s3_29923$predclass
-table(NEA2022_clust1_29923$classs3_29923_7)
+NEAfinal$classs_29923_3 <- model3s29923$predclass
+table(NEAfinal$classs_29923_3)
 ```
 
 ```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1_29923$classs3_29923_8 <- model8s3_29923$predclass
-table(NEA2022_clust1_29923$classs3_29923_8)
+NEAfinal$classs_29923_4 <- model4s29923$predclass
+table(NEAfinal$classs_29923_4)
 ```
 
 ```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1_29923$classs3_29923_9 <- model9s3_29923$predclass
-table(NEA2022_clust1_29923$classs3_29923_9)
+NEAfinal$classs_29923_5 <- model5s29923$predclass
+table(NEAfinal$classs_29923_5)
 ```
 
 ```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1_29923$classs3_29923_10 <- model10s3_29923$predclass
-table(NEA2022_clust1_29923$classs3_29923_10)
+NEAfinal$classs_29923_6 <- model6s29923$predclass
+table(NEAfinal$classs_29923_6)
 ```
 
-
-```{r}
-tapply(NEA2022_clust1_29923$pesten_col_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs_29923_7 <- model7s29923$predclass
+table(NEAfinal$classs_29923_7)
 ```
 
-```{r}
-tapply(NEA2022_clust1_29923$pesten_leid_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs_29923_8 <- model8s29923$predclass
+table(NEAfinal$classs_29923_8)
 ```
 
-```{r}
-tapply(NEA2022_clust1_29923$int_col_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs_29923_9 <- model9s29923$predclass
+table(NEAfinal$classs_29923_9)
 ```
 
-```{r}
-tapply(NEA2022_clust1_29923$int_leid_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1_29923$gew_col_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA2022_clust1_29923$gew_leid_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs_29923_10 <- model10s29923$predclass
+table(NEAfinal$classs_29923_10)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_col_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_leid_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_col_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+tapply(NEAfinal$int_col_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_leid_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_werk_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steunleid_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steuncol_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$psyveil_plot, NEA2022_clust1_29923$classs3_29923_2, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot, NEAfinal$classs_29923_2, mean, na.rm = TRUE)
 ```
 
 
 Class 3
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_col_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_leid_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_col_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$int_col_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_leid_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_col_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_leid_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_col_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_leid_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_col_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_leid_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_werk_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steunleid_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$steunleid_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steuncol_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$steuncol_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$psyveil_plot, NEA2022_clust1_29923$classs3_29923_3, mean, na.rm = TRUE)
+tapply(NEAfinal$psyveil_plot, NEAfinal$classs_29923_3, mean, na.rm = TRUE)
 ```
 
 Class 4
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_col_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_leid_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_col_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$int_col_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_leid_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_col_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_leid_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_col_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_leid_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_col_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_leid_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_werk_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steunleid_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$steunleid_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steuncol_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$steuncol_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$psyveil_plot, NEA2022_clust1_29923$classs3_29923_4, mean, na.rm = TRUE)
+tapply(NEAfinal$psyveil_plot, NEAfinal$classs_29923_4, mean, na.rm = TRUE)
 ```
 
 Class 5
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_col_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_leid_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_col_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$int_col_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_leid_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_col_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_leid_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_col_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_leid_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_col_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_leid_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_werk_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steunleid_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$steunleid_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steuncol_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$steuncol_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$psyveil_plot, NEA2022_clust1_29923$classs3_29923_5, mean, na.rm = TRUE)
+tapply(NEAfinal$psyveil_plot, NEAfinal$classs_29923_5, mean, na.rm = TRUE)
 ```
 
 Class 6
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_col_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_leid_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_col_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$int_col_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_leid_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_col_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_leid_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_col_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_leid_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_col_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_leid_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_werk_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steunleid_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$steunleid_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steuncol_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$steuncol_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$psyveil_plot, NEA2022_clust1_29923$classs3_29923_6, mean, na.rm = TRUE)
+tapply(NEAfinal$psyveil_plot, NEAfinal$classs_29923_6, mean, na.rm = TRUE)
 ```
 
 Class 7
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_col_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_leid_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_col_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$int_col_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_leid_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_col_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_leid_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_col_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_leid_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_col_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_leid_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_werk_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steunleid_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$steunleid_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steuncol_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$steuncol_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$psyveil_plot, NEA2022_clust1_29923$classs3_29923_7, mean, na.rm = TRUE)
+tapply(NEAfinal$psyveil_plot, NEAfinal$classs_29923_7, mean, na.rm = TRUE)
 ```
 
 Class 8
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_col_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_leid_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_col_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$int_col_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$int_leid_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_col_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$gew_leid_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_col_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$seks_leid_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_col_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_leid_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$conflict_werk_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steunleid_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$steunleid_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$steuncol_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$steuncol_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEA2022_clust1_29923$psyveil_plot, NEA2022_clust1_29923$classs3_29923_8, mean, na.rm = TRUE)
+tapply(NEAfinal$psyveil_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
 Class 9
 
 ```{r}
-tapply(NEA2022_clust1_29923$pesten_col_plot, NEA2022_clust1_29923$classs3_29923_9, mean, na.rm = TRUE)
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
 ```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+table(NEAfinal$classs_29923_2, NEAfinal$classs_29923_3)
+```
+
+```{r}
+table(NEAfinal$classs_29923_3, NEAfinal$classs_29923_4)
+```
+
+```{r}
+table(NEAfinal$classs_29923_4, NEAfinal$classs_29923_5)
+```
+
+```{r}
+table(NEAfinal$classs_29923_5, NEAfinal$classs_29923_6)
+```
+
+```{r}
+table(NEAfinal$classs_29923_6, NEAfinal$classs_29923_7)
+```
+
+```{r}
+table(NEAfinal$classs_29923_7, NEAfinal$classs_29923_8)
+```
+
+```{r}
+table(NEAfinal$classs_29923_8, NEAfinal$classs_29923_9)
+```
+
+```{r}
+table(NEAfinal$classs_29923_9, NEAfinal$classs_29923_10)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LCA: schaal3 29923 -> with steun with 4 categories and psyveil with 5.
+
+
+
+```{r}
+NEAfinal$steunleid_scale <- rowMeans(NEAfinal[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
+summarytools::freq(NEAfinal$steunleid_scale)
+summarytools::freq(NEAfinal$afl_socs)
+
+NEAfinal <- NEAfinal %>%
+  mutate(steunleid_RR = case_when(
+    steunleid_scale %in% c(1) ~ 1,
+    steunleid_scale %in% c(1.5, 2) ~ 2,
+    steunleid_scale %in% c(2.5, 3) ~ 3,
+    steunleid_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEAfinal$steunleid_RR)
+
+NEAfinal <- NEAfinal %>%
+  mutate(steunleid_plot3 = (steunleid_RR - 1) / 3)
+
+summarytools::freq(NEAfinal$steunleid_plot3)
+
+```
+
+```{r}
+NEAfinal$steuncol_scale <- rowMeans(NEAfinal[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
+summarytools::freq(NEAfinal$steuncol_scale)
+summarytools::freq(NEAfinal$afl_so_2)
+
+NEAfinal <- NEAfinal %>%
+  mutate(steuncol_RR = case_when(
+    steuncol_scale %in% c(1) ~ 1,
+    steuncol_scale %in% c(1.5, 2) ~ 2,
+    steuncol_scale %in% c(2.5, 3) ~ 3,
+    steuncol_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEAfinal$steuncol_RR)
+
+NEAfinal <- NEAfinal %>%
+  mutate(steuncol_plot3 = (steuncol_RR - 1) / 3)
+
+summarytools::freq(NEAfinal$steuncol_plot3)
+```
+
+```{r}
+NEAfinal$psyveil_scale <- rowMeans(NEAfinal[c("psyveil_last", "psyveil_hulp", "psyveil_fout")], na.rm = TRUE)
+
+summarytools::freq(NEAfinal$psyveil_scale)
+
+NEAfinal$psyveil_R <- as.numeric(factor(NEAfinal$psyveil_scale))
+
+summarytools::freq(NEAfinal$psyveil_R)
+
+NEAfinal$psyveil_R[NEAfinal$psyveil_R == "18"] <- NA
+
+
+summarytools::freq(NEAfinal$psyveil_scale)
+summarytools::freq(NEAfinal$psyveil_R)
+
+NEAfinal <- NEAfinal %>%
+  mutate(psyveil_RR = case_when(
+    psyveil_R %in% c(1, 2) ~ 1,
+    psyveil_R %in% c(3, 4, 5, 6) ~ 2,
+    psyveil_R %in% c(7, 8, 9, 10) ~ 3,
+    psyveil_R %in% c(11, 12, 13, 14) ~ 4,
+    psyveil_R %in% c(15, 16, 17) ~ 5,
+    TRUE ~ NA_real_
+  ))
+summarytools::freq(NEAfinal$psyveil_scale)
+summarytools::freq(NEAfinal$psyveil_RR)
+
+NEAfinal <- NEAfinal %>%
+  mutate(psyveil_plot3 = (psyveil_RR - 1) / 4)
+
+summarytools::freq(NEAfinal$psyveil_plot3)
+
+```
+
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+attach(NEAfinal)
+```
+
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs3_29923_2 <- model2s3_29923$predclass
+table(NEAfinal$classs3_29923_2)
+```
+```{r echo=FALSE, message=FALSE, warning=FALSE, include=TRUE, results='hide'}
+NEAfinal$classs3_29923_3 <- model3s3_29923$predclass
+table(NEAfinal$classs3_29923_3)
+```
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs3_29923_4 <- model4s3_29923$predclass
+table(NEAfinal$classs3_29923_4)
+```
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs3_29923_5 <- model5s3_29923$predclass
+table(NEAfinal$classs3_29923_5)
+```
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs3_29923_6 <- model6s3_29923$predclass
+table(NEAfinal$classs3_29923_6)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs3_29923_7 <- model7s3_29923$predclass
+table(NEAfinal$classs3_29923_7)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs3_29923_8 <- model8s3_29923$predclass
+table(NEAfinal$classs3_29923_8)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs3_29923_9 <- model9s3_29923$predclass
+table(NEAfinal$classs3_29923_9)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$classs3_29923_10 <- model10s3_29923$predclass
+table(NEAfinal$classs3_29923_10)
+```
+
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$classs3_29923_2, mean, na.rm = TRUE)
+```
+
+
+Class 3
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$classs3_29923_3, mean, na.rm = TRUE)
+```
+
+Class 4
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$classs3_29923_4, mean, na.rm = TRUE)
+```
+
+Class 5
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$classs3_29923_5, mean, na.rm = TRUE)
+```
+
+Class 6
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$classs3_29923_6, mean, na.rm = TRUE)
+```
+
+Class 7
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$classs3_29923_7, mean, na.rm = TRUE)
+```
+
+Class 8
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$classs3_29923_8, mean, na.rm = TRUE)
+```
+
+Class 9
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$classs3_29923_9, mean, na.rm = TRUE)
+```
+
+Class 10
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$classs3_29923_10, mean, na.rm = TRUE)
+```
+
+
+Schaal 3 29923 zonder conflict employer
+
+
+```{r}
+NEAfinal$steunleid_scale <- rowMeans(NEAfinal[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
+summarytools::freq(NEAfinal$steunleid_scale)
+summarytools::freq(NEAfinal$afl_socs)
+
+NEAfinal <- NEAfinal %>%
+  mutate(steunleid_RR = case_when(
+    steunleid_scale %in% c(1) ~ 1,
+    steunleid_scale %in% c(1.5, 2) ~ 2,
+    steunleid_scale %in% c(2.5, 3) ~ 3,
+    steunleid_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEAfinal$steunleid_RR)
+
+NEAfinal <- NEAfinal %>%
+  mutate(steunleid_plot3 = (steunleid_RR - 1) / 3)
+
+summarytools::freq(NEAfinal$steunleid_plot3)
+
+```
+
+```{r}
+NEAfinal$steuncol_scale <- rowMeans(NEAfinal[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
+summarytools::freq(NEAfinal$steuncol_scale)
+summarytools::freq(NEAfinal$afl_so_2)
+
+NEAfinal <- NEAfinal %>%
+  mutate(steuncol_RR = case_when(
+    steuncol_scale %in% c(1) ~ 1,
+    steuncol_scale %in% c(1.5, 2) ~ 2,
+    steuncol_scale %in% c(2.5, 3) ~ 3,
+    steuncol_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEAfinal$steuncol_RR)
+
+NEAfinal <- NEAfinal %>%
+  mutate(steuncol_plot3 = (steuncol_RR - 1) / 3)
+
+summarytools::freq(NEAfinal$steuncol_plot3)
+```
+
+```{r}
+NEAfinal$psyveil_scale <- rowMeans(NEAfinal[c("psyveil_last", "psyveil_hulp", "psyveil_fout")], na.rm = TRUE)
+
+summarytools::freq(NEAfinal$psyveil_scale)
+
+NEAfinal$psyveil_R <- as.numeric(factor(NEAfinal$psyveil_scale))
+
+summarytools::freq(NEAfinal$psyveil_R)
+
+NEAfinal$psyveil_R[NEAfinal$psyveil_R == "18"] <- NA
+
+
+summarytools::freq(NEAfinal$psyveil_scale)
+summarytools::freq(NEAfinal$psyveil_R)
+
+NEAfinal <- NEAfinal %>%
+  mutate(psyveil_RR = case_when(
+    psyveil_R %in% c(1, 2) ~ 1,
+    psyveil_R %in% c(3, 4, 5, 6) ~ 2,
+    psyveil_R %in% c(7, 8, 9, 10) ~ 3,
+    psyveil_R %in% c(11, 12, 13, 14) ~ 4,
+    psyveil_R %in% c(15, 16, 17) ~ 5,
+    TRUE ~ NA_real_
+  ))
+summarytools::freq(NEAfinal$psyveil_scale)
+summarytools::freq(NEAfinal$psyveil_RR)
+
+NEAfinal <- NEAfinal %>%
+  mutate(psyveil_plot3 = (psyveil_RR - 1) / 4)
+
+summarytools::freq(NEAfinal$psyveil_plot3)
+
+```
+
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+attach(NEAfinal)
+```
+
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp_2 <- model2_emp$predclass
+table(NEAfinal$class_emp_2)
+```
+```{r echo=FALSE, message=FALSE, warning=FALSE, include=TRUE, results='hide'}
+NEAfinal$class_emp_3 <- model3_emp$predclass
+table(NEAfinal$class_emp_3)
+```
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp_4 <- model4_emp$predclass
+table(NEAfinal$class_emp_4)
+```
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp_5 <- model5_emp$predclass
+table(NEAfinal$class_emp_5)
+```
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp_6 <- model6_emp$predclass
+table(NEAfinal$class_emp_6)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp_7 <- model7_emp$predclass
+table(NEAfinal$class_emp_7)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp_8 <- model8_emp$predclass
+table(NEAfinal$class_emp_8)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp_9 <- model9_emp$predclass
+table(NEAfinal$class_emp_9)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp_10 <- model10_emp$predclass
+table(NEAfinal$class_emp_10)
+```
+
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$class_emp_2, mean, na.rm = TRUE)
+```
+
+
+Class 3
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$class_emp_3, mean, na.rm = TRUE)
+```
+
+Class 4
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$class_emp_4, mean, na.rm = TRUE)
+```
+
+Class 5
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$class_emp_5, mean, na.rm = TRUE)
+```
+
+Class 6
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$class_emp_6, mean, na.rm = TRUE)
+```
+
+Class 7
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$class_emp_7, mean, na.rm = TRUE)
+```
+
+Class 8
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$class_emp_8, mean, na.rm = TRUE)
+```
+
+Class 9
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$class_emp_9, mean, na.rm = TRUE)
+```
+Class 10
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$steuncol_plot3, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveil_plot3, NEAfinal$class_emp_10, mean, na.rm = TRUE)
+```
+
+
+
+
+
+
+
+
 
 Model with 8 items
 
@@ -2822,21 +3798,63 @@ tapply(NEA2022_clust1$seks_leid_plot, NEA2022_clust1$class8_8, mean, na.rm = TRU
 
 
 
+
 Modellen vergelijken:
 
-```{r}
-table(NEA2022_clust1$psyveil_R)
-table(NEA2022_clust1$psyveil_scale)
-```
 
 ```{r}
 table(NEA2022_clust1_29923$classs3_29923_7, NEA2022_clust1_29923$classs3_29923_8)
 ```
 
 ```{r}
-table(NEA2022_clust1$classs2_7, NEA2022_clust1$classs3_7)
+table(NEA2022_clust1_29923$classs3_29923_8, NEA2022_clust1_29923$classs3_29923_9)
 ```
 
 ```{r}
-table(NEA2022_clust1$classs8, NEA2022_clust1$classs3_7)
+table(NEAfinal$classs3_29923_8)
+table(NEAfinal$pesten_col)
+table(NEAfinal$classs3_29923_8, NEAfinal$pesten_col)
 ```
+```{r}
+table(NEAfinal$classs3_29923_8)
+table(NEAfinal$pesten_leid)
+table(NEAfinal$classs3_29923_8, NEAfinal$pesten_leid)
+```
+```{r}
+table(NEAfinal$classs3_29923_8)
+table(NEAfinal$gew_col)
+table(NEAfinal$classs3_29923_8, NEAfinal$geweld_col)
+```
+```{r}
+table(NEAfinal$classs3_29923_8)
+table(NEAfinal$geweld_leid)
+table(NEAfinal$classs3_29923_8, NEAfinal$geweld_leid)
+```
+
+```{r}
+table(NEAfinal$classs3_29923_8)
+table(NEAfinal$seks_col)
+table(NEAfinal$classs3_29923_8, NEAfinal$seks_col)
+```
+
+```{r}
+table(NEAfinal$classs3_29923_8)
+table(NEAfinal$seks_leid)
+table(NEAfinal$classs3_29923_8, NEAfinal$seks_leid)
+table()
+summarytools::freq(NEAfinal$afl_on_3)
+```
+
+```{r}
+anova_model_sekscol <- aov(seks_col ~ factor(classs3_29923_8), data = NEAfinal)
+summary(anova_model_sekscol)
+
+
+```
+```{r}
+table(NEAfinal$classs3_29923_8, NEAfinal$class_emp_7)
+```
+```{r}
+table(NEAfinal$classs3_29923_8, NEAfinal$class_emp_8)
+```
+

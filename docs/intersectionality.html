@@ -355,25 +355,19 @@ div.tocify {
   <a href="LCA_30501.html">LCA 30501</a>
 </li>
 <li>
-  <a href="LCA_29923.html">LCA 29923</a>
-</li>
-<li>
-  <a href="LCA_8items.html">LCA 8 items</a>
-</li>
-<li>
   <a href="LCA_schaal.html">LCA schaal</a>
-</li>
-<li>
-  <a href="LCA_schaal2.html">LCA schaal2</a>
 </li>
 <li>
   <a href="LCA_schaal3.html">LCA schaal3</a>
 </li>
 <li>
+  <a href="LCA_29923.html">LCA 29923</a>
+</li>
+<li>
   <a href="LCA_schaal3_29923.html">LCA schaal3_29923</a>
 </li>
 <li>
-  <a href="LCA_schaalsteun.html">LCA schaal steun</a>
+  <a href="LCA_8items.html">LCA 8 items</a>
 </li>
 <li>
   <a href="LCA_conflict.html">LCA conflict</a>
@@ -385,10 +379,10 @@ div.tocify {
   <a href="LCA_geweld.html">LCA zonder geweld</a>
 </li>
 <li>
-  <a href="Factoranalyse.html">Factoranalyse</a>
+  <a href="LCA_employer.html">Zonder employer</a>
 </li>
 <li>
-  <a href="plotjes.html">Plotjes</a>
+  <a href="Factoranalyse.html">Factoranalyse</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -427,197 +421,208 @@ div.tocify {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
 </script>
+<pre class="r test"><code>NEA2022_clust1$afl_soi3[NEA2022_clust1$afl_soi3 == &quot;onbekend&quot;] &lt;- NA
+
+NEA2022_clust1_29923 &lt;- NEA2022_clust1 %&gt;%
+    filter(!is.na(afl_soi3))
+
+attach(NEA2022_clust1_29923)</code></pre>
 <p><br><br> <strong>Gender</strong></p>
-<pre class="r test"><code>summarytools::freq(NEA2022$m_v)</code></pre>
+<pre class="r test"><code>summarytools::freq(NEA2022_clust1_29923$m_v)</code></pre>
 <pre class="test2"><code>#&gt; Frequencies  
 #&gt; 
 #&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 #&gt; ----------- ------- --------- -------------- --------- --------------
-#&gt;         man   30372     49.73          49.73     49.73          49.73
-#&gt;       vrouw   30703     50.27         100.00     50.27         100.00
+#&gt;         man   14793     49.44          49.44     49.44          49.44
+#&gt;       vrouw   15130     50.56         100.00     50.56         100.00
 #&gt;        &lt;NA&gt;       0                               0.00         100.00
-#&gt;       Total   61075    100.00         100.00    100.00         100.00</code></pre>
+#&gt;       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>summary(NEA2022_clust1_29923$m_v)</code></pre>
+<pre class="test2"><code>#&gt;   man vrouw 
+#&gt; 14793 15130</code></pre>
 <p><br><br> <strong>Migration background</strong></p>
-<pre class="r test"><code>summarytools::freq(NEA2022$vrllandd)</code></pre>
+<pre class="r test"><code>summarytools::freq(NEA2022_clust1_29923$vrllandd)</code></pre>
 <pre class="test2"><code>#&gt; Frequencies  
 #&gt; 
 #&gt;                                       Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 #&gt; ---------------------------------- ------- --------- -------------- --------- --------------
-#&gt;                          Nederland   50657     82.94          82.94     82.94          82.94
-#&gt;       Europa (exclusief Nederland)    3867      6.33          89.27      6.33          89.27
-#&gt;                      Buiten Europa    6551     10.73         100.00     10.73         100.00
+#&gt;                          Nederland   25058     83.74          83.74     83.74          83.74
+#&gt;       Europa (exclusief Nederland)    1761      5.89          89.63      5.89          89.63
+#&gt;                      Buiten Europa    3104     10.37         100.00     10.37         100.00
 #&gt;                           Onbekend       0      0.00         100.00      0.00         100.00
 #&gt;                            refusal       0      0.00         100.00      0.00         100.00
 #&gt;                               &lt;NA&gt;       0                               0.00         100.00
-#&gt;                              Total   61075    100.00         100.00    100.00         100.00</code></pre>
+#&gt;                              Total   29923    100.00         100.00    100.00         100.00</code></pre>
 <p><br><br> <strong>Educational level</strong></p>
-<pre class="r test"><code>summarytools::freq(NEA2022$afl_soi3)</code></pre>
+<pre class="r test"><code>summarytools::freq(NEA2022_clust1_29923$afl_soi3)</code></pre>
 <pre class="test2"><code>#&gt; Frequencies  
 #&gt; 
 #&gt;                                      Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 #&gt; --------------------------------- ------- --------- -------------- --------- --------------
-#&gt;             laag opleidingsniveau   10445     17.10          17.10     17.10          17.10
-#&gt;       middelbaar opleidingsniveau   21768     35.64          52.74     35.64          52.74
-#&gt;             hoog opleidingsniveau   27702     45.36          98.10     45.36          98.10
-#&gt;                          onbekend    1160      1.90         100.00      1.90         100.00
+#&gt;             laag opleidingsniveau    5215     17.43          17.43     17.43          17.43
+#&gt;       middelbaar opleidingsniveau   10945     36.58          54.01     36.58          54.01
+#&gt;             hoog opleidingsniveau   13763     45.99         100.00     45.99         100.00
+#&gt;                          onbekend       0      0.00         100.00      0.00         100.00
 #&gt;                              &lt;NA&gt;       0                               0.00         100.00
-#&gt;                             Total   61075    100.00         100.00    100.00         100.00</code></pre>
+#&gt;                             Total   29923    100.00         100.00    100.00         100.00</code></pre>
 <p><br><br> <strong>Age</strong></p>
-<pre class="r test"><code>summarytools::freq(NEA2022$afl_lftc)</code></pre>
+<pre class="r test"><code>summarytools::freq(NEA2022_clust1_29923$afl_lftc)</code></pre>
 <pre class="test2"><code>#&gt; Frequencies  
 #&gt; 
 #&gt;                         Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 #&gt; -------------------- ------- --------- -------------- --------- --------------
-#&gt;       15 tot 25 jaar    7797     12.77          12.77     12.77          12.77
-#&gt;       25 tot 35 jaar   10875     17.81          30.57     17.81          30.57
-#&gt;       35 tot 45 jaar   11756     19.25          49.82     19.25          49.82
-#&gt;       45 tot 55 jaar   13156     21.54          71.36     21.54          71.36
-#&gt;       55 tot 65 jaar   14960     24.49          95.86     24.49          95.86
-#&gt;       65 tot 75 jaar    2531      4.14         100.00      4.14         100.00
+#&gt;       15 tot 25 jaar    3857     12.89          12.89     12.89          12.89
+#&gt;       25 tot 35 jaar    5339     17.84          30.73     17.84          30.73
+#&gt;       35 tot 45 jaar    5721     19.12          49.85     19.12          49.85
+#&gt;       45 tot 55 jaar    6420     21.46          71.31     21.46          71.31
+#&gt;       55 tot 65 jaar    7389     24.69          96.00     24.69          96.00
+#&gt;       65 tot 75 jaar    1197      4.00         100.00      4.00         100.00
 #&gt;             onbekend       0      0.00         100.00      0.00         100.00
 #&gt;                 &lt;NA&gt;       0                               0.00         100.00
-#&gt;                Total   61075    100.00         100.00    100.00         100.00</code></pre>
+#&gt;                Total   29923    100.00         100.00    100.00         100.00</code></pre>
 <p><br><br> <strong>Recoden laag (15-35), middelbaar (35-55), hoog
 (55-75)</strong></p>
-<pre class="r test"><code>summarytools::freq(NEA2022$afl_lftc)</code></pre>
+<pre class="r test"><code>summarytools::freq(NEA2022_clust1_29923$afl_lftc)</code></pre>
 <pre class="test2"><code>#&gt; Frequencies  
 #&gt; 
 #&gt;                         Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 #&gt; -------------------- ------- --------- -------------- --------- --------------
-#&gt;       15 tot 25 jaar    7797     12.77          12.77     12.77          12.77
-#&gt;       25 tot 35 jaar   10875     17.81          30.57     17.81          30.57
-#&gt;       35 tot 45 jaar   11756     19.25          49.82     19.25          49.82
-#&gt;       45 tot 55 jaar   13156     21.54          71.36     21.54          71.36
-#&gt;       55 tot 65 jaar   14960     24.49          95.86     24.49          95.86
-#&gt;       65 tot 75 jaar    2531      4.14         100.00      4.14         100.00
+#&gt;       15 tot 25 jaar    3857     12.89          12.89     12.89          12.89
+#&gt;       25 tot 35 jaar    5339     17.84          30.73     17.84          30.73
+#&gt;       35 tot 45 jaar    5721     19.12          49.85     19.12          49.85
+#&gt;       45 tot 55 jaar    6420     21.46          71.31     21.46          71.31
+#&gt;       55 tot 65 jaar    7389     24.69          96.00     24.69          96.00
+#&gt;       65 tot 75 jaar    1197      4.00         100.00      4.00         100.00
 #&gt;             onbekend       0      0.00         100.00      0.00         100.00
 #&gt;                 &lt;NA&gt;       0                               0.00         100.00
-#&gt;                Total   61075    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r test"><code>str(NEA2022$afl_lftc)</code></pre>
-<pre class="test2"><code>#&gt;  Factor w/ 7 levels &quot;15 tot 25 jaar&quot;,..: 5 3 3 3 4 3 3 4 5 2 ...</code></pre>
-<pre class="r test"><code>NEA2022$lft_num &lt;- as.numeric(NEA2022$afl_lftc)
+#&gt;                Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r test"><code>str(NEA2022_clust1_29923$afl_lftc)</code></pre>
+<pre class="test2"><code>#&gt;  Factor w/ 7 levels &quot;15 tot 25 jaar&quot;,..: 3 3 4 3 3 2 5 4 4 3 ...</code></pre>
+<pre class="r test"><code>NEA2022_clust1_29923$lft_num &lt;- as.numeric(NEA2022_clust1_29923$afl_lftc)
 
-NEA2022 &lt;- NEA2022 %&gt;%
+NEA2022_clust1_29923 &lt;- NEA2022_clust1_29923 %&gt;%
     mutate(leeftijd = case_when(lft_num %in% c(1, 2) ~ 1, lft_num %in% c(3, 4) ~ 2, lft_num %in% c(5,
         6) ~ 3, TRUE ~ NA_real_))
 
 
-NEA2022$leeftijd_ &lt;- factor(NEA2022$leeftijd, levels = c(1, 2, 3), labels = c(&quot;15-35&quot;, &quot;35-55&quot;, &quot;55-75&quot;))
+NEA2022_clust1_29923$leeftijd_ &lt;- factor(NEA2022_clust1_29923$leeftijd, levels = c(1, 2, 3), labels = c(&quot;15.35&quot;,
+    &quot;35.55&quot;, &quot;55.75&quot;))
 
 
-summarytools::freq(NEA2022$leeftijd_)</code></pre>
+summarytools::freq(NEA2022_clust1_29923$leeftijd_)</code></pre>
 <pre class="test2"><code>#&gt; Frequencies  
 #&gt; 
 #&gt;                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 #&gt; ----------- ------- --------- -------------- --------- --------------
-#&gt;       15-35   18672     30.57          30.57     30.57          30.57
-#&gt;       35-55   24912     40.79          71.36     40.79          71.36
-#&gt;       55-75   17491     28.64         100.00     28.64         100.00
+#&gt;       15.35    9196     30.73          30.73     30.73          30.73
+#&gt;       35.55   12141     40.57          71.31     40.57          71.31
+#&gt;       55.75    8586     28.69         100.00     28.69         100.00
 #&gt;        &lt;NA&gt;       0                               0.00         100.00
-#&gt;       Total   61075    100.00         100.00    100.00         100.00</code></pre>
+#&gt;       Total   29923    100.00         100.00    100.00         100.00</code></pre>
 <p><br><br> <strong>Preparing variables for intersections</strong></p>
 <pre class="r test"><code># Easier labels
-NEA2022 &lt;- NEA2022 %&gt;%
+NEA2022_clust1_29923 &lt;- NEA2022_clust1_29923 %&gt;%
     mutate(gender = recode(m_v, man = &quot;m&quot;, vrouw = &quot;v&quot;))
 
 
-NEA2022 &lt;- NEA2022 %&gt;%
+NEA2022_clust1_29923 &lt;- NEA2022_clust1_29923 %&gt;%
     mutate(migration = recode(vrllandd, Nederland = &quot;nl&quot;, `Europa (exclusief Nederland)` = &quot;eu&quot;, `Buiten Europa` = &quot;noeu&quot;))
 
-NEA2022 &lt;- NEA2022 %&gt;%
+NEA2022_clust1_29923 &lt;- NEA2022_clust1_29923 %&gt;%
     mutate(education = recode(afl_soi3, `laag opleidingsniveau` = &quot;laag&quot;, `middelbaar opleidingsniveau` = &quot;middel&quot;,
         `hoog opleidingsniveau` = &quot;hoog&quot;))
 
 # Missing values
-NEA2022$education[NEA2022$education == &quot;onbekend&quot;] &lt;- NA
-NEA2022$education[NEA2022$migration == &quot;Onbekend&quot;] &lt;- NA
+NEA2022_clust1_29923$education[NEA2022_clust1_29923$education == &quot;onbekend&quot;] &lt;- NA
+NEA2022_clust1_29923$education[NEA2022_clust1_29923$migration == &quot;Onbekend&quot;] &lt;- NA
 
 # Drop unused levels
-levels(NEA2022$migration)</code></pre>
+levels(NEA2022_clust1_29923$migration)</code></pre>
 <pre class="test2"><code>#&gt; [1] &quot;nl&quot;       &quot;eu&quot;       &quot;noeu&quot;     &quot;Onbekend&quot; &quot;refusal&quot;</code></pre>
-<pre class="r test"><code>NEA2022$migration &lt;- droplevels(NEA2022$migration)
-levels(NEA2022$migration)</code></pre>
+<pre class="r test"><code>NEA2022_clust1_29923$migration &lt;- droplevels(NEA2022_clust1_29923$migration)
+levels(NEA2022_clust1_29923$migration)</code></pre>
 <pre class="test2"><code>#&gt; [1] &quot;nl&quot;   &quot;eu&quot;   &quot;noeu&quot;</code></pre>
-<pre class="r test"><code>levels(NEA2022$education)</code></pre>
+<pre class="r test"><code>levels(NEA2022_clust1_29923$education)</code></pre>
 <pre class="test2"><code>#&gt; [1] &quot;laag&quot;     &quot;middel&quot;   &quot;hoog&quot;     &quot;onbekend&quot;</code></pre>
-<pre class="r test"><code>NEA2022$education &lt;- droplevels(NEA2022$education)
-levels(NEA2022$education)</code></pre>
+<pre class="r test"><code>NEA2022_clust1_29923$education &lt;- droplevels(NEA2022_clust1_29923$education)
+levels(NEA2022_clust1_29923$education)</code></pre>
 <pre class="test2"><code>#&gt; [1] &quot;laag&quot;   &quot;middel&quot; &quot;hoog&quot;</code></pre>
-<pre class="r test"><code>summary(NEA2022$gender)</code></pre>
+<pre class="r test"><code>summary(NEA2022_clust1_29923$gender)</code></pre>
 <pre class="test2"><code>#&gt;     m     v 
-#&gt; 30372 30703</code></pre>
-<pre class="r test"><code>summary(NEA2022$migration)</code></pre>
+#&gt; 14793 15130</code></pre>
+<pre class="r test"><code>summary(NEA2022_clust1_29923$migration)</code></pre>
 <pre class="test2"><code>#&gt;    nl    eu  noeu 
-#&gt; 50657  3867  6551</code></pre>
-<pre class="r test"><code>summary(NEA2022$education)</code></pre>
-<pre class="test2"><code>#&gt;   laag middel   hoog   NA&#39;s 
-#&gt;  10445  21768  27702   1160</code></pre>
-<pre class="r test"><code>summary(NEA2022$leeftijd_)</code></pre>
-<pre class="test2"><code>#&gt; 15-35 35-55 55-75 
-#&gt; 18672 24912 17491</code></pre>
-<pre class="r test"><code>NEA2022$intersections &lt;- interaction(NEA2022$gender, NEA2022$migration, NEA2022$education, NEA2022$leeftijd_)
+#&gt; 25058  1761  3104</code></pre>
+<pre class="r test"><code>summary(NEA2022_clust1_29923$education)</code></pre>
+<pre class="test2"><code>#&gt;   laag middel   hoog 
+#&gt;   5215  10945  13763</code></pre>
+<pre class="r test"><code>summary(NEA2022_clust1_29923$leeftijd_)</code></pre>
+<pre class="test2"><code>#&gt; 15.35 35.55 55.75 
+#&gt;  9196 12141  8586</code></pre>
+<pre class="r test"><code>NEA2022_clust1_29923$intersections &lt;- interaction(NEA2022_clust1_29923$gender, NEA2022_clust1_29923$migration,
+    NEA2022_clust1_29923$education, NEA2022_clust1_29923$leeftijd_)
 
-summarytools::freq(NEA2022$intersections)</code></pre>
+summarytools::freq(NEA2022_clust1_29923$intersections)</code></pre>
 <pre class="test2"><code>#&gt; Frequencies  
 #&gt; 
 #&gt;                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
 #&gt; ------------------------- ------- --------- -------------- --------- --------------
-#&gt;           m.nl.laag.15-35    1406      2.35           2.35      2.30           2.30
-#&gt;           v.nl.laag.15-35    1274      2.13           4.47      2.09           4.39
-#&gt;           m.eu.laag.15-35     127      0.21           4.68      0.21           4.60
-#&gt;           v.eu.laag.15-35     128      0.21           4.90      0.21           4.81
-#&gt;         m.noeu.laag.15-35     259      0.43           5.33      0.42           5.23
-#&gt;         v.noeu.laag.15-35     273      0.46           5.79      0.45           5.68
-#&gt;         m.nl.middel.15-35    2686      4.48          10.27      4.40          10.07
-#&gt;         v.nl.middel.15-35    2811      4.69          14.96      4.60          14.68
-#&gt;         m.eu.middel.15-35     168      0.28          15.24      0.28          14.95
-#&gt;         v.eu.middel.15-35     205      0.34          15.58      0.34          15.29
-#&gt;       m.noeu.middel.15-35     366      0.61          16.19      0.60          15.89
-#&gt;       v.noeu.middel.15-35     403      0.67          16.87      0.66          16.55
-#&gt;           m.nl.hoog.15-35    2677      4.47          21.34      4.38          20.93
-#&gt;           v.nl.hoog.15-35    3995      6.67          28.00      6.54          27.47
-#&gt;           m.eu.hoog.15-35     270      0.45          28.45      0.44          27.91
-#&gt;           v.eu.hoog.15-35     381      0.64          29.09      0.62          28.54
-#&gt;         m.noeu.hoog.15-35     400      0.67          29.76      0.65          29.19
-#&gt;         v.noeu.hoog.15-35     544      0.91          30.67      0.89          30.08
-#&gt;           m.nl.laag.35-55    1364      2.28          32.94      2.23          32.32
-#&gt;           v.nl.laag.35-55     976      1.63          34.57      1.60          33.91
-#&gt;           m.eu.laag.35-55     132      0.22          34.79      0.22          34.13
-#&gt;           v.eu.laag.35-55      88      0.15          34.94      0.14          34.27
-#&gt;         m.noeu.laag.35-55     239      0.40          35.34      0.39          34.67
-#&gt;         v.noeu.laag.35-55     198      0.33          35.67      0.32          34.99
-#&gt;         m.nl.middel.35-55    3860      6.44          42.11      6.32          41.31
-#&gt;         v.nl.middel.35-55    3518      5.87          47.98      5.76          47.07
-#&gt;         m.eu.middel.35-55     217      0.36          48.34      0.36          47.43
-#&gt;         v.eu.middel.35-55     250      0.42          48.76      0.41          47.83
-#&gt;       m.noeu.middel.35-55     441      0.74          49.50      0.72          48.56
-#&gt;       v.noeu.middel.35-55     416      0.69          50.19      0.68          49.24
-#&gt;           m.nl.hoog.35-55    4682      7.81          58.01      7.67          56.90
-#&gt;           v.nl.hoog.35-55    5744      9.59          67.59      9.40          66.31
-#&gt;           m.eu.hoog.35-55     369      0.62          68.21      0.60          66.91
-#&gt;           v.eu.hoog.35-55     533      0.89          69.10      0.87          67.79
-#&gt;         m.noeu.hoog.35-55     669      1.12          70.21      1.10          68.88
-#&gt;         v.noeu.hoog.35-55     719      1.20          71.41      1.18          70.06
-#&gt;           m.nl.laag.55-75    2015      3.36          74.78      3.30          73.36
-#&gt;           v.nl.laag.55-75    1466      2.45          77.22      2.40          75.76
-#&gt;           m.eu.laag.55-75     109      0.18          77.41      0.18          75.94
-#&gt;           v.eu.laag.55-75      72      0.12          77.53      0.12          76.05
-#&gt;         m.noeu.laag.55-75     189      0.32          77.84      0.31          76.36
-#&gt;         v.noeu.laag.55-75     130      0.22          78.06      0.21          76.58
-#&gt;         m.nl.middel.55-75    3219      5.37          83.43      5.27          81.85
-#&gt;         v.nl.middel.55-75    2513      4.19          87.63      4.11          85.96
-#&gt;         m.eu.middel.55-75     140      0.23          87.86      0.23          86.19
-#&gt;         v.eu.middel.55-75     130      0.22          88.08      0.21          86.40
-#&gt;       m.noeu.middel.55-75     231      0.39          88.46      0.38          86.78
-#&gt;       v.noeu.middel.55-75     194      0.32          88.79      0.32          87.10
-#&gt;           m.nl.hoog.55-75    3122      5.21          94.00      5.11          92.21
-#&gt;           v.nl.hoog.55-75    2767      4.62          98.61      4.53          96.74
-#&gt;           m.eu.hoog.55-75     139      0.23          98.85      0.23          96.97
-#&gt;           v.eu.hoog.55-75     184      0.31          99.15      0.30          97.27
-#&gt;         m.noeu.hoog.55-75     264      0.44          99.59      0.43          97.70
-#&gt;         v.noeu.hoog.55-75     243      0.41         100.00      0.40          98.10
-#&gt;                      &lt;NA&gt;    1160                               1.90         100.00
-#&gt;                     Total   61075    100.00         100.00    100.00         100.00</code></pre>
+#&gt;           m.nl.laag.15.35     711      2.38           2.38      2.38           2.38
+#&gt;           v.nl.laag.15.35     650      2.17           4.55      2.17           4.55
+#&gt;           m.eu.laag.15.35      64      0.21           4.76      0.21           4.76
+#&gt;           v.eu.laag.15.35      59      0.20           4.96      0.20           4.96
+#&gt;         m.noeu.laag.15.35     131      0.44           5.40      0.44           5.40
+#&gt;         v.noeu.laag.15.35     139      0.46           5.86      0.46           5.86
+#&gt;         m.nl.middel.15.35    1271      4.25          10.11      4.25          10.11
+#&gt;         v.nl.middel.15.35    1445      4.83          14.94      4.83          14.94
+#&gt;         m.eu.middel.15.35      68      0.23          15.17      0.23          15.17
+#&gt;         v.eu.middel.15.35     103      0.34          15.51      0.34          15.51
+#&gt;       m.noeu.middel.15.35     191      0.64          16.15      0.64          16.15
+#&gt;       v.noeu.middel.15.35     221      0.74          16.89      0.74          16.89
+#&gt;           m.nl.hoog.15.35    1334      4.46          21.34      4.46          21.34
+#&gt;           v.nl.hoog.15.35    2023      6.76          28.11      6.76          28.11
+#&gt;           m.eu.hoog.15.35     123      0.41          28.52      0.41          28.52
+#&gt;           v.eu.hoog.15.35     188      0.63          29.14      0.63          29.14
+#&gt;         m.noeu.hoog.15.35     187      0.62          29.77      0.62          29.77
+#&gt;         v.noeu.hoog.15.35     288      0.96          30.73      0.96          30.73
+#&gt;           m.nl.laag.35.55     651      2.18          32.91      2.18          32.91
+#&gt;           v.nl.laag.35.55     497      1.66          34.57      1.66          34.57
+#&gt;           m.eu.laag.35.55      58      0.19          34.76      0.19          34.76
+#&gt;           v.eu.laag.35.55      44      0.15          34.91      0.15          34.91
+#&gt;         m.noeu.laag.35.55     115      0.38          35.29      0.38          35.29
+#&gt;         v.noeu.laag.35.55      96      0.32          35.61      0.32          35.61
+#&gt;         m.nl.middel.35.55    1955      6.53          42.15      6.53          42.15
+#&gt;         v.nl.middel.35.55    1749      5.85          47.99      5.85          47.99
+#&gt;         m.eu.middel.35.55     105      0.35          48.34      0.35          48.34
+#&gt;         v.eu.middel.35.55     133      0.44          48.79      0.44          48.79
+#&gt;       m.noeu.middel.35.55     225      0.75          49.54      0.75          49.54
+#&gt;       v.noeu.middel.35.55     193      0.64          50.19      0.64          50.19
+#&gt;           m.nl.hoog.35.55    2375      7.94          58.12      7.94          58.12
+#&gt;           v.nl.hoog.35.55    2817      9.41          67.54      9.41          67.54
+#&gt;           m.eu.hoog.35.55     161      0.54          68.07      0.54          68.07
+#&gt;           v.eu.hoog.35.55     269      0.90          68.97      0.90          68.97
+#&gt;         m.noeu.hoog.35.55     345      1.15          70.13      1.15          70.13
+#&gt;         v.noeu.hoog.35.55     353      1.18          71.31      1.18          71.31
+#&gt;           m.nl.laag.55.75    1041      3.48          74.79      3.48          74.79
+#&gt;           v.nl.laag.55.75     715      2.39          77.17      2.39          77.17
+#&gt;           m.eu.laag.55.75      45      0.15          77.33      0.15          77.33
+#&gt;           v.eu.laag.55.75      39      0.13          77.46      0.13          77.46
+#&gt;         m.noeu.laag.55.75      91      0.30          77.76      0.30          77.76
+#&gt;         v.noeu.laag.55.75      69      0.23          77.99      0.23          77.99
+#&gt;         m.nl.middel.55.75    1625      5.43          83.42      5.43          83.42
+#&gt;         v.nl.middel.55.75    1299      4.34          87.76      4.34          87.76
+#&gt;         m.eu.middel.55.75      79      0.26          88.03      0.26          88.03
+#&gt;         v.eu.middel.55.75      65      0.22          88.24      0.22          88.24
+#&gt;       m.noeu.middel.55.75     120      0.40          88.64      0.40          88.64
+#&gt;       v.noeu.middel.55.75      98      0.33          88.97      0.33          88.97
+#&gt;           m.nl.hoog.55.75    1538      5.14          94.11      5.14          94.11
+#&gt;           v.nl.hoog.55.75    1362      4.55          98.66      4.55          98.66
+#&gt;           m.eu.hoog.55.75      67      0.22          98.89      0.22          98.89
+#&gt;           v.eu.hoog.55.75      91      0.30          99.19      0.30          99.19
+#&gt;         m.noeu.hoog.55.75     117      0.39          99.58      0.39          99.58
+#&gt;         v.noeu.hoog.55.75     125      0.42         100.00      0.42         100.00
+#&gt;                      &lt;NA&gt;       0                               0.00         100.00
+#&gt;                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
 <pre class="r test"><code># NEA2022$intersections &lt;- interaction(NEA2022$m_v, NEA2022$vrllandd, NEA2022$afl_soi3,
 # NEA2022$leeftijd_) table(NEA2022$intersections)
 
@@ -626,133 +631,46 @@ summarytools::freq(NEA2022$intersections)</code></pre>
 
 # NEA2022$intersections_num &lt;- interaction(NEA2022$gender_num, NEA2022$migr_num, NEA2022$educ_num,
 # NEA2022$leeftijd) table(NEA2022$intersections_num) summary(NEA2022$intersections_num)</code></pre>
-<pre class="r test"><code># Per cluster
-table(NEA2022$intersections, NEA2022$se_clust)</code></pre>
-<pre class="test2"><code>#&gt;                      
-#&gt;                          1    2
-#&gt;   m.nl.laag.15-35      711  695
-#&gt;   v.nl.laag.15-35      650  624
-#&gt;   m.eu.laag.15-35       64   63
-#&gt;   v.eu.laag.15-35       59   69
-#&gt;   m.noeu.laag.15-35    131  128
-#&gt;   v.noeu.laag.15-35    139  134
-#&gt;   m.nl.middel.15-35   1271 1415
-#&gt;   v.nl.middel.15-35   1445 1366
-#&gt;   m.eu.middel.15-35     68  100
-#&gt;   v.eu.middel.15-35    103  102
-#&gt;   m.noeu.middel.15-35  191  175
-#&gt;   v.noeu.middel.15-35  221  182
-#&gt;   m.nl.hoog.15-35     1334 1343
-#&gt;   v.nl.hoog.15-35     2023 1972
-#&gt;   m.eu.hoog.15-35      123  147
-#&gt;   v.eu.hoog.15-35      188  193
-#&gt;   m.noeu.hoog.15-35    187  213
-#&gt;   v.noeu.hoog.15-35    288  256
-#&gt;   m.nl.laag.35-55      651  713
-#&gt;   v.nl.laag.35-55      497  479
-#&gt;   m.eu.laag.35-55       58   74
-#&gt;   v.eu.laag.35-55       44   44
-#&gt;   m.noeu.laag.35-55    115  124
-#&gt;   v.noeu.laag.35-55     96  102
-#&gt;   m.nl.middel.35-55   1955 1905
-#&gt;   v.nl.middel.35-55   1749 1769
-#&gt;   m.eu.middel.35-55    105  112
-#&gt;   v.eu.middel.35-55    133  117
-#&gt;   m.noeu.middel.35-55  225  216
-#&gt;   v.noeu.middel.35-55  193  223
-#&gt;   m.nl.hoog.35-55     2375 2307
-#&gt;   v.nl.hoog.35-55     2817 2927
-#&gt;   m.eu.hoog.35-55      161  208
-#&gt;   v.eu.hoog.35-55      269  264
-#&gt;   m.noeu.hoog.35-55    345  324
-#&gt;   v.noeu.hoog.35-55    353  366
-#&gt;   m.nl.laag.55-75     1041  974
-#&gt;   v.nl.laag.55-75      715  751
-#&gt;   m.eu.laag.55-75       45   64
-#&gt;   v.eu.laag.55-75       39   33
-#&gt;   m.noeu.laag.55-75     91   98
-#&gt;   v.noeu.laag.55-75     69   61
-#&gt;   m.nl.middel.55-75   1625 1594
-#&gt;   v.nl.middel.55-75   1299 1214
-#&gt;   m.eu.middel.55-75     79   61
-#&gt;   v.eu.middel.55-75     65   65
-#&gt;   m.noeu.middel.55-75  120  111
-#&gt;   v.noeu.middel.55-75   98   96
-#&gt;   m.nl.hoog.55-75     1538 1584
-#&gt;   v.nl.hoog.55-75     1362 1405
-#&gt;   m.eu.hoog.55-75       67   72
-#&gt;   v.eu.hoog.55-75       91   93
-#&gt;   m.noeu.hoog.55-75    117  147
-#&gt;   v.noeu.hoog.55-75    125  118</code></pre>
-<pre class="r test"><code># Alleen cluster 1
-summarytools::freq(NEA2022$intersections[NEA2022$se_clust == 1])</code></pre>
-<pre class="test2"><code>#&gt; Frequencies  
-#&gt; 
-#&gt;                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-#&gt; ------------------------- ------- --------- -------------- --------- --------------
-#&gt;           m.nl.laag.15-35     711      2.38           2.38      2.33           2.33
-#&gt;           v.nl.laag.15-35     650      2.17           4.55      2.13           4.46
-#&gt;           m.eu.laag.15-35      64      0.21           4.76      0.21           4.67
-#&gt;           v.eu.laag.15-35      59      0.20           4.96      0.19           4.87
-#&gt;         m.noeu.laag.15-35     131      0.44           5.40      0.43           5.29
-#&gt;         v.noeu.laag.15-35     139      0.46           5.86      0.46           5.75
-#&gt;         m.nl.middel.15-35    1271      4.25          10.11      4.17           9.92
-#&gt;         v.nl.middel.15-35    1445      4.83          14.94      4.74          14.66
-#&gt;         m.eu.middel.15-35      68      0.23          15.17      0.22          14.88
-#&gt;         v.eu.middel.15-35     103      0.34          15.51      0.34          15.22
-#&gt;       m.noeu.middel.15-35     191      0.64          16.15      0.63          15.84
-#&gt;       v.noeu.middel.15-35     221      0.74          16.89      0.72          16.57
-#&gt;           m.nl.hoog.15-35    1334      4.46          21.34      4.37          20.94
-#&gt;           v.nl.hoog.15-35    2023      6.76          28.11      6.63          27.57
-#&gt;           m.eu.hoog.15-35     123      0.41          28.52      0.40          27.98
-#&gt;           v.eu.hoog.15-35     188      0.63          29.14      0.62          28.59
-#&gt;         m.noeu.hoog.15-35     187      0.62          29.77      0.61          29.21
-#&gt;         v.noeu.hoog.15-35     288      0.96          30.73      0.94          30.15
-#&gt;           m.nl.laag.35-55     651      2.18          32.91      2.13          32.28
-#&gt;           v.nl.laag.35-55     497      1.66          34.57      1.63          33.91
-#&gt;           m.eu.laag.35-55      58      0.19          34.76      0.19          34.10
-#&gt;           v.eu.laag.35-55      44      0.15          34.91      0.14          34.25
-#&gt;         m.noeu.laag.35-55     115      0.38          35.29      0.38          34.63
-#&gt;         v.noeu.laag.35-55      96      0.32          35.61      0.31          34.94
-#&gt;         m.nl.middel.35-55    1955      6.53          42.15      6.41          41.35
-#&gt;         v.nl.middel.35-55    1749      5.85          47.99      5.73          47.08
-#&gt;         m.eu.middel.35-55     105      0.35          48.34      0.34          47.43
-#&gt;         v.eu.middel.35-55     133      0.44          48.79      0.44          47.86
-#&gt;       m.noeu.middel.35-55     225      0.75          49.54      0.74          48.60
-#&gt;       v.noeu.middel.35-55     193      0.64          50.19      0.63          49.23
-#&gt;           m.nl.hoog.35-55    2375      7.94          58.12      7.79          57.02
-#&gt;           v.nl.hoog.35-55    2817      9.41          67.54      9.24          66.26
-#&gt;           m.eu.hoog.35-55     161      0.54          68.07      0.53          66.78
-#&gt;           v.eu.hoog.35-55     269      0.90          68.97      0.88          67.67
-#&gt;         m.noeu.hoog.35-55     345      1.15          70.13      1.13          68.80
-#&gt;         v.noeu.hoog.35-55     353      1.18          71.31      1.16          69.96
-#&gt;           m.nl.laag.55-75    1041      3.48          74.79      3.41          73.37
-#&gt;           v.nl.laag.55-75     715      2.39          77.17      2.34          75.71
-#&gt;           m.eu.laag.55-75      45      0.15          77.33      0.15          75.86
-#&gt;           v.eu.laag.55-75      39      0.13          77.46      0.13          75.99
-#&gt;         m.noeu.laag.55-75      91      0.30          77.76      0.30          76.29
-#&gt;         v.noeu.laag.55-75      69      0.23          77.99      0.23          76.51
-#&gt;         m.nl.middel.55-75    1625      5.43          83.42      5.33          81.84
-#&gt;         v.nl.middel.55-75    1299      4.34          87.76      4.26          86.10
-#&gt;         m.eu.middel.55-75      79      0.26          88.03      0.26          86.36
-#&gt;         v.eu.middel.55-75      65      0.22          88.24      0.21          86.57
-#&gt;       m.noeu.middel.55-75     120      0.40          88.64      0.39          86.96
-#&gt;       v.noeu.middel.55-75      98      0.33          88.97      0.32          87.29
-#&gt;           m.nl.hoog.55-75    1538      5.14          94.11      5.04          92.33
-#&gt;           v.nl.hoog.55-75    1362      4.55          98.66      4.47          96.79
-#&gt;           m.eu.hoog.55-75      67      0.22          98.89      0.22          97.01
-#&gt;           v.eu.hoog.55-75      91      0.30          99.19      0.30          97.31
-#&gt;         m.noeu.hoog.55-75     117      0.39          99.58      0.38          97.70
-#&gt;         v.noeu.hoog.55-75     125      0.42         100.00      0.41          98.10
-#&gt;                      &lt;NA&gt;     578                               1.90         100.00
-#&gt;                     Total   30501    100.00         100.00    100.00         100.00</code></pre>
 <p><br><br> <strong>Creating dummy variables</strong></p>
-<pre class="r test"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;intersections&quot;, remove_first_dummy = FALSE)
+<pre class="r test"><code>NEA2022_clust1_29923 &lt;- dummy_cols(NEA2022_clust1_29923, select_columns = &quot;gender&quot;, remove_first_dummy = FALSE)
+table(NEA2022_clust1_29923$gender_m)</code></pre>
+<pre class="test2"><code>#&gt; 
+#&gt;     0     1 
+#&gt; 15130 14793</code></pre>
+<pre class="r test"><code>NEA2022_clust1_29923 &lt;- dummy_cols(NEA2022_clust1_29923, select_columns = &quot;migration&quot;, remove_first_dummy = FALSE)
+table(NEA2022_clust1_29923$migration_nl)</code></pre>
+<pre class="test2"><code>#&gt; 
+#&gt;     0     1 
+#&gt;  4865 25058</code></pre>
+<pre class="r test"><code>NEA2022_clust1_29923 &lt;- dummy_cols(NEA2022_clust1_29923, select_columns = &quot;education&quot;, remove_first_dummy = FALSE)
+table(NEA2022_clust1_29923$education_laag)</code></pre>
+<pre class="test2"><code>#&gt; 
+#&gt;     0     1 
+#&gt; 24708  5215</code></pre>
+<pre class="r test"><code>NEA2022_clust1_29923 &lt;- dummy_cols(NEA2022_clust1_29923, select_columns = &quot;leeftijd_&quot;, remove_first_dummy = FALSE)
+table(NEA2022_clust1_29923$leeftijd__55.75)</code></pre>
+<pre class="test2"><code>#&gt; 
+#&gt;     0     1 
+#&gt; 21337  8586</code></pre>
+<pre class="r test"><code>NEA2022_clust1_29923 &lt;- dummy_cols(NEA2022_clust1_29923, select_columns = &quot;intersections&quot;, remove_first_dummy = FALSE)
 
-dummy_columns &lt;- grep(&quot;^intersections_&quot;, colnames(NEA2022), value = TRUE)  # Find dummy columns
-colnames(NEA2022)[colnames(NEA2022) %in% dummy_columns] &lt;- gsub(&quot;^intersections_&quot;, &quot;&quot;, dummy_columns)</code></pre>
+dummy_columns &lt;- grep(&quot;^intersections_&quot;, colnames(NEA2022_clust1_29923), value = TRUE)  # Find dummy columns
+colnames(NEA2022_clust1_29923)[colnames(NEA2022_clust1_29923) %in% dummy_columns] &lt;- gsub(&quot;^intersections_&quot;,
+    &quot;&quot;, dummy_columns)
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkludGVyc2VjdGlvbmFsaXR5Ig0KI2JpYmxpb2dyYXBoeTogcmVmZXJlbmNlcy5iaWINCmF1dGhvcjogIk5pbmEgQnJhbnRlbiINCi0tLQ0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQogDQoNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCg0KYGBgDQoNCmBgYHtyIGtsaXBweTMsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KYGBge3IgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRX0NCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ2dwbG90MiIpDQpsaWJyYXJ5KCJzdW1tYXJ5dG9vbHMiKQ0KbGlicmFyeSgiZHBseXIiKQ0KbGlicmFyeSgibGFiZWxsZWQiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgiZmFzdER1bW1pZXMiKQ0KYGBgDQoNCmBgYHtyIGtsaXBweTQsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQpORUEyMDIyIDwtcmVhZC5zcHNzKCJkYXRhL3Byb2Nlc3NlZC9EYXRhIDIwMjIgY2xlYW5lZC5zYXYiLCB1c2UudmFsdWUubGFiZWxzID0gVCwgdG8uZGF0YS5mcmFtZSA9IFQpDQoNCiNORUEyMDE0MjAyMiA8LXJlYWQuc3BzcygiZGF0YS9yYXcvRGF0YSAyMDE0LTIwMjIuc2F2IiwgdXNlLnZhbHVlLmxhYmVscyA9IFQsIHRvLmRhdGEuZnJhbWUgPSBUKQ0KYGBgDQoNCjxicj48YnI+ICoqR2VuZGVyKioNCg0KYGBge3J9DQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRtX3YpDQpgYGANCjxicj48YnI+ICoqTWlncmF0aW9uIGJhY2tncm91bmQqKg0KYGBge3J9DQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiR2cmxsYW5kZCkNCmBgYA0KPGJyPjxicj4gKipFZHVjYXRpb25hbCBsZXZlbCoqDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9zb2kzKQ0KYGBgDQoNCjxicj48YnI+ICoqQWdlKioNCg0KYGBge3J9DQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRhZmxfbGZ0YykNCmBgYA0KPGJyPjxicj4gKipSZWNvZGVuIGxhYWcgKDE1LTM1KSwgbWlkZGVsYmFhciAoMzUtNTUpLCBob29nICg1NS03NSkqKg0KDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9sZnRjKQ0Kc3RyKE5FQTIwMjIkYWZsX2xmdGMpDQoNCg0KTkVBMjAyMiRsZnRfbnVtIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfbGZ0YykNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUobGVlZnRpamQgPSBjYXNlX3doZW4oDQogICAgbGZ0X251bSAlaW4lIGMoMSwgMikgfiAxLA0KICAgIGxmdF9udW0gJWluJSBjKDMsIDQpIH4gMiwNCiAgICBsZnRfbnVtICVpbiUgYyg1LCA2KSB+IDMsDQogICAgVFJVRSB+IE5BX3JlYWxfDQogICkpDQoNCg0KTkVBMjAyMiRsZWVmdGlqZF8gPC0gZmFjdG9yKE5FQTIwMjIkbGVlZnRpamQsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKDEsIDIsIDMpLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWxzID0gYygiMTUtMzUiLCAiMzUtNTUiLCAiNTUtNzUiKSkNCg0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRsZWVmdGlqZF8pDQoNCmBgYA0KPGJyPjxicj4gKipQcmVwYXJpbmcgdmFyaWFibGVzIGZvciBpbnRlcnNlY3Rpb25zKioNCg0KYGBge3J9DQojIEVhc2llciBsYWJlbHMNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGdlbmRlciA9IHJlY29kZShtX3YsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIm1hbiIgPSAibSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInZyb3V3IiA9ICJ2IikpDQoNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUobWlncmF0aW9uID0gcmVjb2RlKHZybGxhbmRkLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJOZWRlcmxhbmQiID0gIm5sIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiRXVyb3BhIChleGNsdXNpZWYgTmVkZXJsYW5kKSIgPSAiZXUiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJCdWl0ZW4gRXVyb3BhIiA9ICJub2V1IikpDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGVkdWNhdGlvbiA9IHJlY29kZShhZmxfc29pMywNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAibGFhZyBvcGxlaWRpbmdzbml2ZWF1IiA9ICJsYWFnIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAibWlkZGVsYmFhciBvcGxlaWRpbmdzbml2ZWF1IiA9ICJtaWRkZWwiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJob29nIG9wbGVpZGluZ3NuaXZlYXUiID0gImhvb2ciKSkNCg0KIyBNaXNzaW5nIHZhbHVlcw0KTkVBMjAyMiRlZHVjYXRpb25bTkVBMjAyMiRlZHVjYXRpb24gPT0gIm9uYmVrZW5kIl0gPC0gTkENCk5FQTIwMjIkZWR1Y2F0aW9uW05FQTIwMjIkbWlncmF0aW9uID09ICJPbmJla2VuZCJdIDwtIE5BDQoNCiMgRHJvcCB1bnVzZWQgbGV2ZWxzDQpsZXZlbHMoTkVBMjAyMiRtaWdyYXRpb24pDQpORUEyMDIyJG1pZ3JhdGlvbiA8LSBkcm9wbGV2ZWxzKE5FQTIwMjIkbWlncmF0aW9uKQ0KbGV2ZWxzKE5FQTIwMjIkbWlncmF0aW9uKQ0KDQpsZXZlbHMoTkVBMjAyMiRlZHVjYXRpb24pDQpORUEyMDIyJGVkdWNhdGlvbiA8LSBkcm9wbGV2ZWxzKE5FQTIwMjIkZWR1Y2F0aW9uKQ0KbGV2ZWxzKE5FQTIwMjIkZWR1Y2F0aW9uKQ0KDQpzdW1tYXJ5KE5FQTIwMjIkZ2VuZGVyKQ0Kc3VtbWFyeShORUEyMDIyJG1pZ3JhdGlvbikNCnN1bW1hcnkoTkVBMjAyMiRlZHVjYXRpb24pDQpzdW1tYXJ5KE5FQTIwMjIkbGVlZnRpamRfKQ0KDQpgYGANCg0KYGBge3J9DQpORUEyMDIyJGludGVyc2VjdGlvbnMgPC0gaW50ZXJhY3Rpb24oTkVBMjAyMiRnZW5kZXIsIE5FQTIwMjIkbWlncmF0aW9uLCBORUEyMDIyJGVkdWNhdGlvbiwgTkVBMjAyMiRsZWVmdGlqZF8pDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGludGVyc2VjdGlvbnMpDQoNCg0KI05FQTIwMjIkaW50ZXJzZWN0aW9ucyA8LSBpbnRlcmFjdGlvbihORUEyMDIyJG1fdiwgTkVBMjAyMiR2cmxsYW5kZCwgTkVBMjAyMiRhZmxfc29pMywgTkVBMjAyMiRsZWVmdGlqZF8pDQojdGFibGUoTkVBMjAyMiRpbnRlcnNlY3Rpb25zKSANCg0KI05FQTIwMjIkZ2VuZGVyX251bSA8LSBhcy5udW1lcmljKE5FQTIwMjIkbV92KQ0KI05FQTIwMjIkbWlncl9udW0gPC0gYXMubnVtZXJpYyhORUEyMDIyJHZybGxhbmRkKQ0KI05FQTIwMjIkZWR1Y19udW0gPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9zb2kzKQ0KDQojTkVBMjAyMiRpbnRlcnNlY3Rpb25zX251bSA8LSBpbnRlcmFjdGlvbihORUEyMDIyJGdlbmRlcl9udW0sIE5FQTIwMjIkbWlncl9udW0sIE5FQTIwMjIkZWR1Y19udW0sIE5FQTIwMjIkbGVlZnRpamQpDQojdGFibGUoTkVBMjAyMiRpbnRlcnNlY3Rpb25zX251bSkNCiNzdW1tYXJ5KE5FQTIwMjIkaW50ZXJzZWN0aW9uc19udW0pDQoNCmBgYA0KDQoNCmBgYHtyfQ0KDQojIFBlciBjbHVzdGVyDQp0YWJsZShORUEyMDIyJGludGVyc2VjdGlvbnMsIE5FQTIwMjIkc2VfY2x1c3QpDQoNCg0KDQojIEFsbGVlbiBjbHVzdGVyIDENCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGludGVyc2VjdGlvbnNbTkVBMjAyMiRzZV9jbHVzdCA9PSAxXSkNCg0KYGBgDQoNCjxicj48YnI+ICoqQ3JlYXRpbmcgZHVtbXkgdmFyaWFibGVzKioNCg0KYGBge3J9DQpORUEyMDIyIDwtIGR1bW15X2NvbHMoTkVBMjAyMiwgc2VsZWN0X2NvbHVtbnMgPSAiaW50ZXJzZWN0aW9ucyIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KDQpkdW1teV9jb2x1bW5zIDwtIGdyZXAoIl5pbnRlcnNlY3Rpb25zXyIsIGNvbG5hbWVzKE5FQTIwMjIpLCB2YWx1ZSA9IFRSVUUpICAjIEZpbmQgZHVtbXkgY29sdW1ucw0KY29sbmFtZXMoTkVBMjAyMilbY29sbmFtZXMoTkVBMjAyMikgJWluJSBkdW1teV9jb2x1bW5zXSA8LSBnc3ViKCJeaW50ZXJzZWN0aW9uc18iLCAiIiwgZHVtbXlfY29sdW1ucykNCg0KYGBgDQoNCg==</div>
+table(NEA2022_clust1_29923$v.noeu.hoog.35.55)</code></pre>
+<pre class="test2"><code>#&gt; 
+#&gt;     0     1 
+#&gt; 29570   353</code></pre>
+<pre class="r test"><code>table(NEA2022_clust1_29923$m.nl.hoog.35.55)</code></pre>
+<pre class="test2"><code>#&gt; 
+#&gt;     0     1 
+#&gt; 27548  2375</code></pre>
+<pre class="r test"><code>str(NEA2022_clust1_29923$m.nl.hoog.35.55)</code></pre>
+<pre class="test2"><code>#&gt;  int [1:29923] 0 0 0 0 0 0 0 0 1 0 ...</code></pre>
+<pre class="r test"><code>write.csv(NEA2022_clust1_29923, &quot;data/processed/NEA2022_clust1_29923.sav&quot;)</code></pre>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkludGVyc2VjdGlvbmFsaXR5Ig0KI2JpYmxpb2dyYXBoeTogcmVmZXJlbmNlcy5iaWINCmF1dGhvcjogIk5pbmEgQnJhbnRlbiINCi0tLQ0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQogDQoNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCg0KYGBgDQoNCmBgYHtyIGtsaXBweTMsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KYGBge3IgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRX0NCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ2dwbG90MiIpDQpsaWJyYXJ5KCJzdW1tYXJ5dG9vbHMiKQ0KbGlicmFyeSgiZHBseXIiKQ0KbGlicmFyeSgibGFiZWxsZWQiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgiZmFzdER1bW1pZXMiKQ0KYGBgDQoNCmBgYHtyLCBlY2hvPUZBTFNFLCBpbmNsdWRlPVRSVUUsIHJlc3VsdHM9J2hpZGUnLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KTkVBMjAyMl9jbHVzdDEgPC1yZWFkLnNwc3MoImRhdGEvcHJvY2Vzc2VkL05FQTIwMjJfY2x1c3QxLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCg0KI05FQTIwMTQyMDIyIDwtcmVhZC5zcHNzKCJkYXRhL3Jhdy9EYXRhIDIwMTQtMjAyMi5zYXYiLCB1c2UudmFsdWUubGFiZWxzID0gVCwgdG8uZGF0YS5mcmFtZSA9IFQpDQpgYGANCg0KDQpgYGB7cn0NCk5FQTIwMjJfY2x1c3QxJGFmbF9zb2kzW05FQTIwMjJfY2x1c3QxJGFmbF9zb2kzID09ICJvbmJla2VuZCJdIDwtIE5BDQoNCk5FQTIwMjJfY2x1c3QxXzI5OTIzIDwtIE5FQTIwMjJfY2x1c3QxICU+JQ0KICBmaWx0ZXIoIWlzLm5hKGFmbF9zb2kzKSkNCg0KYXR0YWNoKE5FQTIwMjJfY2x1c3QxXzI5OTIzKQ0KDQpgYGANCg0KPGJyPjxicj4gKipHZW5kZXIqKg0KDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyX2NsdXN0MV8yOTkyMyRtX3YpDQpzdW1tYXJ5KE5FQTIwMjJfY2x1c3QxXzI5OTIzJG1fdikNCmBgYA0KPGJyPjxicj4gKipNaWdyYXRpb24gYmFja2dyb3VuZCoqDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyX2NsdXN0MV8yOTkyMyR2cmxsYW5kZCkNCmBgYA0KPGJyPjxicj4gKipFZHVjYXRpb25hbCBsZXZlbCoqDQpgYGB7cn0NCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyX2NsdXN0MV8yOTkyMyRhZmxfc29pMykNCmBgYA0KDQo8YnI+PGJyPiAqKkFnZSoqDQoNCmBgYHtyfQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjJfY2x1c3QxXzI5OTIzJGFmbF9sZnRjKQ0KYGBgDQo8YnI+PGJyPiAqKlJlY29kZW4gbGFhZyAoMTUtMzUpLCBtaWRkZWxiYWFyICgzNS01NSksIGhvb2cgKDU1LTc1KSoqDQoNCmBgYHtyfQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjJfY2x1c3QxXzI5OTIzJGFmbF9sZnRjKQ0Kc3RyKE5FQTIwMjJfY2x1c3QxXzI5OTIzJGFmbF9sZnRjKQ0KDQoNCk5FQTIwMjJfY2x1c3QxXzI5OTIzJGxmdF9udW0gPC0gYXMubnVtZXJpYyhORUEyMDIyX2NsdXN0MV8yOTkyMyRhZmxfbGZ0YykNCg0KTkVBMjAyMl9jbHVzdDFfMjk5MjMgPC0gTkVBMjAyMl9jbHVzdDFfMjk5MjMgJT4lDQogIG11dGF0ZShsZWVmdGlqZCA9IGNhc2Vfd2hlbigNCiAgICBsZnRfbnVtICVpbiUgYygxLCAyKSB+IDEsDQogICAgbGZ0X251bSAlaW4lIGMoMywgNCkgfiAyLA0KICAgIGxmdF9udW0gJWluJSBjKDUsIDYpIH4gMywNCiAgICBUUlVFIH4gTkFfcmVhbF8NCiAgKSkNCg0KDQpORUEyMDIyX2NsdXN0MV8yOTkyMyRsZWVmdGlqZF8gPC0gZmFjdG9yKE5FQTIwMjJfY2x1c3QxXzI5OTIzJGxlZWZ0aWpkLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygxLCAyLCAzKSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVscyA9IGMoIjE1LjM1IiwgIjM1LjU1IiwgIjU1Ljc1IikpDQoNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjJfY2x1c3QxXzI5OTIzJGxlZWZ0aWpkXykNCg0KYGBgDQo8YnI+PGJyPiAqKlByZXBhcmluZyB2YXJpYWJsZXMgZm9yIGludGVyc2VjdGlvbnMqKg0KDQpgYGB7cn0NCiMgRWFzaWVyIGxhYmVscw0KTkVBMjAyMl9jbHVzdDFfMjk5MjMgPC0gTkVBMjAyMl9jbHVzdDFfMjk5MjMgJT4lDQogIG11dGF0ZShnZW5kZXIgPSByZWNvZGUobV92LA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJtYW4iID0gIm0iLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJ2cm91dyIgPSAidiIpKQ0KDQoNCk5FQTIwMjJfY2x1c3QxXzI5OTIzIDwtIE5FQTIwMjJfY2x1c3QxXzI5OTIzICU+JQ0KICBtdXRhdGUobWlncmF0aW9uID0gcmVjb2RlKHZybGxhbmRkLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJOZWRlcmxhbmQiID0gIm5sIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiRXVyb3BhIChleGNsdXNpZWYgTmVkZXJsYW5kKSIgPSAiZXUiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJCdWl0ZW4gRXVyb3BhIiA9ICJub2V1IikpDQoNCk5FQTIwMjJfY2x1c3QxXzI5OTIzIDwtIE5FQTIwMjJfY2x1c3QxXzI5OTIzICU+JQ0KICBtdXRhdGUoZWR1Y2F0aW9uID0gcmVjb2RlKGFmbF9zb2kzLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJsYWFnIG9wbGVpZGluZ3NuaXZlYXUiID0gImxhYWciLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJtaWRkZWxiYWFyIG9wbGVpZGluZ3NuaXZlYXUiID0gIm1pZGRlbCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImhvb2cgb3BsZWlkaW5nc25pdmVhdSIgPSAiaG9vZyIpKQ0KDQojIE1pc3NpbmcgdmFsdWVzDQpORUEyMDIyX2NsdXN0MV8yOTkyMyRlZHVjYXRpb25bTkVBMjAyMl9jbHVzdDFfMjk5MjMkZWR1Y2F0aW9uID09ICJvbmJla2VuZCJdIDwtIE5BDQpORUEyMDIyX2NsdXN0MV8yOTkyMyRlZHVjYXRpb25bTkVBMjAyMl9jbHVzdDFfMjk5MjMkbWlncmF0aW9uID09ICJPbmJla2VuZCJdIDwtIE5BDQoNCiMgRHJvcCB1bnVzZWQgbGV2ZWxzDQpsZXZlbHMoTkVBMjAyMl9jbHVzdDFfMjk5MjMkbWlncmF0aW9uKQ0KTkVBMjAyMl9jbHVzdDFfMjk5MjMkbWlncmF0aW9uIDwtIGRyb3BsZXZlbHMoTkVBMjAyMl9jbHVzdDFfMjk5MjMkbWlncmF0aW9uKQ0KbGV2ZWxzKE5FQTIwMjJfY2x1c3QxXzI5OTIzJG1pZ3JhdGlvbikNCg0KbGV2ZWxzKE5FQTIwMjJfY2x1c3QxXzI5OTIzJGVkdWNhdGlvbikNCk5FQTIwMjJfY2x1c3QxXzI5OTIzJGVkdWNhdGlvbiA8LSBkcm9wbGV2ZWxzKE5FQTIwMjJfY2x1c3QxXzI5OTIzJGVkdWNhdGlvbikNCmxldmVscyhORUEyMDIyX2NsdXN0MV8yOTkyMyRlZHVjYXRpb24pDQoNCnN1bW1hcnkoTkVBMjAyMl9jbHVzdDFfMjk5MjMkZ2VuZGVyKQ0Kc3VtbWFyeShORUEyMDIyX2NsdXN0MV8yOTkyMyRtaWdyYXRpb24pDQpzdW1tYXJ5KE5FQTIwMjJfY2x1c3QxXzI5OTIzJGVkdWNhdGlvbikNCnN1bW1hcnkoTkVBMjAyMl9jbHVzdDFfMjk5MjMkbGVlZnRpamRfKQ0KDQpgYGANCg0KYGBge3J9DQpORUEyMDIyX2NsdXN0MV8yOTkyMyRpbnRlcnNlY3Rpb25zIDwtIGludGVyYWN0aW9uKE5FQTIwMjJfY2x1c3QxXzI5OTIzJGdlbmRlciwgTkVBMjAyMl9jbHVzdDFfMjk5MjMkbWlncmF0aW9uLCBORUEyMDIyX2NsdXN0MV8yOTkyMyRlZHVjYXRpb24sIE5FQTIwMjJfY2x1c3QxXzI5OTIzJGxlZWZ0aWpkXykNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjJfY2x1c3QxXzI5OTIzJGludGVyc2VjdGlvbnMpDQoNCg0KI05FQTIwMjIkaW50ZXJzZWN0aW9ucyA8LSBpbnRlcmFjdGlvbihORUEyMDIyJG1fdiwgTkVBMjAyMiR2cmxsYW5kZCwgTkVBMjAyMiRhZmxfc29pMywgTkVBMjAyMiRsZWVmdGlqZF8pDQojdGFibGUoTkVBMjAyMiRpbnRlcnNlY3Rpb25zKSANCg0KI05FQTIwMjIkZ2VuZGVyX251bSA8LSBhcy5udW1lcmljKE5FQTIwMjIkbV92KQ0KI05FQTIwMjIkbWlncl9udW0gPC0gYXMubnVtZXJpYyhORUEyMDIyJHZybGxhbmRkKQ0KI05FQTIwMjIkZWR1Y19udW0gPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9zb2kzKQ0KDQojTkVBMjAyMiRpbnRlcnNlY3Rpb25zX251bSA8LSBpbnRlcmFjdGlvbihORUEyMDIyJGdlbmRlcl9udW0sIE5FQTIwMjIkbWlncl9udW0sIE5FQTIwMjIkZWR1Y19udW0sIE5FQTIwMjIkbGVlZnRpamQpDQojdGFibGUoTkVBMjAyMiRpbnRlcnNlY3Rpb25zX251bSkNCiNzdW1tYXJ5KE5FQTIwMjIkaW50ZXJzZWN0aW9uc19udW0pDQoNCmBgYA0KDQo8YnI+PGJyPiAqKkNyZWF0aW5nIGR1bW15IHZhcmlhYmxlcyoqDQoNCmBgYHtyfQ0KTkVBMjAyMl9jbHVzdDFfMjk5MjMgPC0gZHVtbXlfY29scyhORUEyMDIyX2NsdXN0MV8yOTkyMywgc2VsZWN0X2NvbHVtbnMgPSAiZ2VuZGVyIiwgcmVtb3ZlX2ZpcnN0X2R1bW15ID0gRkFMU0UpDQp0YWJsZShORUEyMDIyX2NsdXN0MV8yOTkyMyRnZW5kZXJfbSkNCmBgYA0KYGBge3J9DQpORUEyMDIyX2NsdXN0MV8yOTkyMyA8LSBkdW1teV9jb2xzKE5FQTIwMjJfY2x1c3QxXzI5OTIzLCBzZWxlY3RfY29sdW1ucyA9ICJtaWdyYXRpb24iLCByZW1vdmVfZmlyc3RfZHVtbXkgPSBGQUxTRSkNCnRhYmxlKE5FQTIwMjJfY2x1c3QxXzI5OTIzJG1pZ3JhdGlvbl9ubCkNCmBgYA0KYGBge3J9DQpORUEyMDIyX2NsdXN0MV8yOTkyMyA8LSBkdW1teV9jb2xzKE5FQTIwMjJfY2x1c3QxXzI5OTIzLCBzZWxlY3RfY29sdW1ucyA9ICJlZHVjYXRpb24iLCByZW1vdmVfZmlyc3RfZHVtbXkgPSBGQUxTRSkNCnRhYmxlKE5FQTIwMjJfY2x1c3QxXzI5OTIzJGVkdWNhdGlvbl9sYWFnKQ0KYGBgDQpgYGB7cn0NCk5FQTIwMjJfY2x1c3QxXzI5OTIzIDwtIGR1bW15X2NvbHMoTkVBMjAyMl9jbHVzdDFfMjk5MjMsIHNlbGVjdF9jb2x1bW5zID0gImxlZWZ0aWpkXyIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KdGFibGUoTkVBMjAyMl9jbHVzdDFfMjk5MjMkbGVlZnRpamRfXzU1Ljc1KQ0KYGBgDQoNCmBgYHtyfQ0KTkVBMjAyMl9jbHVzdDFfMjk5MjMgPC0gZHVtbXlfY29scyhORUEyMDIyX2NsdXN0MV8yOTkyMywgc2VsZWN0X2NvbHVtbnMgPSAiaW50ZXJzZWN0aW9ucyIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KDQpkdW1teV9jb2x1bW5zIDwtIGdyZXAoIl5pbnRlcnNlY3Rpb25zXyIsIGNvbG5hbWVzKE5FQTIwMjJfY2x1c3QxXzI5OTIzKSwgdmFsdWUgPSBUUlVFKSAgIyBGaW5kIGR1bW15IGNvbHVtbnMNCmNvbG5hbWVzKE5FQTIwMjJfY2x1c3QxXzI5OTIzKVtjb2xuYW1lcyhORUEyMDIyX2NsdXN0MV8yOTkyMykgJWluJSBkdW1teV9jb2x1bW5zXSA8LSBnc3ViKCJeaW50ZXJzZWN0aW9uc18iLCAiIiwgZHVtbXlfY29sdW1ucykNCg0KdGFibGUoTkVBMjAyMl9jbHVzdDFfMjk5MjMkdi5ub2V1Lmhvb2cuMzUuNTUpDQp0YWJsZShORUEyMDIyX2NsdXN0MV8yOTkyMyRtLm5sLmhvb2cuMzUuNTUpDQpzdHIoTkVBMjAyMl9jbHVzdDFfMjk5MjMkbS5ubC5ob29nLjM1LjU1KQ0KYGBgDQpgYGB7cn0NCndyaXRlLmNzdihORUEyMDIyX2NsdXN0MV8yOTkyMywgImRhdGEvcHJvY2Vzc2VkL05FQTIwMjJfY2x1c3QxXzI5OTIzLnNhdiIpDQpgYGANCg0K</div>
 
 
 </div>

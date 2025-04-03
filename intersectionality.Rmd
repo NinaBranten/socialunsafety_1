@@ -33,41 +33,53 @@ library("tidyr")
 library("fastDummies")
 ```
 
-```{r klippy4, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022 <-read.spss("data/processed/Data 2022 cleaned.sav", use.value.labels = T, to.data.frame = T)
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022_clust1 <-read.spss("data/processed/NEA2022_clust1.sav", use.value.labels = T, to.data.frame = T)
 
 #NEA20142022 <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
+```
+
+
+```{r}
+NEA2022_clust1$afl_soi3[NEA2022_clust1$afl_soi3 == "onbekend"] <- NA
+
+NEA2022_clust1_29923 <- NEA2022_clust1 %>%
+  filter(!is.na(afl_soi3))
+
+attach(NEA2022_clust1_29923)
+
 ```
 
 <br><br> **Gender**
 
 ```{r}
-summarytools::freq(NEA2022$m_v)
+summarytools::freq(NEA2022_clust1_29923$m_v)
+summary(NEA2022_clust1_29923$m_v)
 ```
 <br><br> **Migration background**
 ```{r}
-summarytools::freq(NEA2022$vrllandd)
+summarytools::freq(NEA2022_clust1_29923$vrllandd)
 ```
 <br><br> **Educational level**
 ```{r}
-summarytools::freq(NEA2022$afl_soi3)
+summarytools::freq(NEA2022_clust1_29923$afl_soi3)
 ```
 
 <br><br> **Age**
 
 ```{r}
-summarytools::freq(NEA2022$afl_lftc)
+summarytools::freq(NEA2022_clust1_29923$afl_lftc)
 ```
 <br><br> **Recoden laag (15-35), middelbaar (35-55), hoog (55-75)**
 
 ```{r}
-summarytools::freq(NEA2022$afl_lftc)
-str(NEA2022$afl_lftc)
+summarytools::freq(NEA2022_clust1_29923$afl_lftc)
+str(NEA2022_clust1_29923$afl_lftc)
 
 
-NEA2022$lft_num <- as.numeric(NEA2022$afl_lftc)
+NEA2022_clust1_29923$lft_num <- as.numeric(NEA2022_clust1_29923$afl_lftc)
 
-NEA2022 <- NEA2022 %>%
+NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
   mutate(leeftijd = case_when(
     lft_num %in% c(1, 2) ~ 1,
     lft_num %in% c(3, 4) ~ 2,
@@ -76,60 +88,60 @@ NEA2022 <- NEA2022 %>%
   ))
 
 
-NEA2022$leeftijd_ <- factor(NEA2022$leeftijd,
+NEA2022_clust1_29923$leeftijd_ <- factor(NEA2022_clust1_29923$leeftijd,
                                  levels = c(1, 2, 3),
-                                 labels = c("15-35", "35-55", "55-75"))
+                                 labels = c("15.35", "35.55", "55.75"))
 
 
-summarytools::freq(NEA2022$leeftijd_)
+summarytools::freq(NEA2022_clust1_29923$leeftijd_)
 
 ```
 <br><br> **Preparing variables for intersections**
 
 ```{r}
 # Easier labels
-NEA2022 <- NEA2022 %>%
+NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
   mutate(gender = recode(m_v,
                                "man" = "m",
                                "vrouw" = "v"))
 
 
-NEA2022 <- NEA2022 %>%
+NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
   mutate(migration = recode(vrllandd,
                                "Nederland" = "nl",
                                "Europa (exclusief Nederland)" = "eu",
                                "Buiten Europa" = "noeu"))
 
-NEA2022 <- NEA2022 %>%
+NEA2022_clust1_29923 <- NEA2022_clust1_29923 %>%
   mutate(education = recode(afl_soi3,
                                "laag opleidingsniveau" = "laag",
                                "middelbaar opleidingsniveau" = "middel",
                                "hoog opleidingsniveau" = "hoog"))
 
 # Missing values
-NEA2022$education[NEA2022$education == "onbekend"] <- NA
-NEA2022$education[NEA2022$migration == "Onbekend"] <- NA
+NEA2022_clust1_29923$education[NEA2022_clust1_29923$education == "onbekend"] <- NA
+NEA2022_clust1_29923$education[NEA2022_clust1_29923$migration == "Onbekend"] <- NA
 
 # Drop unused levels
-levels(NEA2022$migration)
-NEA2022$migration <- droplevels(NEA2022$migration)
-levels(NEA2022$migration)
+levels(NEA2022_clust1_29923$migration)
+NEA2022_clust1_29923$migration <- droplevels(NEA2022_clust1_29923$migration)
+levels(NEA2022_clust1_29923$migration)
 
-levels(NEA2022$education)
-NEA2022$education <- droplevels(NEA2022$education)
-levels(NEA2022$education)
+levels(NEA2022_clust1_29923$education)
+NEA2022_clust1_29923$education <- droplevels(NEA2022_clust1_29923$education)
+levels(NEA2022_clust1_29923$education)
 
-summary(NEA2022$gender)
-summary(NEA2022$migration)
-summary(NEA2022$education)
-summary(NEA2022$leeftijd_)
+summary(NEA2022_clust1_29923$gender)
+summary(NEA2022_clust1_29923$migration)
+summary(NEA2022_clust1_29923$education)
+summary(NEA2022_clust1_29923$leeftijd_)
 
 ```
 
 ```{r}
-NEA2022$intersections <- interaction(NEA2022$gender, NEA2022$migration, NEA2022$education, NEA2022$leeftijd_)
+NEA2022_clust1_29923$intersections <- interaction(NEA2022_clust1_29923$gender, NEA2022_clust1_29923$migration, NEA2022_clust1_29923$education, NEA2022_clust1_29923$leeftijd_)
 
-summarytools::freq(NEA2022$intersections)
+summarytools::freq(NEA2022_clust1_29923$intersections)
 
 
 #NEA2022$intersections <- interaction(NEA2022$m_v, NEA2022$vrllandd, NEA2022$afl_soi3, NEA2022$leeftijd_)
@@ -145,26 +157,36 @@ summarytools::freq(NEA2022$intersections)
 
 ```
 
-
-```{r}
-
-# Per cluster
-table(NEA2022$intersections, NEA2022$se_clust)
-
-
-
-# Alleen cluster 1
-summarytools::freq(NEA2022$intersections[NEA2022$se_clust == 1])
-
-```
-
 <br><br> **Creating dummy variables**
 
 ```{r}
-NEA2022 <- dummy_cols(NEA2022, select_columns = "intersections", remove_first_dummy = FALSE)
+NEA2022_clust1_29923 <- dummy_cols(NEA2022_clust1_29923, select_columns = "gender", remove_first_dummy = FALSE)
+table(NEA2022_clust1_29923$gender_m)
+```
+```{r}
+NEA2022_clust1_29923 <- dummy_cols(NEA2022_clust1_29923, select_columns = "migration", remove_first_dummy = FALSE)
+table(NEA2022_clust1_29923$migration_nl)
+```
+```{r}
+NEA2022_clust1_29923 <- dummy_cols(NEA2022_clust1_29923, select_columns = "education", remove_first_dummy = FALSE)
+table(NEA2022_clust1_29923$education_laag)
+```
+```{r}
+NEA2022_clust1_29923 <- dummy_cols(NEA2022_clust1_29923, select_columns = "leeftijd_", remove_first_dummy = FALSE)
+table(NEA2022_clust1_29923$leeftijd__55.75)
+```
 
-dummy_columns <- grep("^intersections_", colnames(NEA2022), value = TRUE)  # Find dummy columns
-colnames(NEA2022)[colnames(NEA2022) %in% dummy_columns] <- gsub("^intersections_", "", dummy_columns)
+```{r}
+NEA2022_clust1_29923 <- dummy_cols(NEA2022_clust1_29923, select_columns = "intersections", remove_first_dummy = FALSE)
 
+dummy_columns <- grep("^intersections_", colnames(NEA2022_clust1_29923), value = TRUE)  # Find dummy columns
+colnames(NEA2022_clust1_29923)[colnames(NEA2022_clust1_29923) %in% dummy_columns] <- gsub("^intersections_", "", dummy_columns)
+
+table(NEA2022_clust1_29923$v.noeu.hoog.35.55)
+table(NEA2022_clust1_29923$m.nl.hoog.35.55)
+str(NEA2022_clust1_29923$m.nl.hoog.35.55)
+```
+```{r}
+write.csv(NEA2022_clust1_29923, "data/processed/NEA2022_clust1_29923.sav")
 ```
 

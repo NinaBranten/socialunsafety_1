@@ -159,9 +159,9 @@ itemss3 <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, g
 <br><br> Conflict_col: **conflict collega's.** (1) nee (2) ja, kortdurend (3) ja, langdurend
 <br><br> Conflict_leid: **conflict leidinggevenden.** (1) nee (2) ja, kortdurend (3) ja, langdurend
 <br><br> Conflict_werk: **conflict werkgever.** (1) nee (2) ja, kortdurend (3) ja, langdurend
-<br><br> Steunleid_R: **mijn leidinggevende besteedt aandacht aan wat ik zeg.** **mijn leidinggevende heeft oog voor het welzijn van de medewerker.** Gemiddelde score van deze twee items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.5, 2, (3) 2.5, 3 (4) 3.5, 4
-<br><br> Steuncol_R: **mijn collega's hebben persoonlijke belangstelling voor me.** **mijn collega's zijn vriendelijk.** Gemiddelde score van deze twee items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, (2) 1.5, 2, (3) 2.5, 3 (4) 3.5, 4
-<br><br> Psyveil_R: **op mijn werk kun je lastige kwesties naar voren brengen.** **op mijn werk is het gemakkelijk om hulp te vragen.** **op mijn werk is het niet erg om een fout te maken.** Gemiddelde score van deze drie items. Gerecoded voor de LCA, zodat het scores zijn vanaf 1, telkens één oplopend: (1) 1, 1.33 (2) 1.5, 1.67, 2.0, 2.33, (3) 2.5, 2.67, 3, 3.33, (4) 3.5, 3.67, 4, 4.33, (5) 4.5, 4.67, 5.
+<br><br> Steunleid_RR: **mijn leidinggevende besteedt aandacht aan wat ik zeg.** **mijn leidinggevende heeft oog voor het welzijn van de medewerker.** Gemiddelde score van deze twee items. Afgerond (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
+<br><br> Steuncol_RR: **mijn collega's hebben persoonlijke belangstelling voor me.** **mijn collega's zijn vriendelijk.** Gemiddelde score van deze twee items.  Afgerond (1) helemaal mee eens (2) mee eens (3) mee oneens (4) helemaal mee oneens
+<br><br> Psyveil_RR: **op mijn werk kun je lastige kwesties naar voren brengen.** **op mijn werk is het gemakkelijk om hulp te vragen.** **op mijn werk is het niet erg om een fout te maken.** Gemiddelde score van deze drie items. Afgerond (1) Helemaal eens (2) eens (3) niet eens, niet oneens (4) niet eens (5) helemaal niet eens
 
 
 

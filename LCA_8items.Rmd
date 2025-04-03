@@ -58,7 +58,7 @@ attach(NEA2022_clust1)
 set.seed(123)
 ```
 
-```{r, cache=TRUE}
+```{r, cache=TRUE, warning=FALSE}
 attach(NEA2022_clust1)
 data8 <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid)
 

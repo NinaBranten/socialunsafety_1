@@ -46,24 +46,30 @@ library("Hmisc")
 ```
 
 ```{r klippy7, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1 <-read.spss("data/processed/NEA2022_clust1.sav", use.value.labels = T, to.data.frame = T)
-attach(NEA2022_clust1)
+NEAfinal <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
+attach(NEAfinal)
 ```
 
 ```{r}
-data <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht, steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout)
+datafactor <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht, steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout)
 ```
 
 ```{r}
-cor_matrix <- cor(data, use = "pairwise.complete.obs")
+datafactorschaal <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steuncol_RR, steunleid_RR, psyveil_RR)
+```
+
+```{r}
+cor_matrix <- cor(datafactor, use = "pairwise.complete.obs")
 print(cor_matrix)
 ```
 
 ```{r}
 kable(round(cor_matrix, 3))
 ```
+
 ```{r}
-cor_results <- rcorr(as.matrix(data))
+library(Hmisc)
+cor_results <- rcorr(as.matrix(datafactor))
 
 cor_matrix <- round(cor_results$r, 3)
 p_matrix <- cor_results$P
@@ -90,11 +96,7 @@ kable(cor_matrix_stars)
 ```
 
 ```{r}
-fa.parallel(data, fa = "fa", n.iter = 100, show.legend = FALSE)
-```
-
-```{r}
-fa.parallel(data, fa = "both", n.iter = 100, show.legend = FALSE)
+fa.parallel(datafactor, fa = "fa", n.iter = 100, show.legend = FALSE)
 ```
 
 ```{r}
@@ -104,7 +106,6 @@ print(efa, digits = 2)
 
 
 ```{r}
-attach(NEA2022_clust1)
 psyveil <- data.frame(psyveil_last, psyveil_hulp, psyveil_fout)
 
 alpha_result <- alpha(psyveil)
@@ -127,3 +128,54 @@ alpha_result3 <- alpha(steunleid)
 
 print(alpha_result3)
 ```
+
+
+Schaal
+
+
+```{r}
+cor_matrixs <- cor(datafactorschaal, use = "pairwise.complete.obs")
+print(cor_matrixs)
+```
+
+```{r}
+kable(round(cor_matrixs, 3))
+```
+
+```{r}
+library(Hmisc)
+cor_resultss <- rcorr(as.matrix(datafactorschaal))
+
+cor_matrixs <- round(cor_resultss$r, 3)
+p_matrixs <- cor_resultss$P
+
+cors_with_stars <- function(cor_matrixs, p_matrixs) {
+  starss <- ifelse(is.na(p_matrixs), "",
+           ifelse(p_matrixs < 0.001, "***",
+           ifelse(p_matrixs < 0.01, "**",
+           ifelse(p_matrixs < 0.05, "*", ""))))
+  
+  cor_matrixs_formatted <- matrix(
+    paste0(format(cor_matrixs, nsmall = 3), starss),
+    nrow = nrow(cor_matrixs), 
+    dimnames = dimnames(cor_matrixs)
+  )
+  
+  return(cor_matrixs_formatted)
+}
+
+cor_matrixs_stars <- cors_with_stars(cor_matrixs, p_matrixs)
+
+kable(cor_matrixs_stars)
+
+```
+
+```{r}
+fa.parallel(datafactorschaal, fa = "fa", n.iter = 100, show.legend = FALSE)
+```
+
+```{r}
+efa <- fa(datafactorschaal, nfactors = 6, rotate = "oblimin", fm = "ml")
+print(efa, digits = 2)
+```
+

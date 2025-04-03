@@ -113,7 +113,7 @@ NEA2022_clust1_29923 <- NEA2022_clust1 %>%
 set.seed(123)
 ```
 
-```{r, cache=TRUE}
+```{r, cache=TRUE, warning=FALSE}
 attach(NEA2022_clust1_29923)
 datas29923 <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_R, steuncol_R, psyveil_R)
 
@@ -194,20 +194,12 @@ model13s29923 <- poLCA(itemss29923, datas29923, nclass = 13, maxiter = 5000, nre
 model14s29923 <- poLCA(itemss29923, datas29923, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r, cache=TRUE}
-model15s29923 <- poLCA(itemss29923, datas29923, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
 
-```{r, cache=TRUE}
-model16s29923 <- poLCA(itemss29923, datas29923, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
 
-```{r, cache=TRUE}
-model17s29923 <- poLCA(itemss29923, datas29923, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
 
-```{r, cache=TRUE}
-model18s29923 <- poLCA(itemss29923, datas29923, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
+
+
+
+
 
 
