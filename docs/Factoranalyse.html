@@ -355,40 +355,34 @@ div.tocify {
   <a href="LCA_30501.html">LCA 30501</a>
 </li>
 <li>
-  <a href="LCA_29923.html">LCA 29923</a>
-</li>
-<li>
-  <a href="LCA_8items.html">LCA 8 items</a>
-</li>
-<li>
   <a href="LCA_schaal.html">LCA schaal</a>
-</li>
-<li>
-  <a href="LCA_schaal2.html">LCA schaal2</a>
 </li>
 <li>
   <a href="LCA_schaal3.html">LCA schaal3</a>
 </li>
 <li>
+  <a href="LCA_29923.html">LCA 29923</a>
+</li>
+<li>
   <a href="LCA_schaal3_29923.html">LCA schaal3_29923</a>
 </li>
 <li>
-  <a href="LCA_schaalsteun.html">LCA schaal steun</a>
+  <a href="LCA_8items.html">LCA 8 items</a>
 </li>
 <li>
   <a href="LCA_conflict.html">LCA conflict</a>
 </li>
 <li>
-  <a href="LCA_missings.html">LCA without missings</a>
+  <a href="LCA_na.rm=true.html">LCA without missings</a>
 </li>
 <li>
   <a href="LCA_geweld.html">LCA zonder geweld</a>
 </li>
 <li>
-  <a href="Factoranalyse.html">Factoranalyse</a>
+  <a href="LCA_employer.html">Zonder employer</a>
 </li>
 <li>
-  <a href="plotjes.html">Plotjes</a>
+  <a href="Factoranalyse.html">Factoranalyse</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -440,87 +434,90 @@ library(&quot;haven&quot;)
 library(&quot;psych&quot;)
 library(&quot;GPArotation&quot;)
 library(&quot;Hmisc&quot;)</code></pre>
-<pre class="r test"><code>data &lt;- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid,
+<pre class="r test"><code>datafactor &lt;- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid,
     seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_welzijn, steunleid_aandacht,
     steuncol_belang, steuncol_vriendelijk, psyveil_last, psyveil_hulp, psyveil_fout)</code></pre>
-<pre class="r test"><code>cor_matrix &lt;- cor(data, use = &quot;pairwise.complete.obs&quot;)
+<pre class="r test"><code>datafactorschaal &lt;- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col,
+    geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steuncol_RR, steunleid_RR,
+    psyveil_RR)</code></pre>
+<pre class="r test"><code>cor_matrix &lt;- cor(datafactor, use = &quot;pairwise.complete.obs&quot;)
 print(cor_matrix)</code></pre>
-<pre class="test2"><code>#&gt;                      pesten_col pesten_leid intimidation_col intimidation_leid    geweld_col
-#&gt; pesten_col           1.00000000  0.15181294       0.33758483        0.10509739  0.0919332507
-#&gt; pesten_leid          0.15181294  1.00000000       0.10316745        0.50233804  0.1026417923
-#&gt; intimidation_col     0.33758483  0.10316745       1.00000000        0.06882758  0.2103067937
-#&gt; intimidation_leid    0.10509739  0.50233804       0.06882758        1.00000000  0.0621115493
-#&gt; geweld_col           0.09193325  0.10264179       0.21030679        0.06211155  1.0000000000
-#&gt; geweld_leid          0.03944993  0.10303266       0.11315923        0.11616203 -0.0006014355
-#&gt; seks_col             0.13423729  0.05354064       0.13709055        0.08934090  0.1745766095
-#&gt; seks_leid            0.04700290  0.15103683       0.14321072        0.09837462  0.1333506935
-#&gt; conflict_col         0.26852871  0.10139825       0.21356100        0.08727705  0.0510687924
-#&gt; conflict_leid        0.11221040  0.29306018       0.09495549        0.31378355  0.0403498254
-#&gt; conflict_werk        0.09760448  0.23008782       0.09644123        0.26739284  0.0536598228
-#&gt; steunleid_welzijn    0.09458651  0.15318967       0.05755086        0.16686473  0.0196773925
-#&gt; steunleid_aandacht   0.09782264  0.15613485       0.05824110        0.16084705  0.0263903586
-#&gt; steuncol_belang      0.14091001  0.05922719       0.07928442        0.04613882  0.0295277536
-#&gt; steuncol_vriendelijk 0.15773622  0.06742352       0.08622217        0.05765229  0.0439864682
-#&gt; psyveil_last         0.09769820  0.11153660       0.06168404        0.12747895  0.0331421183
-#&gt; psyveil_hulp         0.11537506  0.13356889       0.07666921        0.14299905  0.0405804450
-#&gt; psyveil_fout         0.09429411  0.10168738       0.04872682        0.10274234  0.0185761737
-#&gt;                        geweld_leid   seks_col  seks_leid conflict_col conflict_leid conflict_werk
-#&gt; pesten_col            0.0394499348 0.13423729 0.04700290   0.26852871    0.11221040    0.09760448
-#&gt; pesten_leid           0.1030326602 0.05354064 0.15103683   0.10139825    0.29306018    0.23008782
-#&gt; intimidation_col      0.1131592293 0.13709055 0.14321072   0.21356100    0.09495549    0.09644123
-#&gt; intimidation_leid     0.1161620330 0.08934090 0.09837462   0.08727705    0.31378355    0.26739284
-#&gt; geweld_col           -0.0006014355 0.17457661 0.13335069   0.05106879    0.04034983    0.05365982
-#&gt; geweld_leid           1.0000000000 0.08995286 0.18290148   0.02599414    0.02836644    0.03328733
-#&gt; seks_col              0.0899528629 1.00000000 0.08923504   0.07513314    0.04321563    0.06305698
-#&gt; seks_leid             0.1829014838 0.08923504 1.00000000   0.03234345    0.06360150    0.06959423
-#&gt; conflict_col          0.0259941382 0.07513314 0.03234345   1.00000000    0.34355464    0.26731196
-#&gt; conflict_leid         0.0283664369 0.04321563 0.06360150   0.34355464    1.00000000    0.50020317
-#&gt; conflict_werk         0.0332873347 0.06305698 0.06959423   0.26731196    0.50020317    1.00000000
-#&gt; steunleid_welzijn     0.0159758524 0.04503670 0.04681261   0.13602142    0.29668033    0.20191375
-#&gt; steunleid_aandacht    0.0091813238 0.03928059 0.05233476   0.13395164    0.30364378    0.19993198
-#&gt; steuncol_belang       0.0101355095 0.02776179 0.03276834   0.14457136    0.09613509    0.08410498
-#&gt; steuncol_vriendelijk  0.0127607379 0.02300081 0.01857598   0.17307716    0.09658941    0.08280206
-#&gt; psyveil_last          0.0138085056 0.04306611 0.04750437   0.11130872    0.18895945    0.14358862
-#&gt; psyveil_hulp          0.0155156657 0.04374124 0.04017554   0.15276810    0.21387838    0.17626070
-#&gt; psyveil_fout          0.0134093701 0.03435294 0.03393102   0.09056993    0.15161643    0.12313850
+<pre class="test2"><code>#&gt;                      pesten_col pesten_leid intimidation_col intimidation_leid   geweld_col
+#&gt; pesten_col           1.00000000  0.15542094       0.33946801        0.10132362  0.071291258
+#&gt; pesten_leid          0.15542094  1.00000000       0.10515926        0.50258074  0.100483310
+#&gt; intimidation_col     0.33946801  0.10515926       1.00000000        0.07110800  0.226600407
+#&gt; intimidation_leid    0.10132362  0.50258074       0.07110800        1.00000000  0.028663551
+#&gt; geweld_col           0.07129126  0.10048331       0.22660041        0.02866355  1.000000000
+#&gt; geweld_leid          0.04463306  0.08617520       0.12366982        0.08945266 -0.000565986
+#&gt; seks_col             0.12986635  0.05021934       0.14334101        0.05847466  0.129407634
+#&gt; seks_leid            0.04877519  0.15276941       0.14421469        0.10292542  0.147018914
+#&gt; conflict_col         0.26847398  0.10184677       0.21428274        0.08669367  0.049534701
+#&gt; conflict_leid        0.11222878  0.29711777       0.09673962        0.32039276  0.039786945
+#&gt; conflict_werk        0.09934538  0.23291964       0.09785014        0.26831151  0.046953482
+#&gt; steunleid_welzijn    0.09503113  0.15286656       0.05842266        0.16809451  0.019932856
+#&gt; steunleid_aandacht   0.09865087  0.15605380       0.05867382        0.16323357  0.027980334
+#&gt; steuncol_belang      0.14213994  0.05984685       0.07941042        0.04544106  0.030995930
+#&gt; steuncol_vriendelijk 0.15882076  0.06483984       0.08624141        0.05510750  0.043811775
+#&gt; psyveil_last         0.09697443  0.11305349       0.06106381        0.12628674  0.032039787
+#&gt; psyveil_hulp         0.11379436  0.13241022       0.07559328        0.14272436  0.033619010
+#&gt; psyveil_fout         0.09606022  0.10038257       0.05061945        0.10162303  0.016991480
+#&gt;                       geweld_leid   seks_col  seks_leid conflict_col conflict_leid conflict_werk
+#&gt; pesten_col            0.044633056 0.12986635 0.04877519   0.26847398    0.11222878    0.09934538
+#&gt; pesten_leid           0.086175200 0.05021934 0.15276941   0.10184677    0.29711777    0.23291964
+#&gt; intimidation_col      0.123669821 0.14334101 0.14421469   0.21428274    0.09673962    0.09785014
+#&gt; intimidation_leid     0.089452661 0.05847466 0.10292542   0.08669367    0.32039276    0.26831151
+#&gt; geweld_col           -0.000565986 0.12940763 0.14701891   0.04953470    0.03978694    0.04695348
+#&gt; geweld_leid           1.000000000 0.06257956 0.20124674   0.02433585    0.03192349    0.03727091
+#&gt; seks_col              0.062579558 1.00000000 0.09453970   0.07231553    0.04460879    0.05181987
+#&gt; seks_leid             0.201246740 0.09453970 1.00000000   0.03400246    0.06312044    0.06883701
+#&gt; conflict_col          0.024335852 0.07231553 0.03400246   1.00000000    0.33912839    0.25969877
+#&gt; conflict_leid         0.031923495 0.04460879 0.06312044   0.33912839    1.00000000    0.49470782
+#&gt; conflict_werk         0.037270910 0.05181987 0.06883701   0.25969877    0.49470782    1.00000000
+#&gt; steunleid_welzijn     0.017059402 0.04663976 0.04642271   0.13561193    0.29809238    0.20358602
+#&gt; steunleid_aandacht    0.009597228 0.03892259 0.05024710   0.13287295    0.30554316    0.20076346
+#&gt; steuncol_belang       0.014029223 0.02566173 0.03147777   0.14590820    0.09770231    0.08352055
+#&gt; steuncol_vriendelijk  0.012045555 0.02190193 0.01845232   0.17435719    0.09857459    0.08370230
+#&gt; psyveil_last          0.010913033 0.04188452 0.04816716   0.11137395    0.18994213    0.14370298
+#&gt; psyveil_hulp          0.014469846 0.03945544 0.04154697   0.15182500    0.21456320    0.17541013
+#&gt; psyveil_fout          0.008609005 0.03157847 0.03556231   0.09098566    0.15252993    0.12336305
 #&gt;                      steunleid_welzijn steunleid_aandacht steuncol_belang steuncol_vriendelijk
-#&gt; pesten_col                  0.09458651        0.097822637      0.14091001           0.15773622
-#&gt; pesten_leid                 0.15318967        0.156134851      0.05922719           0.06742352
-#&gt; intimidation_col            0.05755086        0.058241102      0.07928442           0.08622217
-#&gt; intimidation_leid           0.16686473        0.160847053      0.04613882           0.05765229
-#&gt; geweld_col                  0.01967739        0.026390359      0.02952775           0.04398647
-#&gt; geweld_leid                 0.01597585        0.009181324      0.01013551           0.01276074
-#&gt; seks_col                    0.04503670        0.039280587      0.02776179           0.02300081
-#&gt; seks_leid                   0.04681261        0.052334760      0.03276834           0.01857598
-#&gt; conflict_col                0.13602142        0.133951636      0.14457136           0.17307716
-#&gt; conflict_leid               0.29668033        0.303643780      0.09613509           0.09658941
-#&gt; conflict_werk               0.20191375        0.199931982      0.08410498           0.08280206
-#&gt; steunleid_welzijn           1.00000000        0.771098875      0.33964369           0.32994030
-#&gt; steunleid_aandacht          0.77109887        1.000000000      0.36713462           0.34139552
-#&gt; steuncol_belang             0.33964369        0.367134618      1.00000000           0.67404693
-#&gt; steuncol_vriendelijk        0.32994030        0.341395523      0.67404693           1.00000000
-#&gt; psyveil_last                0.36062162        0.361278494      0.24620585           0.22327654
-#&gt; psyveil_hulp                0.42810411        0.414749098      0.29221421           0.28934859
-#&gt; psyveil_fout                0.30653931        0.304789272      0.19452106           0.20403439
+#&gt; pesten_col                  0.09503113        0.098650869      0.14213994           0.15882076
+#&gt; pesten_leid                 0.15286656        0.156053804      0.05984685           0.06483984
+#&gt; intimidation_col            0.05842266        0.058673821      0.07941042           0.08624141
+#&gt; intimidation_leid           0.16809451        0.163233574      0.04544106           0.05510750
+#&gt; geweld_col                  0.01993286        0.027980334      0.03099593           0.04381178
+#&gt; geweld_leid                 0.01705940        0.009597228      0.01402922           0.01204556
+#&gt; seks_col                    0.04663976        0.038922594      0.02566173           0.02190193
+#&gt; seks_leid                   0.04642271        0.050247100      0.03147777           0.01845232
+#&gt; conflict_col                0.13561193        0.132872951      0.14590820           0.17435719
+#&gt; conflict_leid               0.29809238        0.305543160      0.09770231           0.09857459
+#&gt; conflict_werk               0.20358602        0.200763461      0.08352055           0.08370230
+#&gt; steunleid_welzijn           1.00000000        0.771104646      0.33781784           0.32516401
+#&gt; steunleid_aandacht          0.77110465        1.000000000      0.36554250           0.33657669
+#&gt; steuncol_belang             0.33781784        0.365542501      1.00000000           0.67455833
+#&gt; steuncol_vriendelijk        0.32516401        0.336576691      0.67455833           1.00000000
+#&gt; psyveil_last                0.36171965        0.362208230      0.24776275           0.22562523
+#&gt; psyveil_hulp                0.42885512        0.415754706      0.29323105           0.29022323
+#&gt; psyveil_fout                0.30781374        0.305857800      0.19487319           0.20566344
 #&gt;                      psyveil_last psyveil_hulp psyveil_fout
-#&gt; pesten_col             0.09769820   0.11537506   0.09429411
-#&gt; pesten_leid            0.11153660   0.13356889   0.10168738
-#&gt; intimidation_col       0.06168404   0.07666921   0.04872682
-#&gt; intimidation_leid      0.12747895   0.14299905   0.10274234
-#&gt; geweld_col             0.03314212   0.04058045   0.01857617
-#&gt; geweld_leid            0.01380851   0.01551567   0.01340937
-#&gt; seks_col               0.04306611   0.04374124   0.03435294
-#&gt; seks_leid              0.04750437   0.04017554   0.03393102
-#&gt; conflict_col           0.11130872   0.15276810   0.09056993
-#&gt; conflict_leid          0.18895945   0.21387838   0.15161643
-#&gt; conflict_werk          0.14358862   0.17626070   0.12313850
-#&gt; steunleid_welzijn      0.36062162   0.42810411   0.30653931
-#&gt; steunleid_aandacht     0.36127849   0.41474910   0.30478927
-#&gt; steuncol_belang        0.24620585   0.29221421   0.19452106
-#&gt; steuncol_vriendelijk   0.22327654   0.28934859   0.20403439
-#&gt; psyveil_last           1.00000000   0.53957283   0.35335028
-#&gt; psyveil_hulp           0.53957283   1.00000000   0.48425132
-#&gt; psyveil_fout           0.35335028   0.48425132   1.00000000</code></pre>
+#&gt; pesten_col             0.09697443   0.11379436  0.096060220
+#&gt; pesten_leid            0.11305349   0.13241022  0.100382571
+#&gt; intimidation_col       0.06106381   0.07559328  0.050619449
+#&gt; intimidation_leid      0.12628674   0.14272436  0.101623029
+#&gt; geweld_col             0.03203979   0.03361901  0.016991480
+#&gt; geweld_leid            0.01091303   0.01446985  0.008609005
+#&gt; seks_col               0.04188452   0.03945544  0.031578470
+#&gt; seks_leid              0.04816716   0.04154697  0.035562312
+#&gt; conflict_col           0.11137395   0.15182500  0.090985657
+#&gt; conflict_leid          0.18994213   0.21456320  0.152529925
+#&gt; conflict_werk          0.14370298   0.17541013  0.123363048
+#&gt; steunleid_welzijn      0.36171965   0.42885512  0.307813742
+#&gt; steunleid_aandacht     0.36220823   0.41575471  0.305857800
+#&gt; steuncol_belang        0.24776275   0.29323105  0.194873194
+#&gt; steuncol_vriendelijk   0.22562523   0.29022323  0.205663437
+#&gt; psyveil_last           1.00000000   0.54069281  0.354784569
+#&gt; psyveil_hulp           0.54069281   1.00000000  0.485111278
+#&gt; psyveil_fout           0.35478457   0.48511128  1.000000000</code></pre>
 <pre class="r test"><code>kable(round(cor_matrix, 3))</code></pre>
 <table>
 <colgroup>
@@ -571,232 +568,232 @@ print(cor_matrix)</code></pre>
 <tr class="odd">
 <td align="left">pesten_col</td>
 <td align="right">1.000</td>
-<td align="right">0.152</td>
-<td align="right">0.338</td>
-<td align="right">0.105</td>
-<td align="right">0.092</td>
-<td align="right">0.039</td>
-<td align="right">0.134</td>
-<td align="right">0.047</td>
-<td align="right">0.269</td>
+<td align="right">0.155</td>
+<td align="right">0.339</td>
+<td align="right">0.101</td>
+<td align="right">0.071</td>
+<td align="right">0.045</td>
+<td align="right">0.130</td>
+<td align="right">0.049</td>
+<td align="right">0.268</td>
 <td align="right">0.112</td>
-<td align="right">0.098</td>
+<td align="right">0.099</td>
 <td align="right">0.095</td>
-<td align="right">0.098</td>
-<td align="right">0.141</td>
-<td align="right">0.158</td>
-<td align="right">0.098</td>
-<td align="right">0.115</td>
-<td align="right">0.094</td>
+<td align="right">0.099</td>
+<td align="right">0.142</td>
+<td align="right">0.159</td>
+<td align="right">0.097</td>
+<td align="right">0.114</td>
+<td align="right">0.096</td>
 </tr>
 <tr class="even">
 <td align="left">pesten_leid</td>
-<td align="right">0.152</td>
+<td align="right">0.155</td>
 <td align="right">1.000</td>
-<td align="right">0.103</td>
-<td align="right">0.502</td>
-<td align="right">0.103</td>
-<td align="right">0.103</td>
-<td align="right">0.054</td>
-<td align="right">0.151</td>
-<td align="right">0.101</td>
-<td align="right">0.293</td>
-<td align="right">0.230</td>
+<td align="right">0.105</td>
+<td align="right">0.503</td>
+<td align="right">0.100</td>
+<td align="right">0.086</td>
+<td align="right">0.050</td>
+<td align="right">0.153</td>
+<td align="right">0.102</td>
+<td align="right">0.297</td>
+<td align="right">0.233</td>
 <td align="right">0.153</td>
 <td align="right">0.156</td>
-<td align="right">0.059</td>
-<td align="right">0.067</td>
-<td align="right">0.112</td>
-<td align="right">0.134</td>
-<td align="right">0.102</td>
+<td align="right">0.060</td>
+<td align="right">0.065</td>
+<td align="right">0.113</td>
+<td align="right">0.132</td>
+<td align="right">0.100</td>
 </tr>
 <tr class="odd">
 <td align="left">intimidation_col</td>
-<td align="right">0.338</td>
-<td align="right">0.103</td>
+<td align="right">0.339</td>
+<td align="right">0.105</td>
 <td align="right">1.000</td>
-<td align="right">0.069</td>
-<td align="right">0.210</td>
-<td align="right">0.113</td>
-<td align="right">0.137</td>
+<td align="right">0.071</td>
+<td align="right">0.227</td>
+<td align="right">0.124</td>
 <td align="right">0.143</td>
+<td align="right">0.144</td>
 <td align="right">0.214</td>
-<td align="right">0.095</td>
-<td align="right">0.096</td>
+<td align="right">0.097</td>
+<td align="right">0.098</td>
 <td align="right">0.058</td>
-<td align="right">0.058</td>
+<td align="right">0.059</td>
 <td align="right">0.079</td>
 <td align="right">0.086</td>
-<td align="right">0.062</td>
-<td align="right">0.077</td>
-<td align="right">0.049</td>
+<td align="right">0.061</td>
+<td align="right">0.076</td>
+<td align="right">0.051</td>
 </tr>
 <tr class="even">
 <td align="left">intimidation_leid</td>
-<td align="right">0.105</td>
-<td align="right">0.502</td>
-<td align="right">0.069</td>
+<td align="right">0.101</td>
+<td align="right">0.503</td>
+<td align="right">0.071</td>
 <td align="right">1.000</td>
-<td align="right">0.062</td>
-<td align="right">0.116</td>
+<td align="right">0.029</td>
 <td align="right">0.089</td>
-<td align="right">0.098</td>
-<td align="right">0.087</td>
-<td align="right">0.314</td>
-<td align="right">0.267</td>
-<td align="right">0.167</td>
-<td align="right">0.161</td>
-<td align="right">0.046</td>
 <td align="right">0.058</td>
-<td align="right">0.127</td>
-<td align="right">0.143</td>
 <td align="right">0.103</td>
+<td align="right">0.087</td>
+<td align="right">0.320</td>
+<td align="right">0.268</td>
+<td align="right">0.168</td>
+<td align="right">0.163</td>
+<td align="right">0.045</td>
+<td align="right">0.055</td>
+<td align="right">0.126</td>
+<td align="right">0.143</td>
+<td align="right">0.102</td>
 </tr>
 <tr class="odd">
 <td align="left">geweld_col</td>
-<td align="right">0.092</td>
-<td align="right">0.103</td>
-<td align="right">0.210</td>
-<td align="right">0.062</td>
+<td align="right">0.071</td>
+<td align="right">0.100</td>
+<td align="right">0.227</td>
+<td align="right">0.029</td>
 <td align="right">1.000</td>
 <td align="right">-0.001</td>
-<td align="right">0.175</td>
-<td align="right">0.133</td>
-<td align="right">0.051</td>
+<td align="right">0.129</td>
+<td align="right">0.147</td>
+<td align="right">0.050</td>
 <td align="right">0.040</td>
-<td align="right">0.054</td>
+<td align="right">0.047</td>
 <td align="right">0.020</td>
-<td align="right">0.026</td>
-<td align="right">0.030</td>
+<td align="right">0.028</td>
+<td align="right">0.031</td>
 <td align="right">0.044</td>
-<td align="right">0.033</td>
-<td align="right">0.041</td>
-<td align="right">0.019</td>
+<td align="right">0.032</td>
+<td align="right">0.034</td>
+<td align="right">0.017</td>
 </tr>
 <tr class="even">
 <td align="left">geweld_leid</td>
-<td align="right">0.039</td>
-<td align="right">0.103</td>
-<td align="right">0.113</td>
-<td align="right">0.116</td>
+<td align="right">0.045</td>
+<td align="right">0.086</td>
+<td align="right">0.124</td>
+<td align="right">0.089</td>
 <td align="right">-0.001</td>
 <td align="right">1.000</td>
-<td align="right">0.090</td>
-<td align="right">0.183</td>
-<td align="right">0.026</td>
-<td align="right">0.028</td>
-<td align="right">0.033</td>
-<td align="right">0.016</td>
-<td align="right">0.009</td>
+<td align="right">0.063</td>
+<td align="right">0.201</td>
+<td align="right">0.024</td>
+<td align="right">0.032</td>
+<td align="right">0.037</td>
+<td align="right">0.017</td>
 <td align="right">0.010</td>
-<td align="right">0.013</td>
 <td align="right">0.014</td>
-<td align="right">0.016</td>
-<td align="right">0.013</td>
+<td align="right">0.012</td>
+<td align="right">0.011</td>
+<td align="right">0.014</td>
+<td align="right">0.009</td>
 </tr>
 <tr class="odd">
 <td align="left">seks_col</td>
-<td align="right">0.134</td>
-<td align="right">0.054</td>
-<td align="right">0.137</td>
-<td align="right">0.089</td>
-<td align="right">0.175</td>
-<td align="right">0.090</td>
-<td align="right">1.000</td>
-<td align="right">0.089</td>
-<td align="right">0.075</td>
-<td align="right">0.043</td>
+<td align="right">0.130</td>
+<td align="right">0.050</td>
+<td align="right">0.143</td>
+<td align="right">0.058</td>
+<td align="right">0.129</td>
 <td align="right">0.063</td>
+<td align="right">1.000</td>
+<td align="right">0.095</td>
+<td align="right">0.072</td>
 <td align="right">0.045</td>
+<td align="right">0.052</td>
+<td align="right">0.047</td>
 <td align="right">0.039</td>
-<td align="right">0.028</td>
-<td align="right">0.023</td>
-<td align="right">0.043</td>
-<td align="right">0.044</td>
-<td align="right">0.034</td>
+<td align="right">0.026</td>
+<td align="right">0.022</td>
+<td align="right">0.042</td>
+<td align="right">0.039</td>
+<td align="right">0.032</td>
 </tr>
 <tr class="even">
 <td align="left">seks_leid</td>
-<td align="right">0.047</td>
-<td align="right">0.151</td>
-<td align="right">0.143</td>
-<td align="right">0.098</td>
-<td align="right">0.133</td>
-<td align="right">0.183</td>
-<td align="right">0.089</td>
+<td align="right">0.049</td>
+<td align="right">0.153</td>
+<td align="right">0.144</td>
+<td align="right">0.103</td>
+<td align="right">0.147</td>
+<td align="right">0.201</td>
+<td align="right">0.095</td>
 <td align="right">1.000</td>
-<td align="right">0.032</td>
-<td align="right">0.064</td>
-<td align="right">0.070</td>
-<td align="right">0.047</td>
-<td align="right">0.052</td>
-<td align="right">0.033</td>
-<td align="right">0.019</td>
-<td align="right">0.048</td>
-<td align="right">0.040</td>
 <td align="right">0.034</td>
+<td align="right">0.063</td>
+<td align="right">0.069</td>
+<td align="right">0.046</td>
+<td align="right">0.050</td>
+<td align="right">0.031</td>
+<td align="right">0.018</td>
+<td align="right">0.048</td>
+<td align="right">0.042</td>
+<td align="right">0.036</td>
 </tr>
 <tr class="odd">
 <td align="left">conflict_col</td>
-<td align="right">0.269</td>
-<td align="right">0.101</td>
+<td align="right">0.268</td>
+<td align="right">0.102</td>
 <td align="right">0.214</td>
 <td align="right">0.087</td>
-<td align="right">0.051</td>
-<td align="right">0.026</td>
-<td align="right">0.075</td>
-<td align="right">0.032</td>
+<td align="right">0.050</td>
+<td align="right">0.024</td>
+<td align="right">0.072</td>
+<td align="right">0.034</td>
 <td align="right">1.000</td>
-<td align="right">0.344</td>
-<td align="right">0.267</td>
+<td align="right">0.339</td>
+<td align="right">0.260</td>
 <td align="right">0.136</td>
-<td align="right">0.134</td>
-<td align="right">0.145</td>
-<td align="right">0.173</td>
+<td align="right">0.133</td>
+<td align="right">0.146</td>
+<td align="right">0.174</td>
 <td align="right">0.111</td>
-<td align="right">0.153</td>
+<td align="right">0.152</td>
 <td align="right">0.091</td>
 </tr>
 <tr class="even">
 <td align="left">conflict_leid</td>
 <td align="right">0.112</td>
-<td align="right">0.293</td>
-<td align="right">0.095</td>
-<td align="right">0.314</td>
-<td align="right">0.040</td>
-<td align="right">0.028</td>
-<td align="right">0.043</td>
-<td align="right">0.064</td>
-<td align="right">0.344</td>
-<td align="right">1.000</td>
-<td align="right">0.500</td>
 <td align="right">0.297</td>
-<td align="right">0.304</td>
-<td align="right">0.096</td>
 <td align="right">0.097</td>
-<td align="right">0.189</td>
-<td align="right">0.214</td>
-<td align="right">0.152</td>
+<td align="right">0.320</td>
+<td align="right">0.040</td>
+<td align="right">0.032</td>
+<td align="right">0.045</td>
+<td align="right">0.063</td>
+<td align="right">0.339</td>
+<td align="right">1.000</td>
+<td align="right">0.495</td>
+<td align="right">0.298</td>
+<td align="right">0.306</td>
+<td align="right">0.098</td>
+<td align="right">0.099</td>
+<td align="right">0.190</td>
+<td align="right">0.215</td>
+<td align="right">0.153</td>
 </tr>
 <tr class="odd">
 <td align="left">conflict_werk</td>
+<td align="right">0.099</td>
+<td align="right">0.233</td>
 <td align="right">0.098</td>
-<td align="right">0.230</td>
-<td align="right">0.096</td>
-<td align="right">0.267</td>
-<td align="right">0.054</td>
-<td align="right">0.033</td>
-<td align="right">0.063</td>
-<td align="right">0.070</td>
-<td align="right">0.267</td>
-<td align="right">0.500</td>
+<td align="right">0.268</td>
+<td align="right">0.047</td>
+<td align="right">0.037</td>
+<td align="right">0.052</td>
+<td align="right">0.069</td>
+<td align="right">0.260</td>
+<td align="right">0.495</td>
 <td align="right">1.000</td>
-<td align="right">0.202</td>
-<td align="right">0.200</td>
+<td align="right">0.204</td>
+<td align="right">0.201</td>
 <td align="right">0.084</td>
-<td align="right">0.083</td>
+<td align="right">0.084</td>
 <td align="right">0.144</td>
-<td align="right">0.176</td>
+<td align="right">0.175</td>
 <td align="right">0.123</td>
 </tr>
 <tr class="even">
@@ -804,151 +801,152 @@ print(cor_matrix)</code></pre>
 <td align="right">0.095</td>
 <td align="right">0.153</td>
 <td align="right">0.058</td>
-<td align="right">0.167</td>
+<td align="right">0.168</td>
 <td align="right">0.020</td>
-<td align="right">0.016</td>
-<td align="right">0.045</td>
+<td align="right">0.017</td>
 <td align="right">0.047</td>
+<td align="right">0.046</td>
 <td align="right">0.136</td>
-<td align="right">0.297</td>
-<td align="right">0.202</td>
+<td align="right">0.298</td>
+<td align="right">0.204</td>
 <td align="right">1.000</td>
 <td align="right">0.771</td>
-<td align="right">0.340</td>
-<td align="right">0.330</td>
-<td align="right">0.361</td>
-<td align="right">0.428</td>
-<td align="right">0.307</td>
+<td align="right">0.338</td>
+<td align="right">0.325</td>
+<td align="right">0.362</td>
+<td align="right">0.429</td>
+<td align="right">0.308</td>
 </tr>
 <tr class="odd">
 <td align="left">steunleid_aandacht</td>
-<td align="right">0.098</td>
+<td align="right">0.099</td>
 <td align="right">0.156</td>
-<td align="right">0.058</td>
-<td align="right">0.161</td>
-<td align="right">0.026</td>
-<td align="right">0.009</td>
+<td align="right">0.059</td>
+<td align="right">0.163</td>
+<td align="right">0.028</td>
+<td align="right">0.010</td>
 <td align="right">0.039</td>
-<td align="right">0.052</td>
-<td align="right">0.134</td>
-<td align="right">0.304</td>
-<td align="right">0.200</td>
+<td align="right">0.050</td>
+<td align="right">0.133</td>
+<td align="right">0.306</td>
+<td align="right">0.201</td>
 <td align="right">0.771</td>
 <td align="right">1.000</td>
-<td align="right">0.367</td>
-<td align="right">0.341</td>
-<td align="right">0.361</td>
-<td align="right">0.415</td>
-<td align="right">0.305</td>
+<td align="right">0.366</td>
+<td align="right">0.337</td>
+<td align="right">0.362</td>
+<td align="right">0.416</td>
+<td align="right">0.306</td>
 </tr>
 <tr class="even">
 <td align="left">steuncol_belang</td>
-<td align="right">0.141</td>
-<td align="right">0.059</td>
+<td align="right">0.142</td>
+<td align="right">0.060</td>
 <td align="right">0.079</td>
-<td align="right">0.046</td>
-<td align="right">0.030</td>
-<td align="right">0.010</td>
-<td align="right">0.028</td>
-<td align="right">0.033</td>
-<td align="right">0.145</td>
-<td align="right">0.096</td>
+<td align="right">0.045</td>
+<td align="right">0.031</td>
+<td align="right">0.014</td>
+<td align="right">0.026</td>
+<td align="right">0.031</td>
+<td align="right">0.146</td>
+<td align="right">0.098</td>
 <td align="right">0.084</td>
-<td align="right">0.340</td>
-<td align="right">0.367</td>
+<td align="right">0.338</td>
+<td align="right">0.366</td>
 <td align="right">1.000</td>
-<td align="right">0.674</td>
-<td align="right">0.246</td>
-<td align="right">0.292</td>
+<td align="right">0.675</td>
+<td align="right">0.248</td>
+<td align="right">0.293</td>
 <td align="right">0.195</td>
 </tr>
 <tr class="odd">
 <td align="left">steuncol_vriendelijk</td>
-<td align="right">0.158</td>
-<td align="right">0.067</td>
+<td align="right">0.159</td>
+<td align="right">0.065</td>
 <td align="right">0.086</td>
-<td align="right">0.058</td>
+<td align="right">0.055</td>
 <td align="right">0.044</td>
-<td align="right">0.013</td>
-<td align="right">0.023</td>
-<td align="right">0.019</td>
-<td align="right">0.173</td>
-<td align="right">0.097</td>
-<td align="right">0.083</td>
-<td align="right">0.330</td>
-<td align="right">0.341</td>
-<td align="right">0.674</td>
+<td align="right">0.012</td>
+<td align="right">0.022</td>
+<td align="right">0.018</td>
+<td align="right">0.174</td>
+<td align="right">0.099</td>
+<td align="right">0.084</td>
+<td align="right">0.325</td>
+<td align="right">0.337</td>
+<td align="right">0.675</td>
 <td align="right">1.000</td>
-<td align="right">0.223</td>
-<td align="right">0.289</td>
-<td align="right">0.204</td>
+<td align="right">0.226</td>
+<td align="right">0.290</td>
+<td align="right">0.206</td>
 </tr>
 <tr class="even">
 <td align="left">psyveil_last</td>
-<td align="right">0.098</td>
-<td align="right">0.112</td>
-<td align="right">0.062</td>
-<td align="right">0.127</td>
-<td align="right">0.033</td>
-<td align="right">0.014</td>
-<td align="right">0.043</td>
+<td align="right">0.097</td>
+<td align="right">0.113</td>
+<td align="right">0.061</td>
+<td align="right">0.126</td>
+<td align="right">0.032</td>
+<td align="right">0.011</td>
+<td align="right">0.042</td>
 <td align="right">0.048</td>
 <td align="right">0.111</td>
-<td align="right">0.189</td>
+<td align="right">0.190</td>
 <td align="right">0.144</td>
-<td align="right">0.361</td>
-<td align="right">0.361</td>
-<td align="right">0.246</td>
-<td align="right">0.223</td>
+<td align="right">0.362</td>
+<td align="right">0.362</td>
+<td align="right">0.248</td>
+<td align="right">0.226</td>
 <td align="right">1.000</td>
-<td align="right">0.540</td>
-<td align="right">0.353</td>
+<td align="right">0.541</td>
+<td align="right">0.355</td>
 </tr>
 <tr class="odd">
 <td align="left">psyveil_hulp</td>
-<td align="right">0.115</td>
-<td align="right">0.134</td>
-<td align="right">0.077</td>
+<td align="right">0.114</td>
+<td align="right">0.132</td>
+<td align="right">0.076</td>
 <td align="right">0.143</td>
-<td align="right">0.041</td>
-<td align="right">0.016</td>
-<td align="right">0.044</td>
-<td align="right">0.040</td>
-<td align="right">0.153</td>
-<td align="right">0.214</td>
-<td align="right">0.176</td>
-<td align="right">0.428</td>
-<td align="right">0.415</td>
-<td align="right">0.292</td>
-<td align="right">0.289</td>
-<td align="right">0.540</td>
+<td align="right">0.034</td>
+<td align="right">0.014</td>
+<td align="right">0.039</td>
+<td align="right">0.042</td>
+<td align="right">0.152</td>
+<td align="right">0.215</td>
+<td align="right">0.175</td>
+<td align="right">0.429</td>
+<td align="right">0.416</td>
+<td align="right">0.293</td>
+<td align="right">0.290</td>
+<td align="right">0.541</td>
 <td align="right">1.000</td>
-<td align="right">0.484</td>
+<td align="right">0.485</td>
 </tr>
 <tr class="even">
 <td align="left">psyveil_fout</td>
-<td align="right">0.094</td>
+<td align="right">0.096</td>
+<td align="right">0.100</td>
+<td align="right">0.051</td>
 <td align="right">0.102</td>
-<td align="right">0.049</td>
-<td align="right">0.103</td>
-<td align="right">0.019</td>
-<td align="right">0.013</td>
-<td align="right">0.034</td>
-<td align="right">0.034</td>
+<td align="right">0.017</td>
+<td align="right">0.009</td>
+<td align="right">0.032</td>
+<td align="right">0.036</td>
 <td align="right">0.091</td>
-<td align="right">0.152</td>
+<td align="right">0.153</td>
 <td align="right">0.123</td>
-<td align="right">0.307</td>
-<td align="right">0.305</td>
+<td align="right">0.308</td>
+<td align="right">0.306</td>
 <td align="right">0.195</td>
-<td align="right">0.204</td>
-<td align="right">0.353</td>
-<td align="right">0.484</td>
+<td align="right">0.206</td>
+<td align="right">0.355</td>
+<td align="right">0.485</td>
 <td align="right">1.000</td>
 </tr>
 </tbody>
 </table>
-<pre class="r test"><code>cor_results &lt;- rcorr(as.matrix(data))
+<pre class="r test"><code>library(Hmisc)
+cor_results &lt;- rcorr(as.matrix(datafactor))
 
 cor_matrix &lt;- round(cor_results$r, 3)
 p_matrix &lt;- cor_results$P
@@ -1015,232 +1013,232 @@ kable(cor_matrix_stars)</code></pre>
 <tr class="odd">
 <td align="left">pesten_col</td>
 <td align="left">1.000</td>
-<td align="left">0.152***</td>
-<td align="left">0.338***</td>
-<td align="left">0.105***</td>
-<td align="left">0.092***</td>
-<td align="left">0.039***</td>
-<td align="left">0.134***</td>
-<td align="left">0.047***</td>
-<td align="left">0.269***</td>
+<td align="left">0.155***</td>
+<td align="left">0.339***</td>
+<td align="left">0.101***</td>
+<td align="left">0.071***</td>
+<td align="left">0.045***</td>
+<td align="left">0.130***</td>
+<td align="left">0.049***</td>
+<td align="left">0.268***</td>
 <td align="left">0.112***</td>
-<td align="left">0.098***</td>
+<td align="left">0.099***</td>
 <td align="left">0.095***</td>
-<td align="left">0.098***</td>
-<td align="left">0.141***</td>
-<td align="left">0.158***</td>
-<td align="left">0.098***</td>
-<td align="left">0.115***</td>
-<td align="left">0.094***</td>
+<td align="left">0.099***</td>
+<td align="left">0.142***</td>
+<td align="left">0.159***</td>
+<td align="left">0.097***</td>
+<td align="left">0.114***</td>
+<td align="left">0.096***</td>
 </tr>
 <tr class="even">
 <td align="left">pesten_leid</td>
-<td align="left">0.152***</td>
+<td align="left">0.155***</td>
 <td align="left">1.000</td>
-<td align="left">0.103***</td>
-<td align="left">0.502***</td>
-<td align="left">0.103***</td>
-<td align="left">0.103***</td>
-<td align="left">0.054***</td>
-<td align="left">0.151***</td>
-<td align="left">0.101***</td>
-<td align="left">0.293***</td>
-<td align="left">0.230***</td>
+<td align="left">0.105***</td>
+<td align="left">0.503***</td>
+<td align="left">0.100***</td>
+<td align="left">0.086***</td>
+<td align="left">0.050***</td>
+<td align="left">0.153***</td>
+<td align="left">0.102***</td>
+<td align="left">0.297***</td>
+<td align="left">0.233***</td>
 <td align="left">0.153***</td>
 <td align="left">0.156***</td>
-<td align="left">0.059***</td>
-<td align="left">0.067***</td>
-<td align="left">0.112***</td>
-<td align="left">0.134***</td>
-<td align="left">0.102***</td>
+<td align="left">0.060***</td>
+<td align="left">0.065***</td>
+<td align="left">0.113***</td>
+<td align="left">0.132***</td>
+<td align="left">0.100***</td>
 </tr>
 <tr class="odd">
 <td align="left">intimidation_col</td>
-<td align="left">0.338***</td>
-<td align="left">0.103***</td>
+<td align="left">0.339***</td>
+<td align="left">0.105***</td>
 <td align="left">1.000</td>
-<td align="left">0.069***</td>
-<td align="left">0.210***</td>
-<td align="left">0.113***</td>
-<td align="left">0.137***</td>
+<td align="left">0.071***</td>
+<td align="left">0.227***</td>
+<td align="left">0.124***</td>
 <td align="left">0.143***</td>
+<td align="left">0.144***</td>
 <td align="left">0.214***</td>
-<td align="left">0.095***</td>
-<td align="left">0.096***</td>
+<td align="left">0.097***</td>
+<td align="left">0.098***</td>
 <td align="left">0.058***</td>
-<td align="left">0.058***</td>
+<td align="left">0.059***</td>
 <td align="left">0.079***</td>
 <td align="left">0.086***</td>
-<td align="left">0.062***</td>
-<td align="left">0.077***</td>
-<td align="left">0.049***</td>
+<td align="left">0.061***</td>
+<td align="left">0.076***</td>
+<td align="left">0.051***</td>
 </tr>
 <tr class="even">
 <td align="left">intimidation_leid</td>
-<td align="left">0.105***</td>
-<td align="left">0.502***</td>
-<td align="left">0.069***</td>
+<td align="left">0.101***</td>
+<td align="left">0.503***</td>
+<td align="left">0.071***</td>
 <td align="left">1.000</td>
-<td align="left">0.062***</td>
-<td align="left">0.116***</td>
+<td align="left">0.029***</td>
 <td align="left">0.089***</td>
-<td align="left">0.098***</td>
-<td align="left">0.087***</td>
-<td align="left">0.314***</td>
-<td align="left">0.267***</td>
-<td align="left">0.167***</td>
-<td align="left">0.161***</td>
-<td align="left">0.046***</td>
 <td align="left">0.058***</td>
-<td align="left">0.127***</td>
-<td align="left">0.143***</td>
 <td align="left">0.103***</td>
+<td align="left">0.087***</td>
+<td align="left">0.320***</td>
+<td align="left">0.268***</td>
+<td align="left">0.168***</td>
+<td align="left">0.163***</td>
+<td align="left">0.045***</td>
+<td align="left">0.055***</td>
+<td align="left">0.126***</td>
+<td align="left">0.143***</td>
+<td align="left">0.102***</td>
 </tr>
 <tr class="odd">
 <td align="left">geweld_col</td>
-<td align="left">0.092***</td>
-<td align="left">0.103***</td>
-<td align="left">0.210***</td>
-<td align="left">0.062***</td>
+<td align="left">0.071***</td>
+<td align="left">0.100***</td>
+<td align="left">0.227***</td>
+<td align="left">0.029***</td>
 <td align="left">1.000</td>
 <td align="left">-0.001</td>
-<td align="left">0.175***</td>
-<td align="left">0.133***</td>
-<td align="left">0.051***</td>
+<td align="left">0.129***</td>
+<td align="left">0.147***</td>
+<td align="left">0.050***</td>
 <td align="left">0.040***</td>
-<td align="left">0.054***</td>
+<td align="left">0.047***</td>
 <td align="left">0.020***</td>
-<td align="left">0.026***</td>
-<td align="left">0.030***</td>
+<td align="left">0.028***</td>
+<td align="left">0.031***</td>
 <td align="left">0.044***</td>
-<td align="left">0.033***</td>
-<td align="left">0.041***</td>
-<td align="left">0.019**</td>
+<td align="left">0.032***</td>
+<td align="left">0.034***</td>
+<td align="left">0.017**</td>
 </tr>
 <tr class="even">
 <td align="left">geweld_leid</td>
-<td align="left">0.039***</td>
-<td align="left">0.103***</td>
-<td align="left">0.113***</td>
-<td align="left">0.116***</td>
+<td align="left">0.045***</td>
+<td align="left">0.086***</td>
+<td align="left">0.124***</td>
+<td align="left">0.089***</td>
 <td align="left">-0.001</td>
 <td align="left">1.000</td>
-<td align="left">0.090***</td>
-<td align="left">0.183***</td>
-<td align="left">0.026***</td>
-<td align="left">0.028***</td>
-<td align="left">0.033***</td>
-<td align="left">0.016**</td>
-<td align="left">0.009</td>
+<td align="left">0.063***</td>
+<td align="left">0.201***</td>
+<td align="left">0.024***</td>
+<td align="left">0.032***</td>
+<td align="left">0.037***</td>
+<td align="left">0.017**</td>
 <td align="left">0.010</td>
-<td align="left">0.013*</td>
 <td align="left">0.014*</td>
-<td align="left">0.016**</td>
-<td align="left">0.013*</td>
+<td align="left">0.012*</td>
+<td align="left">0.011</td>
+<td align="left">0.014*</td>
+<td align="left">0.009</td>
 </tr>
 <tr class="odd">
 <td align="left">seks_col</td>
-<td align="left">0.134***</td>
-<td align="left">0.054***</td>
-<td align="left">0.137***</td>
-<td align="left">0.089***</td>
-<td align="left">0.175***</td>
-<td align="left">0.090***</td>
-<td align="left">1.000</td>
-<td align="left">0.089***</td>
-<td align="left">0.075***</td>
-<td align="left">0.043***</td>
+<td align="left">0.130***</td>
+<td align="left">0.050***</td>
+<td align="left">0.143***</td>
+<td align="left">0.058***</td>
+<td align="left">0.129***</td>
 <td align="left">0.063***</td>
+<td align="left">1.000</td>
+<td align="left">0.095***</td>
+<td align="left">0.072***</td>
 <td align="left">0.045***</td>
+<td align="left">0.052***</td>
+<td align="left">0.047***</td>
 <td align="left">0.039***</td>
-<td align="left">0.028***</td>
-<td align="left">0.023***</td>
-<td align="left">0.043***</td>
-<td align="left">0.044***</td>
-<td align="left">0.034***</td>
+<td align="left">0.026***</td>
+<td align="left">0.022***</td>
+<td align="left">0.042***</td>
+<td align="left">0.039***</td>
+<td align="left">0.032***</td>
 </tr>
 <tr class="even">
 <td align="left">seks_leid</td>
-<td align="left">0.047***</td>
-<td align="left">0.151***</td>
-<td align="left">0.143***</td>
-<td align="left">0.098***</td>
-<td align="left">0.133***</td>
-<td align="left">0.183***</td>
-<td align="left">0.089***</td>
+<td align="left">0.049***</td>
+<td align="left">0.153***</td>
+<td align="left">0.144***</td>
+<td align="left">0.103***</td>
+<td align="left">0.147***</td>
+<td align="left">0.201***</td>
+<td align="left">0.095***</td>
 <td align="left">1.000</td>
-<td align="left">0.032***</td>
-<td align="left">0.064***</td>
-<td align="left">0.070***</td>
-<td align="left">0.047***</td>
-<td align="left">0.052***</td>
-<td align="left">0.033***</td>
-<td align="left">0.019**</td>
-<td align="left">0.048***</td>
-<td align="left">0.040***</td>
 <td align="left">0.034***</td>
+<td align="left">0.063***</td>
+<td align="left">0.069***</td>
+<td align="left">0.046***</td>
+<td align="left">0.050***</td>
+<td align="left">0.031***</td>
+<td align="left">0.018**</td>
+<td align="left">0.048***</td>
+<td align="left">0.042***</td>
+<td align="left">0.036***</td>
 </tr>
 <tr class="odd">
 <td align="left">conflict_col</td>
-<td align="left">0.269***</td>
-<td align="left">0.101***</td>
+<td align="left">0.268***</td>
+<td align="left">0.102***</td>
 <td align="left">0.214***</td>
 <td align="left">0.087***</td>
-<td align="left">0.051***</td>
-<td align="left">0.026***</td>
-<td align="left">0.075***</td>
-<td align="left">0.032***</td>
+<td align="left">0.050***</td>
+<td align="left">0.024***</td>
+<td align="left">0.072***</td>
+<td align="left">0.034***</td>
 <td align="left">1.000</td>
-<td align="left">0.344***</td>
-<td align="left">0.267***</td>
+<td align="left">0.339***</td>
+<td align="left">0.260***</td>
 <td align="left">0.136***</td>
-<td align="left">0.134***</td>
-<td align="left">0.145***</td>
-<td align="left">0.173***</td>
+<td align="left">0.133***</td>
+<td align="left">0.146***</td>
+<td align="left">0.174***</td>
 <td align="left">0.111***</td>
-<td align="left">0.153***</td>
+<td align="left">0.152***</td>
 <td align="left">0.091***</td>
 </tr>
 <tr class="even">
 <td align="left">conflict_leid</td>
 <td align="left">0.112***</td>
-<td align="left">0.293***</td>
-<td align="left">0.095***</td>
-<td align="left">0.314***</td>
-<td align="left">0.040***</td>
-<td align="left">0.028***</td>
-<td align="left">0.043***</td>
-<td align="left">0.064***</td>
-<td align="left">0.344***</td>
-<td align="left">1.000</td>
-<td align="left">0.500***</td>
 <td align="left">0.297***</td>
-<td align="left">0.304***</td>
-<td align="left">0.096***</td>
 <td align="left">0.097***</td>
-<td align="left">0.189***</td>
-<td align="left">0.214***</td>
-<td align="left">0.152***</td>
+<td align="left">0.320***</td>
+<td align="left">0.040***</td>
+<td align="left">0.032***</td>
+<td align="left">0.045***</td>
+<td align="left">0.063***</td>
+<td align="left">0.339***</td>
+<td align="left">1.000</td>
+<td align="left">0.495***</td>
+<td align="left">0.298***</td>
+<td align="left">0.306***</td>
+<td align="left">0.098***</td>
+<td align="left">0.099***</td>
+<td align="left">0.190***</td>
+<td align="left">0.215***</td>
+<td align="left">0.153***</td>
 </tr>
 <tr class="odd">
 <td align="left">conflict_werk</td>
+<td align="left">0.099***</td>
+<td align="left">0.233***</td>
 <td align="left">0.098***</td>
-<td align="left">0.230***</td>
-<td align="left">0.096***</td>
-<td align="left">0.267***</td>
-<td align="left">0.054***</td>
-<td align="left">0.033***</td>
-<td align="left">0.063***</td>
-<td align="left">0.070***</td>
-<td align="left">0.267***</td>
-<td align="left">0.500***</td>
+<td align="left">0.268***</td>
+<td align="left">0.047***</td>
+<td align="left">0.037***</td>
+<td align="left">0.052***</td>
+<td align="left">0.069***</td>
+<td align="left">0.260***</td>
+<td align="left">0.495***</td>
 <td align="left">1.000</td>
-<td align="left">0.202***</td>
-<td align="left">0.200***</td>
+<td align="left">0.204***</td>
+<td align="left">0.201***</td>
 <td align="left">0.084***</td>
-<td align="left">0.083***</td>
+<td align="left">0.084***</td>
 <td align="left">0.144***</td>
-<td align="left">0.176***</td>
+<td align="left">0.175***</td>
 <td align="left">0.123***</td>
 </tr>
 <tr class="even">
@@ -1248,156 +1246,153 @@ kable(cor_matrix_stars)</code></pre>
 <td align="left">0.095***</td>
 <td align="left">0.153***</td>
 <td align="left">0.058***</td>
-<td align="left">0.167***</td>
+<td align="left">0.168***</td>
 <td align="left">0.020***</td>
-<td align="left">0.016**</td>
-<td align="left">0.045***</td>
+<td align="left">0.017**</td>
 <td align="left">0.047***</td>
+<td align="left">0.046***</td>
 <td align="left">0.136***</td>
-<td align="left">0.297***</td>
-<td align="left">0.202***</td>
+<td align="left">0.298***</td>
+<td align="left">0.204***</td>
 <td align="left">1.000</td>
 <td align="left">0.771***</td>
-<td align="left">0.340***</td>
-<td align="left">0.330***</td>
-<td align="left">0.361***</td>
-<td align="left">0.428***</td>
-<td align="left">0.307***</td>
+<td align="left">0.338***</td>
+<td align="left">0.325***</td>
+<td align="left">0.362***</td>
+<td align="left">0.429***</td>
+<td align="left">0.308***</td>
 </tr>
 <tr class="odd">
 <td align="left">steunleid_aandacht</td>
-<td align="left">0.098***</td>
+<td align="left">0.099***</td>
 <td align="left">0.156***</td>
-<td align="left">0.058***</td>
-<td align="left">0.161***</td>
-<td align="left">0.026***</td>
-<td align="left">0.009</td>
+<td align="left">0.059***</td>
+<td align="left">0.163***</td>
+<td align="left">0.028***</td>
+<td align="left">0.010</td>
 <td align="left">0.039***</td>
-<td align="left">0.052***</td>
-<td align="left">0.134***</td>
-<td align="left">0.304***</td>
-<td align="left">0.200***</td>
+<td align="left">0.050***</td>
+<td align="left">0.133***</td>
+<td align="left">0.306***</td>
+<td align="left">0.201***</td>
 <td align="left">0.771***</td>
 <td align="left">1.000</td>
-<td align="left">0.367***</td>
-<td align="left">0.341***</td>
-<td align="left">0.361***</td>
-<td align="left">0.415***</td>
-<td align="left">0.305***</td>
+<td align="left">0.366***</td>
+<td align="left">0.337***</td>
+<td align="left">0.362***</td>
+<td align="left">0.416***</td>
+<td align="left">0.306***</td>
 </tr>
 <tr class="even">
 <td align="left">steuncol_belang</td>
-<td align="left">0.141***</td>
-<td align="left">0.059***</td>
+<td align="left">0.142***</td>
+<td align="left">0.060***</td>
 <td align="left">0.079***</td>
-<td align="left">0.046***</td>
-<td align="left">0.030***</td>
-<td align="left">0.010</td>
-<td align="left">0.028***</td>
-<td align="left">0.033***</td>
-<td align="left">0.145***</td>
-<td align="left">0.096***</td>
+<td align="left">0.045***</td>
+<td align="left">0.031***</td>
+<td align="left">0.014*</td>
+<td align="left">0.026***</td>
+<td align="left">0.031***</td>
+<td align="left">0.146***</td>
+<td align="left">0.098***</td>
 <td align="left">0.084***</td>
-<td align="left">0.340***</td>
-<td align="left">0.367***</td>
+<td align="left">0.338***</td>
+<td align="left">0.366***</td>
 <td align="left">1.000</td>
-<td align="left">0.674***</td>
-<td align="left">0.246***</td>
-<td align="left">0.292***</td>
+<td align="left">0.675***</td>
+<td align="left">0.248***</td>
+<td align="left">0.293***</td>
 <td align="left">0.195***</td>
 </tr>
 <tr class="odd">
 <td align="left">steuncol_vriendelijk</td>
-<td align="left">0.158***</td>
-<td align="left">0.067***</td>
+<td align="left">0.159***</td>
+<td align="left">0.065***</td>
 <td align="left">0.086***</td>
-<td align="left">0.058***</td>
+<td align="left">0.055***</td>
 <td align="left">0.044***</td>
-<td align="left">0.013*</td>
-<td align="left">0.023***</td>
-<td align="left">0.019**</td>
-<td align="left">0.173***</td>
-<td align="left">0.097***</td>
-<td align="left">0.083***</td>
-<td align="left">0.330***</td>
-<td align="left">0.341***</td>
-<td align="left">0.674***</td>
+<td align="left">0.012*</td>
+<td align="left">0.022***</td>
+<td align="left">0.018**</td>
+<td align="left">0.174***</td>
+<td align="left">0.099***</td>
+<td align="left">0.084***</td>
+<td align="left">0.325***</td>
+<td align="left">0.337***</td>
+<td align="left">0.675***</td>
 <td align="left">1.000</td>
-<td align="left">0.223***</td>
-<td align="left">0.289***</td>
-<td align="left">0.204***</td>
+<td align="left">0.226***</td>
+<td align="left">0.290***</td>
+<td align="left">0.206***</td>
 </tr>
 <tr class="even">
 <td align="left">psyveil_last</td>
-<td align="left">0.098***</td>
-<td align="left">0.112***</td>
-<td align="left">0.062***</td>
-<td align="left">0.127***</td>
-<td align="left">0.033***</td>
-<td align="left">0.014*</td>
-<td align="left">0.043***</td>
+<td align="left">0.097***</td>
+<td align="left">0.113***</td>
+<td align="left">0.061***</td>
+<td align="left">0.126***</td>
+<td align="left">0.032***</td>
+<td align="left">0.011</td>
+<td align="left">0.042***</td>
 <td align="left">0.048***</td>
 <td align="left">0.111***</td>
-<td align="left">0.189***</td>
+<td align="left">0.190***</td>
 <td align="left">0.144***</td>
-<td align="left">0.361***</td>
-<td align="left">0.361***</td>
-<td align="left">0.246***</td>
-<td align="left">0.223***</td>
+<td align="left">0.362***</td>
+<td align="left">0.362***</td>
+<td align="left">0.248***</td>
+<td align="left">0.226***</td>
 <td align="left">1.000</td>
-<td align="left">0.540***</td>
-<td align="left">0.353***</td>
+<td align="left">0.541***</td>
+<td align="left">0.355***</td>
 </tr>
 <tr class="odd">
 <td align="left">psyveil_hulp</td>
-<td align="left">0.115***</td>
-<td align="left">0.134***</td>
-<td align="left">0.077***</td>
+<td align="left">0.114***</td>
+<td align="left">0.132***</td>
+<td align="left">0.076***</td>
 <td align="left">0.143***</td>
-<td align="left">0.041***</td>
-<td align="left">0.016**</td>
-<td align="left">0.044***</td>
-<td align="left">0.040***</td>
-<td align="left">0.153***</td>
-<td align="left">0.214***</td>
-<td align="left">0.176***</td>
-<td align="left">0.428***</td>
-<td align="left">0.415***</td>
-<td align="left">0.292***</td>
-<td align="left">0.289***</td>
-<td align="left">0.540***</td>
+<td align="left">0.034***</td>
+<td align="left">0.014*</td>
+<td align="left">0.039***</td>
+<td align="left">0.042***</td>
+<td align="left">0.152***</td>
+<td align="left">0.215***</td>
+<td align="left">0.175***</td>
+<td align="left">0.429***</td>
+<td align="left">0.416***</td>
+<td align="left">0.293***</td>
+<td align="left">0.290***</td>
+<td align="left">0.541***</td>
 <td align="left">1.000</td>
-<td align="left">0.484***</td>
+<td align="left">0.485***</td>
 </tr>
 <tr class="even">
 <td align="left">psyveil_fout</td>
-<td align="left">0.094***</td>
+<td align="left">0.096***</td>
+<td align="left">0.100***</td>
+<td align="left">0.051***</td>
 <td align="left">0.102***</td>
-<td align="left">0.049***</td>
-<td align="left">0.103***</td>
-<td align="left">0.019**</td>
-<td align="left">0.013*</td>
-<td align="left">0.034***</td>
-<td align="left">0.034***</td>
+<td align="left">0.017**</td>
+<td align="left">0.009</td>
+<td align="left">0.032***</td>
+<td align="left">0.036***</td>
 <td align="left">0.091***</td>
-<td align="left">0.152***</td>
+<td align="left">0.153***</td>
 <td align="left">0.123***</td>
-<td align="left">0.307***</td>
-<td align="left">0.305***</td>
+<td align="left">0.308***</td>
+<td align="left">0.306***</td>
 <td align="left">0.195***</td>
-<td align="left">0.204***</td>
-<td align="left">0.353***</td>
-<td align="left">0.484***</td>
+<td align="left">0.206***</td>
+<td align="left">0.355***</td>
+<td align="left">0.485***</td>
 <td align="left">1.000</td>
 </tr>
 </tbody>
 </table>
-<pre class="r test"><code>fa.parallel(data, fa = &quot;fa&quot;, n.iter = 100, show.legend = FALSE)</code></pre>
-<p><img src="Factoranalyse_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<pre class="test2"><code>#&gt; Parallel analysis suggests that the number of factors =  7  and the number of components =  NA</code></pre>
-<pre class="r test"><code>fa.parallel(data, fa = &quot;both&quot;, n.iter = 100, show.legend = FALSE)</code></pre>
+<pre class="r test"><code>fa.parallel(datafactor, fa = &quot;fa&quot;, n.iter = 100, show.legend = FALSE)</code></pre>
 <p><img src="Factoranalyse_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="test2"><code>#&gt; Parallel analysis suggests that the number of factors =  7  and the number of components =  5</code></pre>
+<pre class="test2"><code>#&gt; Parallel analysis suggests that the number of factors =  7  and the number of components =  NA</code></pre>
 <pre class="r test"><code>efa &lt;- fa(data, nfactors = 7, rotate = &quot;oblimin&quot;, fm = &quot;ml&quot;)
 print(efa, digits = 2)</code></pre>
 <pre class="test2"><code>#&gt; Factor Analysis using method =  ml
@@ -1461,8 +1456,7 @@ print(efa, digits = 2)</code></pre>
 #&gt; Correlation of (regression) scores with factors   0.96 0.90 0.97 0.87 0.83 0.77  0.68
 #&gt; Multiple R square of scores with factors          0.92 0.82 0.94 0.75 0.70 0.59  0.46
 #&gt; Minimum correlation of possible factor scores     0.84 0.64 0.88 0.51 0.39 0.17 -0.08</code></pre>
-<pre class="r test"><code>attach(NEA2022_clust1)
-psyveil &lt;- data.frame(psyveil_last, psyveil_hulp, psyveil_fout)
+<pre class="r test"><code>psyveil &lt;- data.frame(psyveil_last, psyveil_hulp, psyveil_fout)
 
 alpha_result &lt;- alpha(psyveil)
 
@@ -1483,18 +1477,18 @@ print(alpha_result)</code></pre>
 #&gt;              raw_alpha std.alpha G6(smc) average_r S/N alpha se var.r med.r
 #&gt; psyveil_last      0.65      0.65    0.48      0.48 1.9   0.0040    NA  0.48
 #&gt; psyveil_hulp      0.52      0.52    0.35      0.35 1.1   0.0055    NA  0.35
-#&gt; psyveil_fout      0.70      0.70    0.54      0.54 2.3   0.0034    NA  0.54
+#&gt; psyveil_fout      0.70      0.70    0.54      0.54 2.4   0.0034    NA  0.54
 #&gt; 
 #&gt;  Item statistics 
 #&gt;                  n raw.r std.r r.cor r.drop mean   sd
-#&gt; psyveil_last 29707  0.79  0.79  0.62   0.51  2.3 1.00
-#&gt; psyveil_hulp 30119  0.83  0.84  0.74   0.62  2.1 0.88
-#&gt; psyveil_fout 30091  0.78  0.77  0.56   0.47  2.5 1.02
+#&gt; psyveil_last 29247  0.79  0.79  0.62   0.51  2.3 0.99
+#&gt; psyveil_hulp 29616  0.83  0.84  0.74   0.62  2.1 0.88
+#&gt; psyveil_fout 29596  0.78  0.77  0.56   0.47  2.5 1.01
 #&gt; 
 #&gt; Non missing response frequency for each item
 #&gt;                 1    2    3    4    5 miss
-#&gt; psyveil_last 0.18 0.52 0.17 0.08 0.04 0.03
-#&gt; psyveil_hulp 0.22 0.56 0.13 0.06 0.02 0.01
+#&gt; psyveil_last 0.18 0.52 0.17 0.08 0.04 0.02
+#&gt; psyveil_hulp 0.22 0.56 0.13 0.05 0.02 0.01
 #&gt; psyveil_fout 0.13 0.47 0.24 0.11 0.05 0.01</code></pre>
 <pre class="r test"><code>steuncol &lt;- data.frame(steuncol_belang, steuncol_vriendelijk)
 
@@ -1558,8 +1552,693 @@ print(alpha_result3)</code></pre>
 #&gt;                       1    2    3    4 miss
 #&gt; steunleid_aandacht 0.29 0.57 0.12 0.02 0.04
 #&gt; steunleid_welzijn  0.31 0.54 0.13 0.03 0.04</code></pre>
+<p>Schaal</p>
+<pre class="r test"><code>cor_matrixs &lt;- cor(datafactorschaal, use = &quot;pairwise.complete.obs&quot;)
+print(cor_matrixs)</code></pre>
+<pre class="test2"><code>#&gt;                   pesten_col pesten_leid intimidation_col intimidation_leid   geweld_col
+#&gt; pesten_col        1.00000000  0.15542094       0.33946801        0.10132362  0.071291258
+#&gt; pesten_leid       0.15542094  1.00000000       0.10515926        0.50258074  0.100483310
+#&gt; intimidation_col  0.33946801  0.10515926       1.00000000        0.07110800  0.226600407
+#&gt; intimidation_leid 0.10132362  0.50258074       0.07110800        1.00000000  0.028663551
+#&gt; geweld_col        0.07129126  0.10048331       0.22660041        0.02866355  1.000000000
+#&gt; geweld_leid       0.04463306  0.08617520       0.12366982        0.08945266 -0.000565986
+#&gt; seks_col          0.12986635  0.05021934       0.14334101        0.05847466  0.129407634
+#&gt; seks_leid         0.04877519  0.15276941       0.14421469        0.10292542  0.147018914
+#&gt; conflict_col      0.26847398  0.10184677       0.21428274        0.08669367  0.049534701
+#&gt; conflict_leid     0.11222878  0.29711777       0.09673962        0.32039276  0.039786945
+#&gt; conflict_werk     0.09934538  0.23291964       0.09785014        0.26831151  0.046953482
+#&gt; steuncol_RR       0.15658465  0.06209774       0.08519814        0.05206437  0.037312452
+#&gt; steunleid_RR      0.10093395  0.15530664       0.06228235        0.16618434  0.025288044
+#&gt; psyveil_RR        0.12322022  0.13320932       0.07324177        0.14637934  0.033044967
+#&gt;                    geweld_leid   seks_col  seks_leid conflict_col conflict_leid conflict_werk
+#&gt; pesten_col         0.044633056 0.12986635 0.04877519   0.26847398    0.11222878    0.09934538
+#&gt; pesten_leid        0.086175200 0.05021934 0.15276941   0.10184677    0.29711777    0.23291964
+#&gt; intimidation_col   0.123669821 0.14334101 0.14421469   0.21428274    0.09673962    0.09785014
+#&gt; intimidation_leid  0.089452661 0.05847466 0.10292542   0.08669367    0.32039276    0.26831151
+#&gt; geweld_col        -0.000565986 0.12940763 0.14701891   0.04953470    0.03978694    0.04695348
+#&gt; geweld_leid        1.000000000 0.06257956 0.20124674   0.02433585    0.03192349    0.03727091
+#&gt; seks_col           0.062579558 1.00000000 0.09453970   0.07231553    0.04460879    0.05181987
+#&gt; seks_leid          0.201246740 0.09453970 1.00000000   0.03400246    0.06312044    0.06883701
+#&gt; conflict_col       0.024335852 0.07231553 0.03400246   1.00000000    0.33912839    0.25969877
+#&gt; conflict_leid      0.031923495 0.04460879 0.06312044   0.33912839    1.00000000    0.49470782
+#&gt; conflict_werk      0.037270910 0.05181987 0.06883701   0.25969877    0.49470782    1.00000000
+#&gt; steuncol_RR        0.012701678 0.02938949 0.02717201   0.16302488    0.10386932    0.08724628
+#&gt; steunleid_RR       0.016678790 0.04505967 0.05345923   0.14325902    0.30997467    0.20853595
+#&gt; psyveil_RR         0.010414637 0.04582650 0.05141010   0.14159040    0.22140096    0.17449123
+#&gt;                   steuncol_RR steunleid_RR psyveil_RR
+#&gt; pesten_col         0.15658465   0.10093395 0.12322022
+#&gt; pesten_leid        0.06209774   0.15530664 0.13320932
+#&gt; intimidation_col   0.08519814   0.06228235 0.07324177
+#&gt; intimidation_leid  0.05206437   0.16618434 0.14637934
+#&gt; geweld_col         0.03731245   0.02528804 0.03304497
+#&gt; geweld_leid        0.01270168   0.01667879 0.01041464
+#&gt; seks_col           0.02938949   0.04505967 0.04582650
+#&gt; seks_leid          0.02717201   0.05345923 0.05141010
+#&gt; conflict_col       0.16302488   0.14325902 0.14159040
+#&gt; conflict_leid      0.10386932   0.30997467 0.22140096
+#&gt; conflict_werk      0.08724628   0.20853595 0.17449123
+#&gt; steuncol_RR        1.00000000   0.36307773 0.30102041
+#&gt; steunleid_RR       0.36307773   1.00000000 0.43846760
+#&gt; psyveil_RR         0.30102041   0.43846760 1.00000000</code></pre>
+<pre class="r test"><code>kable(round(cor_matrixs, 3))</code></pre>
+<table>
+<colgroup>
+<col width="9%" />
+<col width="5%" />
+<col width="6%" />
+<col width="8%" />
+<col width="9%" />
+<col width="5%" />
+<col width="6%" />
+<col width="4%" />
+<col width="5%" />
+<col width="6%" />
+<col width="7%" />
+<col width="7%" />
+<col width="6%" />
+<col width="6%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">pesten_col</th>
+<th align="right">pesten_leid</th>
+<th align="right">intimidation_col</th>
+<th align="right">intimidation_leid</th>
+<th align="right">geweld_col</th>
+<th align="right">geweld_leid</th>
+<th align="right">seks_col</th>
+<th align="right">seks_leid</th>
+<th align="right">conflict_col</th>
+<th align="right">conflict_leid</th>
+<th align="right">conflict_werk</th>
+<th align="right">steuncol_RR</th>
+<th align="right">steunleid_RR</th>
+<th align="right">psyveil_RR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">pesten_col</td>
+<td align="right">1.000</td>
+<td align="right">0.155</td>
+<td align="right">0.339</td>
+<td align="right">0.101</td>
+<td align="right">0.071</td>
+<td align="right">0.045</td>
+<td align="right">0.130</td>
+<td align="right">0.049</td>
+<td align="right">0.268</td>
+<td align="right">0.112</td>
+<td align="right">0.099</td>
+<td align="right">0.157</td>
+<td align="right">0.101</td>
+<td align="right">0.123</td>
+</tr>
+<tr class="even">
+<td align="left">pesten_leid</td>
+<td align="right">0.155</td>
+<td align="right">1.000</td>
+<td align="right">0.105</td>
+<td align="right">0.503</td>
+<td align="right">0.100</td>
+<td align="right">0.086</td>
+<td align="right">0.050</td>
+<td align="right">0.153</td>
+<td align="right">0.102</td>
+<td align="right">0.297</td>
+<td align="right">0.233</td>
+<td align="right">0.062</td>
+<td align="right">0.155</td>
+<td align="right">0.133</td>
+</tr>
+<tr class="odd">
+<td align="left">intimidation_col</td>
+<td align="right">0.339</td>
+<td align="right">0.105</td>
+<td align="right">1.000</td>
+<td align="right">0.071</td>
+<td align="right">0.227</td>
+<td align="right">0.124</td>
+<td align="right">0.143</td>
+<td align="right">0.144</td>
+<td align="right">0.214</td>
+<td align="right">0.097</td>
+<td align="right">0.098</td>
+<td align="right">0.085</td>
+<td align="right">0.062</td>
+<td align="right">0.073</td>
+</tr>
+<tr class="even">
+<td align="left">intimidation_leid</td>
+<td align="right">0.101</td>
+<td align="right">0.503</td>
+<td align="right">0.071</td>
+<td align="right">1.000</td>
+<td align="right">0.029</td>
+<td align="right">0.089</td>
+<td align="right">0.058</td>
+<td align="right">0.103</td>
+<td align="right">0.087</td>
+<td align="right">0.320</td>
+<td align="right">0.268</td>
+<td align="right">0.052</td>
+<td align="right">0.166</td>
+<td align="right">0.146</td>
+</tr>
+<tr class="odd">
+<td align="left">geweld_col</td>
+<td align="right">0.071</td>
+<td align="right">0.100</td>
+<td align="right">0.227</td>
+<td align="right">0.029</td>
+<td align="right">1.000</td>
+<td align="right">-0.001</td>
+<td align="right">0.129</td>
+<td align="right">0.147</td>
+<td align="right">0.050</td>
+<td align="right">0.040</td>
+<td align="right">0.047</td>
+<td align="right">0.037</td>
+<td align="right">0.025</td>
+<td align="right">0.033</td>
+</tr>
+<tr class="even">
+<td align="left">geweld_leid</td>
+<td align="right">0.045</td>
+<td align="right">0.086</td>
+<td align="right">0.124</td>
+<td align="right">0.089</td>
+<td align="right">-0.001</td>
+<td align="right">1.000</td>
+<td align="right">0.063</td>
+<td align="right">0.201</td>
+<td align="right">0.024</td>
+<td align="right">0.032</td>
+<td align="right">0.037</td>
+<td align="right">0.013</td>
+<td align="right">0.017</td>
+<td align="right">0.010</td>
+</tr>
+<tr class="odd">
+<td align="left">seks_col</td>
+<td align="right">0.130</td>
+<td align="right">0.050</td>
+<td align="right">0.143</td>
+<td align="right">0.058</td>
+<td align="right">0.129</td>
+<td align="right">0.063</td>
+<td align="right">1.000</td>
+<td align="right">0.095</td>
+<td align="right">0.072</td>
+<td align="right">0.045</td>
+<td align="right">0.052</td>
+<td align="right">0.029</td>
+<td align="right">0.045</td>
+<td align="right">0.046</td>
+</tr>
+<tr class="even">
+<td align="left">seks_leid</td>
+<td align="right">0.049</td>
+<td align="right">0.153</td>
+<td align="right">0.144</td>
+<td align="right">0.103</td>
+<td align="right">0.147</td>
+<td align="right">0.201</td>
+<td align="right">0.095</td>
+<td align="right">1.000</td>
+<td align="right">0.034</td>
+<td align="right">0.063</td>
+<td align="right">0.069</td>
+<td align="right">0.027</td>
+<td align="right">0.053</td>
+<td align="right">0.051</td>
+</tr>
+<tr class="odd">
+<td align="left">conflict_col</td>
+<td align="right">0.268</td>
+<td align="right">0.102</td>
+<td align="right">0.214</td>
+<td align="right">0.087</td>
+<td align="right">0.050</td>
+<td align="right">0.024</td>
+<td align="right">0.072</td>
+<td align="right">0.034</td>
+<td align="right">1.000</td>
+<td align="right">0.339</td>
+<td align="right">0.260</td>
+<td align="right">0.163</td>
+<td align="right">0.143</td>
+<td align="right">0.142</td>
+</tr>
+<tr class="even">
+<td align="left">conflict_leid</td>
+<td align="right">0.112</td>
+<td align="right">0.297</td>
+<td align="right">0.097</td>
+<td align="right">0.320</td>
+<td align="right">0.040</td>
+<td align="right">0.032</td>
+<td align="right">0.045</td>
+<td align="right">0.063</td>
+<td align="right">0.339</td>
+<td align="right">1.000</td>
+<td align="right">0.495</td>
+<td align="right">0.104</td>
+<td align="right">0.310</td>
+<td align="right">0.221</td>
+</tr>
+<tr class="odd">
+<td align="left">conflict_werk</td>
+<td align="right">0.099</td>
+<td align="right">0.233</td>
+<td align="right">0.098</td>
+<td align="right">0.268</td>
+<td align="right">0.047</td>
+<td align="right">0.037</td>
+<td align="right">0.052</td>
+<td align="right">0.069</td>
+<td align="right">0.260</td>
+<td align="right">0.495</td>
+<td align="right">1.000</td>
+<td align="right">0.087</td>
+<td align="right">0.209</td>
+<td align="right">0.174</td>
+</tr>
+<tr class="even">
+<td align="left">steuncol_RR</td>
+<td align="right">0.157</td>
+<td align="right">0.062</td>
+<td align="right">0.085</td>
+<td align="right">0.052</td>
+<td align="right">0.037</td>
+<td align="right">0.013</td>
+<td align="right">0.029</td>
+<td align="right">0.027</td>
+<td align="right">0.163</td>
+<td align="right">0.104</td>
+<td align="right">0.087</td>
+<td align="right">1.000</td>
+<td align="right">0.363</td>
+<td align="right">0.301</td>
+</tr>
+<tr class="odd">
+<td align="left">steunleid_RR</td>
+<td align="right">0.101</td>
+<td align="right">0.155</td>
+<td align="right">0.062</td>
+<td align="right">0.166</td>
+<td align="right">0.025</td>
+<td align="right">0.017</td>
+<td align="right">0.045</td>
+<td align="right">0.053</td>
+<td align="right">0.143</td>
+<td align="right">0.310</td>
+<td align="right">0.209</td>
+<td align="right">0.363</td>
+<td align="right">1.000</td>
+<td align="right">0.438</td>
+</tr>
+<tr class="even">
+<td align="left">psyveil_RR</td>
+<td align="right">0.123</td>
+<td align="right">0.133</td>
+<td align="right">0.073</td>
+<td align="right">0.146</td>
+<td align="right">0.033</td>
+<td align="right">0.010</td>
+<td align="right">0.046</td>
+<td align="right">0.051</td>
+<td align="right">0.142</td>
+<td align="right">0.221</td>
+<td align="right">0.174</td>
+<td align="right">0.301</td>
+<td align="right">0.438</td>
+<td align="right">1.000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r test"><code>library(Hmisc)
+cor_resultss &lt;- rcorr(as.matrix(datafactorschaal))
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZhY3RvcmFuYWx5c2UiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCmRhdGU6ICIyMDI1LTAyLTA0Ig0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0KDQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpDQpvcHRzX2NodW5rJHNldCh0aWR5Lm9wdHM9bGlzdCh3aWR0aC5jdXRvZmY9MTAwKSx0aWR5PVRSVUUsIHdhcm5pbmcgPSBGQUxTRSwgbWVzc2FnZSA9IEZBTFNFLGNvbW1lbnQgPSAiIz4iLCBjYWNoZT1UUlVFLCBjbGFzcy5zb3VyY2U9YygidGVzdCIpLCBjbGFzcy5vdXRwdXQ9YygidGVzdDIiKSkNCm9wdGlvbnMod2lkdGggPSAxMDApDQpyZ2w6OnNldHVwS25pdHIoKQ0KDQoNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCg0KYGBgDQoNCmBgYHtyIGtsaXBweTYsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KYGBge3J9DQpsaWJyYXJ5KCJmb3JtYXRSIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ2dwbG90MiIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoInBvTENBIikNCmxpYnJhcnkoInJlcHJleCIpDQpsaWJyYXJ5KCJ0aWR5ciIpDQpsaWJyYXJ5KCJrbGlwcHkiKQ0KbGlicmFyeSgiZHBseXIiKQ0KbGlicmFyeSgiaGF2ZW4iKQ0KbGlicmFyeSgicHN5Y2giKQ0KbGlicmFyeSgiR1BBcm90YXRpb24iKQ0KbGlicmFyeSgiSG1pc2MiKQ0KDQpgYGANCg0KYGBge3Iga2xpcHB5NywgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCk5FQTIwMjJfY2x1c3QxIDwtcmVhZC5zcHNzKCJkYXRhL3Byb2Nlc3NlZC9ORUEyMDIyX2NsdXN0MS5zYXYiLCB1c2UudmFsdWUubGFiZWxzID0gVCwgdG8uZGF0YS5mcmFtZSA9IFQpDQphdHRhY2goTkVBMjAyMl9jbHVzdDEpDQpgYGANCg0KYGBge3J9DQpkYXRhIDwtIGRhdGEuZnJhbWUocGVzdGVuX2NvbCwgcGVzdGVuX2xlaWQsIGludGltaWRhdGlvbl9jb2wsIGludGltaWRhdGlvbl9sZWlkLCBnZXdlbGRfY29sLCBnZXdlbGRfbGVpZCwgc2Vrc19jb2wsIHNla3NfbGVpZCwgY29uZmxpY3RfY29sLCBjb25mbGljdF9sZWlkLCBjb25mbGljdF93ZXJrLCBzdGV1bmxlaWRfd2Vsemlqbiwgc3RldW5sZWlkX2FhbmRhY2h0LCBzdGV1bmNvbF9iZWxhbmcsIHN0ZXVuY29sX3ZyaWVuZGVsaWprLCBwc3l2ZWlsX2xhc3QsIHBzeXZlaWxfaHVscCwgcHN5dmVpbF9mb3V0KQ0KYGBgDQoNCmBgYHtyfQ0KY29yX21hdHJpeCA8LSBjb3IoZGF0YSwgdXNlID0gInBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpDQpwcmludChjb3JfbWF0cml4KQ0KYGBgDQoNCmBgYHtyfQ0Ka2FibGUocm91bmQoY29yX21hdHJpeCwgMykpDQpgYGANCmBgYHtyfQ0KY29yX3Jlc3VsdHMgPC0gcmNvcnIoYXMubWF0cml4KGRhdGEpKQ0KDQpjb3JfbWF0cml4IDwtIHJvdW5kKGNvcl9yZXN1bHRzJHIsIDMpDQpwX21hdHJpeCA8LSBjb3JfcmVzdWx0cyRQDQoNCmNvcl93aXRoX3N0YXJzIDwtIGZ1bmN0aW9uKGNvcl9tYXRyaXgsIHBfbWF0cml4KSB7DQogIHN0YXJzIDwtIGlmZWxzZShpcy5uYShwX21hdHJpeCksICIiLA0KICAgICAgICAgICBpZmVsc2UocF9tYXRyaXggPCAwLjAwMSwgIioqKiIsDQogICAgICAgICAgIGlmZWxzZShwX21hdHJpeCA8IDAuMDEsICIqKiIsDQogICAgICAgICAgIGlmZWxzZShwX21hdHJpeCA8IDAuMDUsICIqIiwgIiIpKSkpDQogIA0KICBjb3JfbWF0cml4X2Zvcm1hdHRlZCA8LSBtYXRyaXgoDQogICAgcGFzdGUwKGZvcm1hdChjb3JfbWF0cml4LCBuc21hbGwgPSAzKSwgc3RhcnMpLA0KICAgIG5yb3cgPSBucm93KGNvcl9tYXRyaXgpLCANCiAgICBkaW1uYW1lcyA9IGRpbW5hbWVzKGNvcl9tYXRyaXgpDQogICkNCiAgDQogIHJldHVybihjb3JfbWF0cml4X2Zvcm1hdHRlZCkNCn0NCg0KY29yX21hdHJpeF9zdGFycyA8LSBjb3Jfd2l0aF9zdGFycyhjb3JfbWF0cml4LCBwX21hdHJpeCkNCg0Ka2FibGUoY29yX21hdHJpeF9zdGFycykNCg0KYGBgDQoNCmBgYHtyfQ0KZmEucGFyYWxsZWwoZGF0YSwgZmEgPSAiZmEiLCBuLml0ZXIgPSAxMDAsIHNob3cubGVnZW5kID0gRkFMU0UpDQpgYGANCg0KYGBge3J9DQpmYS5wYXJhbGxlbChkYXRhLCBmYSA9ICJib3RoIiwgbi5pdGVyID0gMTAwLCBzaG93LmxlZ2VuZCA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyfQ0KZWZhIDwtIGZhKGRhdGEsIG5mYWN0b3JzID0gNywgcm90YXRlID0gIm9ibGltaW4iLCBmbSA9ICJtbCIpDQpwcmludChlZmEsIGRpZ2l0cyA9IDIpDQpgYGANCg0KDQpgYGB7cn0NCmF0dGFjaChORUEyMDIyX2NsdXN0MSkNCnBzeXZlaWwgPC0gZGF0YS5mcmFtZShwc3l2ZWlsX2xhc3QsIHBzeXZlaWxfaHVscCwgcHN5dmVpbF9mb3V0KQ0KDQphbHBoYV9yZXN1bHQgPC0gYWxwaGEocHN5dmVpbCkNCg0KcHJpbnQoYWxwaGFfcmVzdWx0KQ0KYGBgDQoNCmBgYHtyfQ0Kc3RldW5jb2wgPC0gZGF0YS5mcmFtZShzdGV1bmNvbF9iZWxhbmcsIHN0ZXVuY29sX3ZyaWVuZGVsaWprKQ0KDQphbHBoYV9yZXN1bHQyIDwtIGFscGhhKHN0ZXVuY29sKQ0KDQpwcmludChhbHBoYV9yZXN1bHQyKQ0KYGBgDQoNCmBgYHtyfQ0Kc3RldW5sZWlkIDwtIGRhdGEuZnJhbWUoc3RldW5sZWlkX2FhbmRhY2h0LCBzdGV1bmxlaWRfd2VsemlqbikNCg0KYWxwaGFfcmVzdWx0MyA8LSBhbHBoYShzdGV1bmxlaWQpDQoNCnByaW50KGFscGhhX3Jlc3VsdDMpDQpgYGA=</div>
+cor_matrixs &lt;- round(cor_resultss$r, 3)
+p_matrixs &lt;- cor_resultss$P
+
+cors_with_stars &lt;- function(cor_matrixs, p_matrixs) {
+    starss &lt;- ifelse(is.na(p_matrixs), &quot;&quot;, ifelse(p_matrixs &lt; 0.001, &quot;***&quot;, ifelse(p_matrixs &lt; 0.01,
+        &quot;**&quot;, ifelse(p_matrixs &lt; 0.05, &quot;*&quot;, &quot;&quot;))))
+
+    cor_matrixs_formatted &lt;- matrix(paste0(format(cor_matrixs, nsmall = 3), starss), nrow = nrow(cor_matrixs),
+        dimnames = dimnames(cor_matrixs))
+
+    return(cor_matrixs_formatted)
+}
+
+cor_matrixs_stars &lt;- cors_with_stars(cor_matrixs, p_matrixs)
+
+kable(cor_matrixs_stars)</code></pre>
+<table>
+<colgroup>
+<col width="9%" />
+<col width="5%" />
+<col width="6%" />
+<col width="8%" />
+<col width="9%" />
+<col width="5%" />
+<col width="6%" />
+<col width="4%" />
+<col width="5%" />
+<col width="6%" />
+<col width="7%" />
+<col width="7%" />
+<col width="6%" />
+<col width="6%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">pesten_col</th>
+<th align="left">pesten_leid</th>
+<th align="left">intimidation_col</th>
+<th align="left">intimidation_leid</th>
+<th align="left">geweld_col</th>
+<th align="left">geweld_leid</th>
+<th align="left">seks_col</th>
+<th align="left">seks_leid</th>
+<th align="left">conflict_col</th>
+<th align="left">conflict_leid</th>
+<th align="left">conflict_werk</th>
+<th align="left">steuncol_RR</th>
+<th align="left">steunleid_RR</th>
+<th align="left">psyveil_RR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">pesten_col</td>
+<td align="left">1.000</td>
+<td align="left">0.155***</td>
+<td align="left">0.339***</td>
+<td align="left">0.101***</td>
+<td align="left">0.071***</td>
+<td align="left">0.045***</td>
+<td align="left">0.130***</td>
+<td align="left">0.049***</td>
+<td align="left">0.268***</td>
+<td align="left">0.112***</td>
+<td align="left">0.099***</td>
+<td align="left">0.157***</td>
+<td align="left">0.101***</td>
+<td align="left">0.123***</td>
+</tr>
+<tr class="even">
+<td align="left">pesten_leid</td>
+<td align="left">0.155***</td>
+<td align="left">1.000</td>
+<td align="left">0.105***</td>
+<td align="left">0.503***</td>
+<td align="left">0.100***</td>
+<td align="left">0.086***</td>
+<td align="left">0.050***</td>
+<td align="left">0.153***</td>
+<td align="left">0.102***</td>
+<td align="left">0.297***</td>
+<td align="left">0.233***</td>
+<td align="left">0.062***</td>
+<td align="left">0.155***</td>
+<td align="left">0.133***</td>
+</tr>
+<tr class="odd">
+<td align="left">intimidation_col</td>
+<td align="left">0.339***</td>
+<td align="left">0.105***</td>
+<td align="left">1.000</td>
+<td align="left">0.071***</td>
+<td align="left">0.227***</td>
+<td align="left">0.124***</td>
+<td align="left">0.143***</td>
+<td align="left">0.144***</td>
+<td align="left">0.214***</td>
+<td align="left">0.097***</td>
+<td align="left">0.098***</td>
+<td align="left">0.085***</td>
+<td align="left">0.062***</td>
+<td align="left">0.073***</td>
+</tr>
+<tr class="even">
+<td align="left">intimidation_leid</td>
+<td align="left">0.101***</td>
+<td align="left">0.503***</td>
+<td align="left">0.071***</td>
+<td align="left">1.000</td>
+<td align="left">0.029***</td>
+<td align="left">0.089***</td>
+<td align="left">0.058***</td>
+<td align="left">0.103***</td>
+<td align="left">0.087***</td>
+<td align="left">0.320***</td>
+<td align="left">0.268***</td>
+<td align="left">0.052***</td>
+<td align="left">0.166***</td>
+<td align="left">0.146***</td>
+</tr>
+<tr class="odd">
+<td align="left">geweld_col</td>
+<td align="left">0.071***</td>
+<td align="left">0.100***</td>
+<td align="left">0.227***</td>
+<td align="left">0.029***</td>
+<td align="left">1.000</td>
+<td align="left">-0.001</td>
+<td align="left">0.129***</td>
+<td align="left">0.147***</td>
+<td align="left">0.050***</td>
+<td align="left">0.040***</td>
+<td align="left">0.047***</td>
+<td align="left">0.037***</td>
+<td align="left">0.025***</td>
+<td align="left">0.033***</td>
+</tr>
+<tr class="even">
+<td align="left">geweld_leid</td>
+<td align="left">0.045***</td>
+<td align="left">0.086***</td>
+<td align="left">0.124***</td>
+<td align="left">0.089***</td>
+<td align="left">-0.001</td>
+<td align="left">1.000</td>
+<td align="left">0.063***</td>
+<td align="left">0.201***</td>
+<td align="left">0.024***</td>
+<td align="left">0.032***</td>
+<td align="left">0.037***</td>
+<td align="left">0.013*</td>
+<td align="left">0.017**</td>
+<td align="left">0.010</td>
+</tr>
+<tr class="odd">
+<td align="left">seks_col</td>
+<td align="left">0.130***</td>
+<td align="left">0.050***</td>
+<td align="left">0.143***</td>
+<td align="left">0.058***</td>
+<td align="left">0.129***</td>
+<td align="left">0.063***</td>
+<td align="left">1.000</td>
+<td align="left">0.095***</td>
+<td align="left">0.072***</td>
+<td align="left">0.045***</td>
+<td align="left">0.052***</td>
+<td align="left">0.029***</td>
+<td align="left">0.045***</td>
+<td align="left">0.046***</td>
+</tr>
+<tr class="even">
+<td align="left">seks_leid</td>
+<td align="left">0.049***</td>
+<td align="left">0.153***</td>
+<td align="left">0.144***</td>
+<td align="left">0.103***</td>
+<td align="left">0.147***</td>
+<td align="left">0.201***</td>
+<td align="left">0.095***</td>
+<td align="left">1.000</td>
+<td align="left">0.034***</td>
+<td align="left">0.063***</td>
+<td align="left">0.069***</td>
+<td align="left">0.027***</td>
+<td align="left">0.053***</td>
+<td align="left">0.051***</td>
+</tr>
+<tr class="odd">
+<td align="left">conflict_col</td>
+<td align="left">0.268***</td>
+<td align="left">0.102***</td>
+<td align="left">0.214***</td>
+<td align="left">0.087***</td>
+<td align="left">0.050***</td>
+<td align="left">0.024***</td>
+<td align="left">0.072***</td>
+<td align="left">0.034***</td>
+<td align="left">1.000</td>
+<td align="left">0.339***</td>
+<td align="left">0.260***</td>
+<td align="left">0.163***</td>
+<td align="left">0.143***</td>
+<td align="left">0.142***</td>
+</tr>
+<tr class="even">
+<td align="left">conflict_leid</td>
+<td align="left">0.112***</td>
+<td align="left">0.297***</td>
+<td align="left">0.097***</td>
+<td align="left">0.320***</td>
+<td align="left">0.040***</td>
+<td align="left">0.032***</td>
+<td align="left">0.045***</td>
+<td align="left">0.063***</td>
+<td align="left">0.339***</td>
+<td align="left">1.000</td>
+<td align="left">0.495***</td>
+<td align="left">0.104***</td>
+<td align="left">0.310***</td>
+<td align="left">0.221***</td>
+</tr>
+<tr class="odd">
+<td align="left">conflict_werk</td>
+<td align="left">0.099***</td>
+<td align="left">0.233***</td>
+<td align="left">0.098***</td>
+<td align="left">0.268***</td>
+<td align="left">0.047***</td>
+<td align="left">0.037***</td>
+<td align="left">0.052***</td>
+<td align="left">0.069***</td>
+<td align="left">0.260***</td>
+<td align="left">0.495***</td>
+<td align="left">1.000</td>
+<td align="left">0.087***</td>
+<td align="left">0.209***</td>
+<td align="left">0.174***</td>
+</tr>
+<tr class="even">
+<td align="left">steuncol_RR</td>
+<td align="left">0.157***</td>
+<td align="left">0.062***</td>
+<td align="left">0.085***</td>
+<td align="left">0.052***</td>
+<td align="left">0.037***</td>
+<td align="left">0.013*</td>
+<td align="left">0.029***</td>
+<td align="left">0.027***</td>
+<td align="left">0.163***</td>
+<td align="left">0.104***</td>
+<td align="left">0.087***</td>
+<td align="left">1.000</td>
+<td align="left">0.363***</td>
+<td align="left">0.301***</td>
+</tr>
+<tr class="odd">
+<td align="left">steunleid_RR</td>
+<td align="left">0.101***</td>
+<td align="left">0.155***</td>
+<td align="left">0.062***</td>
+<td align="left">0.166***</td>
+<td align="left">0.025***</td>
+<td align="left">0.017**</td>
+<td align="left">0.045***</td>
+<td align="left">0.053***</td>
+<td align="left">0.143***</td>
+<td align="left">0.310***</td>
+<td align="left">0.209***</td>
+<td align="left">0.363***</td>
+<td align="left">1.000</td>
+<td align="left">0.438***</td>
+</tr>
+<tr class="even">
+<td align="left">psyveil_RR</td>
+<td align="left">0.123***</td>
+<td align="left">0.133***</td>
+<td align="left">0.073***</td>
+<td align="left">0.146***</td>
+<td align="left">0.033***</td>
+<td align="left">0.010</td>
+<td align="left">0.046***</td>
+<td align="left">0.051***</td>
+<td align="left">0.142***</td>
+<td align="left">0.221***</td>
+<td align="left">0.174***</td>
+<td align="left">0.301***</td>
+<td align="left">0.438***</td>
+<td align="left">1.000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r test"><code>fa.parallel(datafactorschaal, fa = &quot;fa&quot;, n.iter = 100, show.legend = FALSE)</code></pre>
+<p><img src="Factoranalyse_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="test2"><code>#&gt; Parallel analysis suggests that the number of factors =  6  and the number of components =  NA</code></pre>
+<pre class="r test"><code>efa &lt;- fa(datafactorschaal, nfactors = 6, rotate = &quot;oblimin&quot;, fm = &quot;ml&quot;)
+print(efa, digits = 2)</code></pre>
+<pre class="test2"><code>#&gt; Factor Analysis using method =  ml
+#&gt; Call: fa(r = datafactorschaal, nfactors = 6, rotate = &quot;oblimin&quot;, fm = &quot;ml&quot;)
+#&gt; Standardized loadings (pattern matrix) based upon correlation matrix
+#&gt;                     ML2   ML3   ML1   ML5   ML4   ML6    h2    u2 com
+#&gt; pesten_col        -0.03  0.03 -0.02  0.09  0.67 -0.03 0.456 0.544 1.1
+#&gt; pesten_leid       -0.01  0.00  0.03  0.71  0.05  0.01 0.524 0.476 1.0
+#&gt; intimidation_col   0.04 -0.02  0.12 -0.03  0.46  0.20 0.327 0.673 1.6
+#&gt; intimidation_leid  0.06  0.01 -0.03  0.68 -0.02  0.00 0.493 0.507 1.0
+#&gt; geweld_col         0.00  0.00  1.00  0.00  0.00  0.00 0.995 0.005 1.0
+#&gt; geweld_leid       -0.01 -0.01 -0.10  0.01  0.01  0.45 0.193 0.807 1.1
+#&gt; seks_col           0.01  0.02  0.08  0.00  0.15  0.14 0.065 0.935 2.5
+#&gt; seks_leid         -0.01  0.03  0.05  0.05 -0.02  0.46 0.234 0.766 1.1
+#&gt; conflict_col       0.41  0.01 -0.01 -0.13  0.35 -0.01 0.306 0.694 2.2
+#&gt; conflict_leid      0.81  0.02  0.00  0.04 -0.03 -0.01 0.687 0.313 1.0
+#&gt; conflict_werk      0.56  0.01  0.01  0.06  0.01  0.03 0.363 0.637 1.0
+#&gt; steuncol_RR       -0.10  0.53  0.01 -0.04  0.14 -0.02 0.282 0.718 1.2
+#&gt; steunleid_RR       0.05  0.73  0.00  0.00 -0.06  0.02 0.553 0.447 1.0
+#&gt; psyveil_RR         0.00  0.58  0.00  0.03  0.02  0.00 0.354 0.646 1.0
+#&gt; 
+#&gt;                        ML2  ML3  ML1  ML5  ML4  ML6
+#&gt; SS loadings           1.20 1.17 1.04 1.03 0.88 0.50
+#&gt; Proportion Var        0.09 0.08 0.07 0.07 0.06 0.04
+#&gt; Cumulative Var        0.09 0.17 0.24 0.32 0.38 0.42
+#&gt; Proportion Explained  0.21 0.20 0.18 0.18 0.15 0.09
+#&gt; Cumulative Proportion 0.21 0.41 0.59 0.76 0.91 1.00
+#&gt; 
+#&gt;  With factor correlations of 
+#&gt;      ML2  ML3  ML1  ML5  ML4  ML6
+#&gt; ML2 1.00 0.42 0.05 0.46 0.19 0.11
+#&gt; ML3 0.42 1.00 0.04 0.26 0.20 0.06
+#&gt; ML1 0.05 0.04 1.00 0.08 0.15 0.22
+#&gt; ML5 0.46 0.26 0.08 1.00 0.13 0.26
+#&gt; ML4 0.19 0.20 0.15 0.13 1.00 0.19
+#&gt; ML6 0.11 0.06 0.22 0.26 0.19 1.00
+#&gt; 
+#&gt; Mean item complexity =  1.3
+#&gt; Test of the hypothesis that 6 factors are sufficient.
+#&gt; 
+#&gt; df null model =  91  with the objective function =  1.87 with Chi Square =  56012.04
+#&gt; df of  the model are 22  and the objective function was  0.01 
+#&gt; 
+#&gt; The root mean square of the residuals (RMSR) is  0.01 
+#&gt; The df corrected root mean square of the residuals is  0.01 
+#&gt; 
+#&gt; The harmonic n.obs is  29507 with the empirical chi square  274.49  with prob &lt;  1.7e-45 
+#&gt; The total n.obs was  29923  with Likelihood Chi Square =  334.95  with prob &lt;  9.4e-58 
+#&gt; 
+#&gt; Tucker Lewis Index of factoring reliability =  0.977
+#&gt; RMSEA index =  0.022  and the 90 % confidence intervals are  0.02 0.024
+#&gt; BIC =  108.21
+#&gt; Fit based upon off diagonal values = 1
+#&gt; Measures of factor score adequacy             
+#&gt;                                                    ML2  ML3  ML1  ML5  ML4   ML6
+#&gt; Correlation of (regression) scores with factors   0.87 0.84 1.00 0.83 0.77  0.65
+#&gt; Multiple R square of scores with factors          0.76 0.70 0.99 0.70 0.59  0.42
+#&gt; Minimum correlation of possible factor scores     0.53 0.40 0.99 0.39 0.19 -0.16</code></pre>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZhY3RvcmFuYWx5c2UiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCmRhdGU6ICIyMDI1LTAyLTA0Ig0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0KDQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpDQpvcHRzX2NodW5rJHNldCh0aWR5Lm9wdHM9bGlzdCh3aWR0aC5jdXRvZmY9MTAwKSx0aWR5PVRSVUUsIHdhcm5pbmcgPSBGQUxTRSwgbWVzc2FnZSA9IEZBTFNFLGNvbW1lbnQgPSAiIz4iLCBjYWNoZT1UUlVFLCBjbGFzcy5zb3VyY2U9YygidGVzdCIpLCBjbGFzcy5vdXRwdXQ9YygidGVzdDIiKSkNCm9wdGlvbnMod2lkdGggPSAxMDApDQpyZ2w6OnNldHVwS25pdHIoKQ0KDQoNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCg0KYGBgDQoNCmBgYHtyIGtsaXBweTYsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KYGBge3J9DQpsaWJyYXJ5KCJmb3JtYXRSIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ2dwbG90MiIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoInBvTENBIikNCmxpYnJhcnkoInJlcHJleCIpDQpsaWJyYXJ5KCJ0aWR5ciIpDQpsaWJyYXJ5KCJrbGlwcHkiKQ0KbGlicmFyeSgiZHBseXIiKQ0KbGlicmFyeSgiaGF2ZW4iKQ0KbGlicmFyeSgicHN5Y2giKQ0KbGlicmFyeSgiR1BBcm90YXRpb24iKQ0KbGlicmFyeSgiSG1pc2MiKQ0KDQpgYGANCg0KYGBge3Iga2xpcHB5NywgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCk5FQWZpbmFsIDwtcmVhZC5zcHNzKCJkYXRhL3Byb2Nlc3NlZC9ORUFmaW5hbC5zYXYiLCB1c2UudmFsdWUubGFiZWxzID0gVCwgdG8uZGF0YS5mcmFtZSA9IFQpDQphdHRhY2goTkVBZmluYWwpDQpgYGANCg0KYGBge3J9DQpkYXRhZmFjdG9yIDwtIGRhdGEuZnJhbWUocGVzdGVuX2NvbCwgcGVzdGVuX2xlaWQsIGludGltaWRhdGlvbl9jb2wsIGludGltaWRhdGlvbl9sZWlkLCBnZXdlbGRfY29sLCBnZXdlbGRfbGVpZCwgc2Vrc19jb2wsIHNla3NfbGVpZCwgY29uZmxpY3RfY29sLCBjb25mbGljdF9sZWlkLCBjb25mbGljdF93ZXJrLCBzdGV1bmxlaWRfd2Vsemlqbiwgc3RldW5sZWlkX2FhbmRhY2h0LCBzdGV1bmNvbF9iZWxhbmcsIHN0ZXVuY29sX3ZyaWVuZGVsaWprLCBwc3l2ZWlsX2xhc3QsIHBzeXZlaWxfaHVscCwgcHN5dmVpbF9mb3V0KQ0KYGBgDQoNCmBgYHtyfQ0KZGF0YWZhY3RvcnNjaGFhbCA8LSBkYXRhLmZyYW1lKHBlc3Rlbl9jb2wsIHBlc3Rlbl9sZWlkLCBpbnRpbWlkYXRpb25fY29sLCBpbnRpbWlkYXRpb25fbGVpZCwgZ2V3ZWxkX2NvbCwgZ2V3ZWxkX2xlaWQsIHNla3NfY29sLCBzZWtzX2xlaWQsIGNvbmZsaWN0X2NvbCwgY29uZmxpY3RfbGVpZCwgY29uZmxpY3Rfd2Vyaywgc3RldW5jb2xfUlIsIHN0ZXVubGVpZF9SUiwgcHN5dmVpbF9SUikNCmBgYA0KDQpgYGB7cn0NCmNvcl9tYXRyaXggPC0gY29yKGRhdGFmYWN0b3IsIHVzZSA9ICJwYWlyd2lzZS5jb21wbGV0ZS5vYnMiKQ0KcHJpbnQoY29yX21hdHJpeCkNCmBgYA0KDQpgYGB7cn0NCmthYmxlKHJvdW5kKGNvcl9tYXRyaXgsIDMpKQ0KYGBgDQoNCmBgYHtyfQ0KbGlicmFyeShIbWlzYykNCmNvcl9yZXN1bHRzIDwtIHJjb3JyKGFzLm1hdHJpeChkYXRhZmFjdG9yKSkNCg0KY29yX21hdHJpeCA8LSByb3VuZChjb3JfcmVzdWx0cyRyLCAzKQ0KcF9tYXRyaXggPC0gY29yX3Jlc3VsdHMkUA0KDQpjb3Jfd2l0aF9zdGFycyA8LSBmdW5jdGlvbihjb3JfbWF0cml4LCBwX21hdHJpeCkgew0KICBzdGFycyA8LSBpZmVsc2UoaXMubmEocF9tYXRyaXgpLCAiIiwNCiAgICAgICAgICAgaWZlbHNlKHBfbWF0cml4IDwgMC4wMDEsICIqKioiLA0KICAgICAgICAgICBpZmVsc2UocF9tYXRyaXggPCAwLjAxLCAiKioiLA0KICAgICAgICAgICBpZmVsc2UocF9tYXRyaXggPCAwLjA1LCAiKiIsICIiKSkpKQ0KICANCiAgY29yX21hdHJpeF9mb3JtYXR0ZWQgPC0gbWF0cml4KA0KICAgIHBhc3RlMChmb3JtYXQoY29yX21hdHJpeCwgbnNtYWxsID0gMyksIHN0YXJzKSwNCiAgICBucm93ID0gbnJvdyhjb3JfbWF0cml4KSwgDQogICAgZGltbmFtZXMgPSBkaW1uYW1lcyhjb3JfbWF0cml4KQ0KICApDQogIA0KICByZXR1cm4oY29yX21hdHJpeF9mb3JtYXR0ZWQpDQp9DQoNCmNvcl9tYXRyaXhfc3RhcnMgPC0gY29yX3dpdGhfc3RhcnMoY29yX21hdHJpeCwgcF9tYXRyaXgpDQoNCmthYmxlKGNvcl9tYXRyaXhfc3RhcnMpDQoNCmBgYA0KDQpgYGB7cn0NCmZhLnBhcmFsbGVsKGRhdGFmYWN0b3IsIGZhID0gImZhIiwgbi5pdGVyID0gMTAwLCBzaG93LmxlZ2VuZCA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyfQ0KZWZhIDwtIGZhKGRhdGEsIG5mYWN0b3JzID0gNywgcm90YXRlID0gIm9ibGltaW4iLCBmbSA9ICJtbCIpDQpwcmludChlZmEsIGRpZ2l0cyA9IDIpDQpgYGANCg0KDQpgYGB7cn0NCnBzeXZlaWwgPC0gZGF0YS5mcmFtZShwc3l2ZWlsX2xhc3QsIHBzeXZlaWxfaHVscCwgcHN5dmVpbF9mb3V0KQ0KDQphbHBoYV9yZXN1bHQgPC0gYWxwaGEocHN5dmVpbCkNCg0KcHJpbnQoYWxwaGFfcmVzdWx0KQ0KYGBgDQoNCmBgYHtyfQ0Kc3RldW5jb2wgPC0gZGF0YS5mcmFtZShzdGV1bmNvbF9iZWxhbmcsIHN0ZXVuY29sX3ZyaWVuZGVsaWprKQ0KDQphbHBoYV9yZXN1bHQyIDwtIGFscGhhKHN0ZXVuY29sKQ0KDQpwcmludChhbHBoYV9yZXN1bHQyKQ0KYGBgDQoNCmBgYHtyfQ0Kc3RldW5sZWlkIDwtIGRhdGEuZnJhbWUoc3RldW5sZWlkX2FhbmRhY2h0LCBzdGV1bmxlaWRfd2VsemlqbikNCg0KYWxwaGFfcmVzdWx0MyA8LSBhbHBoYShzdGV1bmxlaWQpDQoNCnByaW50KGFscGhhX3Jlc3VsdDMpDQpgYGANCg0KDQpTY2hhYWwNCg0KDQpgYGB7cn0NCmNvcl9tYXRyaXhzIDwtIGNvcihkYXRhZmFjdG9yc2NoYWFsLCB1c2UgPSAicGFpcndpc2UuY29tcGxldGUub2JzIikNCnByaW50KGNvcl9tYXRyaXhzKQ0KYGBgDQoNCmBgYHtyfQ0Ka2FibGUocm91bmQoY29yX21hdHJpeHMsIDMpKQ0KYGBgDQoNCmBgYHtyfQ0KbGlicmFyeShIbWlzYykNCmNvcl9yZXN1bHRzcyA8LSByY29ycihhcy5tYXRyaXgoZGF0YWZhY3RvcnNjaGFhbCkpDQoNCmNvcl9tYXRyaXhzIDwtIHJvdW5kKGNvcl9yZXN1bHRzcyRyLCAzKQ0KcF9tYXRyaXhzIDwtIGNvcl9yZXN1bHRzcyRQDQoNCmNvcnNfd2l0aF9zdGFycyA8LSBmdW5jdGlvbihjb3JfbWF0cml4cywgcF9tYXRyaXhzKSB7DQogIHN0YXJzcyA8LSBpZmVsc2UoaXMubmEocF9tYXRyaXhzKSwgIiIsDQogICAgICAgICAgIGlmZWxzZShwX21hdHJpeHMgPCAwLjAwMSwgIioqKiIsDQogICAgICAgICAgIGlmZWxzZShwX21hdHJpeHMgPCAwLjAxLCAiKioiLA0KICAgICAgICAgICBpZmVsc2UocF9tYXRyaXhzIDwgMC4wNSwgIioiLCAiIikpKSkNCiAgDQogIGNvcl9tYXRyaXhzX2Zvcm1hdHRlZCA8LSBtYXRyaXgoDQogICAgcGFzdGUwKGZvcm1hdChjb3JfbWF0cml4cywgbnNtYWxsID0gMyksIHN0YXJzcyksDQogICAgbnJvdyA9IG5yb3coY29yX21hdHJpeHMpLCANCiAgICBkaW1uYW1lcyA9IGRpbW5hbWVzKGNvcl9tYXRyaXhzKQ0KICApDQogIA0KICByZXR1cm4oY29yX21hdHJpeHNfZm9ybWF0dGVkKQ0KfQ0KDQpjb3JfbWF0cml4c19zdGFycyA8LSBjb3JzX3dpdGhfc3RhcnMoY29yX21hdHJpeHMsIHBfbWF0cml4cykNCg0Ka2FibGUoY29yX21hdHJpeHNfc3RhcnMpDQoNCmBgYA0KDQpgYGB7cn0NCmZhLnBhcmFsbGVsKGRhdGFmYWN0b3JzY2hhYWwsIGZhID0gImZhIiwgbi5pdGVyID0gMTAwLCBzaG93LmxlZ2VuZCA9IEZBTFNFKQ0KYGBgDQoNCmBgYHtyfQ0KZWZhIDwtIGZhKGRhdGFmYWN0b3JzY2hhYWwsIG5mYWN0b3JzID0gNiwgcm90YXRlID0gIm9ibGltaW4iLCBmbSA9ICJtbCIpDQpwcmludChlZmEsIGRpZ2l0cyA9IDIpDQpgYGANCg0K</div>
 
 
 </div>

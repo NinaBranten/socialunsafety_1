@@ -31,7 +31,7 @@ navbar:
     - text: "LCA conflict"
       href: LCA_conflict.html
     - text: "LCA without missings"
-      href: LCA_missings.html
+      href: LCA_na.rm=true.html
     - text: "LCA zonder geweld"
       href: LCA_geweld.html
     - text: "Zonder employer"
