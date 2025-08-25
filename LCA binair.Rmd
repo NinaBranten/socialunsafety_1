@@ -1,0 +1,1516 @@
+---
+title: "LCA binair"
+output: html_document
+date: "2025-06-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+library("dplyr")
+library("haven")
+library("psych")
+```
+
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05 <-read.spss("data/processed/NEA05.sav", use.value.labels = T, to.data.frame = T)
+```
+
+```{r}
+table(NEA05$pesten_col)
+
+NEA05 <- NEA05 %>%
+  mutate(bul_c = case_when(
+    pesten_col == 1 ~ 1,
+    pesten_col %in% c(2, 3, 4) ~ 2,
+    TRUE ~ NA_real_ 
+  ))
+
+table(NEA05$bul_c)
+
+```
+
+```{r}
+table(NEA05$pesten_leid)
+
+NEA05 <- NEA05 %>%
+  mutate(bul_s = case_when(
+    pesten_leid == 1 ~ 1,
+    pesten_leid %in% c(2, 3, 4) ~ 2,
+    TRUE ~ NA_real_ 
+  ))
+
+table(NEA05$bul_s)
+```
+```{r}
+table(NEA05$intimidation_col)
+
+NEA05 <- NEA05 %>%
+  mutate(int_c = case_when(
+    intimidation_col == 1 ~ 1,
+    intimidation_col %in% c(2, 3, 4) ~ 2,
+    TRUE ~ NA_real_ 
+  ))
+
+table(NEA05$int_c)
+```
+```{r}
+table(NEA05$intimidation_leid)
+
+NEA05 <- NEA05 %>%
+  mutate(int_s = case_when(
+    intimidation_leid == 1 ~ 1,
+    intimidation_leid %in% c(2, 3, 4) ~ 2,
+    TRUE ~ NA_real_ 
+  ))
+
+table(NEA05$int_s)
+```
+```{r}
+table(NEA05$seks_col)
+
+NEA05 <- NEA05 %>%
+  mutate(sex_c = case_when(
+    seks_col == 1 ~ 1,
+    seks_col %in% c(2, 3, 4) ~ 2,
+    TRUE ~ NA_real_ 
+  ))
+
+table(NEA05$sex_c)
+```
+```{r}
+table(NEA05$seks_leid)
+
+NEA05 <- NEA05 %>%
+  mutate(sex_s = case_when(
+    seks_leid == 1 ~ 1,
+    seks_leid %in% c(2, 3, 4) ~ 2,
+    TRUE ~ NA_real_ 
+  ))
+
+table(NEA05$sex_s)
+```
+```{r}
+table(NEA05$geweld_col)
+
+NEA05 <- NEA05 %>%
+  mutate(vio_c = case_when(
+    geweld_col == 1 ~ 1,
+    geweld_col %in% c(2, 3, 4) ~ 2,
+    TRUE ~ NA_real_ 
+  ))
+
+table(NEA05$vio_c)
+```
+```{r}
+table(NEA05$geweld_leid)
+
+NEA05 <- NEA05 %>%
+  mutate(vio_s = case_when(
+    geweld_leid == 1 ~ 1,
+    geweld_leid %in% c(2, 3, 4) ~ 2,
+    TRUE ~ NA_real_ 
+  ))
+
+table(NEA05$vio_s)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+summarytools::freq(NEA05$steunleid_aandacht)
+summarytools::freq(NEA05$steunleid_welzijn)
+NEA05$steunleid_scale <- rowMeans(NEA05[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
+summarytools::freq(NEA05$steunleid_scale)
+summarytools::freq(NEA05$afl_socs)
+
+NEA05 <- NEA05 %>%
+  mutate(steunleid_RR = case_when(
+    steunleid_scale %in% c(1) ~ 1,
+    steunleid_scale %in% c(1.5, 2) ~ 2,
+    steunleid_scale %in% c(2.5, 3) ~ 3,
+    steunleid_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEA05$steunleid_scale)
+summarytools::freq(NEA05$steunleid_RR)
+mean(NEA05$steunleid_RR, na.rm=TRUE)
+sd(NEA05$steunleid_RR, na.rm=TRUE)
+
+summarytools::freq(NEA05$steuncol_belang)
+summarytools::freq(NEA05$steuncol_vriendelijk)
+NEA05$steuncol_scale <- rowMeans(NEA05[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
+summarytools::freq(NEA05$steuncol_scale)
+summarytools::freq(NEA05$afl_so_2)
+
+NEA05 <- NEA05 %>%
+  mutate(steuncol_RR = case_when(
+    steuncol_scale %in% c(1) ~ 1,
+    steuncol_scale %in% c(1.5, 2) ~ 2,
+    steuncol_scale %in% c(2.5, 3) ~ 3,
+    steuncol_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEA05$steuncol_scale)
+summarytools::freq(NEA05$steuncol_RR)
+mean(NEA05$steuncol_RR, na.rm=TRUE)
+sd(NEA05$steuncol_RR, na.rm=TRUE)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+attach(NEA05)
+psyveil <- data.frame(psyveil_last, psyveil_hulp, psyveil_fout)
+
+alpha_result <- alpha(psyveil)
+
+print(alpha_result)
+
+raw_alpha_value <- alpha_result$total$raw_alpha
+print(raw_alpha_value)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05$psyveil_scale <- rowMeans(NEA05[c("psyveil_last", "psyveil_hulp", "psyveil_fout")], na.rm = TRUE)
+
+summarytools::freq(NEA05$psyveil_scale)
+
+NEA05$psyveil_R <- as.numeric(factor(NEA05$psyveil_scale))
+
+summarytools::freq(NEA05$psyveil_R)
+
+NEA05$psyveil_R[NEA05$psyveil_R == "18"] <- NA
+
+
+summarytools::freq(NEA05$psyveil_scale)
+summarytools::freq(NEA05$psyveil_R)
+
+NEA05 <- NEA05 %>%
+  mutate(psyveil_RR = case_when(
+    psyveil_R %in% c(1, 2) ~ 1,
+    psyveil_R %in% c(3, 4, 5, 6) ~ 2,
+    psyveil_R %in% c(7, 8, 9, 10) ~ 3,
+    psyveil_R %in% c(11, 12, 13, 14) ~ 4,
+    psyveil_R %in% c(15, 16, 17) ~ 5,
+    TRUE ~ NA_real_
+  ))
+summarytools::freq(NEA05$psyveil_scale)
+summarytools::freq(NEA05$psyveil_RR)
+mean(NEA05$psyveil_RR, na.rm=TRUE)
+sd(NEA05$psyveil_RR, na.rm=TRUE)
+attach(NEA05)
+```
+```{r}
+set.seed(123)
+```
+
+
+```{r, cache=TRUE, warning=FALSE}
+attach(NEA05)
+data_b <- data.frame(bul_c, bul_s, int_c, int_s, vio_c, vio_s, sex_c, sex_s, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR)
+
+items_b <- cbind(bul_c, bul_s, int_c, int_s, vio_c, vio_s, sex_c, sex_s, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR) ~ 1
+```
+
+
+```{r, cache=TRUE}
+model1_b <- poLCA(items_b, data_b, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model1_b
+```
+```{r, cache=TRUE}
+model2_b <- poLCA(items_b, data_b, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model2_b
+```
+
+```{r, cache=TRUE}
+model3_b <- poLCA(items_b, data_b, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model3_b
+```
+
+```{r, cache=TRUE}
+model4_b <- poLCA(items_b, data_b, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model4_b
+```
+
+```{r, cache=TRUE}
+model5_b <- poLCA(items_b, data_b, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model5_b
+```
+
+```{r, cache=TRUE}
+model6_b <- poLCA(items_b, data_b, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model6_b
+```
+
+```{r, cache=TRUE}
+model7_b <- poLCA(items_b, data_b, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model7_b
+```
+
+```{r, cache=TRUE}
+model8_b <- poLCA(items_b, data_b, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model8_b
+```
+
+```{r, cache=TRUE}
+model9_b <- poLCA(items_b, data_b, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model9_b
+```
+
+```{r, cache=TRUE}
+model10_b <- poLCA(items_b, data_b, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model10_b
+```
+
+```{r, cache=TRUE}
+model11_b <- poLCA(items_b, data_b, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model11_b
+```
+
+```{r, cache=TRUE}
+model12_b <- poLCA(items_b, data_b, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model12_b
+```
+
+
+
+
+```{r}
+#pesten collega's
+table(NEA05$bul_c)
+
+
+NEA05 <- NEA05 %>%
+  mutate(bul_c_plot = recode(bul_c, `1` = 0, `2` = 1))
+table(NEA05$bul_c_plot)
+summary(NEA05$bul_c_plot)
+
+```
+
+```{r}
+#pesten leidinggevenden
+table(NEA05$bul_s)
+
+
+NEA05 <- NEA05 %>%
+  mutate(bul_s_plot = recode(bul_s, `1` = 0, `2` = 1))
+table(NEA05$bul_s_plot)
+
+```
+
+
+```{r}
+#intimidatie collega's
+table(NEA05$int_c)
+
+
+NEA05 <- NEA05 %>%
+  mutate(int_c_plot = recode(int_c, `1` = 0, `2` = 1))
+table(NEA05$int_c_plot)
+
+```
+
+```{r}
+#intimidatie leidinggevenden
+table(NEA05$int_s)
+
+NEA05 <- NEA05 %>%
+  mutate(int_s_plot = recode(int_s, `1` = 0, `2` = 1))
+table(NEA05$int_s_plot)
+```
+
+```{r}
+#intimidatie leidinggevenden
+table(NEA05$int_s)
+
+NEA05 <- NEA05 %>%
+  mutate(int_s_plot = recode(int_s, `1` = 0, `2` = 1))
+table(NEA05$int_s_plot)
+```
+
+```{r}
+#fysiek geweld collega's
+table(NEA05$vio_c)
+
+NEA05 <- NEA05 %>%
+  mutate(vio_c_plot = recode(vio_c, `1` = 0, `2` = 1))
+table(NEA05$vio_c_plot)
+```
+
+```{r}
+#fysiek geweld leidinggevenden
+table(NEA05$vio_s)
+
+NEA05 <- NEA05 %>%
+  mutate(vio_s_plot = recode(vio_s, `1` = 0, `2` = 1))
+table(NEA05$vio_s_plot)
+```
+
+```{r}
+#ongewenste seksuele aandacht collega's
+table(NEA05$sex_c)
+
+NEA05 <- NEA05 %>%
+  mutate(sex_c_plot = recode(sex_c, `1` = 0, `2` = 1))
+table(NEA05$sex_c_plot)
+```
+```{r}
+#ongewenste seksuele aandacht leidinggevenden
+table(NEA05$sex_s)
+
+NEA05 <- NEA05 %>%
+  mutate(sex_s_plot = recode(sex_s, `1` = 0, `2` = 1))
+table(NEA05$sex_s_plot)
+```
+```{r}
+#conflict collega
+table(NEA05$conflict_col)
+NEA05 <- NEA05 %>%
+  mutate(conflict_col_plot = recode(conflict_col, `1` = 0, `2` = 0.50, `3` = 1))
+table(NEA05$conflict_col_plot)
+```
+```{r}
+#conflict leidinggevende
+table(NEA05$conflict_leid)
+NEA05 <- NEA05 %>%
+  mutate(conflict_leid_plot = recode(conflict_leid, `1` = 0, `2` = 0.50, `3` = 1))
+summarytools::freq(NEA05$conflict_leid_plot)
+```
+```{r}
+
+table(NEA05$steunleid_RR)
+
+NEA05 <- NEA05 %>%
+  mutate(steunleid_plot = (steunleid_RR - 1) / 3)
+
+summarytools::freq(NEA05$steunleid_plot)
+```
+
+```{r}
+NEA05 <- NEA05 %>%
+  mutate(steuncol_plot = (steuncol_RR - 1) / 3)
+
+summarytools::freq(NEA05$steuncol_plot)
+
+```
+
+```{r}
+NEA05 <- NEA05 %>%
+  mutate(psyveil_plot = (psyveil_RR - 1) / 4)
+
+summarytools::freq(NEA05$psyveil_plot)
+summarytools::freq(NEA05$psyveil_RR)
+```
+
+```{r, eval=FALSE}
+model3_bpred <- model3_b$predclass
+model3_bpost <- model3_b$posterior
+
+lposteriorsmodel3_b <- as.list(as.data.frame(model3_bpost))
+
+pmodel3_bv1 <- lposteriorsmodel3_b[[1]]
+pmodel3_bv2 <- lposteriorsmodel3_b[[2]]
+pmodel3_bv3 <- lposteriorsmodel3_b[[3]]
+
+model4_bpred <- model4_b$predclass
+model4_bpost <- model4_b$posterior
+
+lposteriorsmodel4_b <- as.list(as.data.frame(model4_bpost))
+
+pmodel4_bv1 <- lposteriorsmodel4_b[[1]]
+pmodel4_bv2 <- lposteriorsmodel4_b[[2]]
+pmodel4_bv3 <- lposteriorsmodel4_b[[3]]
+pmodel4_bv4 <- lposteriorsmodel4_b[[4]]
+
+
+model5_bpred <- model5_b$predclass
+model5_bpost <- model5_b$posterior
+
+lposteriorsmodel5_b <- as.list(as.data.frame(model5_bpost))
+
+pmodel5_bv1 <- lposteriorsmodel5_b[[1]]
+pmodel5_bv2 <- lposteriorsmodel5_b[[2]]
+pmodel5_bv3 <- lposteriorsmodel5_b[[3]]
+pmodel5_bv4 <- lposteriorsmodel5_b[[4]]
+pmodel5_bv5 <- lposteriorsmodel5_b[[5]]
+
+model6_bpred <- model6_b$predclass
+model6_bpost <- model6_b$posterior
+
+lposteriorsmodel6_b <- as.list(as.data.frame(model6_bpost))
+
+pmodel6_bv1 <- lposteriorsmodel6_b[[1]]
+pmodel6_bv2 <- lposteriorsmodel6_b[[2]]
+pmodel6_bv3 <- lposteriorsmodel6_b[[3]]
+pmodel6_bv4 <- lposteriorsmodel6_b[[4]]
+pmodel6_bv5 <- lposteriorsmodel6_b[[5]]
+pmodel6_bv6 <- lposteriorsmodel6_b[[6]]
+
+model7_bpred <- model7_b$predclass
+model7_bpost <- model7_b$posterior
+
+lposteriorsmodel7_b <- as.list(as.data.frame(model7_bpost))
+
+pmodel7_bv1 <- lposteriorsmodel7_b[[1]]
+pmodel7_bv2 <- lposteriorsmodel7_b[[2]]
+pmodel7_bv3 <- lposteriorsmodel7_b[[3]]
+pmodel7_bv4 <- lposteriorsmodel7_b[[4]]
+pmodel7_bv5 <- lposteriorsmodel7_b[[5]]
+pmodel7_bv6 <- lposteriorsmodel7_b[[6]]
+pmodel7_bv7 <- lposteriorsmodel7_b[[7]]
+
+model8_bpred <- model8_b$predclass
+model8_bpost <- model8_b$posterior
+
+lposteriorsmodel8_b <- as.list(as.data.frame(model8_bpost))
+
+pmodel8_bv1 <- lposteriorsmodel8_b[[1]]
+pmodel8_bv2 <- lposteriorsmodel8_b[[2]]
+pmodel8_bv3 <- lposteriorsmodel8_b[[3]]
+pmodel8_bv4 <- lposteriorsmodel8_b[[4]]
+pmodel8_bv5 <- lposteriorsmodel8_b[[5]]
+pmodel8_bv6 <- lposteriorsmodel8_b[[6]]
+pmodel8_bv7 <- lposteriorsmodel8_b[[7]]
+pmodel8_bv8 <- lposteriorsmodel8_b[[8]]
+
+model9_bpred <- model9_b$predclass
+model9_bpost <- model9_b$posterior
+
+lposteriorsmodel9_b <- as.list(as.data.frame(model9_bpost))
+
+pmodel9_bv1 <- lposteriorsmodel9_b[[1]]
+pmodel9_bv2 <- lposteriorsmodel9_b[[2]]
+pmodel9_bv3 <- lposteriorsmodel9_b[[3]]
+pmodel9_bv4 <- lposteriorsmodel9_b[[4]]
+pmodel9_bv5 <- lposteriorsmodel9_b[[5]]
+pmodel9_bv6 <- lposteriorsmodel9_b[[6]]
+pmodel9_bv7 <- lposteriorsmodel9_b[[7]]
+pmodel9_bv8 <- lposteriorsmodel9_b[[8]]
+pmodel9_bv9 <- lposteriorsmodel9_b[[9]]
+
+model10_bpred <- model10_b$predclass
+model10_bpost <- model10_b$posterior
+
+lposteriorsmodel10_b <- as.list(as.data.frame(model10_bpost))
+
+pmodel10_bv1 <- lposteriorsmodel10_b[[1]]
+pmodel10_bv2 <- lposteriorsmodel10_b[[2]]
+pmodel10_bv3 <- lposteriorsmodel10_b[[3]]
+pmodel10_bv4 <- lposteriorsmodel10_b[[4]]
+pmodel10_bv5 <- lposteriorsmodel10_b[[5]]
+pmodel10_bv6 <- lposteriorsmodel10_b[[6]]
+pmodel10_bv7 <- lposteriorsmodel10_b[[7]]
+pmodel10_bv8 <- lposteriorsmodel10_b[[8]]
+pmodel10_bv9 <- lposteriorsmodel10_b[[9]]
+pmodel10_bv10 <- lposteriorsmodel10_b[[10]]
+
+model11_bpred <- model11_b$predclass
+model11_bpost <- model11_b$posterior
+
+lposteriorsmodel11_b <- as.list(as.data.frame(model11_bpost))
+
+pmodel11_bv1 <- lposteriorsmodel11_b[[1]]
+pmodel11_bv2 <- lposteriorsmodel11_b[[2]]
+pmodel11_bv3 <- lposteriorsmodel11_b[[3]]
+pmodel11_bv4 <- lposteriorsmodel11_b[[4]]
+pmodel11_bv5 <- lposteriorsmodel11_b[[5]]
+pmodel11_bv6 <- lposteriorsmodel11_b[[6]]
+pmodel11_bv7 <- lposteriorsmodel11_b[[7]]
+pmodel11_bv8 <- lposteriorsmodel11_b[[8]]
+pmodel11_bv9 <- lposteriorsmodel11_b[[9]]
+pmodel11_bv10 <- lposteriorsmodel11_b[[10]]
+pmodel11_bv11 <- lposteriorsmodel11_b[[11]]
+
+model12_bpred <- model12_b$predclass
+model12_bpost <- model12_b$posterior
+
+lposteriorsmodel12_b <- as.list(as.data.frame(model12_bpost))
+
+pmodel12_bv1 <- lposteriorsmodel12_b[[1]]
+pmodel12_bv2 <- lposteriorsmodel12_b[[2]]
+pmodel12_bv3 <- lposteriorsmodel12_b[[3]]
+pmodel12_bv4 <- lposteriorsmodel12_b[[4]]
+pmodel12_bv5 <- lposteriorsmodel12_b[[5]]
+pmodel12_bv6 <- lposteriorsmodel12_b[[6]]
+pmodel12_bv7 <- lposteriorsmodel12_b[[7]]
+pmodel12_bv8 <- lposteriorsmodel12_b[[8]]
+pmodel12_bv9 <- lposteriorsmodel12_b[[9]]
+pmodel12_bv10 <- lposteriorsmodel12_b[[10]]
+pmodel12_bv11 <- lposteriorsmodel12_b[[11]]
+pmodel12_bv12 <- lposteriorsmodel12_b[[12]]
+```
+
+```{r, eval=FALSE}
+Models_b <- cbind (volgnumm, model3_bpred	,
+                 pmodel3_bv1	,
+                 pmodel3_bv2	,
+                 pmodel3_bv3	,
+                 model4_bpred	,
+                 pmodel4_bv1	,
+                 pmodel4_bv2	,
+                 pmodel4_bv3	,
+                 pmodel4_bv4	,
+                 model5_bpred	,
+                 pmodel5_bv1	,
+                 pmodel5_bv2	,
+                 pmodel5_bv3	,
+                 pmodel5_bv4	,
+                 pmodel5_bv5	,
+                 model6_bpred	,
+                 pmodel6_bv1	,
+                 pmodel6_bv2	,
+                 pmodel6_bv3	,
+                 pmodel6_bv4	,
+                 pmodel6_bv5	,
+                 pmodel6_bv6	,
+                 model7_bpred	,
+                 pmodel7_bv1	,
+                 pmodel7_bv2	,
+                 pmodel7_bv3	,
+                 pmodel7_bv4	,
+                 pmodel7_bv5	,
+                 pmodel7_bv6	,
+                 pmodel7_bv7	,
+                 model8_bpred	,
+                 pmodel8_bv1	,
+                 pmodel8_bv2	,
+                 pmodel8_bv3	,
+                 pmodel8_bv4	,
+                 pmodel8_bv5	,
+                 pmodel8_bv6	,
+                 pmodel8_bv7	,
+                 pmodel8_bv8  ,
+                 model9_bpred	,
+                 pmodel9_bv1	,
+                 pmodel9_bv2	,
+                 pmodel9_bv3	,
+                 pmodel9_bv4	,
+                 pmodel9_bv5	,
+                 pmodel9_bv6	,
+                 pmodel9_bv7	,
+                 pmodel9_bv8	,
+                 pmodel9_bv9 ,
+                 model10_bpred	,
+                 pmodel10_bv1 ,
+                 pmodel10_bv2 ,
+                 pmodel10_bv3 ,
+                 pmodel10_bv4 ,
+                 pmodel10_bv5 ,
+                 pmodel10_bv6 ,
+                 pmodel10_bv7 ,
+                 pmodel10_bv8 ,
+                 pmodel10_bv9 ,
+                 pmodel10_bv10 ,
+                 model11_bpred	,
+                 pmodel11_bv1 ,
+                 pmodel11_bv2 ,
+                 pmodel11_bv3 ,
+                 pmodel11_bv4 ,
+                 pmodel11_bv5 ,
+                 pmodel11_bv6 ,
+                 pmodel11_bv7 ,
+                 pmodel11_bv8 ,
+                 pmodel11_bv9 ,
+                 pmodel11_bv10 ,
+                 pmodel11_bv11 ,
+                 model12_bpred	,
+                 pmodel12_bv1 ,
+                 pmodel12_bv2 ,
+                 pmodel12_bv3 ,
+                 pmodel12_bv4 ,
+                 pmodel12_bv5 ,
+                 pmodel12_bv6 ,
+                 pmodel12_bv7 ,
+                 pmodel12_bv8 ,
+                 pmodel12_bv9 ,
+                 pmodel12_bv10 ,
+                 pmodel12_bv11 ,
+                 pmodel12_bv12 )
+```
+
+
+
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05$class2_b <- model2_b$predclass
+table(NEA05$class2_b)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05$class3_b <- model3_b$predclass
+table(NEA05$class3_b)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05$class2_b <- model2_b$predclass
+table(NEA05$class2_b)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05$class4_b <- model4_b$predclass
+table(NEA05$class4_b)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05$class5_b <- model5_b$predclass
+table(NEA05$class5_b)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05$class6_b <- model6_b$predclass
+table(NEA05$class6_b)
+```
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05$class7_b <- model7_b$predclass
+table(NEA05$class7_b)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05$class8_b <- model8_b$predclass
+table(NEA05$class8_b)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05$class9_b <- model9_b$predclass
+table(NEA05$class9_b)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05$class10_b <- model10_b$predclass
+table(NEA05$class10_b)
+```
+
+Class 3
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+tapply(NEA05$bul_c_plot, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$bul_s_plot, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_c_plot, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_s_plot, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_c_plot, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_s_plot, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_c_plot, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_s_plot, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_col_plot, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_leid_plot, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steunleid_plot3, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steuncol_plot3, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$psyveil_plot3, NEA05$class3_b, mean, na.rm = TRUE)
+```
+
+Class 4
+
+```{r}
+tapply(NEA05$bul_c_plot, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$bul_s_plot, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_c_plot, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_s_plot, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_c_plot, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_s_plot, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_c_plot, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_s_plot, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_col_plot, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_leid_plot, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+
+```{r}
+tapply(NEA05$steunleid_plot3, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steuncol_plot3, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$psyveil_plot3, NEA05$class4_b, mean, na.rm = TRUE)
+```
+
+Class 5
+
+```{r}
+tapply(NEA05$bul_c_plot, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$bul_s_plot, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_c_plot, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_s_plot, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_c_plot, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_s_plot, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_c_plot, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_s_plot, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_col_plot, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_leid_plot, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_werk_plot, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steunleid_plot3, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steuncol_plot3, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$psyveil_plot3, NEA05$class5_b, mean, na.rm = TRUE)
+```
+
+Class 6
+
+```{r}
+tapply(NEA05$bul_c_plot, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$bul_s_plot, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_c_plot, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_s_plot, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_c_plot, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_s_plot, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_c_plot, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_s_plot, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_col_plot, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_leid_plot, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_werk_plot, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steunleid_plot3, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steuncol_plot3, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$psyveil_plot3, NEA05$class6_b, mean, na.rm = TRUE)
+```
+
+Class 7
+
+```{r}
+tapply(NEA05$bul_c_plot, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$bul_s_plot, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_c_plot, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_s_plot, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_c_plot, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_s_plot, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_c_plot, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_s_plot, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_col_plot, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_leid_plot, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+
+```{r}
+tapply(NEA05$steunleid_plot3, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steuncol_plot3, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$psyveil_plot3, NEA05$class7_b, mean, na.rm = TRUE)
+```
+
+Class 8
+
+```{r}
+tapply(NEA05$bul_c_plot, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$bul_s_plot, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_c_plot, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_s_plot, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_c_plot, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_s_plot, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_c_plot, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_s_plot, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_col_plot, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_leid_plot, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_werk_plot, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steunleid_plot3, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steuncol_plot3, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$psyveil_plot3, NEA05$class8_b, mean, na.rm = TRUE)
+```
+
+Class 9
+
+```{r}
+tapply(NEA05$bul_c_plot, NEA05$class9_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$bul_s_plot, NEA05$class9_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_c_plot, NEA05$class9_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_s_plot, NEA05$class9_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_c_plot, NEA05$class9_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_s_plot, NEA05$class9_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_c_plot, NEA05$class9_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_s_plot, NEA05$class9_b, mean, na.rm = TRUE)
+```
+```{r}
+tapply(NEA05$conflict_col_plot, NEA05$class9_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_leid_plot, NEA05$class9_b, mean, na.rm = TRUE)
+```
+```{r}
+tapply(NEA05$steunleid_plot3, NEA05$class9_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steuncol_plot3, NEA05$class9_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$psyveil_plot3, NEA05$class9_b, mean, na.rm = TRUE)
+```
+Class 10
+
+```{r}
+tapply(NEA05$bul_c_plot, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$bul_s_plot, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$int_c_plot, NEA05$class10_b, mean, na.rm = TRUE)
+```
+```{r}
+tapply(NEA05$int_s_plot, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_c_plot, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$vio_s_plot, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_c_plot, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$sex_s_plot, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_col_plot, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$conflict_leid_plot, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steunleid_plot3, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$steuncol_plot3, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEA05$psyveil_plot3, NEA05$class10_b, mean, na.rm = TRUE)
+```
+
+
+
+ITEMS PER CLASS
+
+```{r}
+library(dplyr)
+library(janitor)
+library(stringr)
+
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(pesten_col)) %>%
+  tabyl(class7_b, pesten_col)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Pesten coworkers per class")
+
+```
+
+
+```{r}
+library(dplyr)
+library(janitor)
+library(stringr)
+
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(pesten_leid)) %>%
+  tabyl(class7_b, pesten_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Bullying supervisors per class")
+
+```
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(intimidation_col)) %>%
+  tabyl(class7_b, intimidation_col)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Intimidation coworkers per class")
+
+```
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(intimidation_leid)) %>%
+  tabyl(class7_b, intimidation_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Intimidation supervisors per class")
+
+```
+
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(seks_col)) %>%
+  tabyl(class7_b, seks_col)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Unwanted sexual attention coworkers per class")
+
+```
+
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(seks_leid)) %>%
+  tabyl(class7_b, seks_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Unwanted sexual attention supervisors per class")
+
+```
+
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(geweld_col)) %>%
+  tabyl(class7_b, geweld_col)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Physical violence coworkers per class")
+
+```
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(geweld_leid)) %>%
+  tabyl(class7_b, geweld_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Physical violence coworkers per class")
+
+```
+
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(conflict_col)) %>%
+  tabyl(class7_b, conflict_col)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Conflict coworkers per class")
+
+```
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(conflict_leid)) %>%
+  tabyl(class7_b, conflict_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+
+```
+
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Conflict supervisors per class")
+
+```
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(steuncol_RR)) %>%
+  tabyl(class7_b, steuncol_RR)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Incivility coworkers per class")
+
+```
+
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(steunleid_RR)) %>%
+  tabyl(class7_b, steunleid_RR)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Incivility supervisors per class")
+
+```
+
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class7_b), !is.na(psyveil_RR)) %>%
+  tabyl(class7_b, psyveil_RR)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Psychological unsafety per class")
+
+```
+
+
+
+```{r}
+table(NEA05$class7_b, NEA2022_clust1$classs3_8)
+```
+
+

@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2025-05-04" />
+
+<title>Preparing dataset</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="tweaks.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="Data preparation.html">Data preparation</a>
+</li>
+<li>
+  <a href="frequencies.html">frequencies</a>
+</li>
+<li>
+  <a href="intersectionality.html">intersectionality</a>
+</li>
+<li>
+  <a href="Recoding_variables.html">Recoding variables</a>
+</li>
+<li>
+  <a href="LCA_30501.html">LCA 30501</a>
+</li>
+<li>
+  <a href="LCA_schaal.html">LCA schaal</a>
+</li>
+<li>
+  <a href="LCA_schaal3.html">LCA schaal3</a>
+</li>
+<li>
+  <a href="LCA_29923.html">LCA 29923</a>
+</li>
+<li>
+  <a href="LCA_schaal3_29923.html">LCA schaal3_29923</a>
+</li>
+<li>
+  <a href="LCA_8items.html">LCA 8 items</a>
+</li>
+<li>
+  <a href="LCA_conflict.html">LCA conflict</a>
+</li>
+<li>
+  <a href="LCA_na.rm=true.html">LCA without missings</a>
+</li>
+<li>
+  <a href="LCA_geweld.html">LCA zonder geweld</a>
+</li>
+<li>
+  <a href="LCA_employer.html">Zonder employer</a>
+</li>
+<li>
+  <a href="Factoranalyse.html">Factoranalyse</a>
+</li>
+<li>
+  <a href="Items_seperate.html">Items seperate</a>
+</li>
+<li>
+  <a href="2005-2018.html">2005-2018</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ninabranten/socialunsafety_1">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Preparing dataset</h1>
+<h4 class="date">2025-05-04</h4>
+
+</div>
+
+
+<pre class="r"><code>library(&quot;formatR&quot;)
+library(&quot;foreign&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;lme4&quot;)
+library(&quot;poLCA&quot;)
+library(&quot;reprex&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;klippy&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;haven&quot;)
+library(&quot;psych&quot;)</code></pre>
+<p><br><br> <strong>Loading in the data</strong></p>
+<pre class="r"><code>NEAraw &lt;-read.spss(&quot;data/raw/Data 2014-2022.sav&quot;, use.value.labels = T, to.data.frame = T)</code></pre>
+<p><br><br> <strong>Selecting year 2022 and cluster 1</strong></p>
+<pre class="r"><code>NEA2022 &lt;- NEAraw[NEAraw$jaar == &quot;2022&quot;, ]</code></pre>
+<pre class="r"><code>NEA2022 &lt;- NEA2022[NEA2022$se_clust == 1, ]</code></pre>
+<p><br><br> <strong>Deleting missing cases on educational
+level</strong></p>
+<pre class="r"><code>NEA2022$afl_soi3[NEA2022$afl_soi3 == &quot;onbekend&quot;] &lt;- NA
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  filter(!is.na(afl_soi3))</code></pre>
+<p><br><br> <strong>Recoding variables</strong></p>
+<pre class="r"><code>#Bullying coworkers
+
+NEA2022$pesten_col &lt;- as.numeric(NEA2022$afl_pe_1)
+
+# (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(pesten_col = recode(pesten_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+summarytools::freq(NEA2022$afl_pe_1)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## --------------------- ------- --------- -------------- --------- --------------
+##       Een enkele keer     543      1.83           1.83      1.81           1.81
+##                  Vaak     139      0.47           2.30      0.46           2.28
+##             Zeer vaak      38      0.13           2.43      0.13           2.41
+##                  Niet   28924     97.57         100.00     96.66          99.07
+##               refusal       0      0.00         100.00      0.00          99.07
+##                  &lt;NA&gt;     279                               0.93         100.00
+##                 Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$pesten_col)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   28924     97.57          97.57     96.66          96.66
+##           2     543      1.83          99.40      1.81          98.48
+##           3     139      0.47          99.87      0.46          98.94
+##           4      38      0.13         100.00      0.13          99.07
+##        &lt;NA&gt;     279                               0.93         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#Bullying supervisors
+NEA2022$pesten_leid &lt;- as.numeric(NEA2022$afl_pe_2)
+
+# (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(pesten_leid = recode(pesten_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+summarytools::freq(NEA2022$afl_pe_2)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## --------------------- ------- --------- -------------- --------- --------------
+##       Een enkele keer     207      0.70           0.70      0.69           0.69
+##                  Vaak     110      0.37           1.07      0.37           1.06
+##             Zeer vaak      40      0.13           1.20      0.13           1.19
+##                  Niet   29301     98.80         100.00     97.92          99.11
+##               refusal       0      0.00         100.00      0.00          99.11
+##                  &lt;NA&gt;     265                               0.89         100.00
+##                 Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$pesten_leid)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   29301     98.80          98.80     97.92          97.92
+##           2     207      0.70          99.49      0.69          98.61
+##           3     110      0.37          99.87      0.37          98.98
+##           4      40      0.13         100.00      0.13          99.11
+##        &lt;NA&gt;     265                               0.89         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#Intimidation coworkers
+
+NEA2022$intimidation_col &lt;- as.numeric(NEA2022$afl_be_1)
+
+# (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(intimidation_col = recode(intimidation_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+summarytools::freq(NEA2022$afl_be_1)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## --------------------- ------- --------- -------------- --------- --------------
+##       Een enkele keer     337     1.134          1.134     1.126          1.126
+##                  Vaak      35     0.118          1.251     0.117          1.243
+##             Zeer vaak      26     0.087          1.339     0.087          1.330
+##                  Niet   29330    98.661        100.000    98.018         99.348
+##               refusal       0     0.000        100.000     0.000         99.348
+##                  &lt;NA&gt;     195                              0.652        100.000
+##                 Total   29923   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$intimidation_col)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   29330    98.661         98.661    98.018         98.018
+##           2     337     1.134         99.795     1.126         99.144
+##           3      35     0.118         99.913     0.117         99.261
+##           4      26     0.087        100.000     0.087         99.348
+##        &lt;NA&gt;     195                              0.652        100.000
+##       Total   29923   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r"><code>#Intimidation supervisors
+
+NEA2022$intimidation_leid &lt;- as.numeric(NEA2022$afl_be_2)
+
+# (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(intimidation_leid = recode(intimidation_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+summarytools::freq(NEA2022$afl_be_2)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## --------------------- ------- --------- -------------- --------- --------------
+##       Een enkele keer     331      1.11           1.11      1.11           1.11
+##                  Vaak      97      0.33           1.44      0.32           1.43
+##             Zeer vaak      34      0.11           1.55      0.11           1.54
+##                  Niet   29262     98.45         100.00     97.79          99.33
+##               refusal       0      0.00         100.00      0.00          99.33
+##                  &lt;NA&gt;     199                               0.67         100.00
+##                 Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$intimidation_leid)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   29262     98.45          98.45     97.79          97.79
+##           2     331      1.11          99.56      1.11          98.90
+##           3      97      0.33          99.89      0.32          99.22
+##           4      34      0.11         100.00      0.11          99.33
+##        &lt;NA&gt;     199                               0.67         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#Physical violence coworkers
+
+NEA2022$geweld_col &lt;- as.numeric(NEA2022$afl_ge_3)
+
+# (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(geweld_col = recode(geweld_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+summarytools::freq(NEA2022$afl_ge_3)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## --------------------- ------- --------- -------------- --------- --------------
+##       Een enkele keer      23     0.077          0.077     0.077          0.077
+##                  Vaak       5     0.017          0.094     0.017          0.094
+##             Zeer vaak       4     0.013          0.107     0.013          0.107
+##                  Niet   29761    99.893        100.000    99.459         99.566
+##               refusal       0     0.000        100.000     0.000         99.566
+##                  &lt;NA&gt;     130                              0.434        100.000
+##                 Total   29923   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$geweld_col)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   29761    99.893         99.893    99.459         99.459
+##           2      23     0.077         99.970     0.077         99.535
+##           3       5     0.017         99.987     0.017         99.552
+##           4       4     0.013        100.000     0.013         99.566
+##        &lt;NA&gt;     130                              0.434        100.000
+##       Total   29923   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r"><code>#Physical violence supervisors
+
+NEA2022$geweld_leid &lt;- as.numeric(NEA2022$afl_ge_4)
+
+# (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(geweld_leid = recode(geweld_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+summarytools::freq(NEA2022$afl_ge_4)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## --------------------- ------- --------- -------------- --------- --------------
+##       Een enkele keer       5     0.017          0.017     0.017          0.017
+##                  Vaak       5     0.017          0.034     0.017          0.033
+##             Zeer vaak       3     0.010          0.044     0.010          0.043
+##                  Niet   29784    99.956        100.000    99.535         99.579
+##               refusal       0     0.000        100.000     0.000         99.579
+##                  &lt;NA&gt;     126                              0.421        100.000
+##                 Total   29923   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$geweld_leid)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   29784    99.956         99.956    99.535         99.535
+##           2       5     0.017         99.973     0.017         99.552
+##           3       5     0.017         99.990     0.017         99.569
+##           4       3     0.010        100.000     0.010         99.579
+##        &lt;NA&gt;     126                              0.421        100.000
+##       Total   29923   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r"><code>#Unwanted sexual attention coworkers
+
+NEA2022$seks_col &lt;- as.numeric(NEA2022$afl_se_1)
+
+# (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(seks_col = recode(seks_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+summarytools::freq(NEA2022$afl_se_1)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## --------------------- ------- --------- -------------- --------- --------------
+##       Een enkele keer     233     0.783          0.783     0.779          0.779
+##                  Vaak      33     0.111          0.894     0.110          0.889
+##             Zeer vaak      13     0.044          0.938     0.043          0.932
+##                  Niet   29468    99.062        100.000    98.479         99.412
+##               refusal       0     0.000        100.000     0.000         99.412
+##                  &lt;NA&gt;     176                              0.588        100.000
+##                 Total   29923   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$seks_col)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   29468    99.062         99.062    98.479         98.479
+##           2     233     0.783         99.845     0.779         99.258
+##           3      33     0.111         99.956     0.110         99.368
+##           4      13     0.044        100.000     0.043         99.412
+##        &lt;NA&gt;     176                              0.588        100.000
+##       Total   29923   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r"><code>#Unwanted sexual attention supervisors
+NEA2022$seks_leid &lt;- as.numeric(NEA2022$afl_se_2)
+
+# (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(seks_leid = recode(seks_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+summarytools::freq(NEA2022$afl_se_2)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## --------------------- ------- --------- -------------- --------- --------------
+##       Een enkele keer      67     0.225          0.225     0.224          0.224
+##                  Vaak      10     0.034          0.259     0.033          0.257
+##             Zeer vaak      11     0.037          0.296     0.037          0.294
+##                  Niet   29667    99.704        100.000    99.144         99.439
+##               refusal       0     0.000        100.000     0.000         99.439
+##                  &lt;NA&gt;     168                              0.561        100.000
+##                 Total   29923   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$seks_leid)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   29667    99.704         99.704    99.144         99.144
+##           2      67     0.225         99.929     0.224         99.368
+##           3      10     0.034         99.963     0.033         99.402
+##           4      11     0.037        100.000     0.037         99.439
+##        &lt;NA&gt;     168                              0.561        100.000
+##       Total   29923   100.000        100.000   100.000        100.000</code></pre>
+<pre class="r"><code>#Conflict coworker
+
+NEA2022$conflict_col &lt;- as.numeric(NEA2022$conflict)
+
+summarytools::freq(NEA2022$conflict)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                         Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## -------------------- ------- --------- -------------- --------- --------------
+##                  nee   24233     81.17          81.17     80.98          80.98
+##       ja, kortdurend    4935     16.53          97.70     16.49          97.48
+##        ja, langdurig     688      2.30         100.00      2.30          99.78
+##              refusal       0      0.00         100.00      0.00          99.78
+##                 &lt;NA&gt;      67                               0.22         100.00
+##                Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$conflict_col)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   24233     81.17          81.17     80.98          80.98
+##           2    4935     16.53          97.70     16.49          97.48
+##           3     688      2.30         100.00      2.30          99.78
+##        &lt;NA&gt;      67                               0.22         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#Conflict supervisor
+
+NEA2022$conflict_leid &lt;- as.numeric(NEA2022$confli_1)
+
+summarytools::freq(NEA2022$confli_1)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                         Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## -------------------- ------- --------- -------------- --------- --------------
+##                  nee   26352     88.32          88.32     88.07          88.07
+##       ja, kortdurend    2890      9.69          98.01      9.66          97.72
+##        ja, langdurig     594      1.99         100.00      1.99          99.71
+##              refusal       0      0.00         100.00      0.00          99.71
+##                 &lt;NA&gt;      87                               0.29         100.00
+##                Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$conflict_leid)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   26352     88.32          88.32     88.07          88.07
+##           2    2890      9.69          98.01      9.66          97.72
+##           3     594      1.99         100.00      1.99          99.71
+##        &lt;NA&gt;      87                               0.29         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#Conflict employer
+
+NEA2022$conflict_emp &lt;- as.numeric(NEA2022$confli_2)
+
+summarytools::freq(NEA2022$confli_2)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                         Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## -------------------- ------- --------- -------------- --------- --------------
+##                  nee   27752     93.12          93.12     92.74          92.74
+##       ja, kortdurend    1611      5.41          98.53      5.38          98.13
+##        ja, langdurig     438      1.47         100.00      1.46          99.59
+##              refusal       0      0.00         100.00      0.00          99.59
+##                 &lt;NA&gt;     122                               0.41         100.00
+##                Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$conflict_emp)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   27752     93.12          93.12     92.74          92.74
+##           2    1611      5.41          98.53      5.38          98.13
+##           3     438      1.47         100.00      1.46          99.59
+##        &lt;NA&gt;     122                               0.41         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#Social support supervisor: my supervisor pays attention to the well-being of the staff 
+
+NEA2022$leiding_[NEA2022$leiding_ == &quot;nvt&quot;] &lt;- NA
+
+NEA2022$steunleid_welzijn &lt;- as.numeric(NEA2022$leiding_)
+
+#Reverse coding
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steunleid_welzijn = recode(steunleid_welzijn, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+summarytools::freq(NEA2022$leiding_)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ------------------------- ------- --------- -------------- --------- --------------
+##       helemaal mee oneens     765      2.65           2.65      2.56           2.56
+##                mee oneens    3655     12.64          15.29     12.21          14.77
+##                  mee eens   15592     53.94          69.23     52.11          66.88
+##         helemaal mee eens    8894     30.77         100.00     29.72          96.60
+##                       nvt       0      0.00         100.00      0.00          96.60
+##                   refusal       0      0.00         100.00      0.00          96.60
+##                      &lt;NA&gt;    1017                               3.40         100.00
+##                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$steunleid_welzijn)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1    8894     30.77          30.77     29.72          29.72
+##           2   15592     53.94          84.71     52.11          81.83
+##           3    3655     12.64          97.35     12.21          94.04
+##           4     765      2.65         100.00      2.56          96.60
+##        &lt;NA&gt;    1017                               3.40         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#Social support supervisor:  my supervisor pays attention to what I say
+
+NEA2022$leidin_1[NEA2022$leidin_1 == &quot;nvt&quot;] &lt;- NA
+
+NEA2022$steunleid_aandacht &lt;- as.numeric(NEA2022$leidin_1)
+
+#Reverse coding
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steunleid_aandacht = recode(steunleid_aandacht, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+summarytools::freq(NEA2022$leidin_)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ------------------------- ------- --------- -------------- --------- --------------
+##       helemaal mee oneens     652      2.26           2.26      2.18           2.18
+##                mee oneens    3401     11.79          14.05     11.37          13.54
+##                  mee eens   16316     56.55          70.60     54.53          68.07
+##         helemaal mee eens    8482     29.40         100.00     28.35          96.42
+##                       nvt       0      0.00         100.00      0.00          96.42
+##                   refusal       0      0.00         100.00      0.00          96.42
+##                      &lt;NA&gt;    1072                               3.58         100.00
+##                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$steunleid_aandacht)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1    8482     29.40          29.40     28.35          28.35
+##           2   16316     56.55          85.95     54.53          82.87
+##           3    3401     11.79          97.74     11.37          94.24
+##           4     652      2.26         100.00      2.18          96.42
+##        &lt;NA&gt;    1072                               3.58         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#correlation original and rounded scale
+cor(NEA2022$steunleid_scale, NEA2022$steunleid_RR, use = &quot;complete.obs&quot;)</code></pre>
+<pre><code>## [1] 0.9609892</code></pre>
+<pre class="r"><code>#Social support coworkers: my co-workers take personal interest in me
+
+NEA2022$collega_[NEA2022$collega_ == &quot;nvt&quot;] &lt;- NA
+
+NEA2022$steuncol_belang &lt;- as.numeric(NEA2022$collega_)
+
+
+#Reverse coding
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steuncol_belang = recode(steuncol_belang, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+summarytools::freq(NEA2022$collega_)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ------------------------- ------- --------- -------------- --------- --------------
+##       helemaal mee oneens     315      1.09           1.09      1.05           1.05
+##                mee oneens    1756      6.05           7.14      5.87           6.92
+##                  mee eens   16526     56.94          64.08     55.23          62.15
+##         helemaal mee eens   10426     35.92         100.00     34.84          96.99
+##                       nvt       0      0.00         100.00      0.00          96.99
+##                   refusal       0      0.00         100.00      0.00          96.99
+##                      &lt;NA&gt;     900                               3.01         100.00
+##                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$steuncol_belang)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   10426     35.92          35.92     34.84          34.84
+##           2   16526     56.94          92.86     55.23          90.07
+##           3    1756      6.05          98.91      5.87          95.94
+##           4     315      1.09         100.00      1.05          96.99
+##        &lt;NA&gt;     900                               3.01         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#Social support coworkers: my coworkers are friendly
+
+NEA2022$colleg_1[NEA2022$colleg_1 == &quot;nvt&quot;] &lt;- NA
+
+NEA2022$steuncol_vriendelijk &lt;- as.numeric(NEA2022$colleg_1)
+
+#Reverse coding the scale
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steuncol_vriendelijk = recode(steuncol_vriendelijk, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+summarytools::freq(NEA2022$colleg_1)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ------------------------- ------- --------- -------------- --------- --------------
+##       helemaal mee oneens     109      0.37           0.37      0.36           0.36
+##                mee oneens     421      1.43           1.81      1.41           1.77
+##                  mee eens   14631     49.85          51.66     48.90          50.67
+##         helemaal mee eens   14188     48.34         100.00     47.42          98.08
+##                       nvt       0      0.00         100.00      0.00          98.08
+##                   refusal       0      0.00         100.00      0.00          98.08
+##                      &lt;NA&gt;     574                               1.92         100.00
+##                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$steuncol_vriendelijk)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   14188     48.34          48.34     47.42          47.42
+##           2   14631     49.85          98.19     48.90          96.31
+##           3     421      1.43          99.63      1.41          97.72
+##           4     109      0.37         100.00      0.36          98.08
+##        &lt;NA&gt;     574                               1.92         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code># Correlation original and rounded scale
+cor(NEA2022$steuncol_scale, NEA2022$steuncol_RR, use = &quot;complete.obs&quot;)</code></pre>
+<pre><code>## [1] 0.9416012</code></pre>
+<pre class="r"><code>#Psychological unsafety: at my workplace it is possible to raise difficult questions
+
+NEA2022$psyveil_last &lt;- as.numeric(NEA2022$psyveil_)
+summarytools::freq(NEA2022$psyveil_)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                                 Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ---------------------------- ------- --------- -------------- --------- --------------
+##                Helemaal eens    5370     18.36          18.36     17.95          17.95
+##                         Eens   15285     52.26          70.62     51.08          69.03
+##       Niet eens, niet oneens    4937     16.88          87.50     16.50          85.53
+##                    Niet eens    2405      8.22          95.73      8.04          93.56
+##           Helemaal niet eens    1250      4.27         100.00      4.18          97.74
+##                      refusal       0      0.00         100.00      0.00          97.74
+##                         &lt;NA&gt;     676                               2.26         100.00
+##                        Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$psyveil_last)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1    5370     18.36          18.36     17.95          17.95
+##           2   15285     52.26          70.62     51.08          69.03
+##           3    4937     16.88          87.50     16.50          85.53
+##           4    2405      8.22          95.73      8.04          93.56
+##           5    1250      4.27         100.00      4.18          97.74
+##        &lt;NA&gt;     676                               2.26         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#Psychological unsafety: at my workplace it is easy to ask for help
+
+NEA2022$psyveil_hulp &lt;- as.numeric(NEA2022$psyvei_1)
+summarytools::freq(NEA2022$psyvei_1)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                                 Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ---------------------------- ------- --------- -------------- --------- --------------
+##                Helemaal eens    6608     22.31          22.31     22.08          22.08
+##                         Eens   16718     56.45          78.76     55.87          77.95
+##       Niet eens, niet oneens    3963     13.38          92.14     13.24          91.20
+##                    Niet eens    1625      5.49          97.63      5.43          96.63
+##           Helemaal niet eens     702      2.37         100.00      2.35          98.97
+##                      refusal       0      0.00         100.00      0.00          98.97
+##                         &lt;NA&gt;     307                               1.03         100.00
+##                        Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$psyveil_hulp)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1    6608     22.31          22.31     22.08          22.08
+##           2   16718     56.45          78.76     55.87          77.95
+##           3    3963     13.38          92.14     13.24          91.20
+##           4    1625      5.49          97.63      5.43          96.63
+##           5     702      2.37         100.00      2.35          98.97
+##        &lt;NA&gt;     307                               1.03         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#Psychological unsafety: at my workplace it is okay to make a mistake
+
+NEA2022$psyveil_fout &lt;- as.numeric(NEA2022$psyvei_2)
+summarytools::freq(NEA2022$psyvei_2)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                                 Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ---------------------------- ------- --------- -------------- --------- --------------
+##                Helemaal eens    3931     13.28          13.28     13.14          13.14
+##                         Eens   14033     47.42          60.70     46.90          60.03
+##       Niet eens, niet oneens    6991     23.62          84.32     23.36          83.40
+##                    Niet eens    3155     10.66          94.98     10.54          93.94
+##           Helemaal niet eens    1486      5.02         100.00      4.97          98.91
+##                      refusal       0      0.00         100.00      0.00          98.91
+##                         &lt;NA&gt;     327                               1.09         100.00
+##                        Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$psyveil_fout)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1    3931     13.28          13.28     13.14          13.14
+##           2   14033     47.42          60.70     46.90          60.03
+##           3    6991     23.62          84.32     23.36          83.40
+##           4    3155     10.66          94.98     10.54          93.94
+##           5    1486      5.02         100.00      4.97          98.91
+##        &lt;NA&gt;     327                               1.09         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code># Correlation original and rounded scale
+cor(NEA2022$psyveil_scale, NEA2022$psyveil_RR, use = &quot;complete.obs&quot;)</code></pre>
+<pre><code>## [1] 0.9565598</code></pre>
+<p><br><br> <strong>Recoden low (15-35), middle (35-55), old
+(55-75)</strong></p>
+<pre class="r"><code>NEA2022$lft_num &lt;- as.numeric(NEA2022$afl_lftc)
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(leeftijd = case_when(
+    lft_num %in% c(1, 2) ~ 1,
+    lft_num %in% c(3, 4) ~ 2,
+    lft_num %in% c(5, 6) ~ 3,
+    TRUE ~ NA_real_
+  ))
+
+NEA2022$leeftijd_ &lt;- factor(NEA2022$leeftijd,
+                                 levels = c(1, 2, 3),
+                                 labels = c(&quot;15.35&quot;, &quot;35.55&quot;, &quot;55.75&quot;))
+
+summarytools::freq(NEA2022$afl_lftc)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                         Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## -------------------- ------- --------- -------------- --------- --------------
+##       15 tot 25 jaar    3857     12.89          12.89     12.89          12.89
+##       25 tot 35 jaar    5339     17.84          30.73     17.84          30.73
+##       35 tot 45 jaar    5721     19.12          49.85     19.12          49.85
+##       45 tot 55 jaar    6420     21.46          71.31     21.46          71.31
+##       55 tot 65 jaar    7389     24.69          96.00     24.69          96.00
+##       65 tot 75 jaar    1197      4.00         100.00      4.00         100.00
+##             onbekend       0      0.00         100.00      0.00         100.00
+##                 &lt;NA&gt;       0                               0.00         100.00
+##                Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$leeftijd_)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##       15.35    9196     30.73          30.73     30.73          30.73
+##       35.55   12141     40.57          71.31     40.57          71.31
+##       55.75    8586     28.69         100.00     28.69         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<p><br><br> <strong>Preparing variables for intersections</strong></p>
+<pre class="r"><code># Easier labels
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(gender = recode(m_v,
+                               &quot;man&quot; = &quot;m&quot;,
+                               &quot;vrouw&quot; = &quot;v&quot;))
+
+table(NEA2022$vrllandd)</code></pre>
+<pre><code>## 
+##                    Nederland Europa (exclusief Nederland) 
+##                        25058                         1761 
+##                Buiten Europa                     Onbekend 
+##                         3104                            0 
+##                      refusal 
+##                            0</code></pre>
+<pre class="r"><code>NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(migration = recode(vrllandd,
+                               &quot;Nederland&quot; = &quot;nl&quot;,
+                               &quot;Europa (exclusief Nederland)&quot; = &quot;eu&quot;,
+                               &quot;Buiten Europa&quot; = &quot;noeu&quot;))
+table(NEA2022$afl_soi3)</code></pre>
+<pre><code>## 
+##       laag opleidingsniveau middelbaar opleidingsniveau 
+##                        5215                       10945 
+##       hoog opleidingsniveau                    onbekend 
+##                       13763                           0</code></pre>
+<pre class="r"><code>NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(education = recode(afl_soi3,
+                               &quot;laag opleidingsniveau&quot; = &quot;laag&quot;,
+                               &quot;middelbaar opleidingsniveau&quot; = &quot;middel&quot;,
+                               &quot;hoog opleidingsniveau&quot; = &quot;hoog&quot;))
+
+NEA2022$education[NEA2022$education == &quot;onbekend&quot;] &lt;- NA
+NEA2022$education[NEA2022$migration == &quot;Onbekend&quot;] &lt;- NA
+
+# Drop unused levels
+levels(NEA2022$migration)</code></pre>
+<pre><code>## [1] &quot;nl&quot;       &quot;eu&quot;       &quot;noeu&quot;     &quot;Onbekend&quot; &quot;refusal&quot;</code></pre>
+<pre class="r"><code>NEA2022$migration &lt;- droplevels(NEA2022$migration)
+levels(NEA2022$migration)</code></pre>
+<pre><code>## [1] &quot;nl&quot;   &quot;eu&quot;   &quot;noeu&quot;</code></pre>
+<pre class="r"><code>levels(NEA2022$education)</code></pre>
+<pre><code>## [1] &quot;laag&quot;     &quot;middel&quot;   &quot;hoog&quot;     &quot;onbekend&quot;</code></pre>
+<pre class="r"><code>NEA2022$education &lt;- droplevels(NEA2022$education)
+levels(NEA2022$education)</code></pre>
+<pre><code>## [1] &quot;laag&quot;   &quot;middel&quot; &quot;hoog&quot;</code></pre>
+<pre class="r"><code>NEA2022$intersections &lt;- interaction(NEA2022$gender, NEA2022$migration, NEA2022$education, NEA2022$leeftijd_)
+
+summarytools::freq(NEA2022$intersections)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ------------------------- ------- --------- -------------- --------- --------------
+##           m.nl.laag.15.35     711      2.38           2.38      2.38           2.38
+##           v.nl.laag.15.35     650      2.17           4.55      2.17           4.55
+##           m.eu.laag.15.35      64      0.21           4.76      0.21           4.76
+##           v.eu.laag.15.35      59      0.20           4.96      0.20           4.96
+##         m.noeu.laag.15.35     131      0.44           5.40      0.44           5.40
+##         v.noeu.laag.15.35     139      0.46           5.86      0.46           5.86
+##         m.nl.middel.15.35    1271      4.25          10.11      4.25          10.11
+##         v.nl.middel.15.35    1445      4.83          14.94      4.83          14.94
+##         m.eu.middel.15.35      68      0.23          15.17      0.23          15.17
+##         v.eu.middel.15.35     103      0.34          15.51      0.34          15.51
+##       m.noeu.middel.15.35     191      0.64          16.15      0.64          16.15
+##       v.noeu.middel.15.35     221      0.74          16.89      0.74          16.89
+##           m.nl.hoog.15.35    1334      4.46          21.34      4.46          21.34
+##           v.nl.hoog.15.35    2023      6.76          28.11      6.76          28.11
+##           m.eu.hoog.15.35     123      0.41          28.52      0.41          28.52
+##           v.eu.hoog.15.35     188      0.63          29.14      0.63          29.14
+##         m.noeu.hoog.15.35     187      0.62          29.77      0.62          29.77
+##         v.noeu.hoog.15.35     288      0.96          30.73      0.96          30.73
+##           m.nl.laag.35.55     651      2.18          32.91      2.18          32.91
+##           v.nl.laag.35.55     497      1.66          34.57      1.66          34.57
+##           m.eu.laag.35.55      58      0.19          34.76      0.19          34.76
+##           v.eu.laag.35.55      44      0.15          34.91      0.15          34.91
+##         m.noeu.laag.35.55     115      0.38          35.29      0.38          35.29
+##         v.noeu.laag.35.55      96      0.32          35.61      0.32          35.61
+##         m.nl.middel.35.55    1955      6.53          42.15      6.53          42.15
+##         v.nl.middel.35.55    1749      5.85          47.99      5.85          47.99
+##         m.eu.middel.35.55     105      0.35          48.34      0.35          48.34
+##         v.eu.middel.35.55     133      0.44          48.79      0.44          48.79
+##       m.noeu.middel.35.55     225      0.75          49.54      0.75          49.54
+##       v.noeu.middel.35.55     193      0.64          50.19      0.64          50.19
+##           m.nl.hoog.35.55    2375      7.94          58.12      7.94          58.12
+##           v.nl.hoog.35.55    2817      9.41          67.54      9.41          67.54
+##           m.eu.hoog.35.55     161      0.54          68.07      0.54          68.07
+##           v.eu.hoog.35.55     269      0.90          68.97      0.90          68.97
+##         m.noeu.hoog.35.55     345      1.15          70.13      1.15          70.13
+##         v.noeu.hoog.35.55     353      1.18          71.31      1.18          71.31
+##           m.nl.laag.55.75    1041      3.48          74.79      3.48          74.79
+##           v.nl.laag.55.75     715      2.39          77.17      2.39          77.17
+##           m.eu.laag.55.75      45      0.15          77.33      0.15          77.33
+##           v.eu.laag.55.75      39      0.13          77.46      0.13          77.46
+##         m.noeu.laag.55.75      91      0.30          77.76      0.30          77.76
+##         v.noeu.laag.55.75      69      0.23          77.99      0.23          77.99
+##         m.nl.middel.55.75    1625      5.43          83.42      5.43          83.42
+##         v.nl.middel.55.75    1299      4.34          87.76      4.34          87.76
+##         m.eu.middel.55.75      79      0.26          88.03      0.26          88.03
+##         v.eu.middel.55.75      65      0.22          88.24      0.22          88.24
+##       m.noeu.middel.55.75     120      0.40          88.64      0.40          88.64
+##       v.noeu.middel.55.75      98      0.33          88.97      0.33          88.97
+##           m.nl.hoog.55.75    1538      5.14          94.11      5.14          94.11
+##           v.nl.hoog.55.75    1362      4.55          98.66      4.55          98.66
+##           m.eu.hoog.55.75      67      0.22          98.89      0.22          98.89
+##           v.eu.hoog.55.75      91      0.30          99.19      0.30          99.19
+##         m.noeu.hoog.55.75     117      0.39          99.58      0.39          99.58
+##         v.noeu.hoog.55.75     125      0.42         100.00      0.42         100.00
+##                      &lt;NA&gt;       0                               0.00         100.00
+##                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<p><br><br> <strong>Creating dummy variables</strong></p>
+<pre class="r"><code>library(fastDummies)</code></pre>
+<pre><code>## Warning: package &#39;fastDummies&#39; was built under R version 4.3.3</code></pre>
+<pre class="r"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;gender&quot;, remove_first_dummy = FALSE)
+
+summarytools::freq(NEA2022$gender)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           m   14793     49.44          49.44     49.44          49.44
+##           v   15130     50.56         100.00     50.56         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$gender_v)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           0   14793     49.44          49.44     49.44          49.44
+##           1   15130     50.56         100.00     50.56         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;migration&quot;, remove_first_dummy = FALSE)
+summarytools::freq(NEA2022$migration)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##          nl   25058     83.74          83.74     83.74          83.74
+##          eu    1761      5.89          89.63      5.89          89.63
+##        noeu    3104     10.37         100.00     10.37         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$migration_eu)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           0   28162     94.11          94.11     94.11          94.11
+##           1    1761      5.89         100.00      5.89         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$migration_noeu)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           0   26819     89.63          89.63     89.63          89.63
+##           1    3104     10.37         100.00     10.37         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;education&quot;, remove_first_dummy = FALSE)
+summarytools::freq(NEA2022$education)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                 Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ------------ ------- --------- -------------- --------- --------------
+##         laag    5215     17.43          17.43     17.43          17.43
+##       middel   10945     36.58          54.01     36.58          54.01
+##         hoog   13763     45.99         100.00     45.99         100.00
+##         &lt;NA&gt;       0                               0.00         100.00
+##        Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$education_laag)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           0   24708     82.57          82.57     82.57          82.57
+##           1    5215     17.43         100.00     17.43         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$education_middel)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           0   18978     63.42          63.42     63.42          63.42
+##           1   10945     36.58         100.00     36.58         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;leeftijd_&quot;, remove_first_dummy = FALSE)
+summarytools::freq(NEA2022$leeftijd_)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##       15.35    9196     30.73          30.73     30.73          30.73
+##       35.55   12141     40.57          71.31     40.57          71.31
+##       55.75    8586     28.69         100.00     28.69         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$leeftijd__15.35)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           0   20727     69.27          69.27     69.27          69.27
+##           1    9196     30.73         100.00     30.73         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$leeftijd__35.55)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           0   17782     59.43          59.43     59.43          59.43
+##           1   12141     40.57         100.00     40.57         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;intersections&quot;, remove_first_dummy = FALSE)
+
+dummy_columns &lt;- grep(&quot;^intersections_&quot;, colnames(NEA2022), value = TRUE)  # Find dummy columns
+colnames(NEA2022)[colnames(NEA2022) %in% dummy_columns] &lt;- gsub(&quot;^intersections_&quot;, &quot;&quot;, dummy_columns)</code></pre>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByZXBhcmluZyBkYXRhc2V0Ig0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wNS0wNCINCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQoNCmBgYHtyLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmxpYnJhcnkoInBzeWNoIikNCmBgYA0KPGJyPjxicj4gKipMb2FkaW5nIGluIHRoZSBkYXRhKioNCg0KYGBge3IsIHJlc3VsdHM9J2hpZGUnLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KTkVBcmF3IDwtcmVhZC5zcHNzKCJkYXRhL3Jhdy9EYXRhIDIwMTQtMjAyMi5zYXYiLCB1c2UudmFsdWUubGFiZWxzID0gVCwgdG8uZGF0YS5mcmFtZSA9IFQpDQpgYGANCg0KPGJyPjxicj4gKipTZWxlY3RpbmcgeWVhciAyMDIyIGFuZCBjbHVzdGVyIDEqKg0KDQpgYGB7cn0NCk5FQTIwMjIgPC0gTkVBcmF3W05FQXJhdyRqYWFyID09ICIyMDIyIiwgXQ0KYGBgDQoNCmBgYHtyfQ0KTkVBMjAyMiA8LSBORUEyMDIyW05FQTIwMjIkc2VfY2x1c3QgPT0gMSwgXQ0KYGBgDQoNCjxicj48YnI+ICoqRGVsZXRpbmcgbWlzc2luZyBjYXNlcyBvbiBlZHVjYXRpb25hbCBsZXZlbCoqDQoNCmBgYHtyfQ0KTkVBMjAyMiRhZmxfc29pM1tORUEyMDIyJGFmbF9zb2kzID09ICJvbmJla2VuZCJdIDwtIE5BDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgZmlsdGVyKCFpcy5uYShhZmxfc29pMykpDQpgYGANCg0KPGJyPjxicj4gKipSZWNvZGluZyB2YXJpYWJsZXMqKg0KDQpgYGB7cn0NCiNCdWxseWluZyBjb3dvcmtlcnMNCg0KTkVBMjAyMiRwZXN0ZW5fY29sIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfcGVfMSkNCg0KIyAoMSkgbm8sIG5ldmVyLCAoMikgYSBmZXcgdGltZXMsICgzKSBvZnRlbiwgYW5kICg0KSB2ZXJ5IG9mdGVuIA0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShwZXN0ZW5fY29sID0gcmVjb2RlKHBlc3Rlbl9jb2wsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRhZmxfcGVfMSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBlc3Rlbl9jb2wpDQoNCmBgYA0KDQpgYGB7cn0NCiNCdWxseWluZyBzdXBlcnZpc29ycw0KTkVBMjAyMiRwZXN0ZW5fbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3BlXzIpDQoNCiMgKDEpIG5vLCBuZXZlciwgKDIpIGEgZmV3IHRpbWVzLCAoMykgb2Z0ZW4sIGFuZCAoNCkgdmVyeSBvZnRlbiANCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUocGVzdGVuX2xlaWQgPSByZWNvZGUocGVzdGVuX2xlaWQsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRhZmxfcGVfMikNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBlc3Rlbl9sZWlkKQ0KYGBgDQoNCmBgYHtyfQ0KI0ludGltaWRhdGlvbiBjb3dvcmtlcnMNCg0KTkVBMjAyMiRpbnRpbWlkYXRpb25fY29sIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfYmVfMSkNCg0KIyAoMSkgbm8sIG5ldmVyLCAoMikgYSBmZXcgdGltZXMsICgzKSBvZnRlbiwgYW5kICg0KSB2ZXJ5IG9mdGVuIA0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShpbnRpbWlkYXRpb25fY29sID0gcmVjb2RlKGludGltaWRhdGlvbl9jb2wsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRhZmxfYmVfMSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGludGltaWRhdGlvbl9jb2wpDQoNCmBgYA0KDQpgYGB7cn0NCiNJbnRpbWlkYXRpb24gc3VwZXJ2aXNvcnMNCg0KTkVBMjAyMiRpbnRpbWlkYXRpb25fbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2JlXzIpDQoNCiMgKDEpIG5vLCBuZXZlciwgKDIpIGEgZmV3IHRpbWVzLCAoMykgb2Z0ZW4sIGFuZCAoNCkgdmVyeSBvZnRlbiANCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoaW50aW1pZGF0aW9uX2xlaWQgPSByZWNvZGUoaW50aW1pZGF0aW9uX2xlaWQsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRhZmxfYmVfMikNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGludGltaWRhdGlvbl9sZWlkKQ0KDQpgYGANCg0KYGBge3J9DQojUGh5c2ljYWwgdmlvbGVuY2UgY293b3JrZXJzDQoNCk5FQTIwMjIkZ2V3ZWxkX2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2dlXzMpDQoNCiMgKDEpIG5vLCBuZXZlciwgKDIpIGEgZmV3IHRpbWVzLCAoMykgb2Z0ZW4sIGFuZCAoNCkgdmVyeSBvZnRlbiANCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoZ2V3ZWxkX2NvbCA9IHJlY29kZShnZXdlbGRfY29sLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX2dlXzMpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRnZXdlbGRfY29sKQ0KDQpgYGANCg0KYGBge3J9DQojUGh5c2ljYWwgdmlvbGVuY2Ugc3VwZXJ2aXNvcnMNCg0KTkVBMjAyMiRnZXdlbGRfbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2dlXzQpDQoNCiMgKDEpIG5vLCBuZXZlciwgKDIpIGEgZmV3IHRpbWVzLCAoMykgb2Z0ZW4sIGFuZCAoNCkgdmVyeSBvZnRlbiANCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoZ2V3ZWxkX2xlaWQgPSByZWNvZGUoZ2V3ZWxkX2xlaWQsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRhZmxfZ2VfNCkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGdld2VsZF9sZWlkKQ0KYGBgDQoNCmBgYHtyfQ0KI1Vud2FudGVkIHNleHVhbCBhdHRlbnRpb24gY293b3JrZXJzDQoNCk5FQTIwMjIkc2Vrc19jb2wgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9zZV8xKQ0KDQojICgxKSBubywgbmV2ZXIsICgyKSBhIGZldyB0aW1lcywgKDMpIG9mdGVuLCBhbmQgKDQpIHZlcnkgb2Z0ZW4gDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHNla3NfY29sID0gcmVjb2RlKHNla3NfY29sLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX3NlXzEpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRzZWtzX2NvbCkNCmBgYA0KDQpgYGB7cn0NCiNVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIHN1cGVydmlzb3JzDQpORUEyMDIyJHNla3NfbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3NlXzIpDQoNCiMgKDEpIG5vLCBuZXZlciwgKDIpIGEgZmV3IHRpbWVzLCAoMykgb2Z0ZW4sIGFuZCAoNCkgdmVyeSBvZnRlbiANCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc2Vrc19sZWlkID0gcmVjb2RlKHNla3NfbGVpZCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9zZV8yKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc2Vrc19sZWlkKQ0KDQpgYGANCg0KYGBge3J9DQojQ29uZmxpY3QgY293b3JrZXINCg0KTkVBMjAyMiRjb25mbGljdF9jb2wgPC0gYXMubnVtZXJpYyhORUEyMDIyJGNvbmZsaWN0KQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRjb25mbGljdCkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGNvbmZsaWN0X2NvbCkNCmBgYA0KDQpgYGB7cn0NCiNDb25mbGljdCBzdXBlcnZpc29yDQoNCk5FQTIwMjIkY29uZmxpY3RfbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpXzEpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGNvbmZsaV8xKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkY29uZmxpY3RfbGVpZCkNCmBgYA0KDQpgYGB7cn0NCiNDb25mbGljdCBlbXBsb3llcg0KDQpORUEyMDIyJGNvbmZsaWN0X2VtcCA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpXzIpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGNvbmZsaV8yKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkY29uZmxpY3RfZW1wKQ0KYGBgDQoNCg0KYGBge3J9DQojU29jaWFsIHN1cHBvcnQgc3VwZXJ2aXNvcjogbXkgc3VwZXJ2aXNvciBwYXlzIGF0dGVudGlvbiB0byB0aGUgd2VsbC1iZWluZyBvZiB0aGUgc3RhZmYgDQoNCk5FQTIwMjIkbGVpZGluZ19bTkVBMjAyMiRsZWlkaW5nXyA9PSAibnZ0Il0gPC0gTkENCg0KTkVBMjAyMiRzdGV1bmxlaWRfd2VsemlqbiA8LSBhcy5udW1lcmljKE5FQTIwMjIkbGVpZGluZ18pDQoNCiNSZXZlcnNlIGNvZGluZw0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzdGV1bmxlaWRfd2VsemlqbiA9IHJlY29kZShzdGV1bmxlaWRfd2VsemlqbiwgYDFgID0gNCwgYDJgID0gMywgYDNgID0gMiwgYDRgID0gMSkpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGxlaWRpbmdfKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX3dlbHppam4pDQpgYGANCg0KYGBge3J9DQojU29jaWFsIHN1cHBvcnQgc3VwZXJ2aXNvcjogIG15IHN1cGVydmlzb3IgcGF5cyBhdHRlbnRpb24gdG8gd2hhdCBJIHNheQ0KDQpORUEyMDIyJGxlaWRpbl8xW05FQTIwMjIkbGVpZGluXzEgPT0gIm52dCJdIDwtIE5BDQoNCk5FQTIwMjIkc3RldW5sZWlkX2FhbmRhY2h0IDwtIGFzLm51bWVyaWMoTkVBMjAyMiRsZWlkaW5fMSkNCg0KI1JldmVyc2UgY29kaW5nDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHN0ZXVubGVpZF9hYW5kYWNodCA9IHJlY29kZShzdGV1bmxlaWRfYWFuZGFjaHQsIGAxYCA9IDQsIGAyYCA9IDMsIGAzYCA9IDIsIGA0YCA9IDEpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRsZWlkaW5fKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX2FhbmRhY2h0KQ0KYGBgDQpgYGB7ciwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCiNDcm9uYmFjaCdzIGFscGhhDQoNCnN0ZXVubGVpZCA8LSBkYXRhLmZyYW1lKA0KICBzdGV1bmxlaWRfYWFuZGFjaHQgPSBORUEyMDIyJHN0ZXVubGVpZF9hYW5kYWNodCwNCiAgc3RldW5sZWlkX3dlbHppam4gPSBORUEyMDIyJHN0ZXVubGVpZF93ZWx6aWpuDQopDQoNCmFscGhhX3Jlc3VsdDEgPC0gYWxwaGEoc3RldW5sZWlkLCB1c2U9InBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpDQpwcmludChhbHBoYV9yZXN1bHQxJHRvdGFsJHJhd19hbHBoYSkNCg0KYGBgDQoNCg0KYGBge3IsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQojTWFraW5nIGEgbWVhbiBzY2FsZQ0KDQpORUEyMDIyJHN0ZXVubGVpZF9zY2FsZSA8LSByb3dNZWFucyhORUEyMDIyW2MoInN0ZXVubGVpZF9hYW5kYWNodCIsICJzdGV1bmxlaWRfd2VsemlqbiIpXSwgbmEucm0gPSBUUlVFKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX3NjYWxlKQ0KDQoNCk5FQTIwMjIkc3RldW5sZWlkX1IgPC0gYXMubnVtZXJpYyhmYWN0b3IoTkVBMjAyMiRzdGV1bmxlaWRfc2NhbGUpKQ0KTkVBMjAyMiRzdGV1bmxlaWRfUltORUEyMDIyJHN0ZXVubGVpZF9SID09ICI4Il0gPC0gTkENCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVubGVpZF9SKQ0KDQojUm91bmRpbmcgdG8gYSBmb3VyLXBvaW50IHNjYWxlDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzdGV1bmxlaWRfUlIgPSBjYXNlX3doZW4oDQogICAgc3RldW5sZWlkX3NjYWxlICVpbiUgYygxKSB+IDEsDQogICAgc3RldW5sZWlkX3NjYWxlICVpbiUgYygxLjUsIDIpIH4gMiwNCiAgICBzdGV1bmxlaWRfc2NhbGUgJWluJSBjKDIuNSwgMykgfiAzLA0KICAgIHN0ZXVubGVpZF9zY2FsZSAlaW4lIGMoMy41LCA0KSB+IDQsDQogICAgVFJVRSB+IE5BX3JlYWxfDQogICkpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRzdGV1bmxlaWRfUlIpDQpgYGANCg0KDQpgYGB7cix9DQojY29ycmVsYXRpb24gb3JpZ2luYWwgYW5kIHJvdW5kZWQgc2NhbGUNCmNvcihORUEyMDIyJHN0ZXVubGVpZF9zY2FsZSwgTkVBMjAyMiRzdGV1bmxlaWRfUlIsIHVzZSA9ICJjb21wbGV0ZS5vYnMiKQ0KYGBgDQoNCg0KDQpgYGB7cn0NCiNTb2NpYWwgc3VwcG9ydCBjb3dvcmtlcnM6IG15IGNvLXdvcmtlcnMgdGFrZSBwZXJzb25hbCBpbnRlcmVzdCBpbiBtZQ0KDQpORUEyMDIyJGNvbGxlZ2FfW05FQTIwMjIkY29sbGVnYV8gPT0gIm52dCJdIDwtIE5BDQoNCk5FQTIwMjIkc3RldW5jb2xfYmVsYW5nIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRjb2xsZWdhXykNCg0KDQojUmV2ZXJzZSBjb2RpbmcNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5jb2xfYmVsYW5nID0gcmVjb2RlKHN0ZXVuY29sX2JlbGFuZywgYDFgID0gNCwgYDJgID0gMywgYDNgID0gMiwgYDRgID0gMSkpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGNvbGxlZ2FfKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5jb2xfYmVsYW5nKQ0KYGBgDQoNCmBgYHtyfQ0KI1NvY2lhbCBzdXBwb3J0IGNvd29ya2VyczogbXkgY293b3JrZXJzIGFyZSBmcmllbmRseQ0KDQpORUEyMDIyJGNvbGxlZ18xW05FQTIwMjIkY29sbGVnXzEgPT0gIm52dCJdIDwtIE5BDQoNCk5FQTIwMjIkc3RldW5jb2xfdnJpZW5kZWxpamsgPC0gYXMubnVtZXJpYyhORUEyMDIyJGNvbGxlZ18xKQ0KDQojUmV2ZXJzZSBjb2RpbmcgdGhlIHNjYWxlDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHN0ZXVuY29sX3ZyaWVuZGVsaWprID0gcmVjb2RlKHN0ZXVuY29sX3ZyaWVuZGVsaWprLCBgMWAgPSA0LCBgMmAgPSAzLCBgM2AgPSAyLCBgNGAgPSAxKSkNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkY29sbGVnXzEpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRzdGV1bmNvbF92cmllbmRlbGlqaykNCmBgYA0KYGBge3IsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQojQ3JvbmJhY2gncyBhbHBoYQ0KDQpzdGV1bmNvbCA8LSBkYXRhLmZyYW1lKA0KICBzdGV1bmNvbF9iZWxhbmcgPSBORUEyMDIyJHN0ZXVuY29sX2JlbGFuZywNCiAgc3RldW5jb2xfdnJpZW5kZWxpamsgPSBORUEyMDIyJHN0ZXVuY29sX3ZyaWVuZGVsaWprDQopDQoNCmFscGhhX3Jlc3VsdDIgPC0gYWxwaGEoc3RldW5jb2wsIHVzZT0icGFpcndpc2UuY29tcGxldGUub2JzIikNCnByaW50KGFscGhhX3Jlc3VsdDIkdG90YWwkcmF3X2FscGhhKQ0KDQpgYGANCg0KDQpgYGB7ciwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCiNNYWtpbmcgYSBtZWFuIHNjYWxlDQpORUEyMDIyJHN0ZXVuY29sX3NjYWxlIDwtIHJvd01lYW5zKE5FQTIwMjJbYygic3RldW5jb2xfYmVsYW5nIiwgInN0ZXVuY29sX3ZyaWVuZGVsaWprIildLCBuYS5ybSA9IFRSVUUpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVuY29sX3NjYWxlKQ0KDQpORUEyMDIyJHN0ZXVuY29sX1IgPC0gYXMubnVtZXJpYyhmYWN0b3IoTkVBMjAyMiRzdGV1bmNvbF9zY2FsZSkpDQpORUEyMDIyJHN0ZXVuY29sX1JbTkVBMjAyMiRzdGV1bmNvbF9SID09ICI4Il0gPC0gTkENCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVuY29sX1IpDQoNCiNSb3VuZGluZyB0byBhIGZvdXItcG9pbnQgc2NhbGUNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHN0ZXVuY29sX1JSID0gY2FzZV93aGVuKA0KICAgIHN0ZXVuY29sX3NjYWxlICVpbiUgYygxKSB+IDEsDQogICAgc3RldW5jb2xfc2NhbGUgJWluJSBjKDEuNSwgMikgfiAyLA0KICAgIHN0ZXVuY29sX3NjYWxlICVpbiUgYygyLjUsIDMpIH4gMywNCiAgICBzdGV1bmNvbF9zY2FsZSAlaW4lIGMoMy41LCA0KSB+IDQsDQogICAgVFJVRSB+IE5BX3JlYWxfDQogICkpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRzdGV1bmNvbF9SUikNCmBgYA0KDQoNCmBgYHtyfQ0KIyBDb3JyZWxhdGlvbiBvcmlnaW5hbCBhbmQgcm91bmRlZCBzY2FsZQ0KY29yKE5FQTIwMjIkc3RldW5jb2xfc2NhbGUsIE5FQTIwMjIkc3RldW5jb2xfUlIsIHVzZSA9ICJjb21wbGV0ZS5vYnMiKQ0KYGBgDQoNCg0KYGBge3J9DQojUHN5Y2hvbG9naWNhbCB1bnNhZmV0eTogYXQgbXkgd29ya3BsYWNlIGl0IGlzIHBvc3NpYmxlIHRvIHJhaXNlIGRpZmZpY3VsdCBxdWVzdGlvbnMNCg0KTkVBMjAyMiRwc3l2ZWlsX2xhc3QgPC0gYXMubnVtZXJpYyhORUEyMDIyJHBzeXZlaWxfKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcHN5dmVpbF8pDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRwc3l2ZWlsX2xhc3QpDQpgYGANCg0KYGBge3J9DQojUHN5Y2hvbG9naWNhbCB1bnNhZmV0eTogYXQgbXkgd29ya3BsYWNlIGl0IGlzIGVhc3kgdG8gYXNrIGZvciBoZWxwDQoNCk5FQTIwMjIkcHN5dmVpbF9odWxwIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRwc3l2ZWlfMSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBzeXZlaV8xKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcHN5dmVpbF9odWxwKQ0KYGBgDQoNCmBgYHtyfQ0KI1BzeWNob2xvZ2ljYWwgdW5zYWZldHk6IGF0IG15IHdvcmtwbGFjZSBpdCBpcyBva2F5IHRvIG1ha2UgYSBtaXN0YWtlDQoNCk5FQTIwMjIkcHN5dmVpbF9mb3V0IDwtIGFzLm51bWVyaWMoTkVBMjAyMiRwc3l2ZWlfMikNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBzeXZlaV8yKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcHN5dmVpbF9mb3V0KQ0KYGBgDQoNCg0KYGBge3IsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQojQ3JvbmJhY2gncyBhbHBoYQ0KDQpwc3l2ZWlsIDwtIGRhdGEuZnJhbWUoDQogIHBzeXZlaWxfbGFzdCA9IE5FQTIwMjIkcHN5dmVpbF9sYXN0LA0KICBwc3l2ZWlsX2h1bHAgPSBORUEyMDIyJHBzeXZlaWxfaHVscCwNCiAgcHN5dmVpbF9mb3V0ID0gTkVBMjAyMiRwc3l2ZWlsX2ZvdXQNCikNCg0KYWxwaGFfcmVzdWx0MyA8LSBhbHBoYShwc3l2ZWlsLCB1c2U9InBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpDQpwcmludChhbHBoYV9yZXN1bHQzJHRvdGFsJHJhd19hbHBoYSkNCmBgYA0KDQpgYGB7ciwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCiMgTWFraW5nIGEgbWVhbiBzY2FsZQ0KDQpORUEyMDIyJHBzeXZlaWxfc2NhbGUgPC0gcm93TWVhbnMoTkVBMjAyMltjKCJwc3l2ZWlsX2xhc3QiLCAicHN5dmVpbF9odWxwIiwgInBzeXZlaWxfZm91dCIpXSwgbmEucm0gPSBUUlVFKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRwc3l2ZWlsX3NjYWxlKQ0KDQpORUEyMDIyJHBzeXZlaWxfUiA8LSBhcy5udW1lcmljKGZhY3RvcihORUEyMDIyJHBzeXZlaWxfc2NhbGUpKQ0KDQpORUEyMDIyJHBzeXZlaWxfUltORUEyMDIyJHBzeXZlaWxfUiA9PSAiMTgiXSA8LSBOQQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcHN5dmVpbF9SKQ0KDQojIFJvdW5kaW5nIHRvIGEgZml2ZS1wb2ludCBzY2FsZQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShwc3l2ZWlsX1JSID0gY2FzZV93aGVuKA0KICAgIHBzeXZlaWxfUiAlaW4lIGMoMSwgMikgfiAxLA0KICAgIHBzeXZlaWxfUiAlaW4lIGMoMywgNCwgNSwgNikgfiAyLA0KICAgIHBzeXZlaWxfUiAlaW4lIGMoNywgOCwgOSwgMTApIH4gMywNCiAgICBwc3l2ZWlsX1IgJWluJSBjKDExLCAxMiwgMTMsIDE0KSB+IDQsDQogICAgcHN5dmVpbF9SICVpbiUgYygxNSwgMTYsIDE3KSB+IDUsDQogICAgVFJVRSB+IE5BX3JlYWxfDQogICkpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRwc3l2ZWlsX1JSKQ0KYGBgDQoNCg0KYGBge3J9DQojIENvcnJlbGF0aW9uIG9yaWdpbmFsIGFuZCByb3VuZGVkIHNjYWxlDQpjb3IoTkVBMjAyMiRwc3l2ZWlsX3NjYWxlLCBORUEyMDIyJHBzeXZlaWxfUlIsIHVzZSA9ICJjb21wbGV0ZS5vYnMiKQ0KYGBgDQoNCg0KPGJyPjxicj4gKipSZWNvZGVuIGxvdyAoMTUtMzUpLCBtaWRkbGUgKDM1LTU1KSwgb2xkICg1NS03NSkqKg0KDQpgYGB7cn0NCg0KTkVBMjAyMiRsZnRfbnVtIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfbGZ0YykNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUobGVlZnRpamQgPSBjYXNlX3doZW4oDQogICAgbGZ0X251bSAlaW4lIGMoMSwgMikgfiAxLA0KICAgIGxmdF9udW0gJWluJSBjKDMsIDQpIH4gMiwNCiAgICBsZnRfbnVtICVpbiUgYyg1LCA2KSB+IDMsDQogICAgVFJVRSB+IE5BX3JlYWxfDQogICkpDQoNCk5FQTIwMjIkbGVlZnRpamRfIDwtIGZhY3RvcihORUEyMDIyJGxlZWZ0aWpkLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygxLCAyLCAzKSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVscyA9IGMoIjE1LjM1IiwgIjM1LjU1IiwgIjU1Ljc1IikpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9sZnRjKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkbGVlZnRpamRfKQ0KDQpgYGANCg0KPGJyPjxicj4gKipQcmVwYXJpbmcgdmFyaWFibGVzIGZvciBpbnRlcnNlY3Rpb25zKioNCg0KYGBge3J9DQojIEVhc2llciBsYWJlbHMNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGdlbmRlciA9IHJlY29kZShtX3YsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIm1hbiIgPSAibSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInZyb3V3IiA9ICJ2IikpDQoNCnRhYmxlKE5FQTIwMjIkdnJsbGFuZGQpDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShtaWdyYXRpb24gPSByZWNvZGUodnJsbGFuZGQsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIk5lZGVybGFuZCIgPSAibmwiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJFdXJvcGEgKGV4Y2x1c2llZiBOZWRlcmxhbmQpIiA9ICJldSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkJ1aXRlbiBFdXJvcGEiID0gIm5vZXUiKSkNCnRhYmxlKE5FQTIwMjIkYWZsX3NvaTMpDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShlZHVjYXRpb24gPSByZWNvZGUoYWZsX3NvaTMsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImxhYWcgb3BsZWlkaW5nc25pdmVhdSIgPSAibGFhZyIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIm1pZGRlbGJhYXIgb3BsZWlkaW5nc25pdmVhdSIgPSAibWlkZGVsIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiaG9vZyBvcGxlaWRpbmdzbml2ZWF1IiA9ICJob29nIikpDQoNCk5FQTIwMjIkZWR1Y2F0aW9uW05FQTIwMjIkZWR1Y2F0aW9uID09ICJvbmJla2VuZCJdIDwtIE5BDQpORUEyMDIyJGVkdWNhdGlvbltORUEyMDIyJG1pZ3JhdGlvbiA9PSAiT25iZWtlbmQiXSA8LSBOQQ0KDQojIERyb3AgdW51c2VkIGxldmVscw0KbGV2ZWxzKE5FQTIwMjIkbWlncmF0aW9uKQ0KTkVBMjAyMiRtaWdyYXRpb24gPC0gZHJvcGxldmVscyhORUEyMDIyJG1pZ3JhdGlvbikNCmxldmVscyhORUEyMDIyJG1pZ3JhdGlvbikNCg0KbGV2ZWxzKE5FQTIwMjIkZWR1Y2F0aW9uKQ0KTkVBMjAyMiRlZHVjYXRpb24gPC0gZHJvcGxldmVscyhORUEyMDIyJGVkdWNhdGlvbikNCmxldmVscyhORUEyMDIyJGVkdWNhdGlvbikNCmBgYA0KDQpgYGB7cn0NCk5FQTIwMjIkaW50ZXJzZWN0aW9ucyA8LSBpbnRlcmFjdGlvbihORUEyMDIyJGdlbmRlciwgTkVBMjAyMiRtaWdyYXRpb24sIE5FQTIwMjIkZWR1Y2F0aW9uLCBORUEyMDIyJGxlZWZ0aWpkXykNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkaW50ZXJzZWN0aW9ucykNCmBgYA0KDQo8YnI+PGJyPiAqKkNyZWF0aW5nIGR1bW15IHZhcmlhYmxlcyoqDQoNCmBgYHtyfQ0KbGlicmFyeShmYXN0RHVtbWllcykNCk5FQTIwMjIgPC0gZHVtbXlfY29scyhORUEyMDIyLCBzZWxlY3RfY29sdW1ucyA9ICJnZW5kZXIiLCByZW1vdmVfZmlyc3RfZHVtbXkgPSBGQUxTRSkNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkZ2VuZGVyKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkZ2VuZGVyX3YpDQpgYGANCmBgYHtyfQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gIm1pZ3JhdGlvbiIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkbWlncmF0aW9uKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkbWlncmF0aW9uX2V1KQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkbWlncmF0aW9uX25vZXUpDQpgYGANCmBgYHtyfQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gImVkdWNhdGlvbiIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkZWR1Y2F0aW9uKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkZWR1Y2F0aW9uX2xhYWcpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRlZHVjYXRpb25fbWlkZGVsKQ0KYGBgDQpgYGB7cn0NCk5FQTIwMjIgPC0gZHVtbXlfY29scyhORUEyMDIyLCBzZWxlY3RfY29sdW1ucyA9ICJsZWVmdGlqZF8iLCByZW1vdmVfZmlyc3RfZHVtbXkgPSBGQUxTRSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGxlZWZ0aWpkXykNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGxlZWZ0aWpkX18xNS4zNSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGxlZWZ0aWpkX18zNS41NSkNCmBgYA0KDQpgYGB7cn0NCk5FQTIwMjIgPC0gZHVtbXlfY29scyhORUEyMDIyLCBzZWxlY3RfY29sdW1ucyA9ICJpbnRlcnNlY3Rpb25zIiwgcmVtb3ZlX2ZpcnN0X2R1bW15ID0gRkFMU0UpDQoNCmR1bW15X2NvbHVtbnMgPC0gZ3JlcCgiXmludGVyc2VjdGlvbnNfIiwgY29sbmFtZXMoTkVBMjAyMiksIHZhbHVlID0gVFJVRSkgICMgRmluZCBkdW1teSBjb2x1bW5zDQpjb2xuYW1lcyhORUEyMDIyKVtjb2xuYW1lcyhORUEyMDIyKSAlaW4lIGR1bW15X2NvbHVtbnNdIDwtIGdzdWIoIl5pbnRlcnNlY3Rpb25zXyIsICIiLCBkdW1teV9jb2x1bW5zKQ0KYGBgDQo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("Data preparation.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

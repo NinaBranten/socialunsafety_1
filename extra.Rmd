@@ -1,0 +1,523 @@
+```{r}
+#pesten collega's
+table(NEA2022$pesten_col)
+
+
+NEA2022 <- NEA2022 %>%
+  mutate(pesten_col_plot = recode(pesten_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEA2022$pesten_col_plot)
+summary(NEA2022$pesten_col_plot)
+
+```
+
+```{r}
+#pesten leidinggevenden
+table(NEA2022$pesten_leid)
+
+
+NEA2022 <- NEA2022 %>%
+  mutate(pesten_leid_plot = recode(pesten_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEA2022$pesten_leid_plot)
+
+```
+
+```{r}
+#intimidatie collega's
+table(NEA2022$intimidation_col)
+
+
+NEA2022 <- NEA2022 %>%
+  mutate(int_col_plot = recode(intimidation_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEA2022$int_col_plot)
+
+```
+
+```{r}
+#intimidatie leidinggevenden
+table(NEA2022$intimidation_leid)
+
+NEA2022 <- NEA2022 %>%
+  mutate(int_leid_plot = recode(intimidation_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEA2022$int_leid_plot)
+```
+```{r}
+#fysiek geweld collega's
+table(NEA2022$geweld_col)
+
+NEA2022 <- NEA2022 %>%
+  mutate(gew_col_plot = recode(geweld_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEA2022$gew_col_plot)
+```
+
+```{r}
+#fysiek geweld leidinggevenden
+table(NEA2022$geweld_leid)
+
+NEA2022 <- NEA2022 %>%
+  mutate(gew_leid_plot = recode(geweld_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEA2022$gew_leid_plot)
+```
+
+```{r}
+#ongewenste seksuele aandacht collega's
+table(NEA2022$seks_col)
+
+NEA2022 <- NEA2022 %>%
+  mutate(seks_col_plot = recode(seks_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEA2022$seks_col_plot)
+```
+```{r}
+#ongewenste seksuele aandacht leidinggevenden
+table(NEA2022$seks_leid)
+
+NEA2022 <- NEA2022 %>%
+  mutate(seks_leid_plot = recode(seks_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEA2022$seks_leid_plot)
+```
+
+```{r}
+#conflict collega
+table(NEA2022$conflict_col)
+NEA2022 <- NEA2022 %>%
+  mutate(conflict_col_plot = recode(conflict_col, `1` = 0, `2` = 0.50, `3` = 1))
+table(NEA2022$conflict_col_plot)
+```
+```{r}
+#conflict leidinggevende
+table(NEA2022$conflict_leid)
+NEA2022 <- NEA2022 %>%
+  mutate(conflict_leid_plot = recode(conflict_leid, `1` = 0, `2` = 0.50, `3` = 1))
+table(NEA2022$conflict_leid_plot)
+```
+
+```{r}
+#conflict werkgever
+table(NEA2022$conflict_werk)
+NEA2022 <- NEA2022 %>%
+  mutate(conflict_werk_plot = recode(conflict_werk, `1` = 0, `2` = 0.50, `3` = 1))
+table(NEA2022$conflict_werk_plot)
+```
+
+```{r}
+summarytools::freq(NEA2022$steunleid_R)
+
+NEA2022 <- NEA2022 %>%
+  mutate(steunleid_plot = (steunleid_R - 1) / 6)
+
+summarytools::freq(NEA2022$steunleid_plot)
+```
+```{r}
+summarytools::freq(NEA2022$steuncol_R)
+
+NEA2022 <- NEA2022 %>%
+  mutate(steuncol_plot = (steuncol_R - 1) / 6)
+
+summarytools::freq(NEA2022$steuncol_plot)
+
+```
+
+```{r}
+summarytools::freq(NEA2022$psyveil_R)
+
+NEA2022 <- NEA2022 %>%
+  mutate(psyveil_plot = (psyveil_R - 1) / 16)
+
+summarytools::freq(NEA2022$psyveil_plot)
+
+```
+```{r}
+summarytools::freq(NEA2022$steuncol_RR)
+
+NEA2022 <- NEA2022 %>%
+  mutate(steuncol_plot3 = (steuncol_RR - 1) / 3)
+
+summarytools::freq(NEA2022$steuncol_plot3)
+```
+```{r}
+summarytools::freq(NEA2022$steunleid_RR)
+
+NEA2022 <- NEA2022 %>%
+  mutate(steunleid_plot3 = (steunleid_RR - 1) / 3)
+
+summarytools::freq(NEA2022$steunleid_plot3)
+
+```
+
+
+```{r}
+summarytools::freq(NEA2022$psyveil_RR)
+
+NEA2022 <- NEA2022 %>%
+  mutate(psyveil_plot3 = (psyveil_RR - 1) / 4)
+
+summarytools::freq(NEA2022$psyveil_plot3)
+
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022$class_emp_2 <- model2_emp$predclass
+table(NEA2022$class_emp_2)
+```
+```{r echo=FALSE, message=FALSE, warning=FALSE, include=TRUE, results='hide'}
+NEA2022$class_emp_3 <- model3_emp$predclass
+table(NEA2022$class_emp_3)
+```
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022$class_emp_4 <- model4_emp$predclass
+table(NEA2022$class_emp_4)
+```
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022$class_emp_5 <- model5_emp$predclass
+table(NEA2022$class_emp_5)
+```
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022$class_emp_6 <- model6_emp$predclass
+table(NEA2022$class_emp_6)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022$class_emp_7 <- model7_emp$predclass
+table(NEA2022$class_emp_7)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022$class_emp_8 <- model8_emp$predclass
+table(NEA2022$class_emp_8)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022$class_emp_9 <- model9_emp$predclass
+table(NEA2022$class_emp_9)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022$class_emp_10 <- model10_emp$predclass
+table(NEA2022$class_emp_10)
+```
+
+
+```{r, eval=FALSE}
+model3_emppred <- model3_emp$predclass
+model3_emppost <- model3_emp$posterior
+
+lposteriorsmodel3_emp <- as.list(as.data.frame(model3_emppost))
+
+pmodel3_empv1 <- lposteriorsmodel3_emp[[1]]
+pmodel3_empv2 <- lposteriorsmodel3_emp[[2]]
+pmodel3_empv3 <- lposteriorsmodel3_emp[[3]]
+
+model4_emppred <- model4_emp$predclass
+model4_emppost <- model4_emp$posterior
+
+lposteriorsmodel4_emp <- as.list(as.data.frame(model4_emppost))
+
+pmodel4_empv1 <- lposteriorsmodel4_emp[[1]]
+pmodel4_empv2 <- lposteriorsmodel4_emp[[2]]
+pmodel4_empv3 <- lposteriorsmodel4_emp[[3]]
+pmodel4_empv4 <- lposteriorsmodel4_emp[[4]]
+
+
+model5_emppred <- model5_emp$predclass
+model5_emppost <- model5_emp$posterior
+
+lposteriorsmodel5_emp <- as.list(as.data.frame(model5_emppost))
+
+pmodel5_empv1 <- lposteriorsmodel5_emp[[1]]
+pmodel5_empv2 <- lposteriorsmodel5_emp[[2]]
+pmodel5_empv3 <- lposteriorsmodel5_emp[[3]]
+pmodel5_empv4 <- lposteriorsmodel5_emp[[4]]
+pmodel5_empv5 <- lposteriorsmodel5_emp[[5]]
+
+model6_emppred <- model6_emp$predclass
+model6_emppost <- model6_emp$posterior
+
+lposteriorsmodel6_emp <- as.list(as.data.frame(model6_emppost))
+
+pmodel6_empv1 <- lposteriorsmodel6_emp[[1]]
+pmodel6_empv2 <- lposteriorsmodel6_emp[[2]]
+pmodel6_empv3 <- lposteriorsmodel6_emp[[3]]
+pmodel6_empv4 <- lposteriorsmodel6_emp[[4]]
+pmodel6_empv5 <- lposteriorsmodel6_emp[[5]]
+pmodel6_empv6 <- lposteriorsmodel6_emp[[6]]
+
+model7_emppred <- model7_emp$predclass
+model7_emppost <- model7_emp$posterior
+
+lposteriorsmodel7_emp <- as.list(as.data.frame(model7_emppost))
+
+pmodel7_empv1 <- lposteriorsmodel7_emp[[1]]
+pmodel7_empv2 <- lposteriorsmodel7_emp[[2]]
+pmodel7_empv3 <- lposteriorsmodel7_emp[[3]]
+pmodel7_empv4 <- lposteriorsmodel7_emp[[4]]
+pmodel7_empv5 <- lposteriorsmodel7_emp[[5]]
+pmodel7_empv6 <- lposteriorsmodel7_emp[[6]]
+pmodel7_empv7 <- lposteriorsmodel7_emp[[7]]
+
+model8_emppred <- model8_emp$predclass
+model8_emppost <- model8_emp$posterior
+
+lposteriorsmodel8_emp <- as.list(as.data.frame(model8_emppost))
+
+pmodel8_empv1 <- lposteriorsmodel8_emp[[1]]
+pmodel8_empv2 <- lposteriorsmodel8_emp[[2]]
+pmodel8_empv3 <- lposteriorsmodel8_emp[[3]]
+pmodel8_empv4 <- lposteriorsmodel8_emp[[4]]
+pmodel8_empv5 <- lposteriorsmodel8_emp[[5]]
+pmodel8_empv6 <- lposteriorsmodel8_emp[[6]]
+pmodel8_empv7 <- lposteriorsmodel8_emp[[7]]
+pmodel8_empv8 <- lposteriorsmodel8_emp[[8]]
+
+model9_emppred <- model9_emp$predclass
+model9_emppost <- model9_emp$posterior
+
+lposteriorsmodel9_emp <- as.list(as.data.frame(model9_emppost))
+
+pmodel9_empv1 <- lposteriorsmodel9_emp[[1]]
+pmodel9_empv2 <- lposteriorsmodel9_emp[[2]]
+pmodel9_empv3 <- lposteriorsmodel9_emp[[3]]
+pmodel9_empv4 <- lposteriorsmodel9_emp[[4]]
+pmodel9_empv5 <- lposteriorsmodel9_emp[[5]]
+pmodel9_empv6 <- lposteriorsmodel9_emp[[6]]
+pmodel9_empv7 <- lposteriorsmodel9_emp[[7]]
+pmodel9_empv8 <- lposteriorsmodel9_emp[[8]]
+pmodel9_empv9 <- lposteriorsmodel9_emp[[9]]
+
+model10_emppred <- model10_emp$predclass
+model10_emppost <- model10_emp$posterior
+
+lposteriorsmodel10_emp <- as.list(as.data.frame(model10_emppost))
+
+pmodel10_empv1 <- lposteriorsmodel10_emp[[1]]
+pmodel10_empv2 <- lposteriorsmodel10_emp[[2]]
+pmodel10_empv3 <- lposteriorsmodel10_emp[[3]]
+pmodel10_empv4 <- lposteriorsmodel10_emp[[4]]
+pmodel10_empv5 <- lposteriorsmodel10_emp[[5]]
+pmodel10_empv6 <- lposteriorsmodel10_emp[[6]]
+pmodel10_empv7 <- lposteriorsmodel10_emp[[7]]
+pmodel10_empv8 <- lposteriorsmodel10_emp[[8]]
+pmodel10_empv9 <- lposteriorsmodel10_emp[[9]]
+pmodel10_empv10 <- lposteriorsmodel10_emp[[10]]
+
+model11_emppred <- model11_emp$predclass
+model11_emppost <- model11_emp$posterior
+
+lposteriorsmodel11_emp <- as.list(as.data.frame(model11_emppost))
+
+pmodel11_empv1 <- lposteriorsmodel11_emp[[1]]
+pmodel11_empv2 <- lposteriorsmodel11_emp[[2]]
+pmodel11_empv3 <- lposteriorsmodel11_emp[[3]]
+pmodel11_empv4 <- lposteriorsmodel11_emp[[4]]
+pmodel11_empv5 <- lposteriorsmodel11_emp[[5]]
+pmodel11_empv6 <- lposteriorsmodel11_emp[[6]]
+pmodel11_empv7 <- lposteriorsmodel11_emp[[7]]
+pmodel11_empv8 <- lposteriorsmodel11_emp[[8]]
+pmodel11_empv9 <- lposteriorsmodel11_emp[[9]]
+pmodel11_empv10 <- lposteriorsmodel11_emp[[10]]
+pmodel11_empv11 <- lposteriorsmodel11_emp[[11]]
+
+model12_emppred <- model12_emp$predclass
+model12_emppost <- model12_emp$posterior
+
+lposteriorsmodel12_emp <- as.list(as.data.frame(model12_emppost))
+
+pmodel12_empv1 <- lposteriorsmodel12_emp[[1]]
+pmodel12_empv2 <- lposteriorsmodel12_emp[[2]]
+pmodel12_empv3 <- lposteriorsmodel12_emp[[3]]
+pmodel12_empv4 <- lposteriorsmodel12_emp[[4]]
+pmodel12_empv5 <- lposteriorsmodel12_emp[[5]]
+pmodel12_empv6 <- lposteriorsmodel12_emp[[6]]
+pmodel12_empv7 <- lposteriorsmodel12_emp[[7]]
+pmodel12_empv8 <- lposteriorsmodel12_emp[[8]]
+pmodel12_empv9 <- lposteriorsmodel12_emp[[9]]
+pmodel12_empv10 <- lposteriorsmodel12_emp[[10]]
+pmodel12_empv11 <- lposteriorsmodel12_emp[[11]]
+pmodel12_empv12 <- lposteriorsmodel12_emp[[12]]
+
+model13_emppred <- model13_emp$predclass
+model13_emppost <- model13_emp$posterior
+
+lposteriorsmodel13_emp <- as.list(as.data.frame(model13_emppost))
+
+pmodel13_empv1 <- lposteriorsmodel13_emp[[1]]
+pmodel13_empv2 <- lposteriorsmodel13_emp[[2]]
+pmodel13_empv3 <- lposteriorsmodel13_emp[[3]]
+pmodel13_empv4 <- lposteriorsmodel13_emp[[4]]
+pmodel13_empv5 <- lposteriorsmodel13_emp[[5]]
+pmodel13_empv6 <- lposteriorsmodel13_emp[[6]]
+pmodel13_empv7 <- lposteriorsmodel13_emp[[7]]
+pmodel13_empv8 <- lposteriorsmodel13_emp[[8]]
+pmodel13_empv9 <- lposteriorsmodel13_emp[[9]]
+pmodel13_empv10 <- lposteriorsmodel13_emp[[10]]
+pmodel13_empv11 <- lposteriorsmodel13_emp[[11]]
+pmodel13_empv12 <- lposteriorsmodel13_emp[[12]]
+pmodel13_empv13 <- lposteriorsmodel13_emp[[13]]
+
+model14_emppred <- model14_emp$predclass
+model14_emppost <- model14_emp$posterior
+
+lposteriorsmodel14_emp <- as.list(as.data.frame(model14_emppost))
+
+pmodel14_empv1 <- lposteriorsmodel14_emp[[1]]
+pmodel14_empv2 <- lposteriorsmodel14_emp[[2]]
+pmodel14_empv3 <- lposteriorsmodel14_emp[[3]]
+pmodel14_empv4 <- lposteriorsmodel14_emp[[4]]
+pmodel14_empv5 <- lposteriorsmodel14_emp[[5]]
+pmodel14_empv6 <- lposteriorsmodel14_emp[[6]]
+pmodel14_empv7 <- lposteriorsmodel14_emp[[7]]
+pmodel14_empv8 <- lposteriorsmodel14_emp[[8]]
+pmodel14_empv9 <- lposteriorsmodel14_emp[[9]]
+pmodel14_empv10 <- lposteriorsmodel14_emp[[10]]
+pmodel14_empv11 <- lposteriorsmodel14_emp[[11]]
+pmodel14_empv12 <- lposteriorsmodel14_emp[[12]]
+pmodel14_empv13 <- lposteriorsmodel14_emp[[13]]
+pmodel14_empv14 <- lposteriorsmodel14_emp[[14]]
+```
+
+```{r, eval=FALSE}
+Models_emp <- cbind (volgnumm, model3_emppred	,
+                 pmodel3_empv1	,
+                 pmodel3_empv2	,
+                 pmodel3_empv3	,
+                 model4_emppred	,
+                 pmodel4_empv1	,
+                 pmodel4_empv2	,
+                 pmodel4_empv3	,
+                 pmodel4_empv4	,
+                 model5_emppred	,
+                 pmodel5_empv1	,
+                 pmodel5_empv2	,
+                 pmodel5_empv3	,
+                 pmodel5_empv4	,
+                 pmodel5_empv5	,
+                 model6_emppred	,
+                 pmodel6_empv1	,
+                 pmodel6_empv2	,
+                 pmodel6_empv3	,
+                 pmodel6_empv4	,
+                 pmodel6_empv5	,
+                 pmodel6_empv6	,
+                 model7_emppred	,
+                 pmodel7_empv1	,
+                 pmodel7_empv2	,
+                 pmodel7_empv3	,
+                 pmodel7_empv4	,
+                 pmodel7_empv5	,
+                 pmodel7_empv6	,
+                 pmodel7_empv7	,
+                 model8_emppred	,
+                 pmodel8_empv1	,
+                 pmodel8_empv2	,
+                 pmodel8_empv3	,
+                 pmodel8_empv4	,
+                 pmodel8_empv5	,
+                 pmodel8_empv6	,
+                 pmodel8_empv7	,
+                 pmodel8_empv8 ,
+                 model9_emppred	,
+                 pmodel9_empv1	,
+                 pmodel9_empv2	,
+                 pmodel9_empv3	,
+                 pmodel9_empv4	,
+                 pmodel9_empv5	,
+                 pmodel9_empv6	,
+                 pmodel9_empv7	,
+                 pmodel9_empv8	,
+                 pmodel9_empv9 ,
+                 model10_emppred	,
+                 pmodel10_empv1 ,
+                 pmodel10_empv2 ,
+                 pmodel10_empv3 ,
+                 pmodel10_empv4 ,
+                 pmodel10_empv5 ,
+                 pmodel10_empv6 ,
+                 pmodel10_empv7 ,
+                 pmodel10_empv8 ,
+                 pmodel10_empv9 ,
+                 pmodel10_empv10 ,
+                 model11_emppred	,
+                 pmodel11_empv1 ,
+                 pmodel11_empv2 ,
+                 pmodel11_empv3 ,
+                 pmodel11_empv4 ,
+                 pmodel11_empv5 ,
+                 pmodel11_empv6 ,
+                 pmodel11_empv7 ,
+                 pmodel11_empv8 ,
+                 pmodel11_empv9 ,
+                 pmodel11_empv10 ,
+                 pmodel11_empv11 ,
+                 model12_emppred	,
+                 pmodel12_empv1 ,
+                 pmodel12_empv2 ,
+                 pmodel12_empv3 ,
+                 pmodel12_empv4 ,
+                 pmodel12_empv5 ,
+                 pmodel12_empv6 ,
+                 pmodel12_empv7 ,
+                 pmodel12_empv8 ,
+                 pmodel12_empv9 ,
+                 pmodel12_empv10 ,
+                 pmodel12_empv11 ,
+                 pmodel12_empv12 ,
+                 model13_emppred	,
+                 pmodel13_empv1 ,
+                 pmodel13_empv2 ,
+                 pmodel13_empv3 ,
+                 pmodel13_empv4 ,
+                 pmodel13_empv5 ,
+                 pmodel13_empv6 ,
+                 pmodel13_empv7 ,
+                 pmodel13_empv8 ,
+                 pmodel13_empv9 ,
+                 pmodel13_empv10 ,
+                 pmodel13_empv11 ,
+                 pmodel13_empv12 ,
+                 pmodel13_empv13 ,
+                 model14_emppred	,
+                 pmodel14_empv1 ,
+                 pmodel14_empv2 ,
+                 pmodel14_empv3 ,
+                 pmodel14_empv4 ,
+                 pmodel14_empv5 ,
+                 pmodel14_empv6 ,
+                 pmodel14_empv7 ,
+                 pmodel14_empv8 ,
+                 pmodel14_empv9 ,
+                 pmodel14_empv10 ,
+                 pmodel14_empv11 ,
+                 pmodel14_empv12 ,
+                 pmodel14_empv13 ,
+                 pmodel14_empv14 )
+```
+
+```{r}
+sapply(NEA2022, function(x) {
+  if (is.character(x) || is.factor(x)) {
+    any(is.na(iconv(as.character(x), from = "", to = "UTF-8")))
+  } else {
+    FALSE
+  }
+})
+
+```
+```{r}
+NEA2022[] <- lapply(NEA2022, function(x) {
+  if (is.character(x) || is.factor(x)) {
+    x <- as.character(x)
+    iconv(x, from = "", to = "UTF-8")
+  } else {
+    x
+  }
+})
+
+```
+
+
+```{r}
+library(haven)
+write_sav(NEA2022, "data/processed/NEA07.sav")
+```
+
+```{r}
+mean(NEA2022$leeftijd__55.75)
+```

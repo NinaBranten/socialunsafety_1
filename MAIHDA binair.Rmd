@@ -1,0 +1,1646 @@
+---
+title: "MAIHDA binair"
+output: html_document
+date: "2025-07-01"
+---
+
+
+```{r}
+NEA05$class_emp_7 <- model7_emp$predclass
+table(NEA05$class_emp_7)
+```
+
+
+```{r}
+table(NEA05$class_emp_7, NEA05$class7_b)
+```
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05 <-read.spss("data/processed/NEA05.sav", use.value.labels = T, to.data.frame = T)
+```
+
+
+```{r}
+remove.packages("Matrix")
+remove.packages("lme4")
+install.packages("Matrix")
+install.packages("me")
+install.packages("sjPlot")
+install.packages("Matrix", type = "source")
+utils::install.packages("lme4", type = "source")
+library(Matrix)
+library(lme4)
+library(merTools)
+library(sjPlot)
+```
+
+
+SHORT_TERM conflict
+
+```{r}
+NEA05$pconflict <-pmodel7_bv1*100
+```
+
+
+
+```{r}
+Maihdab_conflict_0 <- lmer(pconflict ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihdab_conflict_0)
+confint(Maihdab_conflict_0)
+```
+```{r}
+Maihdab_conflict_1 <- lmer(pconflict ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA05)
+summary(Maihdab_conflict_1)
+```
+
+```{r}
+tab_model(Maihdab_conflict_0, Maihdab_conflict_1, p.style="stars")
+```
+
+
+
+```{r}
+library(dplyr)
+
+NEA05$predicted_conflict <- predict(Maihdab_conflict_1, re.form = NULL, type = "response")
+
+```
+
+```{r}
+NEA05$residual_conflict <- NEA05$pconflict - NEA05$predicted_conflict
+
+```
+
+```{r}
+summary_preds_1 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(
+    mean_pred_1 = mean(predicted_conflict, na.rm = TRUE),
+    se_pred_1 = sd(residual_conflict, na.rm = TRUE) / sqrt(n()),  # SE van residuals binnen groep
+    n = n(),
+    .groups = "drop"
+  )
+summary_preds_1
+```
+
+
+```{r}
+ggplot(summary_preds_1, aes(x = leeftijd_, y = mean_pred_1, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
+                    ymax = mean_pred_1 + se_pred_1),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+
+
+
+```
+
+
+
+
+
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(Maihdab_conflict_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Maihdab_conflict_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+
+
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+re_df
+```
+
+
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+```{r}
+pred_df_1 <- NEA05 %>%
+  mutate(
+    pred_1 = predict(Maihdab_conflict_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_1 = mean(pred_1, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+
+SUPERVISOR UNSAFETY
+
+
+```{r}
+NEA05$psuper <-pmodel7_bv2*100
+```
+
+
+
+```{r}
+Maihdab_super_0 <- lmer(psuper ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihdab_super_0)
+confint(Maihdab_super_0)
+```
+```{r}
+Maihdab_super_1 <- lmer(psuper ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA05)
+summary(Maihdab_super_1)
+```
+
+```{r}
+tab_model(Maihdab_super_0, Maihdab_super_1, p.style="stars")
+```
+
+
+
+```{r}
+library(dplyr)
+
+NEA05$predicted_super <- predict(Maihdab_super_1, re.form = NULL, type = "response")
+
+```
+
+```{r}
+NEA05$residual_super <- NEA05$psuper - NEA05$predicted_super
+
+```
+
+```{r}
+summary_preds_1 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(
+    mean_pred_1 = mean(predicted_super, na.rm = TRUE),
+    se_pred_1 = sd(residual_super, na.rm = TRUE) / sqrt(n()),  # SE van residuals binnen groep
+    n = n(),
+    .groups = "drop"
+  )
+summary_preds_1
+```
+
+
+```{r}
+ggplot(summary_preds_1, aes(x = leeftijd_, y = mean_pred_1, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
+                    ymax = mean_pred_1 + se_pred_1),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+
+
+
+```
+
+
+
+
+
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(Maihdab_super_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Maihdab_super_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+
+
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+re_df
+```
+
+
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+```{r}
+pred_df_1 <- NEA05 %>%
+  mutate(
+    pred_1 = predict(Maihdab_super_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_1 = mean(pred_1, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+
+COWORKER UNSAFETY
+
+
+```{r}
+NEA05$pcow <-pmodel7_bv3*100
+```
+
+
+
+```{r}
+Maihdab_cow_0 <- lmer(pcow ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihdab_cow_0)
+confint(Maihdab_cow_0)
+```
+```{r}
+Maihdab_cow_1 <- lmer(pcow ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA05)
+summary(Maihdab_cow_1)
+```
+
+```{r}
+tab_model(Maihdab_cow_0, Maihdab_cow_1, p.style="stars")
+```
+
+
+
+```{r}
+library(dplyr)
+
+NEA05$predicted_cow <- predict(Maihdab_cow_1, re.form = NULL, type = "response")
+
+```
+
+```{r}
+NEA05$residual_cow <- NEA05$pcow - NEA05$predicted_cow
+
+```
+
+```{r}
+summary_preds_1 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(
+    mean_pred_1 = mean(predicted_cow, na.rm = TRUE),
+    se_pred_1 = sd(residual_cow, na.rm = TRUE) / sqrt(n()),  # SE van residuals binnen groep
+    n = n(),
+    .groups = "drop"
+  )
+summary_preds_1
+```
+
+
+```{r}
+ggplot(summary_preds_1, aes(x = leeftijd_, y = mean_pred_1, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
+                    ymax = mean_pred_1 + se_pred_1),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+
+
+
+```
+
+
+
+
+
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(Maihdab_cow_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Maihdab_cow_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+
+
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+re_df
+```
+
+
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+```{r}
+pred_df_1 <- NEA05 %>%
+  mutate(
+    pred_1 = predict(Maihdab_cow_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_1 = mean(pred_1, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+
+
+
+
+
+UNSAFE SOCIAL CLIMATE
+
+
+```{r}
+NEA05$pclim <-pmodel7_bv4*100
+```
+
+
+
+```{r}
+Maihdab_clim_0 <- lmer(pclim ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihdab_clim_0)
+confint(Maihdab_clim_0)
+```
+```{r}
+Maihdab_clim_1 <- lmer(pclim ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA05)
+summary(Maihdab_clim_1)
+```
+
+```{r}
+tab_model(Maihdab_clim_0, Maihdab_clim_1, p.style="stars")
+```
+
+
+
+```{r}
+library(dplyr)
+
+NEA05$predicted_clim <- predict(Maihdab_clim_1, re.form = NULL, type = "response")
+
+```
+
+```{r}
+NEA05$residual_clim <- NEA05$pclim - NEA05$predicted_clim
+
+```
+
+```{r}
+summary_preds_1 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(
+    mean_pred_1 = mean(predicted_clim, na.rm = TRUE),
+    se_pred_1 = sd(residual_clim, na.rm = TRUE) / sqrt(n()),  # SE van residuals binnen groep
+    n = n(),
+    .groups = "drop"
+  )
+summary_preds_1
+```
+
+
+```{r}
+ggplot(summary_preds_1, aes(x = leeftijd_, y = mean_pred_1, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
+                    ymax = mean_pred_1 + se_pred_1),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+
+
+
+```
+
+
+
+
+
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(Maihdab_clim_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Maihdab_clim_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+
+
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+re_df
+```
+
+
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+```{r}
+pred_df_1 <- NEA05 %>%
+  mutate(
+    pred_1 = predict(Maihdab_clim_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_1 = mean(pred_1, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+
+
+
+OVERALL SAFE
+
+
+```{r}
+NEA05$psafe <-pmodel7_bv5*100
+```
+
+
+
+```{r}
+Maihdab_safe_0 <- lmer(psafe ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihdab_safe_0)
+confint(Maihdab_safe_0)
+```
+```{r}
+Maihdab_safe_1 <- lmer(psafe ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA05)
+summary(Maihdab_safe_1)
+```
+
+```{r}
+tab_model(Maihdab_safe_0, Maihdab_safe_1, p.style="stars")
+```
+
+
+
+```{r}
+library(dplyr)
+
+NEA05$predicted_safe <- predict(Maihdab_safe_1, re.form = NULL, type = "response")
+
+```
+
+```{r}
+NEA05$residual_safe <- NEA05$psafe - NEA05$predicted_safe
+
+```
+
+```{r}
+summary_preds_1 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(
+    mean_pred_1 = mean(predicted_safe, na.rm = TRUE),
+    se_pred_1 = sd(residual_safe, na.rm = TRUE) / sqrt(n()),  # SE van residuals binnen groep
+    n = n(),
+    .groups = "drop"
+  )
+summary_preds_1
+```
+
+
+```{r}
+ggplot(summary_preds_1, aes(x = leeftijd_, y = mean_pred_1, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
+                    ymax = mean_pred_1 + se_pred_1),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+
+
+
+```
+
+
+
+
+
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(Maihdab_safe_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Maihdab_safe_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+
+
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+re_df
+```
+
+
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+```{r}
+pred_df_1 <- NEA05 %>%
+  mutate(
+    pred_1 = predict(Maihdab_safe_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_1 = mean(pred_1, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+
+
+
+
+
+OVERALL HIGHLY SAFE
+
+
+```{r}
+NEA05$phighsafe <-pmodel7_bv6*100
+```
+
+
+
+```{r}
+Maihdab_highsafe_0 <- lmer(phighsafe ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihdab_highsafe_0)
+confint(Maihdab_highsafe_0)
+```
+```{r}
+Maihdab_highsafe_1 <- lmer(phighsafe ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA05)
+summary(Maihdab_highsafe_1)
+```
+
+```{r}
+tab_model(Maihdab_highsafe_0, Maihdab_highsafe_1, p.style="stars")
+```
+
+
+
+```{r}
+library(dplyr)
+
+NEA05$predicted_highsafe <- predict(Maihdab_highsafe_1, re.form = NULL, type = "response")
+
+```
+
+```{r}
+NEA05$residual_highsafe <- NEA05$phighsafe - NEA05$predicted_highsafe
+
+```
+
+```{r}
+summary_preds_1 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(
+    mean_pred_1 = mean(predicted_highsafe, na.rm = TRUE),
+    se_pred_1 = sd(residual_highsafe, na.rm = TRUE) / sqrt(n()),  # SE van residuals binnen groep
+    n = n(),
+    .groups = "drop"
+  )
+summary_preds_1
+```
+
+
+```{r}
+ggplot(summary_preds_1, aes(x = leeftijd_, y = mean_pred_1, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
+                    ymax = mean_pred_1 + se_pred_1),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+
+
+
+```
+
+
+
+
+
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(Maihdab_highsafe_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Maihdab_highsafe_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+
+
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+re_df
+```
+
+
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+```{r}
+pred_df_1 <- NEA05 %>%
+  mutate(
+    pred_1 = predict(Maihdab_highsafe_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_1 = mean(pred_1, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+
+
+
+
+OVERALL UNSAFE
+
+
+```{r}
+NEA05$punsafe <-pmodel7_bv7*100
+```
+
+
+
+```{r}
+Maihdab_unsafe_0 <- lmer(punsafe ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihdab_unsafe_0)
+confint(Maihdab_unsafe_0)
+```
+```{r}
+Maihdab_unsafe_1 <- lmer(punsafe ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA05)
+summary(Maihdab_unsafe_1)
+```
+
+```{r}
+tab_model(Maihdab_unsafe_0, Maihdab_unsafe_1, p.style="stars")
+```
+
+
+
+```{r}
+library(dplyr)
+
+NEA05$predicted_unsafe <- predict(Maihdab_unsafe_1, re.form = NULL, type = "response")
+
+```
+
+```{r}
+NEA05$residual_unsafe <- NEA05$punsafe - NEA05$predicted_unsafe
+
+```
+
+```{r}
+summary_preds_1 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(
+    mean_pred_1 = mean(predicted_unsafe, na.rm = TRUE),
+    se_pred_1 = sd(residual_unsafe, na.rm = TRUE) / sqrt(n()),  # SE van residuals binnen groep
+    n = n(),
+    .groups = "drop"
+  )
+summary_preds_1
+```
+
+
+```{r}
+ggplot(summary_preds_1, aes(x = leeftijd_, y = mean_pred_1, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
+                    ymax = mean_pred_1 + se_pred_1),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+
+
+
+```
+
+
+
+
+
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(Maihdab_unsafe_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Maihdab_unsafe_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+
+
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+re_df
+```
+
+
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+```{r}
+pred_df_1 <- NEA05 %>%
+  mutate(
+    pred_1 = predict(Maihdab_unsafe_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_1 = mean(pred_1, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+```
+
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```

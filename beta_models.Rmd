@@ -1,0 +1,1248 @@
+---
+title: "MAIHDA"
+output: html_document
+date: "2025-05-08"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(Matrix)
+library(lme4)
+library(merTools)
+library(sjPlot)
+library(glmmTMB)
+```
+
+
+
+BETA MODELS GLMM BETA_FAMILY LINK = LOGIT
+
+
+Overall unsafe (5)
+
+
+```{r}
+NEA05$pmodel7_empv5 <- pmodel7_empv5
+
+NEA05$pmodel7_empv5_T <- (NEA05$pmodel7_empv5 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv5_T)
+summary(NEA05$pmodel7_empv5)
+```
+
+
+```{r}
+flb_5_0 <- glmmTMB(pmodel7_empv5_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_5_0)
+```
+```{r}
+mu <- fitted(flb_5_0)
+var_y <- mu * (1 - mu) / (1 + 2.64)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+vpc
+```{r}
+0.0008918/(0.0008918+0.01254191)
+```
+```{r}
+flb_5_g <- glmmTMB(pmodel7_empv5_T ~ gender_v + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_5_g)
+```
+```{r}
+flb_5_m <- glmmTMB(pmodel7_empv5_T ~ migration_eu + migration_noeu + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_5_m)
+```
+```{r}
+flb_5_e <- glmmTMB(pmodel7_empv5_T ~ education_laag + education_middel + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_5_e)
+```
+```{r}
+flb_5_l <- glmmTMB(pmodel7_empv5_T ~ leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_5_l)
+```
+
+```{r}
+flb_5_1 <- glmmTMB(pmodel7_empv5_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_5_1)
+```
+
+```{r}
+mu <- fitted(flb_5_1)
+var_y <- mu * (1 - mu) / (1 + 2.65)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+vpc
+```{r}
+2.532e-09/(2.532e-09+0.01250966)
+```
+
+```{r}
+NEA05$predicted_5 <- predict(flb_5_1, type = "response")
+```
+
+```{r}
+summary_preds_5 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_5 = mean(predicted_5, na.rm = TRUE),
+            se_pred_5 = sd(predicted_5, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_5, aes(x = leeftijd_, y = mean_pred_5, color = gender)) +
+  geom_point(position_5 = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_5 - se_pred_5, ymax = mean_pred_5 + se_pred_5),
+                width = 0,
+                position = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+
+
+```{r}
+# Haal de random intercepts
+re_intersections <- ranef(flb_5_0, condVar = TRUE)$cond$intersections
+
+# Extracteer estimates
+estimates <- re_intersections[["(Intercept)"]]
+
+# Extracteer varianties (condVar is een attribuut van het dataframe)
+vars <- attr(re_intersections, "condVar")[1, 1, ]
+se <- sqrt(vars)
+
+# Zet alles in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re_intersections),
+  estimate = estimates,
+  se = se
+)
+
+# Bereken 95% betrouwbaarheidsintervallen
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+
+```
+
+
+
+
+```{r}
+# Sorteer op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+
+# Plot maken
+ggplot(re_df, aes(x = rank, y = estimate)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects (Random Intercepts)",
+    title = "Estimated Intersectional Effects with 95% CI (Beta Model)"
+  ) +
+  theme_minimal()
+
+```
+
+
+
+
+
+
+
+```{r}
+# Haal de random intercepts
+re_intersections <- ranef(flb_5_1, condVar = TRUE)$cond$intersections
+
+# Extracteer estimates
+estimates <- re_intersections[["(Intercept)"]]
+
+# Extracteer varianties (condVar is een attribuut van het dataframe)
+vars <- attr(re_intersections, "condVar")[1, 1, ]
+se <- sqrt(vars)
+
+# Zet alles in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re_intersections),
+  estimate = estimates,
+  se = se
+)
+
+# Bereken 95% betrouwbaarheidsintervallen
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+
+```
+
+
+```{r}
+# Sorteer op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+re_df
+
+ggplot(re_df, aes(x = rank, y = estimate)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects (Random Intercepts)",
+    title = "Estimated Intersectional Effects with 95% CI (Beta Model)"
+  ) +
+  theme_minimal()
+
+
+```
+
+
+
+
+
+```{r}
+pred_df_5 <- NEA05 %>%
+  mutate(
+    pred_5 = predict(flb_5_0, type = "response", se.fit = TRUE)$fit,
+    se_pred_5 = predict(flb_5_0, type = "response", se.fit = TRUE)$se.fit
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_5 = mean(pred_5, na.rm = TRUE), 
+    se_mean_5 = mean(se_pred_5, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+pred_df_5 <- pred_df_5 %>%
+  mutate(
+    lower_CI = pred_mean_5 - 1.96 * se_mean_5,
+    upper_CI = pred_mean_5 + 1.96 * se_mean_5
+  )
+
+```
+
+
+```{r}
+list_5 <- pred_df_5 %>%
+  arrange(desc(pred_mean_5)) %>%
+  mutate(rank = row_number())
+
+top10_5 <- list_5 %>% slice(1:10)
+bottom10_5 <- list_5 %>% slice((n() - 9):n())
+
+```
+
+
+```{r}
+list_5 <- bind_rows(
+  top10_5 %>% mutate(type = "Top 10"),
+  bottom10_5 %>% mutate(type = "Bottom 10")
+)
+
+print(list_5)
+
+```
+
+
+
+
+
+
+
+
+
+```{r}
+pred_df_5 <- NEA05 %>%
+  mutate(
+    pred_5 = predict(flb_5_1, type = "response", se.fit = TRUE)$fit,
+    se_pred_5 = predict(flb_5_1, type = "response", se.fit = TRUE)$se.fit
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_5 = mean(pred_5, na.rm = TRUE), 
+    se_mean_5 = mean(se_pred_5, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+pred_df_5 <- pred_df_5 %>%
+  mutate(
+    lower_CI = pred_mean_5 - 1.96 * se_mean_5,
+    upper_CI = pred_mean_5 + 1.96 * se_mean_5
+  )
+
+```
+
+
+```{r}
+list_5 <- pred_df_5 %>%
+  arrange(desc(pred_mean_5)) %>%
+  mutate(rank = row_number())
+
+top10_5 <- list_5 %>% slice(1:10)
+bottom10_5 <- list_5 %>% slice((n() - 9):n())
+
+```
+
+
+```{r}
+list_5 <- bind_rows(
+  top10_5 %>% mutate(type = "Top 10"),
+  bottom10_5 %>% mutate(type = "Bottom 10")
+)
+
+print(list_5)
+
+```
+
+```{r}
+install.packages("flextable")
+library(flextable)
+
+list_5 %>%
+  select(type, intersections, pred_mean_5, lower_CI, upper_CI) %>%
+  rename(
+    Type = type,
+    `Stratum (Intersections)` = intersections,
+    `Predicted Value` = pred_mean_5,
+    `Lower 95% CI` = lower_CI,
+    `Upper 95% CI` = upper_CI
+  ) %>%
+  flextable() %>%
+  set_header_labels(
+    `Predicted Value` = "Predicted",
+    `Lower 95% CI` = "Lower CI",
+    `Upper 95% CI` = "Upper CI"
+  ) %>%
+  autofit()
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Supervisor unsafety (7)
+
+
+
+```{r}
+NEA05$pmodel7_empv7 <- pmodel7_empv7
+
+NEA05$pmodel7_empv7_T <- (NEA05$pmodel7_empv7 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv7_T)
+summary(NEA05$pmodel7_empv7)
+
+
+flb_7_0 <- glmmTMB(pmodel7_empv7_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_7_0)
+
+```
+
+```{r}
+mu <- fitted(flb_7_0)
+var_y <- mu * (1 - mu) / (1 + 3.02)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+vpc
+```{r}
+0.0002297/(0.0002297+0.01138754)
+```
+
+
+```{r}
+flb_7_1 <- glmmTMB(pmodel7_empv7_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_7_1)
+```
+```{r}
+mu <- fitted(flb_7_1)
+var_y <- mu * (1 - mu) / (1 + 3.03)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+vpc
+```{r}
+1.337e-09/(1.337e-09+0.01136036)
+```
+
+
+```{r}
+NEA05$predicted_7 <- predict(flb_7_1, type = "response", re.form = NA)
+```
+
+```{r}
+summary_preds_7 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_7 = mean(predicted_7, na.rm = TRUE),
+            se_pred_7 = sd(predicted_7, na.rm = TRUE)/sqrt(n()),  # standaardfout
+            .groups = "drop")
+```
+
+
+```{r}
+ggplot(summary_preds_7, aes(x = leeftijd_, y = mean_pred_7, color = gender)) +
+  geom_point(position_7 = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_7 - se_pred_7, ymax = mean_pred_7 + se_pred_7),
+                width = 0,
+                position_7 = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+```
+
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_7, aes(x = leeftijd_, y = mean_pred_7, color = gender)) +
+  geom_point(position = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_7 - se_pred_7, ymax = mean_pred_7 + se_pred_7),
+                width = 0,
+                position = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+
+```{r}
+pred_df_7 <- NEA05 %>%
+  mutate(
+    pred_7 = predict(flb_7_1, type = "response", se.fit = TRUE)$fit,
+    se_pred_7 = predict(flb_7_1, type = "response", se.fit = TRUE)$se.fit
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_7 = mean(pred_7, na.rm = TRUE), 
+    se_mean_7 = mean(se_pred_7, na.rm = TRUE) 
+  ) %>%
+  ungroup()
+
+pred_df_7 <- pred_df_7 %>%
+  mutate(
+    lower_CI = pred_mean_7 - 1.96 * se_mean_7,
+    upper_CI = pred_mean_7 + 1.96 * se_mean_7
+  )
+
+```
+
+
+```{r}
+list_7 <- pred_df_7 %>%
+  arrange(desc(pred_mean_7)) %>%
+  mutate(rank = row_number())
+
+top10_7 <- list_7 %>% slice(1:10)
+bottom10_7 <- list_7 %>% slice((n() - 9):n())
+
+```
+
+
+```{r}
+list_7 <- bind_rows(
+  top10_7 %>% mutate(type = "Top 10"),
+  bottom10_7 %>% mutate(type = "Bottom 10")
+)
+
+print(list_7)
+
+```
+
+
+
+```{r}
+
+list_7 %>%
+  select(type, intersections, pred_mean_7, lower_CI, upper_CI) %>%
+  rename(
+    Type = type,
+    `Stratum (Intersections)` = intersections,
+    `Predicted Value` = pred_mean_7,
+    `Lower 95% CI` = lower_CI,
+    `Upper 95% CI` = upper_CI
+  ) %>%
+  flextable() %>%
+  set_header_labels(
+    `Predicted Value` = "Predicted",
+    `Lower 95% CI` = "Lower CI",
+    `Upper 95% CI` = "Upper CI"
+  ) %>%
+  autofit()
+```
+
+
+
+
+
+Coworker unsafety (1)
+
+
+```{r}
+NEA05$pmodel7_empv1 <- pmodel7_empv1
+
+NEA05$pmodel7_empv1_T <- (NEA05$pmodel7_empv1 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv1_T)
+summary(NEA05$pmodel7_empv1)
+
+
+flb_1_0 <- glmmTMB(pmodel7_empv1_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_1_0)
+
+```
+
+```{r}
+mu <- fitted(flb_1_0)
+var_y <- mu * (1 - mu) / (1 + 3.2)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+vpc
+```{r}
+0.0001091/(0.0001091+0.01640427)
+```
+
+
+```{r}
+flb_1_1 <- glmmTMB(pmodel7_empv1_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_1_1)
+```
+```{r}
+mu <- fitted(flb_1_1)
+var_y <- mu * (1 - mu) / (1 + 3.2)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+```{r}
+6.683e-10/(6.683e-10+0.01640499)
+```
+
+```{r}
+NEA05$predicted_1 <- predict(flb_1_1, type = "response", re.form = NA)
+```
+
+```{r}
+summary_preds_1 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_1 = mean(predicted_1, na.rm = TRUE),
+            se_pred_1 = sd(predicted_1, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_1, aes(x = leeftijd_, y = mean_pred_1, color = gender)) +
+  geom_point(position_1 = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1, ymax = mean_pred_1 + se_pred_1),
+                width = 0,
+                position_1 = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+
+
+
+```{r}
+pred_df_1 <- NEA05 %>%
+  mutate(
+    pred_1 = predict(flb_1_1, type = "response", se.fit = TRUE)$fit, 
+    se_pred_1 = predict(flb_1_1, type = "response", se.fit = TRUE)$se.fit 
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_1 = mean(pred_1, na.rm = TRUE), 
+    se_mean_1 = mean(se_pred_1, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+pred_df_1 <- pred_df_1 %>%
+  mutate(
+    lower_CI = pred_mean_1 - 1.96 * se_mean_1,
+    upper_CI = pred_mean_1 + 1.96 * se_mean_1
+  )
+
+```
+
+
+```{r}
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+```
+
+
+```{r}
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+print(list_1)
+
+```
+
+
+
+```{r}
+
+list_1 %>%
+  select(type, intersections, pred_mean_1, lower_CI, upper_CI) %>%
+  rename(
+    Type = type,
+    `Stratum (Intersections)` = intersections,
+    `Predicted Value` = pred_mean_1,
+    `Lower 95% CI` = lower_CI,
+    `Upper 95% CI` = upper_CI
+  ) %>%
+  flextable() %>%
+  set_header_labels(
+    `Predicted Value` = "Predicted",
+    `Lower 95% CI` = "Lower CI",
+    `Upper 95% CI` = "Upper CI"
+  ) %>%
+  autofit()
+```
+
+
+
+
+Safe interpersonal behaviors, unsafe social climate (2)
+
+
+```{r}
+NEA05$pmodel7_empv2 <- pmodel7_empv2
+
+NEA05$pmodel7_empv2_T <- (NEA05$pmodel7_empv2 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv2_T)
+summary(NEA05$pmodel7_empv2)
+
+
+flb_2_0 <- glmmTMB(pmodel7_empv2_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_2_0)
+
+```
+```{r}
+mu <- fitted(flb_2_0)
+var_y <- mu * (1 - mu) / (1 + 1.35)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+vpc
+```{r}
+0.002424/(0.002424+0.05470768)
+```
+
+
+```{r}
+flb_2_1 <- glmmTMB(pmodel7_empv2_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_2_1)
+```
+
+```{r}
+mu <- fitted(flb_2_1)
+var_y <- mu * (1 - mu) / (1 + 1.35)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+vpc
+```{r}
+5.468e-09/(5.468e-09+0.05470771)
+```
+
+
+```{r}
+NEA05$predicted_2 <- predict(flb_2_1, type = "response", re.form = NA)
+```
+
+```{r}
+summary_preds_2 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_2 = mean(predicted_2, na.rm = TRUE),
+            se_pred_2 = sd(predicted_2, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_2, aes(x = leeftijd_, y = mean_pred_2, color = gender)) +
+  geom_point(position_2 = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_2 - se_pred_2, ymax = mean_pred_2 + se_pred_2),
+                width = 0,
+                position_2 = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+
+```{r}
+pred_df_2 <- NEA05 %>%
+  mutate(
+    pred_2 = predict(flb_2_1, type = "response", se.fit = TRUE)$fit,
+    se_pred_2 = predict(flb_2_1, type = "response", se.fit = TRUE)$se.fit
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_2 = mean(pred_2, na.rm = TRUE), 
+    se_mean_2 = mean(se_pred_2, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+pred_df_2 <- pred_df_2 %>%
+  mutate(
+    lower_CI = pred_mean_2 - 1.96 * se_mean_2,
+    upper_CI = pred_mean_2 + 1.96 * se_mean_2
+  )
+
+```
+
+
+```{r}
+list_2 <- pred_df_2 %>%
+  arrange(desc(pred_mean_2)) %>%
+  mutate(rank = row_number())
+
+top10_2 <- list_2 %>% slice(1:10)
+bottom10_2 <- list_2 %>% slice((n() - 9):n())
+
+```
+
+
+```{r}
+list_2 <- bind_rows(
+  top10_2 %>% mutate(type = "Top 10"),
+  bottom10_2 %>% mutate(type = "Bottom 10")
+)
+
+print(list_2)
+
+```
+
+
+
+```{r}
+
+list_2 %>%
+  select(type, intersections, pred_mean_2, lower_CI, upper_CI) %>%
+  rename(
+    Type = type,
+    `Stratum (Intersections)` = intersections,
+    `Predicted Value` = pred_mean_2,
+    `Lower 95% CI` = lower_CI,
+    `Upper 95% CI` = upper_CI
+  ) %>%
+  flextable() %>%
+  set_header_labels(
+    `Predicted Value` = "Predicted",
+    `Lower 95% CI` = "Lower CI",
+    `Upper 95% CI` = "Upper CI"
+  ) %>%
+  autofit()
+```
+
+
+Short-term conflict
+
+
+```{r}
+NEA05$pmodel7_empv3 <- pmodel7_empv3
+
+NEA05$pmodel7_empv3_T <- (NEA05$pmodel7_empv3 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv3_T)
+summary(NEA05$pmodel7_empv3)
+
+
+flb_3_0 <- glmmTMB(pmodel7_empv3_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_3_0)
+
+```
+```{r}
+mu <- fitted(flb_3_0)
+var_y <- mu * (1 - mu) / (1 + 1.58)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+vpc
+```{r}
+0.002189/(0.002189+0.0360357)
+```
+
+
+```{r}
+flb_3_1 <- glmmTMB(pmodel7_empv3_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_3_1)
+```
+```{r}
+mu <- fitted(flb_3_1)
+var_y <- mu * (1 - mu) / (1 + 1.58)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+vpc
+```{r}
+2.696e-09/(2.696e-09+0.0360385)
+```
+
+```{r}
+NEA05$predicted_3 <- predict(flb_3_1, type = "response", re.form = NA)
+```
+
+```{r}
+summary_preds_3 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_3 = mean(predicted_3, na.rm = TRUE),
+            se_pred_3 = sd(predicted_3, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_3, aes(x = leeftijd_, y = mean_pred_3, color = gender)) +
+  geom_point(position_3 = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_3 - se_pred_3, ymax = mean_pred_3 + se_pred_3),
+                width = 0,
+                position_3 = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+
+
+```{r}
+pred_df_3 <- NEA05 %>%
+  mutate(
+    pred_3 = predict(flb_3_1, type = "response", se.fit = TRUE)$fit,
+    se_pred_3 = predict(flb_3_1, type = "response", se.fit = TRUE)$se.fit
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_3 = mean(pred_3, na.rm = TRUE), 
+    se_mean_3 = mean(se_pred_3, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+pred_df_3 <- pred_df_3 %>%
+  mutate(
+    lower_CI = pred_mean_3 - 1.96 * se_mean_3,
+    upper_CI = pred_mean_3 + 1.96 * se_mean_3
+  )
+
+```
+
+
+```{r}
+list_3 <- pred_df_3 %>%
+  arrange(desc(pred_mean_3)) %>%
+  mutate(rank = row_number())
+
+top10_3 <- list_3 %>% slice(1:10)
+bottom10_3 <- list_3 %>% slice((n() - 9):n())
+
+```
+
+
+```{r}
+list_3 <- bind_rows(
+  top10_3 %>% mutate(type = "Top 10"),
+  bottom10_3 %>% mutate(type = "Bottom 10")
+)
+
+print(list_3)
+
+```
+
+
+
+```{r}
+
+list_3 %>%
+  select(type, intersections, pred_mean_3, lower_CI, upper_CI) %>%
+  rename(
+    Type = type,
+    `Stratum (Intersections)` = intersections,
+    `Predicted Value` = pred_mean_3,
+    `Lower 95% CI` = lower_CI,
+    `Upper 95% CI` = upper_CI
+  ) %>%
+  flextable() %>%
+  set_header_labels(
+    `Predicted Value` = "Predicted",
+    `Lower 95% CI` = "Lower CI",
+    `Upper 95% CI` = "Upper CI"
+  ) %>%
+  autofit()
+```
+
+
+
+Overall highly safe (4)
+
+
+```{r}
+NEA05$pmodel7_empv4 <- pmodel7_empv4
+
+NEA05$pmodel7_empv4_T <- (NEA05$pmodel7_empv4 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv4_T)
+summary(NEA05$pmodel7_empv4)
+
+
+flb_4_0 <- glmmTMB(pmodel7_empv4_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_4_0)
+
+```
+
+```{r}
+mu <- fitted(flb_4_0)
+var_y <- mu * (1 - mu) / (1 + 0.745)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+vpc
+```{r}
+0.01372/(0.01372+0.1169198)
+```
+
+
+```{r}
+flb_4_1 <- glmmTMB(pmodel7_empv4_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_4_1)
+```
+
+```{r}
+mu <- fitted(flb_4_1)
+var_y <- mu * (1 - mu) / (1 + 0.745)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+
+vpc
+```{r}
+0.0006929/(0.0006929+0.1168912)
+```
+
+```{r}
+NEA05$predicted_4 <- predict(flb_4_1, type = "response", re.form = NA)
+```
+
+```{r}
+summary_preds_4 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_4 = mean(predicted_4, na.rm = TRUE),
+            se_pred_4 = sd(predicted_4, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_4, aes(x = leeftijd_, y = mean_pred_4, color = gender)) +
+  geom_point(position_4 = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_4 - se_pred_4, ymax = mean_pred_4 + se_pred_4),
+                width = 0,
+                position_4 = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+
+
+```{r}
+pred_df_4 <- NEA05 %>%
+  mutate(
+    pred_4 = predict(flb_4_1, type = "response", se.fit = TRUE)$fit,
+    se_pred_4 = predict(flb_4_1, type = "response", se.fit = TRUE)$se.fit
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_4 = mean(pred_4, na.rm = TRUE), 
+    se_mean_4 = mean(se_pred_4, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+pred_df_4 <- pred_df_4 %>%
+  mutate(
+    lower_CI = pred_mean_4 - 1.96 * se_mean_4,
+    upper_CI = pred_mean_4 + 1.96 * se_mean_4
+  )
+
+```
+
+
+```{r}
+list_4 <- pred_df_4 %>%
+  arrange(desc(pred_mean_4)) %>%
+  mutate(rank = row_number())
+
+top10_4 <- list_4 %>% slice(1:10)
+bottom10_4 <- list_4 %>% slice((n() - 9):n())
+
+```
+
+
+```{r}
+list_4 <- bind_rows(
+  top10_4 %>% mutate(type = "Top 10"),
+  bottom10_4 %>% mutate(type = "Bottom 10")
+)
+
+print(list_4)
+
+```
+
+
+
+```{r}
+
+list_4 %>%
+  select(type, intersections, pred_mean_4, lower_CI, upper_CI) %>%
+  rename(
+    Type = type,
+    `Stratum (Intersections)` = intersections,
+    `Predicted Value` = pred_mean_4,
+    `Lower 95% CI` = lower_CI,
+    `Upper 95% CI` = upper_CI
+  ) %>%
+  flextable() %>%
+  set_header_labels(
+    `Predicted Value` = "Predicted",
+    `Lower 95% CI` = "Lower CI",
+    `Upper 95% CI` = "Upper CI"
+  ) %>%
+  autofit()
+```
+
+
+
+
+Overall safe (6)
+
+
+```{r}
+NEA05$pmodel7_empv6 <- pmodel7_empv6
+
+NEA05$pmodel7_empv6_T <- (NEA05$pmodel7_empv6 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv6_T)
+summary(NEA05$pmodel7_empv6)
+
+
+flb_6_0 <- glmmTMB(pmodel7_empv6_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_6_0)
+
+```
+
+```{r}
+mu <- fitted(flb_6_0)
+var_y <- mu * (1 - mu) / (1 + 0.817)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+
+```{r}
+0.005221/(0.005221+0.13306)
+```
+
+
+```{r}
+flb_6_1 <- glmmTMB(pmodel7_empv6_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_6_1)
+```
+
+```{r}
+mu <- fitted(flb_6_1)
+var_y <- mu * (1 - mu) / (1 + 0.817)
+mean_var_within <- mean(var_y)
+mean(var_y)
+```
+
+```{r}
+0.001928/(0.001928+0.1330377)
+```
+
+```{r}
+NEA05$predicted_6 <- predict(flb_6_1, type = "response", re.form = NA)
+```
+
+```{r}
+summary_preds_6 <- NEA05 %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_6 = mean(predicted_6, na.rm = TRUE),
+            se_pred_6 = sd(predicted_6, na.rm = TRUE)/sqrt(n()),  # standaardfout
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_6, aes(x = leeftijd_, y = mean_pred_6, color = gender)) +
+  geom_point(position_6 = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_6 - se_pred_6, ymax = mean_pred_6 + se_pred_6),
+                width = 0,
+                position_6 = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+
+
+```{r}
+pred_df_6 <- NEA05 %>%
+  mutate(
+    pred_6 = predict(flb_6_1, type = "response", se.fit = TRUE)$fit,
+    se_pred_6 = predict(flb_6_1, type = "response", se.fit = TRUE)$se.fit
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_6 = mean(pred_6, na.rm = TRUE), 
+    se_mean_6 = mean(se_pred_6, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+pred_df_6 <- pred_df_6 %>%
+  mutate(
+    lower_CI = pred_mean_6 - 1.96 * se_mean_6,
+    upper_CI = pred_mean_6 + 1.96 * se_mean_6
+  )
+
+```
+
+
+```{r}
+list_6 <- pred_df_6 %>%
+  arrange(desc(pred_mean_6)) %>%
+  mutate(rank = row_number())
+
+top10_6 <- list_6 %>% slice(1:10)
+bottom10_6 <- list_6 %>% slice((n() - 9):n())
+
+```
+
+
+```{r}
+list_6 <- bind_rows(
+  top10_6 %>% mutate(type = "Top 10"),
+  bottom10_6 %>% mutate(type = "Bottom 10")
+)
+
+print(list_6)
+
+```
+
+
+
+```{r}
+
+list_6 %>%
+  select(type, intersections, pred_mean_6, lower_CI, upper_CI) %>%
+  rename(
+    Type = type,
+    `Stratum (Intersections)` = intersections,
+    `Predicted Value` = pred_mean_6,
+    `Lower 95% CI` = lower_CI,
+    `Upper 95% CI` = upper_CI
+  ) %>%
+  flextable() %>%
+  set_header_labels(
+    `Predicted Value` = "Predicted",
+    `Lower 95% CI` = "Lower CI",
+    `Upper 95% CI` = "Upper CI"
+  ) %>%
+  autofit()
+```

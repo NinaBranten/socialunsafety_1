@@ -1,0 +1,2168 @@
+---
+title: "MAIHDA"
+output: html_document
+date: "2025-04-29"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA05 <-read.spss("data/processed/NEA05.sav", use.value.labels = T, to.data.frame = T)
+```
+
+
+```{r}
+remove.packages("Matrix")
+remove.packages("lme4")
+install.packages("Matrix")
+install.packages("me")
+install.packages("sjPlot")
+install.packages("Matrix", type = "source")
+utils::install.packages("lme4", type = "source")
+library(Matrix)
+library(lme4)
+library(merTools)
+library(sjPlot)
+```
+MAIHDA MODELS WITH THE DIFFERENT CLASSES
+
+
+
+Short-term conflict
+
+```{r}
+Maihda1 <- lmer(pmodel7_empv1 ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihda1)
+confint(Maihda1)
+```
+```{r}
+Maihda1_g <- lmer(pmodel7_empv1 ~ 1 + gender_v + (1|intersections), data=NEA05) 
+summary(Maihda1_g)
+confint(Maihda1_g)
+```
+
+```{r}
+Maihda1_m <- lmer(pmodel7_empv1 ~ 1 + migration_eu + migration_noeu + (1|intersections), data=NEA05) 
+summary(Maihda1_m)
+confint(Maihda1_m)
+```
+
+```{r}
+Maihda1_e <- lmer(pmodel7_empv1 ~ 1 + education_laag + education_middel + (1|intersections), data=NEA05) 
+summary(Maihda1_e)
+confint(Maihda1_e)
+```
+
+
+```{r}
+Maihda1_l <- lmer(pmodel7_empv1 ~ 1 + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda1_l)
+confint(Maihda1_l)
+```
+
+```{r}
+summary(pmodel7_empv1)
+summary(pmodel7_empv2)
+summary(pmodel7_empv3)
+summary(pmodel7_empv4)
+summary(pmodel7_empv5)
+summary(pmodel7_empv6)
+summary(pmodel7_empv7)
+
+```
+
+
+```{r}
+Maihda1_2 <- lmer(pmodel7_empv1 ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda1_2)
+confint(Maihda1_2)
+```
+```{r}
+anova(Maihda1, Maihda1_2)
+```
+```{r}
+tab_model(Maihda1, Maihda1_2, p.style="stars")
+```
+
+
+
+Overall safe 
+
+```{r}
+Maihda2 <- lmer(pmodel7_empv2 ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihda2)
+confint(Maihda2)
+```
+
+```{r}
+Maihda2_g <- lmer(pmodel7_empv2 ~ 1 + gender_v + (1|intersections), data=NEA05) 
+summary(Maihda2_g)
+confint(Maihda2_g)
+```
+
+```{r}
+Maihda2_m <- lmer(pmodel7_empv2 ~ 1 + migration_eu + migration_noeu + (1|intersections), data=NEA05) 
+summary(Maihda2_m)
+confint(Maihda2_m)
+```
+
+```{r}
+Maihda2_e <- lmer(pmodel7_empv2 ~ 1 + education_laag + education_middel + (1|intersections), data=NEA05) 
+summary(Maihda2_e)
+confint(Maihda2_e)
+```
+
+
+```{r}
+Maihda2_l <- lmer(pmodel7_empv2 ~ 1 + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda2_l)
+confint(Maihda2_l)
+```
+
+
+
+
+```{r}
+Maihda2_2 <- lmer(pmodel7_empv2 ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda2_2)
+confint(Maihda2_2)
+```
+
+```{r}
+NEA05$m2A <- predict(Maihda2)
+```
+
+```{r}
+NEA05$m2B <- predictInterval(Maihda2_2, level=0.95, include.resid.var = FALSE)
+```
+
+
+```{r}
+anova(Maihda2, Maihda2_2)
+```
+
+Overall highly safe
+
+```{r}
+Maihda3 <- lmer(pmodel7_empv3 ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihda3)
+confint(Maihda3)
+```
+
+```{r}
+Maihda3_g <- lmer(pmodel7_empv3 ~ 1 + gender_v + (1|intersections), data=NEA05) 
+summary(Maihda3_g)
+confint(Maihda3_g)
+```
+
+```{r}
+Maihda3_m <- lmer(pmodel7_empv3 ~ 1 + migration_eu + migration_noeu + (1|intersections), data=NEA05) 
+summary(Maihda3_m)
+confint(Maihda3_m)
+```
+
+```{r}
+Maihda3_e <- lmer(pmodel7_empv3 ~ 1 + education_laag + education_middel + (1|intersections), data=NEA05) 
+summary(Maihda3_e)
+confint(Maihda3_e)
+```
+
+
+```{r}
+Maihda3_l <- lmer(pmodel7_empv3 ~ 1 + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda3_l)
+confint(Maihda3_l)
+```
+
+```{r}
+Maihda3_2 <- lmer(pmodel7_empv3 ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda3_2)
+confint(Maihda3_2)
+```
+```{r}
+anova(Maihda3, Maihda3_2)
+```
+
+```{r}
+tab_model(Maihda3, Maihda3_2, p.style="stars")
+```
+
+Supervisor unsafety
+
+```{r}
+hist(pmodel7_empv4, breaks = 30, main = "Distribution of Posterior Probability for Class 1", xlab = pmodel7_empv4)
+class(pmodel7_empv4)
+```
+
+
+```{r}
+Maihda4 <- lmer(pmodel7_empv4 ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihda4)
+confint(Maihda4)
+```
+
+```{r}
+Maihda4_g <- lmer(pmodel7_empv4 ~ 1 + gender_v + (1|intersections), data=NEA05) 
+summary(Maihda4_g)
+confint(Maihda4_g)
+```
+
+```{r}
+Maihda4_m <- lmer(pmodel7_empv4 ~ 1 + migration_eu + migration_noeu + (1|intersections), data=NEA05) 
+summary(Maihda4_m)
+confint(Maihda4_m)
+```
+
+```{r}
+Maihda4_e <- lmer(pmodel7_empv4 ~ 1 + education_laag + education_middel + (1|intersections), data=NEA05) 
+summary(Maihda4_e)
+confint(Maihda4_e)
+```
+
+
+```{r}
+Maihda4_l <- lmer(pmodel7_empv4 ~ 1 + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda4_l)
+confint(Maihda4_l)
+```
+
+```{r}
+Maihda4_2 <- lmer(pmodel7_empv4 ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda4_2)
+confint(Maihda4_2)
+```
+```{r}
+anova(Maihda4, Maihda4_2)
+```
+
+
+```{r}
+tab_model(Maihda4, Maihda4_2, p.style="stars")
+```
+
+Safe interpersonal climate, unsafe social climate
+```{r}
+Maihda5 <- lmer(pmodel7_empv5 ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihda5)
+confint(Maihda5)
+```
+
+```{r}
+Maihda5_g <- lmer(pmodel7_empv5 ~ 1 + gender_v + (1|intersections), data=NEA05) 
+summary(Maihda5_g)
+confint(Maihda5_g)
+```
+
+```{r}
+Maihda5_m <- lmer(pmodel7_empv5 ~ 1 + migration_eu + migration_noeu + (1|intersections), data=NEA05) 
+summary(Maihda5_m)
+confint(Maihda5_m)
+```
+
+```{r}
+Maihda5_e <- lmer(pmodel7_empv5 ~ 1 + education_laag + education_middel + (1|intersections), data=NEA05) 
+summary(Maihda5_e)
+confint(Maihda5_e)
+```
+
+
+```{r}
+Maihda5_l <- lmer(pmodel7_empv5 ~ 1 + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda5_l)
+confint(Maihda5_l)
+```
+
+```{r}
+Maihda5_2 <- lmer(pmodel7_empv5 ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda5_2)
+confint(Maihda5_2)
+```
+```{r}
+anova(Maihda5, Maihda5_2)
+```
+
+Overall unsafe
+```{r}
+Maihda6 <- lmer(pmodel7_empv6 ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihda6)
+confint(Maihda6)
+```
+
+```{r}
+Maihda6_g <- lmer(pmodel7_empv6 ~ 1 + gender_v + (1|intersections), data=NEA05) 
+summary(Maihda6_g)
+confint(Maihda6_g)
+```
+
+```{r}
+Maihda6_m <- lmer(pmodel7_empv6 ~ 1 + migration_eu + migration_noeu + (1|intersections), data=NEA05) 
+summary(Maihda6_m)
+confint(Maihda6_m)
+```
+
+```{r}
+Maihda6_e <- lmer(pmodel7_empv6 ~ 1 + education_laag + education_middel + (1|intersections), data=NEA05) 
+summary(Maihda6_e)
+confint(Maihda6_e)
+```
+
+
+```{r}
+Maihda6_l <- lmer(pmodel7_empv6 ~ 1 + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda6_l)
+confint(Maihda6_l)
+```
+
+
+
+```{r}
+Maihda6_2 <- lmer(pmodel7_empv6 ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda6_2)
+confint(Maihda6_2)
+```
+
+```{r}
+anova(Maihda6, Maihda6_2)
+```
+
+```{r}
+tab_model(Maihda6, Maihda6_2, p.style="stars")
+```
+
+Coworker unsafety
+```{r}
+Maihda7 <- lmer(pmodel7_empv7 ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihda7)
+confint(Maihda7)
+```
+
+```{r}
+Maihda7_g <- lmer(pmodel7_empv7 ~ 1 + gender_v + (1|intersections), data=NEA05) 
+summary(Maihda7_g)
+confint(Maihda7_g)
+```
+
+```{r}
+Maihda7_m <- lmer(pmodel7_empv7 ~ 1 + migration_eu + migration_noeu + (1|intersections), data=NEA05) 
+summary(Maihda7_m)
+confint(Maihda7_m)
+```
+
+```{r}
+Maihda7_e <- lmer(pmodel7_empv7 ~ 1 + education_laag + education_middel + (1|intersections), data=NEA05) 
+summary(Maihda7_e)
+confint(Maihda7_e)
+```
+
+
+```{r}
+Maihda7_l <- lmer(pmodel7_empv7 ~ 1 + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda7_l)
+confint(Maihda7_l)
+```
+
+```{r}
+Maihda7_2 <- lmer(pmodel7_empv7 ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda7_2)
+confint(Maihda7_2)
+```
+```{r}
+anova(Maihda7, Maihda7_2)
+```
+
+```{r}
+tab_model(Maihda7, Maihda7_2, p.style="stars")
+```
+
+
+```{r}
+Maihda7 <- lmer(pmodel7_empv7 ~ 1 + (1|intersections), data=NEA05) 
+summary(Maihda7)
+confint(Maihda7)
+```
+
+```{r}
+Maihda7_2 <- lmer(pmodel7_empv7 ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+summary(Maihda7_2)
+confint(Maihda7_2)
+```
+```{r}
+summary(lm(pmodel7_empv7 ~ gender_v + migration_eu + migration_noeu + 
+   education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75, 
+   data = NEA05))
+```
+
+
+
+
+```{r}
+tab_model(Maihda7, Maihda7_2, p.style="stars")
+```
+
+```{r}
+tab_model(Maihda6, Maihda6_2, Maihda4, Maihda4_2, Maihda7, Maihda7_2, p.style="stars")
+```
+
+```{r}
+tab_model(Maihda5, Maihda5_2, Maihda1, Maihda1_2, Maihda2, Maihda2_2, Maihda3, Maihda3_2, p.style="stars")
+```
+
+
+```{r}
+tab_model(Maihda2_g, Maihda2_m, Maihda2_e, Maihda2_l, Maihda3_g, Maihda3_m, Maihda3_e, Maihda3_l, p.style="stars")
+```
+
+```{r}
+tab_model(Maihda6_g, Maihda6_m, Maihda6_e, Maihda6_l, Maihda7_g, Maihda7_m, Maihda7_e, Maihda7_l, p.style="stars")
+```
+
+
+```{r}
+tab_model(Maihda6, Maihda6_g, Maihda6_m, Maihda6_e, Maihda6_l, Maihda6_2, p.style="stars")
+```
+
+```{r}
+tab_model(Maihda4, Maihda4_g, Maihda4_m, Maihda4_e, Maihda4_l, Maihda4_2, p.style="stars")
+```
+
+```{r}
+tab_model(Maihda7, Maihda7_g, Maihda7_m, Maihda7_e, Maihda7_l, Maihda7_2, p.style="stars")
+```
+
+
+
+Losse ongewenste gedragingen
+
+
+```{r}
+Maihda_pestcol <- lmer(pesten_col ~ 1 + (1|intersections), data=NEA05) 
+Maihda_pestcol
+confint(Maihda_pestcol)
+```
+
+```{r}
+Maihda_pestcol_2 <- lmer(pesten_col ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_pestcol_2
+confint(Maihda_pestcol_2)
+```
+
+```{r}
+tab_model(Maihda_pestcol, Maihda_pestcol_2, p.style="stars")
+```
+
+
+
+```{r}
+Maihda_pestleid <- lmer(pesten_leid ~ 1 + (1|intersections), data=NEA05) 
+Maihda_pestleid
+confint(Maihda_pestleid)
+```
+
+```{r}
+Maihda_pestleid_2 <- lmer(pesten_leid ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_pestleid_2
+confint(Maihda_pestleid_2)
+```
+
+```{r}
+tab_model(Maihda_pestleid, Maihda_pestleid_2, p.style="stars")
+```
+
+
+```{r}
+Maihda_sekscol <- lmer(seks_col ~ 1 + (1|intersections), data=NEA05) 
+Maihda_sekscol
+confint(Maihda_sekscol)
+```
+
+
+```{r}
+Maihda_sekscol_2 <- lmer(seks_col ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_sekscol_2
+confint(Maihda_sekscol_2)
+```
+
+```{r}
+tab_model(Maihda_sekscol, Maihda_sekscol_2, p.style="stars")
+```
+
+```{r}
+Maihda_seksleid <- lmer(seks_leid ~ 1 + (1|intersections), data=NEA05) 
+Maihda_seksleid
+confint(Maihda_seksleid)
+```
+
+
+```{r}
+Maihda_seksleid_2 <- lmer(seks_leid ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_seksleid_2
+confint(Maihda_seksleid_2)
+```
+
+```{r}
+tab_model(Maihda_seksleid, Maihda_seksleid_2, p.style="stars")
+```
+
+```{r}
+Maihda_intcol <- lmer(intimidation_col ~ 1 + (1|intersections), data=NEA05) 
+Maihda_intcol
+confint(Maihda_intcol)
+```
+
+
+```{r}
+Maihda_intcol_2 <- lmer(intimidation_col ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_intcol_2
+confint(Maihda_intcol_2)
+```
+
+```{r}
+tab_model(Maihda_intcol, Maihda_intcol_2, p.style="stars")
+```
+
+```{r}
+Maihda_intleid <- lmer(intimidation_leid ~ 1 + (1|intersections), data=NEA05) 
+Maihda_intleid
+confint(Maihda_intleid)
+```
+
+
+```{r}
+Maihda_intleid_2 <- lmer(intimidation_leid ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_intleid_2
+confint(Maihda_intleid_2)
+```
+
+```{r}
+tab_model(Maihda_intleid, Maihda_intleid_2, p.style="stars")
+```
+
+```{r}
+Maihda_gewcol <- lmer(geweld_col ~ 1 + (1|intersections), data=NEA05) 
+Maihda_gewcol
+confint(Maihda_gewcol)
+```
+
+
+```{r}
+Maihda_gewcol_2 <- lmer(geweld_col ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_gewcol_2
+confint(Maihda_gewcol_2)
+```
+
+
+```{r}
+tab_model(Maihda_gewcol, Maihda_gewcol_2, p.style="stars")
+```
+
+```{r}
+Maihda_gewleid <- lmer(geweld_leid ~ 1 + (1|intersections), data=NEA05) 
+Maihda_gewleid
+confint(Maihda_gewleid)
+```
+
+
+```{r}
+Maihda_gewleid_2 <- lmer(geweld_leid ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_gewleid_2
+confint(Maihda_gewleid_2)
+```
+
+```{r}
+Maihda_concol <- lmer(conflict_col ~ 1 + (1|intersections), data=NEA05) 
+Maihda_concol
+confint(Maihda_concol)
+```
+
+```{r}
+Maihda_concol_2 <- lmer(conflict_col ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_concol_2
+confint(Maihda_concol_2)
+```
+
+
+
+```{r}
+Maihda_conleid <- lmer(conflict_leid ~ 1 + (1|intersections), data=NEA05) 
+Maihda_conleid
+confint(Maihda_conleid)
+```
+
+
+```{r}
+Maihda_conleid_2 <- lmer(conflict_leid ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_conleid_2
+confint(Maihda_conleid_2)
+```
+
+```{r}
+tab_model(Maihda_concol, Maihda_concol_2, Maihda_conleid, Maihda_conleid_2, p.style="stars")
+```
+
+```{r}
+Maihda_steuncol <- lmer(steuncol_scale ~ 1 + (1|intersections), data=NEA05) 
+Maihda_steuncol
+confint(Maihda_steuncol)
+```
+
+
+```{r}
+Maihda_steuncol <- lmer(steuncol_scale ~ 1 + (1|intersections), data=NEA05) 
+Maihda_steuncol
+confint(Maihda_steuncol)
+```
+
+```{r}
+Maihda_steuncol_2 <- lmer(steuncol_scale ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_steuncol_2
+confint(Maihda_steuncol_2)
+```
+
+```{r}
+Maihda_steunleid <- lmer(steunleid_scale ~ 1 + (1|intersections), data=NEA05) 
+Maihda_steunleid
+confint(Maihda_steunleid)
+```
+
+```{r}
+Maihda_steunleid_2 <- lmer(steunleid_scale ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections), data=NEA05) 
+Maihda_steunleid_2
+confint(Maihda_steunleid_2)
+```
+```{r}
+Maihda_psyveil <- lmer(psyveil_scale ~ 1 + (1|strata), data=NEA05) 
+Maihda_psyveil
+confint(Maihda_psyveil)
+```
+
+```{r}
+Maihda_psyveil_2 <- lmer(psyveil_scale ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|strata), data=NEA05) 
+Maihda_psyveil_2
+confint(Maihda_psyveil_2)
+```
+
+
+```{r}
+tab_model(Maihda_gewleid, Maihda_gewleid_2, p.style="stars")
+```
+
+```{r}
+tab_model(Maihda_pestcol, Maihda_pestcol_2, Maihda_pestleid, Maihda_pestleid_2, p.style="stars")
+```
+
+```{r}
+tab_model(Maihda_intcol, Maihda_intcol_2, Maihda_intleid, Maihda_intleid_2, p.style="stars")
+```
+
+```{r}
+tab_model(Maihda_sekscol, Maihda_sekscol_2, Maihda_seksleid, Maihda_seksleid_2, p.style="stars")
+```
+
+```{r}
+tab_model(Maihda_gewcol, Maihda_gewcol_2, Maihda_gewleid, Maihda_gewleid_2, p.style="stars")
+```
+
+
+```{r}
+tab_model(Maihda_steuncol, Maihda_steuncol_2, Maihda_steunleid, Maihda_steunleid_2, p.style="stars")
+```
+
+```{r}
+tab_model(Maihda_psyveil, Maihda_psyveil_2, p.style="stars")
+```
+
+
+
+
+
+Transgressive behaviors yes/no
+
+
+```{r}
+table(NEA05$afl_on_3, useNA = "ifany")
+```
+
+```{r}
+NEA05$ong <- ifelse(NEA05$afl_on_3 == "Ja", 1,
+                                ifelse(NEA05$afl_on_3 == "Nee", 0, NA))
+table(NEA05$ong)
+```
+
+
+
+```{r}
+Maihda_ong <- glmer(ong ~ 1 + (1 | intersections),
+                data = NEA05_ong,
+                family = binomial)
+Maihda_ong
+```
+
+```{r}
+Maihda_ong_2 <- glmer(ong ~ gender_v + migration_eu + migration_noeu +
+                      education_laag + education_middel +
+                      leeftijd__35.55 + leeftijd__55.75 +
+                      (1 | intersections),
+                data = NEA05_ong,
+                family = binomial)
+Maihda_ong_2
+```
+
+```{r}
+tab_model(Maihda_ong, Maihda_ong_2, p.style="stars")
+```
+
+
+With less intersections
+
+
+```{r}
+NEA05$intersections_gme <- interaction(NEA05$gender, NEA05$migration, NEA05$education)
+
+summarytools::freq(NEA05$intersections_gme)
+```
+```{r}
+Maihda_psyveil_gme <- lmer(psyveil_scale ~ 1 + (1|intersections_gme), data=NEA05) 
+summary(Maihda_psyveil_gme)
+confint(Maihda_psyveil_gme)
+```
+
+```{r}
+Maihda2_psyveil_gme <- lmer(psyveil_scale ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + (1|intersections_gme), data=NEA05) 
+summary(Maihda2_psyveil_gme)
+confint(Maihda2_psyveil_gme)
+```
+```{r}
+tab_model(Maihda_psyveil_gme, Maihda2_psyveil_gme, p.style="stars")
+```
+
+
+
+
+```{r}
+Maihda2_gme <- lmer(pmodel7_empv2 ~ 1 + (1|intersections_gme), data=NEA05) 
+summary(Maihda2_gme)
+confint(Maihda2_gme)
+```
+
+```{r}
+Maihda2_2_gme <- lmer(pmodel7_empv2 ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + (1|intersections_gme), data=NEA05) 
+summary(Maihda2_2_gme)
+confint(Maihda2_2_gme)
+```
+
+```{r}
+tab_model(Maihda2_gme, Maihda2_2_gme, p.style="stars")
+```
+
+
+```{r}
+Maihda7_gme <- lmer(pmodel7_empv7 ~ 1 + (1|intersections_gme), data=NEA05) 
+summary(Maihda7_gme)
+confint(Maihda7_gme)
+```
+
+```{r}
+Maihda7_2_gme <- lmer(pmodel7_empv7 ~ 1 + gender_v + migration_eu + migration_noeu + education_laag + education_middel + (1|intersections_gme), data=NEA05) 
+summary(Maihda7_2_gme)
+confint(Maihda7_2_gme)
+```
+
+```{r}
+tab_model(Maihda7_gme, Maihda7_2_gme, p.style="stars")
+```
+
+```{r}
+NEA05$intersections_gml <- interaction(NEA05$gender, NEA05$migration, NEA05$leeftijd_)
+
+summarytools::freq(NEA05$intersections_gml)
+```
+
+```{r}
+Maihda7_gml <- lmer(pmodel7_empv7 ~ 1 + (1|intersections_gml), data=NEA05) 
+summary(Maihda7_gml)
+confint(Maihda7_gml)
+```
+
+```{r}
+Maihda7_2_gml <- lmer(pmodel7_empv7 ~ 1 + gender_v + migration_eu + migration_noeu + leeftijd__35.55 + leeftijd__55.75 + (1|intersections_gml), data=NEA05) 
+summary(Maihda7_2_gml)
+confint(Maihda7_2_gml)
+```
+
+```{r}
+tab_model(Maihda7_gml, Maihda7_2_gml, p.style="stars")
+```
+
+```{r}
+NEA05$intersections_gel <- interaction(NEA05$gender, NEA05$education, NEA05$leeftijd_)
+
+summarytools::freq(NEA05$intersections_gel)
+```
+
+```{r}
+Maihda7_gel <- lmer(pmodel7_empv7 ~ 1 + (1|intersections_gel), data=NEA05) 
+summary(Maihda7_gel)
+confint(Maihda7_gel)
+```
+
+```{r}
+Maihda7_2_gel <- lmer(pmodel7_empv7 ~ 1 + gender_v + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections_gel), data=NEA05) 
+summary(Maihda7_2_gel)
+confint(Maihda7_2_gel)
+```
+
+```{r}
+tab_model(Maihda7_gel, Maihda7_2_gel, p.style="stars")
+```
+
+```{r}
+NEA05$intersections_mel <- interaction(NEA05$migration, NEA05$education, NEA05$leeftijd_)
+
+summarytools::freq(NEA05$intersections_mel)
+```
+
+```{r}
+Maihda7_mel <- lmer(pmodel7_empv7 ~ 1 + (1|intersections_mel), data=NEA05) 
+summary(Maihda7_mel)
+confint(Maihda7_mel)
+```
+
+```{r}
+Maihda7_2_mel <- lmer(pmodel7_empv7 ~ 1 + migration_eu + migration_noeu + education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75 + (1|intersections_mel), data=NEA05) 
+summary(Maihda7_2_mel)
+confint(Maihda7_2_mel)
+```
+
+```{r}
+tab_model(Maihda7_mel, Maihda7_2_mel, p.style="stars")
+```
+
+
+
+
+Multinomial modellen:
+
+
+
+```{r}
+library(brms)
+NEA05$class_emp_7_f <- as.factor(NEA05$class_emp_7)
+table(NEA05$class_emp_7_f)
+NEA05$class_emp_7_f <- relevel(NEA05$class_emp_7_f, ref = "4")
+table(NEA05$class_emp_7_f)
+```
+
+
+```{r}
+# Random intercept model (model 0)
+brm_emp7_0 <- brm(
+  formula = class_emp_7_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+summary(brm_emp7_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_emp7_1 <- brm(
+  formula = class_emp_7_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+summary(brm_emp7_1)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+save.image(file = "my_environment.RData")
+```
+
+
+
+```{r}
+library(brms)
+NEA05$pesten_col_f <- as.factor(NEA05$pesten_col)
+table(pesten_col_f)
+
+# Random intercept model (model 0)
+brm_pestcol_0 <- brm(
+  formula = pesten_col_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+summary(brm_pestcol_0)
+```
+
+```{r}
+NEA05 <- NEA05 %>%
+  rename(
+    leeftijd_35.55 = `leeftijd__35.55`,
+    leeftijd_55.75 = `leeftijd__55.75`
+  )
+
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_pestcol_1 <- brm(
+  formula = pesten_col_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+summary(brm_pestcol_1)
+
+```
+
+
+```{r}
+NEA05$pesten_leid_f <- as.factor(NEA05$pesten_leid)
+
+# Random intercept model (model 0)
+brm_pestleid_0 <- brm(
+  formula = pesten_leid_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+summary(brm_pestleid_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+
+NEA05$pesten_leid_f <- as.factor(NEA05$pesten_leid)
+brm_pestleid_1 <- brm(
+  formula = pesten_leid_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+```
+
+```{r}
+NEA05$intimidation_col_f <- as.factor(NEA05$intimidation_col)
+
+# Random intercept model (model 0)
+brm_intcol_0 <- brm(
+  formula = intimidation_col_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+tab_model(brm_intcol_0)
+summary(brm_intcol_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+NEA05$intimidation_col_f <- as.factor(NEA05$intimidation_col)
+brm_intcol_1 <- brm(
+  formula = intimidation_col_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+```
+
+
+```{r}
+NEA05$intimidation_leid_f <- as.factor(NEA05$intimidation_leid)
+
+# Random intercept model (model 0)
+brm_intleid_0 <- brm(
+  formula = intimidation_leid_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+summary(brm_intleid_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_intleid_1 <- brm(
+  formula = intimidation_leid_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+```
+
+
+```{r}
+NEA05$seks_col_f <- as.factor(NEA05$seks_col)
+
+# Random intercept model (model 0)
+brm_sekscol_0 <- brm(
+  formula = seks_col_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+summary(brm_sekscol_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_sekscol_1 <- brm(
+  formula = seks_col_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+```
+
+
+```{r}
+NEA05$seks_leid_f <- as.factor(NEA05$seks_leid)
+
+# Random intercept model (model 0)
+brm_seksleid_0 <- brm(
+  formula = seks_leid_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+summary(brm_seksleid_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_seksleid_1 <- brm(
+  formula = seks_leid_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+```
+
+
+
+```{r}
+NEA05$geweld_col_f <- as.factor(NEA05$geweld_col)
+
+# Random intercept model (model 0)
+brm_geweldcol_0 <- brm(
+  formula = geweld_col_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+summary(brm_geweldcol_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_geweldcol_1 <- brm(
+  formula = geweld_col_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+```
+
+
+```{r}
+NEA05$geweld_leid_f <- as.factor(NEA05$geweld_leid)
+
+# Random intercept model (model 0)
+brm_geweldleid_0 <- brm(
+  formula = geweld_leid_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+summary(brm_geweldleid_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_geweldleid_1 <- brm(
+  formula = geweld_leid_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 2, cores = 2, iter = 1000
+)
+
+```
+
+
+
+
+PLOTJES
+
+
+```{r}
+library(ggeffects)
+plot(ggpredict(Maihda6_2, terms = c("intersections")))
+
+
+```
+
+```{r}
+library(sjPlot)
+plot_model(Maihda6_2, type = "re", sort.est = FALSE)
+
+```
+
+
+
+
+
+
+```{r}
+library(brms)
+
+NEA05$pmodel7_empv5 <- pmodel7_empv5
+
+NEA05$pmodel7_empv5_T <- (NEA05$pmodel7_empv5 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv5_T)
+summary(NEA05$pmodel7_empv5)
+
+
+model5_0_beta <- brm(
+  formula = pmodel7_empv5_T ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = Beta(),
+  chains = 4,
+  cores = 4
+)
+
+model5_1_beta <- brm(
+  formula = pmodel7_empv5_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 + (1 | intersections),
+  data = NEA05,
+  family = Beta(),
+  chains = 4,
+  cores = 4
+)
+```
+
+
+```{r}
+install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
+cmdstanr::install_cmdstan()
+install.packages("cmdstanr")
+```
+
+
+```{r}
+model5_0_beta <- brm(
+  formula = pmodel7_empv5_T ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = Beta(),
+  control = list(adapt_delta = 0.9),
+  chains = 2,
+  cores = 2,
+  iter = 1000,
+  warmup = 500,
+  init = 0
+)
+
+```
+
+
+
+
+
+```{r}
+model5_0_beta <- brm(
+  formula = pmodel7_empv5_T ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = Beta(),
+  control = list(adapt_delta = 0.95)
+)
+
+model5_1_beta <- brm(
+  formula = pmodel7_empv5 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 + (1 | intersections),
+  data = NEA05,
+  family = zero_inflated_beta(link = "logit"),  # Correct usage!
+  control = list(adapt_delta = 0.95)
+)
+
+model5_logit <- brm(
+  formula = pmodel7_empv5_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 + (1 | intersections),
+  data = NEA05,
+  family = zero_inflated_beta(link = "logit"),  # Correct usage!
+  control = list(adapt_delta = 0.95)
+)
+
+
+```
+
+
+
+
+
+
+OVERALL UNSAFE
+
+```{r}
+library(glmmTMB)
+NEA05$pmodel7_empv5 <- pmodel7_empv5
+
+fl_5_0 <- glmmTMB(pmodel7_empv5 ~ 1 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_5_0)
+```
+
+```{r}
+fl_5_1 <- glmmTMB(pmodel7_empv5 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_5_1)
+```
+
+```{r}
+tab_model(fl_5_0, fl_5_1)
+```
+
+
+```{r}
+NEA05$pmodel7_empv5 <- pmodel7_empv5
+
+NEA05$pmodel7_empv5_T <- (NEA05$pmodel7_empv5 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv5_T)
+summary(NEA05$pmodel7_empv5)
+
+
+flb_5_0 <- glmmTMB(pmodel7_empv5_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_5_0)
+
+```
+
+```{r}
+flb_5_1 <- glmmTMB(pmodel7_empv5_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_5_1)
+```
+
+
+
+
+
+
+SUPERVISOR UNSAFETY
+
+
+```{r}
+library(glmmTMB)
+NEA05$pmodel7_empv7 <- pmodel7_empv7
+
+fl_7_0 <- glmmTMB(pmodel7_empv7 ~ 1 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_7_0)
+```
+
+```{r}
+fl_7_1 <- glmmTMB(pmodel7_empv7 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_7_1)
+```
+
+```{r}
+tab_model(fl_7_0, fl_7_1)
+```
+
+```{r}
+NEA05$pmodel7_empv7 <- pmodel7_empv7
+
+NEA05$pmodel7_empv7_T <- (NEA05$pmodel7_empv7 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv7_T)
+summary(NEA05$pmodel7_empv7)
+
+
+flb_7_0 <- glmmTMB(pmodel7_empv7_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_7_0)
+
+```
+
+```{r}
+flb_7_1 <- glmmTMB(pmodel7_empv7_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_7_1)
+```
+
+
+
+
+COWORKER UNSAFETY
+
+
+```{r}
+library(glmmTMB)
+NEA05$pmodel7_empv1 <- pmodel7_empv1
+
+fl_1_0 <- glmmTMB(pmodel7_empv1 ~ 1 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_1_0)
+```
+```{r}
+fl_1_1 <- glmmTMB(pmodel7_empv1 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_1_1)
+```
+```{r}
+tab_model(fl_5_0, fl_5_1, fl_7_0, fl_7_1, fl_1_0, fl_1_1, p.style="stars", transform = NULL )
+```
+
+
+
+
+```{r}
+NEA05$pmodel7_empv1 <- pmodel7_empv1
+
+NEA05$pmodel7_empv1_T <- (NEA05$pmodel7_empv1 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv1_T)
+summary(NEA05$pmodel7_empv1)
+
+
+flb_1_0 <- glmmTMB(pmodel7_empv1_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_1_0)
+
+```
+
+```{r}
+flb_1_1 <- glmmTMB(pmodel7_empv1_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_1_1)
+```
+```{r}
+tab_model(flb_5_0, flb_5_1, flb_7_0, flb_7_1, flb_1_0, flb_1_1, p.style="stars", transform = NULL )
+```
+
+
+Safe interpersonal behaviors, unsafe social climate
+
+```{r}
+library(glmmTMB)
+NEA05$pmodel7_empv2 <- pmodel7_empv2
+
+fl_2_0 <- glmmTMB(pmodel7_empv2 ~ 1 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_2_0)
+```
+
+
+```{r}
+fl_2_1 <- glmmTMB(pmodel7_empv2 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_2_1)
+```
+
+```{r}
+NEA05$pmodel7_empv2 <- pmodel7_empv2
+
+NEA05$pmodel7_empv2_T <- (NEA05$pmodel7_empv2 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv2_T)
+summary(NEA05$pmodel7_empv2)
+
+
+flb_2_0 <- glmmTMB(pmodel7_empv2_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_2_0)
+
+```
+
+
+```{r}
+flb_2_1 <- glmmTMB(pmodel7_empv2_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_2_1)
+```
+
+Short-term conflict
+
+```{r}
+library(glmmTMB)
+NEA05$pmodel7_empv3 <- pmodel7_empv3
+
+fl_3_0 <- glmmTMB(pmodel7_empv3 ~ 1 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_3_0)
+```
+
+```{r}
+fl_3_1 <- glmmTMB(pmodel7_empv3 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_3_1)
+```
+
+```{r}
+tab_model(fl_2_0, fl_2_1, fl_3_0, fl_3_1, p.style="stars", transform = NULL)
+```
+
+```{r}
+NEA05$pmodel7_empv3 <- pmodel7_empv3
+
+NEA05$pmodel7_empv3_T <- (NEA05$pmodel7_empv3 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv3_T)
+summary(NEA05$pmodel7_empv3)
+
+
+flb_3_0 <- glmmTMB(pmodel7_empv3_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_3_0)
+
+```
+
+```{r}
+flb_3_1 <- glmmTMB(pmodel7_empv3_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_3_1)
+```
+```{r}
+tab_model(flb_2_0, flb_2_1, flb_3_0, flb_3_1, p.style="stars", transform = NULL)
+```
+
+Overall safe
+
+```{r}
+library(glmmTMB)
+NEA05$pmodel7_empv6 <- pmodel7_empv6
+
+fl_6_0 <- glmmTMB(pmodel7_empv6 ~ 1 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_6_0)
+```
+
+```{r}
+fl_6_1 <- glmmTMB(pmodel7_empv6 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_6_1)
+```
+
+```{r}
+NEA05$pmodel7_empv6 <- pmodel7_empv6
+
+NEA05$pmodel7_empv6_T <- (NEA05$pmodel7_empv6 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv6_T)
+summary(NEA05$pmodel7_empv6)
+
+
+flb_6_0 <- glmmTMB(pmodel7_empv6_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_6_0)
+
+```
+
+```{r}
+flb_6_1 <- glmmTMB(pmodel7_empv6_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_6_1)
+```
+
+
+
+
+
+```{r}
+library(glmmTMB)
+NEA05$pmodel7_empv4 <- pmodel7_empv4
+
+fl_4_0 <- glmmTMB(pmodel7_empv4 ~ 1 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_4_0)
+```
+
+```{r}
+fl_4_1 <- glmmTMB(pmodel7_empv4 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 + (1 | intersections),
+                      family = binomial(link = "logit"),
+                      data = NEA05)
+summary(fl_4_1)
+```
+```{r}
+tab_model(fl_6_0, fl_6_1, fl_4_0, fl_4_1, p.style="stars", transform = NULL)
+```
+
+```{r}
+NEA05$pmodel7_empv4 <- pmodel7_empv4
+
+NEA05$pmodel7_empv4_T <- (NEA05$pmodel7_empv4 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv4_T)
+summary(NEA05$pmodel7_empv4)
+
+
+flb_4_0 <- glmmTMB(pmodel7_empv4_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_4_0)
+
+```
+
+```{r}
+flb_4_1 <- glmmTMB(pmodel7_empv4_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_4_1)
+```
+
+```{r}
+tab_model(flb_4_0, flb_4_1, flb_6_0, flb_6_1, p.style="stars", transform = NULL)
+```
+
+
+```{r}
+#coworker unsafety
+summary(pmodel7_empv1)
+#safe interpersonal behaviors unsafe social climate
+summary(pmodel7_empv2)
+#short-term conflict
+summary(pmodel7_empv3)
+#overall highly safe
+summary(pmodel7_empv4)
+#overall unsafe
+summary(pmodel7_empv5)
+#overall safe
+summary(pmodel7_empv6)
+#supervisor unsafety
+summary(pmodel7_empv7)
+````
+
+
+Overall unsafe (5)
+
+```{r}
+flb_5_0 <- glmmTMB(pmodel7_empv5_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_5_0)
+```
+
+
+```{r}
+flb_5_1 <- glmmTMB(pmodel7_empv5_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_5_1)
+```
+
+
+Supervisor unsafety (7)
+
+
+```{r}
+NEA05$pmodel7_empv7 <- pmodel7_empv7
+
+NEA05$pmodel7_empv7_T <- (NEA05$pmodel7_empv7 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv7_T)
+summary(NEA05$pmodel7_empv7)
+
+
+flb_7_0 <- glmmTMB(pmodel7_empv7_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_7_0)
+
+```
+
+```{r}
+flb_7_1 <- glmmTMB(pmodel7_empv7_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_7_1)
+```
+
+
+Coworker unsafety (1)
+
+```{r}
+NEA05$pmodel7_empv1 <- pmodel7_empv1
+
+NEA05$pmodel7_empv1_T <- (NEA05$pmodel7_empv1 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv1_T)
+summary(NEA05$pmodel7_empv1)
+
+
+flb_1_0 <- glmmTMB(pmodel7_empv1_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_1_0)
+
+```
+
+```{r}
+flb_1_1 <- glmmTMB(pmodel7_empv1_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_1_1)
+```
+
+
+
+Safe interpersonal behaviors, unsafe social climate (2)
+
+```{r}
+NEA05$pmodel7_empv2 <- pmodel7_empv2
+
+NEA05$pmodel7_empv2_T <- (NEA05$pmodel7_empv2 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv2_T)
+summary(NEA05$pmodel7_empv2)
+
+
+flb_2_0 <- glmmTMB(pmodel7_empv2_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_2_0)
+
+```
+
+```{r}
+flb_2_1 <- glmmTMB(pmodel7_empv2_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_2_1)
+```
+
+
+
+Short-term conflict
+
+
+```{r}
+NEA05$pmodel7_empv3 <- pmodel7_empv3
+
+NEA05$pmodel7_empv3_T <- (NEA05$pmodel7_empv3 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv3_T)
+summary(NEA05$pmodel7_empv3)
+
+
+flb_3_0 <- glmmTMB(pmodel7_empv3_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_3_0)
+
+```
+
+
+```{r}
+flb_3_1 <- glmmTMB(pmodel7_empv3_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_3_1)
+```
+
+Overall highly safe (4)
+
+```{r}
+NEA05$pmodel7_empv4 <- pmodel7_empv4
+
+NEA05$pmodel7_empv4_T <- (NEA05$pmodel7_empv4 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv4_T)
+summary(NEA05$pmodel7_empv4)
+
+
+flb_4_0 <- glmmTMB(pmodel7_empv4_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_4_0)
+
+```
+
+```{r}
+flb_4_1 <- glmmTMB(pmodel7_empv4_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_4_1)
+```
+
+Overall safe (6)
+
+```{r}
+NEA05$pmodel7_empv6 <- pmodel7_empv6
+
+NEA05$pmodel7_empv6_T <- (NEA05$pmodel7_empv6 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA05$pmodel7_empv6_T)
+summary(NEA05$pmodel7_empv6)
+
+
+flb_6_0 <- glmmTMB(pmodel7_empv6_T ~ 1 + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_6_0)
+
+```
+
+```{r}
+flb_6_1 <- glmmTMB(pmodel7_empv6_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA05)
+summary(flb_6_1)
+```
+
+
+
+```{r}
+pred_matrix <- predict(brm_emp7_1, type = "response")
+
+NEA05$pred_7 <- pred_matrix[, 7]
+
+pred_df_7 <- NEA05 %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_7 = mean(pred_7, na.rm = TRUE),
+    se_mean_7 = sd(pred_7, na.rm = TRUE) / sqrt(n()),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    lower_CI = pred_mean_7 - 1.96 * se_mean_7,
+    upper_CI = pred_mean_7 + 1.96 * se_mean_7
+  )
+
+```
+
+
+```{r}
+pred_matrix <- predict(brm_emp7_1, type = "response")
+
+NEA05$pred_5 <- pred_matrix[, 5]
+
+pred_df_5 <- NEA05 %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_5 = mean(pred_5, na.rm = TRUE),
+    se_mean_5 = sd(pred_5, na.rm = TRUE) / sqrt(n()),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    lower_CI = pred_mean_5 - 1.96 * se_mean_5,
+    upper_CI = pred_mean_5 + 1.96 * se_mean_5
+  )
+
+```
+```{r}
+list_5 <- pred_df_5 %>%
+  arrange(desc(pred_mean_5)) %>%
+  mutate(rank = row_number())
+
+top10_5 <- list_5 %>% slice(1:10)
+bottom10_5 <- list_5 %>% slice((n() - 9):n())
+
+list_5 <- bind_rows(
+  top10_5 %>% mutate(type = "Top 10"),
+  bottom10_5 %>% mutate(type = "Bottom 10")
+)
+
+```
+
+```{r}
+
+list_5 %>%
+  select(type, intersections, pred_mean_5, lower_CI, upper_CI) %>%
+  rename(
+    Type = type,
+    `Stratum (Intersections)` = intersections,
+    `Predicted Value` = pred_mean_5,
+    `Lower 95% CI` = lower_CI,
+    `Upper 95% CI` = upper_CI
+  ) %>%
+  flextable() %>%
+  set_header_labels(
+    `Predicted Value` = "Predicted",
+    `Lower 95% CI` = "Lower CI",
+    `Upper 95% CI` = "Upper CI"
+  ) %>%
+  autofit()
+```
+
+
+
+
+
+
+
+```{r}
+library(brms)
+NEA05$pesten_col_f <- as.factor(NEA05$pesten_col)
+table(NEA05$pesten_col_f)
+
+# Random intercept model (model 0)
+brm_pestcol_0 <- brm(
+  formula = pesten_col_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+
+summary(brm_pestcol_0)
+```
+
+```{r}
+NEA05 <- NEA05 %>%
+  rename(
+    leeftijd_35.55 = `leeftijd__35.55`,
+    leeftijd_55.75 = `leeftijd__55.75`
+  )
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_pestcol_1 <- brm(
+  formula = pesten_col_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+summary(brm_pestcol_1)
+
+```
+
+```{r}
+NEA05$pesten_leid_f <- as.factor(NEA05$pesten_leid)
+
+# Random intercept model (model 0)
+brm_pestleid_0 <- brm(
+  formula = pesten_leid_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+summary(brm_pestleid_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+
+NEA05$pesten_leid_f <- as.factor(NEA05$pesten_leid)
+brm_pestleid_1 <- brm(
+  formula = pesten_leid_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+  control = list(adapt_delta = 0.95)
+)
+summary(brm_pestleid_1)
+
+```
+
+
+```{r}
+NEA05$intimidation_col_f <- as.factor(NEA05$intimidation_col)
+
+# Random intercept model (model 0)
+brm_intcol_0 <- brm(
+  formula = intimidation_col_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+
+summary(brm_intcol_0)
+```
+
+
+```{r}
+# Model met vaste effecten (model 1)
+NEA05$intimidation_col_f <- as.factor(NEA05$intimidation_col)
+brm_intcol_1 <- brm(
+  formula = intimidation_col_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+
+summary(brm_intcol_1)
+
+```
+
+
+
+
+```{r}
+NEA05$intimidation_leid_f <- as.factor(NEA05$intimidation_leid)
+
+# Random intercept model (model 0)
+brm_intleid_0 <- brm(
+  formula = intimidation_leid_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+summary(brm_intleid_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+NEA05$intimidation_leid_f <- as.factor(NEA05$intimidation_leid)
+brm_intleid_1 <- brm(
+  formula = intimidation_leid_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+summary(brm_intleid_1)
+
+```
+
+```{r}
+NEA05$seks_col_f <- as.factor(NEA05$seks_col)
+
+# Random intercept model (model 0)
+brm_sekscol_0 <- brm(
+  formula = seks_col_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+
+summary(brm_sekscol_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_sekscol_1 <- brm(
+  formula = seks_col_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+summary(brm_sekscol_1)
+```
+
+```{r}
+NEA05$seks_leid_f <- as.factor(NEA05$seks_leid)
+
+# Random intercept model (model 0)
+brm_seksleid_0 <- brm(
+  formula = seks_leid_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+
+tab_model(brm_seksleid_0)
+summary(brm_seksleid_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_seksleid_1 <- brm(
+  formula = seks_leid_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+summary(brm_seksleid_1)
+```
+
+```{r}
+NEA05$geweld_col_f <- as.factor(NEA05$geweld_col)
+
+# Random intercept model (model 0)
+brm_gewcol_0 <- brm(
+  formula = geweld_col_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+
+summary(brm_gewcol_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_gewcol_1 <- brm(
+  formula = geweld_col_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+summary(brm_gewcol_1)
+```
+
+```{r}
+NEA05$geweld_leid_f <- as.factor(NEA05$geweld_leid)
+
+# Random intercept model (model 0)
+brm_gewleid_0 <- brm(
+  formula = geweld_leid_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+
+summary(brm_gewleid_0)
+```
+
+```{r}
+# Model met vaste effecten (model 1)
+brm_gewleid_1 <- brm(
+  formula = geweld_leid_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+summary(brm_gewleid_1)
+```
+
+
+
+ORDINALE REGRESSIE SOCIAL UNSAFETY DIMENSIONS APART
+
+```{r}
+brm(pesten_col ~ 1 + (1 | intersections), 
+    data = NEA05, 
+    family = cumulative(link = "logit"))
+
+```
+
+
+
+
+
+
+```{r}
+save.image(file = "1806.RData")
+```
+
+
+
+
+
+
+

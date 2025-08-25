@@ -142,8 +142,10 @@ summary(NEA2022_clust1_29923$leeftijd_)
 NEA2022_clust1_29923$intersections <- interaction(NEA2022_clust1_29923$gender, NEA2022_clust1_29923$migration, NEA2022_clust1_29923$education, NEA2022_clust1_29923$leeftijd_)
 
 summarytools::freq(NEA2022_clust1_29923$intersections)
+```
 
 
+```{r}
 #NEA2022$intersections <- interaction(NEA2022$m_v, NEA2022$vrllandd, NEA2022$afl_soi3, NEA2022$leeftijd_)
 #table(NEA2022$intersections) 
 

@@ -35,8 +35,13 @@ library("naniar")
 
 ```{r klippy2, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEA2022_clust1 <-read.spss("data/processed/NEA2022_clust1.sav", use.value.labels = T, to.data.frame = T)
+```
 
-summary(NEA2022_clust1$afl_soi3)
+```{r}
+NEA2022_clust1$afl_soi3[NEA2022_clust1$afl_soi3 == "onbekend"] <- NA
+
+NEA2022_clust1 <- NEA2022_clust1 %>%
+  filter(!is.na(afl_soi3))
 ```
 
 <br><br> **Pesten door collega's**

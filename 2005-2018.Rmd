@@ -1,0 +1,1629 @@
+---
+title: "MAIHDA 2005-2018"
+output: html_document
+date: "2025-06-16"
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+library("dplyr")
+library("haven")
+library("psych")
+library("sjPlot")
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA0518 <-read.spss("data/raw/DANS_NEA2005-2018.sav", use.value.labels = T, to.data.frame = T)
+```
+
+
+```{r}
+#ongewenste seksuele aandacht
+table(NEA0518$OngwGedr_b)
+
+NEA0518$seks <- as.numeric(NEA0518$OngwGedr_b)
+
+table(NEA0518$seks)
+
+```
+```{r}
+#intimidatie
+table(NEA0518$OngwGedr_d)
+
+NEA0518$intim <- as.numeric(NEA0518$OngwGedr_d)
+
+table(NEA0518$intim)
+
+```
+```{r}
+#geweld
+table(NEA0518$OngwGedr_f)
+
+NEA0518$gew <- as.numeric(NEA0518$OngwGedr_f)
+
+table(NEA0518$gew)
+
+```
+
+```{r}
+#pesten
+table(NEA0518$OngwGedr_h)
+
+NEA0518$pest <- as.numeric(NEA0518$OngwGedr_h)
+
+table(NEA0518$pest)
+
+```
+
+
+```{r}
+summarytools::freq(NEA0518$Lft)
+str(NEA0518$Lft)
+
+
+NEA0518$lft_num <- as.numeric(NEA0518$Lft)
+
+NEA0518 <- NEA0518 %>%
+  mutate(leeftijd = case_when(
+    lft_num %in% c(1, 2, 3) ~ 1,
+    lft_num %in% c(4, 5) ~ 2,
+    lft_num %in% c(6, 7) ~ 3,
+    TRUE ~ NA_real_
+  ))
+
+
+NEA0518$leeftijd_ <- factor(NEA0518$leeftijd,
+                                 levels = c(1, 2, 3),
+                                 labels = c("15.35", "35.55", "55.75"))
+
+
+summarytools::freq(NEA0518$leeftijd_)
+
+```
+
+```{r}
+# Easier labels
+table(NEA0518$M_V)
+NEA0518 <- NEA0518 %>%
+  mutate(gender = recode(M_V,
+                               "Man" = "m",
+                               "Vrouw" = "v"))
+table(NEA0518$gender)
+
+table(NEA0518$Allochto)
+NEA0518 <- NEA0518 %>%
+  mutate(migration = recode(Allochto,
+                               "Nederlandse achtergrond" = "nl",
+                               "Westerse migratieachtergrond" = "west",
+                               "Niet-westerse migratieachtergrond" = "nonwest"))
+table(NEA0518$migration)
+
+
+table(NEA0518$Afl_SOI3_HB)
+NEA0518 <- NEA0518 %>%
+  mutate(education = recode(Afl_SOI3_HB,
+                               "Laag (<=VBO)" = "laag",
+                               "Midden (HAVO-MBO)" = "middel",
+                               "Hoog (HBO-WO)" = "hoog"))
+table(NEA0518$education)
+
+# Missing values
+NEA0518$education[NEA0518$education == "onbekend"] <- NA
+NEA0518$education[NEA0518$migration == "Onbekend"] <- NA
+
+# Drop unused levels
+levels(NEA0518$migration)
+NEA0518$migration <- droplevels(NEA0518$migration)
+levels(NEA0518$migration)
+
+levels(NEA0518$education)
+NEA0518$education <- droplevels(NEA0518$education)
+levels(NEA0518$education)
+
+summary(NEA0518$gender)
+summary(NEA0518$migration)
+summary(NEA0518$education)
+summary(NEA0518$leeftijd_)
+```
+
+
+```{r}
+
+NEA0518_mis <- NEA0518 %>%
+  filter(!is.na(migration), !is.na(education))
+```
+
+
+
+```{r}
+table(NEA0518_mis$gender)
+table(NEA0518_mis$migration)
+table(NEA0518_mis$education)
+table(NEA0518_mis$leeftijd_)
+
+NEA0518_mis$gender <- as.factor(NEA0518_mis$gender)
+NEA0518_mis$gender_num <- as.numeric(NEA0518_mis$gender)
+table(NEA0518_mis$gender_num)
+
+NEA0518_mis$migration <- as.factor(NEA0518_mis$migration)
+NEA0518_mis$migration_num <- as.numeric(NEA0518_mis$migration)
+table(NEA0518_mis$migration_num)
+
+NEA0518_mis$education <- as.factor(NEA0518_mis$education)
+NEA0518_mis$education_num <- as.numeric(NEA0518_mis$education)
+table(NEA0518_mis$education_num)
+
+NEA0518_mis$leeftijd_ <- as.factor(NEA0518_mis$leeftijd_)
+NEA0518_mis$leeftijd_num <- as.numeric(NEA0518_mis$leeftijd_)
+table(NEA0518_mis$leeftijd_num)
+
+```
+
+```{r}
+NEA0518_mis$strata <- 1000*NEA0518_mis$gender_num + 100*NEA0518_mis$migration_num + 10*NEA0518_mis$education_num + 1*NEA0518_mis$leeftijd_num
+```
+
+```{r}
+table(NEA0518_mis$strata)
+```
+```{r}
+NEA0518_mis <- NEA0518_mis %>%
+  group_by(strata) %>%
+  mutate(strataN = n())
+table(NEA0518_mis$strataN)
+```
+
+
+
+
+```{r}
+NEA0518_mis$intersections <- interaction(NEA0518_mis$gender, NEA0518_mis$migration, NEA0518_mis$education, NEA0518_mis$leeftijd_)
+
+summarytools::freq(NEA0518_mis$intersections)
+```
+
+```{r}
+library(fastDummies)
+table(NEA0518_mis$gender)
+NEA0518_mis <- dummy_cols(NEA0518_mis, select_columns = "gender", remove_first_dummy = FALSE)
+table(NEA0518_mis$gender_m)
+NEA0518_mis <- dummy_cols(NEA0518_mis, select_columns = "gender", remove_first_dummy = FALSE)
+table(NEA0518_mis$gender_m)
+table(NEA0518_mis$gender_v)
+```
+```{r}
+table(NEA0518_mis$migration)
+NEA0518_mis <- dummy_cols(NEA0518_mis, select_columns = "migration", remove_first_dummy = FALSE)
+table(NEA0518_mis$migration_nl)
+table(NEA0518_mis$migration_west)
+table(NEA0518_mis$migration_nonwest)
+```
+```{r}
+table(NEA0518_mis$education)
+NEA0518_mis <- dummy_cols(NEA0518_mis, select_columns = "education", remove_first_dummy = FALSE)
+table(NEA0518_mis$education_laag)
+table(NEA0518_mis$education_middel)
+table(NEA0518_mis$education_hoog)
+```
+```{r}
+table(NEA0518_mis$leeftijd_)
+NEA0518_mis <- dummy_cols(NEA0518_mis, select_columns = "leeftijd_", remove_first_dummy = FALSE)
+table(NEA0518_mis$leeftijd__15.35)
+table(NEA0518_mis$leeftijd__35.55)
+table(NEA0518_mis$leeftijd__55.75)
+```
+
+```{r}
+NEA0518_mis <- dummy_cols(NEA0518_mis, select_columns = "intersections", remove_first_dummy = FALSE)
+
+dummy_columns <- grep("^intersections_", colnames(NEA0518_mis), value = TRUE)  # Find dummy columns
+colnames(NEA0518_mis)[colnames(NEA0518_mis) %in% dummy_columns] <- gsub("^intersections_", "", dummy_columns)
+```
+
+
+BULLYING
+
+```{r}
+mis_pest <- NEA0518_mis %>%
+  filter(!is.na(pest))
+```
+
+
+```{r}
+L_pest_0 <- lmer(pest ~ 1 + (1|intersections), data=mis_pest) 
+                 
+summary(L_pest_0)
+```
+
+```{r}
+L_pest_1 <- lmer(pest ~ gender_v + migration_west + migration_nonwest + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=mis_pest)
+summary(L_pest_1)
+```
+```{r}
+tab_model(L_pest_0, L_pest_1, p.style="stars")
+```
+
+
+
+```{r}
+mis_pest$predicted_pest <- predict(L_pest_1, type = "response")
+```
+
+```{r}
+summary_preds_pest <- mis_pest %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_pest = mean(predicted_pest, na.rm = TRUE),
+            se_pred_pest = sd(predicted_pest, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_pest, aes(x = leeftijd_, y = mean_pred_pest, color = gender)) +
+  geom_point(position_pest = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_pest - se_pred_pest, ymax = mean_pred_pest + se_pred_pest),
+                width = 0,
+                position_pest = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(L_pest_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(L_pest_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "blue",
+  re_df$significance == "Disadvantaged" ~ "orange",
+  TRUE ~ "black"
+)
+
+re_df
+```
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects (Random Intercepts)",
+    title = "Estimated Intersectional Effects with 95% CI"
+  ) +
+  theme_minimal()
+
+
+```
+
+```{r}
+pred_df_pest <- mis_pest %>%
+  mutate(
+    pred_pest = predict(L_pest_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_pest = mean(pred_pest, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_pest)) %>%
+  mutate(rank = row_number())
+
+```
+
+```{r}
+list_pest <- pred_df_pest %>%
+  arrange(desc(pred_mean_pest)) %>%
+  mutate(rank = row_number())
+
+top10_pest <- list_pest %>% slice(1:10)
+bottom10_pest <- list_pest %>% slice((n() - 9):n())
+
+```
+```{r}
+list_pest <- bind_rows(
+  top10_pest %>% mutate(type = "Top 10"),
+  bottom10_pest %>% mutate(type = "Bottom 10")
+)
+
+print(list_pest)
+
+```
+
+
+INTIMIDATION
+
+
+
+```{r}
+mis_intim <- NEA0518_mis %>%
+  filter(!is.na(intim))
+```
+
+
+```{r}
+L_intim_0 <- lmer(intim ~ 1 + (1|intersections), data=mis_intim) 
+                 
+summary(L_intim_0)
+```
+
+```{r}
+L_intim_1 <- lmer(intim ~ gender_v + migration_west + migration_nonwest + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=mis_intim)
+summary(L_intim_1)
+```
+```{r}
+tab_model(L_intim_0, L_intim_1, p.style="stars")
+```
+
+
+
+```{r}
+mis_intim$predicted_intim <- predict(L_intim_1, type = "response")
+```
+
+```{r}
+summary_preds_intim <- mis_intim %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_intim = mean(predicted_intim, na.rm = TRUE),
+            se_pred_intim = sd(predicted_intim, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_intim, aes(x = leeftijd_, y = mean_pred_intim, color = gender)) +
+  geom_point(position_intim = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_intim - se_pred_intim, ymax = mean_pred_intim + se_pred_intim),
+                width = 0,
+                position_intim = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(L_intim_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(L_intim_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "blue",
+  re_df$significance == "Disadvantaged" ~ "orange",
+  TRUE ~ "black"
+)
+
+re_df
+```
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects (Random Intercepts)",
+    title = "Estimated Intersectional Effects with 95% CI"
+  ) +
+  theme_minimal()
+
+
+```
+
+```{r}
+pred_df_intim <- mis_intim %>%
+  mutate(
+    pred_intim = predict(L_intim_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_intim = mean(pred_intim, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_intim)) %>%
+  mutate(rank = row_number())
+
+```
+
+```{r}
+list_intim <- pred_df_intim %>%
+  arrange(desc(pred_mean_intim)) %>%
+  mutate(rank = row_number())
+
+top10_intim <- list_intim %>% slice(1:10)
+bottom10_intim <- list_intim %>% slice((n() - 9):n())
+
+```
+```{r}
+list_intim <- bind_rows(
+  top10_intim %>% mutate(type = "Top 10"),
+  bottom10_intim %>% mutate(type = "Bottom 10")
+)
+
+print(list_intim)
+
+```
+
+
+UNWANTED SEXUAL ATTENTION
+
+
+
+```{r}
+mis_seks <- NEA0518_mis %>%
+  filter(!is.na(seks))
+```
+
+
+```{r}
+L_seks_0 <- lmer(seks ~ 1 + (1|intersections), data=mis_seks) 
+                 
+summary(L_seks_0)
+```
+
+```{r}
+L_seks_1 <- lmer(seks ~ gender_v + migration_west + migration_nonwest + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=mis_seks)
+summary(L_seks_1)
+```
+```{r}
+tab_model(L_seks_0, L_seks_1, p.style="stars")
+```
+
+
+
+```{r}
+mis_seks$predicted_seks <- predict(L_seks_1, type = "response")
+```
+
+```{r}
+summary_preds_seks <- mis_seks %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_seks = mean(predicted_seks, na.rm = TRUE),
+            se_pred_seks = sd(predicted_seks, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_seks, aes(x = leeftijd_, y = mean_pred_seks, color = gender)) +
+  geom_point(position_seks = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_seks - se_pred_seks, ymax = mean_pred_seks + se_pred_seks),
+                width = 0,
+                position_seks = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(L_seks_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(L_seks_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "blue",
+  re_df$significance == "Disadvantaged" ~ "orange",
+  TRUE ~ "black"
+)
+
+re_df
+```
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects (Random Intercepts)",
+    title = "Estimated Intersectional Effects with 95% CI"
+  ) +
+  theme_minimal()
+
+
+```
+
+```{r}
+pred_df_seks <- mis_seks %>%
+  mutate(
+    pred_seks = predict(L_seks_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_seks = mean(pred_seks, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_seks)) %>%
+  mutate(rank = row_number())
+
+```
+
+```{r}
+list_seks <- pred_df_seks %>%
+  arrange(desc(pred_mean_seks)) %>%
+  mutate(rank = row_number())
+
+top10_seks <- list_seks %>% slice(1:10)
+bottom10_seks <- list_seks %>% slice((n() - 9):n())
+
+```
+```{r}
+list_seks <- bind_rows(
+  top10_seks %>% mutate(type = "Top 10"),
+  bottom10_seks %>% mutate(type = "Bottom 10")
+)
+
+print(list_seks)
+
+```
+
+VIOLENCE
+
+
+```{r}
+mis_gew <- NEA0518_mis %>%
+  filter(!is.na(gew))
+```
+
+
+```{r}
+L_gew_0 <- lmer(gew ~ 1 + (1|intersections), data=mis_gew) 
+                 
+summary(L_gew_0)
+```
+
+```{r}
+L_gew_1 <- lmer(gew ~ gender_v + migration_west + migration_nonwest + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=mis_gew)
+summary(L_gew_1)
+```
+```{r}
+tab_model(L_gew_0, L_gew_1, p.style="stars")
+```
+
+
+
+```{r}
+mis_gew$predicted_gew <- predict(L_gew_1, type = "response")
+```
+
+```{r}
+summary_preds_gew <- mis_gew %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_gew = mean(predicted_gew, na.rm = TRUE),
+            se_pred_gew = sd(predicted_gew, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_gew, aes(x = leeftijd_, y = mean_pred_gew, color = gender)) +
+  geom_point(position_gew = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_gew - se_pred_gew, ymax = mean_pred_gew + se_pred_gew),
+                width = 0,
+                position_gew = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(L_gew_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(L_gew_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "blue",
+  re_df$significance == "Disadvantaged" ~ "orange",
+  TRUE ~ "black"
+)
+
+re_df
+```
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects (Random Intercepts)",
+    title = "Estimated Intersectional Effects with 95% CI"
+  ) +
+  theme_minimal()
+
+
+```
+
+```{r}
+pred_df_gew <- mis_gew %>%
+  mutate(
+    pred_gew = predict(L_gew_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_gew = mean(pred_gew, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_gew)) %>%
+  mutate(rank = row_number())
+
+```
+
+```{r}
+list_gew <- pred_df_gew %>%
+  arrange(desc(pred_mean_gew)) %>%
+  mutate(rank = row_number())
+
+top10_gew <- list_gew %>% slice(1:10)
+bottom10_gew <- list_gew %>% slice((n() - 9):n())
+
+```
+```{r}
+list_gew <- bind_rows(
+  top10_gew %>% mutate(type = "Top 10"),
+  bottom10_gew %>% mutate(type = "Bottom 10")
+)
+
+print(list_gew)
+
+```
+
+CONFLICT SUPERVISORS
+
+
+```{r}
+NEA0518_mis$conflict_sup <- as.numeric(NEA0518_mis$Conflict_b)
+
+table(NEA0518_mis$conflict_sup)
+table(NEA0518_mis$Conflict_b)
+```
+
+
+```{r}
+mis_conflict_sup <- NEA0518_mis %>%
+  filter(!is.na(Conflict_b))
+```
+
+
+```{r}
+L_conflict_sup_0 <- lmer(conflict_sup ~ 1 + (1|intersections), data=mis_conflict_sup) 
+                 
+summary(L_conflict_sup_0)
+```
+
+```{r}
+L_conflict_sup_1 <- lmer(conflict_sup ~ gender_v + migration_west + migration_nonwest + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=mis_conflict_sup)
+summary(L_conflict_sup_1)
+```
+```{r}
+tab_model(L_conflict_sup_0, L_conflict_sup_1, p.style="stars")
+```
+
+
+
+```{r}
+mis_conflict_sup$predicted_conflict_sup <- predict(L_conflict_sup_1, type = "response")
+```
+
+```{r}
+summary_preds_conflict_sup <- mis_conflict_sup %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_conflict_sup = mean(predicted_conflict_sup, na.rm = TRUE),
+            se_pred_conflict_sup = sd(predicted_conflict_sup, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_conflict_sup, aes(x = leeftijd_, y = mean_pred_conflict_sup, color = gender)) +
+  geom_point(position_conflict_sup = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_conflict_sup - se_pred_conflict_sup, ymax = mean_pred_conflict_sup + se_pred_conflict_sup),
+                width = 0,
+                position_conflict_sup = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(L_conflict_sup_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(L_conflict_sup_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "blue",
+  re_df$significance == "Disadvantaged" ~ "orange",
+  TRUE ~ "black"
+)
+
+re_df
+```
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects (Random Intercepts)",
+    title = "Estimated Intersectional Effects with 95% CI"
+  ) +
+  theme_minimal()
+
+
+```
+
+```{r}
+pred_df_conflict_sup <- mis_conflict_sup %>%
+  mutate(
+    pred_conflict_sup = predict(L_conflict_sup_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_conflict_sup = mean(pred_conflict_sup, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_conflict_sup)) %>%
+  mutate(rank = row_number())
+
+```
+
+```{r}
+list_conflict_sup <- pred_df_conflict_sup %>%
+  arrange(desc(pred_mean_conflict_sup)) %>%
+  mutate(rank = row_number())
+
+top10_conflict_sup <- list_conflict_sup %>% slice(1:10)
+bottom10_conflict_sup <- list_conflict_sup %>% slice((n() - 9):n())
+
+```
+```{r}
+list_conflict_sup <- bind_rows(
+  top10_conflict_sup %>% mutate(type = "Top 10"),
+  bottom10_conflict_sup %>% mutate(type = "Bottom 10")
+)
+
+print(list_conflict_sup)
+
+```
+
+
+CONFLICT COWORKERS
+
+
+
+```{r}
+NEA0518_mis$Conflict_col <- as.numeric(NEA0518_mis$Conflict_c)
+
+table(NEA0518_mis$Conflict_col)
+table(NEA0518_mis$Conflict_c)
+```
+
+
+```{r}
+mis_Conflict_col <- NEA0518_mis %>%
+  filter(!is.na(Conflict_c))
+```
+
+
+```{r}
+L_Conflict_col_0 <- lmer(Conflict_col ~ 1 + (1|intersections), data=mis_Conflict_col) 
+                 
+summary(L_Conflict_col_0)
+```
+
+```{r}
+L_Conflict_col_1 <- lmer(Conflict_col ~ gender_v + migration_west + migration_nonwest + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=mis_Conflict_col)
+summary(L_Conflict_col_1)
+```
+```{r}
+tab_model(L_Conflict_col_0, L_Conflict_col_1, p.style="stars")
+```
+
+
+
+```{r}
+mis_Conflict_col$predicted_Conflict_col <- predict(L_Conflict_col_1, type = "response")
+```
+
+```{r}
+summary_preds_Conflict_col <- mis_Conflict_col %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_Conflict_col = mean(predicted_Conflict_col, na.rm = TRUE),
+            se_pred_Conflict_col = sd(predicted_Conflict_col, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_Conflict_col, aes(x = leeftijd_, y = mean_pred_Conflict_col, color = gender)) +
+  geom_point(position_Conflict_col = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_Conflict_col - se_pred_Conflict_col, ymax = mean_pred_Conflict_col + se_pred_Conflict_col),
+                width = 0,
+                position_Conflict_col = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(L_Conflict_col_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(L_Conflict_col_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "blue",
+  re_df$significance == "Disadvantaged" ~ "orange",
+  TRUE ~ "black"
+)
+
+re_df
+```
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects (Random Intercepts)",
+    title = "Estimated Intersectional Effects with 95% CI"
+  ) +
+  theme_minimal()
+
+
+```
+
+```{r}
+pred_df_Conflict_col <- mis_Conflict_col %>%
+  mutate(
+    pred_Conflict_col = predict(L_Conflict_col_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_Conflict_col = mean(pred_Conflict_col, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_Conflict_col)) %>%
+  mutate(rank = row_number())
+
+```
+
+```{r}
+list_Conflict_col <- pred_df_Conflict_col %>%
+  arrange(desc(pred_mean_Conflict_col)) %>%
+  mutate(rank = row_number())
+
+top10_Conflict_col <- list_Conflict_col %>% slice(1:10)
+bottom10_Conflict_col <- list_Conflict_col %>% slice((n() - 9):n())
+
+```
+```{r}
+list_Conflict_col <- bind_rows(
+  top10_Conflict_col %>% mutate(type = "Top 10"),
+  bottom10_Conflict_col %>% mutate(type = "Bottom 10")
+)
+
+print(list_Conflict_col)
+
+```
+
+
+INCIVILITY MAKING SCALES
+
+
+
+
+```{r}
+#sociale steun leidinggevende: mijn leidinggevende heeft oog voor het welzijn van de medewerkers
+table(NEA0518_mis$Leiding_a)
+
+NEA0518_mis$Leiding_a[NEA0518_mis$Leiding_a == "nvt"] <- NA
+
+NEA0518_mis$steunleid_welzijn <- as.numeric(NEA0518_mis$Leiding_a)
+
+table(NEA0518_mis$steunleid_welzijn)
+
+NEA0518_mis <- NEA0518_mis %>%
+  mutate(steunleid_welzijn = recode(steunleid_welzijn, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+table(NEA0518_mis$steunleid_welzijn)
+```
+
+```{r}
+#sociale steun leidinggevende: mijn leidinggevende besteedt aandacht aan wat ik zeg
+table(NEA0518_mis$Leiding_b)
+
+NEA0518_mis$Leiding_b[NEA0518_mis$Leiding_b == "nvt"] <- NA
+
+NEA0518_mis$steunleid_aandacht <- as.numeric(NEA0518_mis$Leiding_b)
+
+table(NEA0518_mis$steunleid_aandacht)
+
+NEA0518_mis <- NEA0518_mis %>%
+  mutate(steunleid_aandacht = recode(steunleid_aandacht, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+table(NEA0518_mis$steunleid_aandacht)
+```
+
+```{r}
+#sociale steun collega's: mijn collega's hebben persoonlijke belangstelling voor me
+table(NEA0518_mis$Collega_a)
+
+NEA0518_mis$Collega_a[NEA0518_mis$Collega_a == "nvt"] <- NA
+
+NEA0518_mis$steuncol_belang <- as.numeric(NEA0518_mis$Collega_a)
+
+table(NEA0518_mis$steuncol_belang)
+
+NEA0518_mis <- NEA0518_mis %>%
+  mutate(steuncol_belang = recode(steuncol_belang, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+table(NEA0518_mis$steuncol_belang)
+```
+
+```{r}
+#sociale steun collega's: mijn collega's zijn vriendelijk
+table(NEA0518_mis$Collega_b)
+
+NEA0518_mis$Collega_b[NEA0518_mis$Collega_b == "nvt"] <- NA
+
+NEA0518_mis$steuncol_vriendelijk <- as.numeric(NEA0518_mis$Collega_b)
+
+table(NEA0518_mis$steuncol_vriendelijk)
+
+NEA0518_mis <- NEA0518_mis %>%
+  mutate(steuncol_vriendelijk = recode(steuncol_vriendelijk, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+table(NEA0518_mis$steuncol_vriendelijk)
+```
+
+
+
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+summarytools::freq(NEA0518_mis$steunleid_aandacht)
+summarytools::freq(NEA0518_mis$steunleid_welzijn)
+NEA0518_mis$steunleid_scale <- rowMeans(NEA0518_mis[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
+summarytools::freq(NEA0518_mis$steunleid_scale)
+
+
+NEA0518_mis$steunleid_R <- as.numeric(factor(NEA0518_mis$steunleid_scale))
+summarytools::freq(NEA0518_mis$steunleid_R)
+NEA0518_mis$steunleid_R[NEA0518_mis$steunleid_R == "8"] <- NA
+summarytools::freq(NEA0518_mis$steunleid_R)
+
+
+NEA0518_mis <- NEA0518_mis %>%
+  mutate(steunleid_RR = case_when(
+    steunleid_scale %in% c(1) ~ 1,
+    steunleid_scale %in% c(1.5, 2) ~ 2,
+    steunleid_scale %in% c(2.5, 3) ~ 3,
+    steunleid_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEA0518_mis$steunleid_scale)
+summarytools::freq(NEA0518_mis$steunleid_RR)
+mean(NEA0518_mis$steunleid_RR, na.rm=TRUE)
+sd(NEA0518_mis$steunleid_RR, na.rm=TRUE)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+summarytools::freq(NEA0518_mis$steuncol_vriendelijk)
+summarytools::freq(NEA0518_mis$steuncol_belang)
+NEA0518_mis$steuncol_scale <- rowMeans(NEA0518_mis[c("steuncol_vriendelijk", "steuncol_belang")], na.rm = TRUE)
+summarytools::freq(NEA0518_mis$steuncol_scale)
+
+
+NEA0518_mis$steuncol_R <- as.numeric(factor(NEA0518_mis$steuncol_scale))
+summarytools::freq(NEA0518_mis$steuncol_R)
+NEA0518_mis$steuncol_R[NEA0518_mis$steuncol_R == "8"] <- NA
+summarytools::freq(NEA0518_mis$steuncol_R)
+
+
+NEA0518_mis <- NEA0518_mis %>%
+  mutate(steuncol_RR = case_when(
+    steuncol_scale %in% c(1) ~ 1,
+    steuncol_scale %in% c(1.5, 2) ~ 2,
+    steuncol_scale %in% c(2.5, 3) ~ 3,
+    steuncol_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEA0518_mis$steuncol_scale)
+summarytools::freq(NEA0518_mis$steuncol_RR)
+mean(NEA0518_mis$steuncol_RR, na.rm=TRUE)
+sd(NEA0518_mis$steuncol_RR, na.rm=TRUE)
+```
+
+
+
+INCIVILITY SUPERVISORS
+
+
+
+```{r}
+mis_Steunleid_RR <- NEA0518_mis %>%
+  filter(!is.na(Steunleid_RR))
+```
+
+
+```{r}
+L_Steunleid_RR_0 <- lmer(Steunleid_RR ~ 1 + (1|intersections), data=mis_Steunleid_RR) 
+                 
+summary(L_Steunleid_RR_0)
+```
+
+```{r}
+L_Steunleid_RR_1 <- lmer(Steunleid_RR ~ gender_v + migration_west + migration_nonwest + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=mis_Steunleid_RR)
+summary(L_Steunleid_RR_1)
+```
+```{r}
+tab_model(L_Steunleid_RR_0, L_Steunleid_RR_1, p.style="stars")
+```
+
+
+
+```{r}
+mis_Steunleid_RR$predicted_Steunleid_RR <- predict(L_Steunleid_RR_1, type = "response")
+```
+
+```{r}
+summary_preds_Steunleid_RR <- mis_Steunleid_RR %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_Steunleid_RR = mean(predicted_Steunleid_RR, na.rm = TRUE),
+            se_pred_Steunleid_RR = sd(predicted_Steunleid_RR, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_Steunleid_RR, aes(x = leeftijd_, y = mean_pred_Steunleid_RR, color = gender)) +
+  geom_point(position_Steunleid_RR = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_Steunleid_RR - se_pred_Steunleid_RR, ymax = mean_pred_Steunleid_RR + se_pred_Steunleid_RR),
+                width = 0,
+                position_Steunleid_RR = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(L_Steunleid_RR_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(L_Steunleid_RR_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "blue",
+  re_df$significance == "Disadvantaged" ~ "orange",
+  TRUE ~ "black"
+)
+
+re_df
+```
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects (Random Intercepts)",
+    title = "Estimated Intersectional Effects with 95% CI"
+  ) +
+  theme_minimal()
+
+
+```
+
+```{r}
+pred_df_Steunleid_RR <- mis_Steunleid_RR %>%
+  mutate(
+    pred_Steunleid_RR = predict(L_Steunleid_RR_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_Steunleid_RR = mean(pred_Steunleid_RR, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_Steunleid_RR)) %>%
+  mutate(rank = row_number())
+
+```
+
+```{r}
+list_Steunleid_RR <- pred_df_Steunleid_RR %>%
+  arrange(desc(pred_mean_Steunleid_RR)) %>%
+  mutate(rank = row_number())
+
+top10_Steunleid_RR <- list_Steunleid_RR %>% slice(1:10)
+bottom10_Steunleid_RR <- list_Steunleid_RR %>% slice((n() - 9):n())
+
+```
+```{r}
+list_Steunleid_RR <- bind_rows(
+  top10_Steunleid_RR %>% mutate(type = "Top 10"),
+  bottom10_Steunleid_RR %>% mutate(type = "Bottom 10")
+)
+
+print(list_Steunleid_RR)
+
+```
+
+
+INCIVILITY COWORKERS
+
+
+
+```{r}
+mis_steuncol_RR <- NEA0518_mis %>%
+  filter(!is.na(steuncol_RR))
+```
+
+
+```{r}
+L_steuncol_RR_0 <- lmer(steuncol_RR ~ 1 + (1|intersections), data=mis_steuncol_RR) 
+                 
+summary(L_steuncol_RR_0)
+```
+
+```{r}
+L_steuncol_RR_1 <- lmer(steuncol_RR ~ gender_v + migration_west + migration_nonwest + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=mis_steuncol_RR)
+summary(L_steuncol_RR_1)
+```
+```{r}
+tab_model(L_steuncol_RR_0, L_steuncol_RR_1, p.style="stars")
+```
+
+
+
+```{r}
+mis_steuncol_RR$predicted_steuncol_RR <- predict(L_steuncol_RR_1, type = "response")
+```
+
+```{r}
+summary_preds_steuncol_RR <- mis_steuncol_RR %>%
+  group_by(gender, migration, education, leeftijd_) %>%
+  summarise(mean_pred_steuncol_RR = mean(predicted_steuncol_RR, na.rm = TRUE),
+            se_pred_steuncol_RR = sd(predicted_steuncol_RR, na.rm = TRUE)/sqrt(n()),
+            .groups = "drop")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(summary_preds_steuncol_RR, aes(x = leeftijd_, y = mean_pred_steuncol_RR, color = gender)) +
+  geom_point(position_steuncol_RR = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = mean_pred_steuncol_RR - se_pred_steuncol_RR, ymax = mean_pred_steuncol_RR + se_pred_steuncol_RR),
+                width = 0,
+                position_steuncol_RR = position_dodge(width = 0.5)) +
+  facet_grid(education ~ migration) +
+  labs(y = "Predicted Probability", x = "Age Group") +
+  theme_minimal()
+
+```
+```{r}
+# Haal de random intercepts (blup's) en SE's op
+re <- ranef(L_steuncol_RR_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(L_steuncol_RR_1, condVar = TRUE)
+str(re_with_var)
+
+
+# Bewaar het postVar object
+post_var <- attr(re_with_var$intersections, "postVar")
+
+# Controleer de vorm:
+dim(post_var)  # zou moeten teruggeven: [1 1 n_strata]
+
+# Dan kun je de SEs pakken:
+se <- sqrt(post_var[1, 1, ])
+
+
+# Combineer in een dataframe
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+```
+```{r}
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+re_df
+
+```
+
+```{r}
+# Rangschikken op effect
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+# Kleuren toewijzen
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "blue",
+  re_df$significance == "Disadvantaged" ~ "orange",
+  TRUE ~ "black"
+)
+
+re_df
+```
+```{r}
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects (Random Intercepts)",
+    title = "Estimated Intersectional Effects with 95% CI"
+  ) +
+  theme_minimal()
+
+
+```
+
+```{r}
+pred_df_steuncol_RR <- mis_steuncol_RR %>%
+  mutate(
+    pred_steuncol_RR = predict(L_steuncol_RR_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_steuncol_RR = mean(pred_steuncol_RR, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_steuncol_RR)) %>%
+  mutate(rank = row_number())
+
+```
+
+```{r}
+list_steuncol_RR <- pred_df_steuncol_RR %>%
+  arrange(desc(pred_mean_steuncol_RR)) %>%
+  mutate(rank = row_number())
+
+top10_steuncol_RR <- list_steuncol_RR %>% slice(1:10)
+bottom10_steuncol_RR <- list_steuncol_RR %>% slice((n() - 9):n())
+
+```
+```{r}
+list_steuncol_RR <- bind_rows(
+  top10_steuncol_RR %>% mutate(type = "Top 10"),
+  bottom10_steuncol_RR %>% mutate(type = "Bottom 10")
+)
+
+print(list_steuncol_RR)
+
+```
+

@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2025-05-04" />
+
+<title>Preparing dataset</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="tweaks.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="frequencies.html">frequencies</a>
+</li>
+<li>
+  <a href="intersectionality.html">intersectionality</a>
+</li>
+<li>
+  <a href="Recoding_variables.html">Recoding variables</a>
+</li>
+<li>
+  <a href="LCA_30501.html">LCA 30501</a>
+</li>
+<li>
+  <a href="LCA_schaal.html">LCA schaal</a>
+</li>
+<li>
+  <a href="LCA_schaal3.html">LCA schaal3</a>
+</li>
+<li>
+  <a href="LCA_29923.html">LCA 29923</a>
+</li>
+<li>
+  <a href="LCA_schaal3_29923.html">LCA schaal3_29923</a>
+</li>
+<li>
+  <a href="LCA_8items.html">LCA 8 items</a>
+</li>
+<li>
+  <a href="LCA_conflict.html">LCA conflict</a>
+</li>
+<li>
+  <a href="LCA_na.rm=true.html">LCA without missings</a>
+</li>
+<li>
+  <a href="LCA_geweld.html">LCA zonder geweld</a>
+</li>
+<li>
+  <a href="LCA_employer.html">Zonder employer</a>
+</li>
+<li>
+  <a href="Factoranalyse.html">Factoranalyse</a>
+</li>
+<li>
+  <a href="Items_seperate.html">Items seperate</a>
+</li>
+<li>
+  <a href="2005-2018.html">2005-2018</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ninabranten/socialunsafety_1">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Preparing dataset</h1>
+<h4 class="date">2025-05-04</h4>
+
+</div>
+
+
+<pre class="r"><code>library(&quot;formatR&quot;)
+library(&quot;foreign&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;lme4&quot;)
+library(&quot;poLCA&quot;)
+library(&quot;reprex&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;klippy&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;haven&quot;)
+library(&quot;psych&quot;)</code></pre>
+<p><br><br> <strong>Loading in the data</strong></p>
+<pre class="r"><code>NEAraw &lt;-read.spss(&quot;data/raw/Data 2014-2022.sav&quot;, use.value.labels = T, to.data.frame = T)</code></pre>
+<p><br><br> <strong>Selecting year 2022 and cluster 1</strong></p>
+<pre class="r"><code>NEA2022 &lt;- NEAraw[NEAraw$jaar == &quot;2022&quot;, ]</code></pre>
+<pre class="r"><code>NEA2022 &lt;- NEA2022[NEA2022$se_clust == 1, ]</code></pre>
+<p><br><br> <strong>Deleting missing cases on educational
+level</strong></p>
+<pre class="r"><code>NEA2022$afl_soi3[NEA2022$afl_soi3 == &quot;onbekend&quot;] &lt;- NA
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  filter(!is.na(afl_soi3))</code></pre>
+<p><br><br> <strong>Recoding variables</strong></p>
+<pre class="r"><code>#Bullying coworkers
+
+NEA2022$pesten_col &lt;- as.numeric(NEA2022$afl_pe_1)
+
+# (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(pesten_col = recode(pesten_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+summarytools::freq(NEA2022$afl_pe_1)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## --------------------- ------- --------- -------------- --------- --------------
+##       Een enkele keer     543      1.83           1.83      1.81           1.81
+##                  Vaak     139      0.47           2.30      0.46           2.28
+##             Zeer vaak      38      0.13           2.43      0.13           2.41
+##                  Niet   28924     97.57         100.00     96.66          99.07
+##               refusal       0      0.00         100.00      0.00          99.07
+##                  &lt;NA&gt;     279                               0.93         100.00
+##                 Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>summarytools::freq(NEA2022$pesten_col)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##           1   28924     97.57          97.57     96.66          96.66
+##           2     543      1.83          99.40      1.81          98.48
+##           3     139      0.47          99.87      0.46          98.94
+##           4      38      0.13         100.00      0.13          99.07
+##        &lt;NA&gt;     279                               0.93         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>#Bullying supervisors
+table(NEA2022$afl_pe_2)</code></pre>
+<pre><code>## 
+## Een enkele keer            Vaak       Zeer vaak            Niet         refusal 
+##             207             110              40           29301               0</code></pre>
+<pre class="r"><code>NEA2022$pesten_leid &lt;- as.numeric(NEA2022$afl_pe_2)
+
+table(NEA2022$pesten_leid)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##   207   110    40 29301</code></pre>
+<pre class="r"><code># (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(pesten_leid = recode(pesten_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+table(NEA2022$pesten_leid)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+## 29301   207   110    40</code></pre>
+<pre class="r"><code>#Intimidation coworkers
+table(NEA2022$afl_be_1)</code></pre>
+<pre><code>## 
+## Een enkele keer            Vaak       Zeer vaak            Niet         refusal 
+##             337              35              26           29330               0</code></pre>
+<pre class="r"><code>NEA2022$intimidation_col &lt;- as.numeric(NEA2022$afl_be_1)
+
+table(NEA2022$intimidation_col)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##   337    35    26 29330</code></pre>
+<pre class="r"><code># (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(intimidation_col = recode(intimidation_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+table(NEA2022$intimidation_col)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+## 29330   337    35    26</code></pre>
+<pre class="r"><code>#Intimidation supervisors
+table(NEA2022$afl_be_2)</code></pre>
+<pre><code>## 
+## Een enkele keer            Vaak       Zeer vaak            Niet         refusal 
+##             331              97              34           29262               0</code></pre>
+<pre class="r"><code>NEA2022$intimidation_leid &lt;- as.numeric(NEA2022$afl_be_2)
+
+table(NEA2022$intimidation_leid)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##   331    97    34 29262</code></pre>
+<pre class="r"><code># (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(intimidation_leid = recode(intimidation_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+table(NEA2022$intimidation_leid)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+## 29262   331    97    34</code></pre>
+<pre class="r"><code>#Physical violence coworkers
+table(NEA2022$afl_ge_3)</code></pre>
+<pre><code>## 
+## Een enkele keer            Vaak       Zeer vaak            Niet         refusal 
+##              23               5               4           29761               0</code></pre>
+<pre class="r"><code>NEA2022$geweld_col &lt;- as.numeric(NEA2022$afl_ge_3)
+
+table(NEA2022$geweld_col)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##    23     5     4 29761</code></pre>
+<pre class="r"><code># (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(geweld_col = recode(geweld_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+table(NEA2022$geweld_col)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+## 29761    23     5     4</code></pre>
+<pre class="r"><code>#Physical violence supervisors
+table(NEA2022$afl_ge_4)</code></pre>
+<pre><code>## 
+## Een enkele keer            Vaak       Zeer vaak            Niet         refusal 
+##               5               5               3           29784               0</code></pre>
+<pre class="r"><code>NEA2022$geweld_leid &lt;- as.numeric(NEA2022$afl_ge_4)
+
+table(NEA2022$geweld_leid)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##     5     5     3 29784</code></pre>
+<pre class="r"><code># (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(geweld_leid = recode(geweld_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+table(NEA2022$geweld_leid)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+## 29784     5     5     3</code></pre>
+<pre class="r"><code>#Unwanted sexual attention coworkers
+table(NEA2022$afl_se_1)</code></pre>
+<pre><code>## 
+## Een enkele keer            Vaak       Zeer vaak            Niet         refusal 
+##             233              33              13           29468               0</code></pre>
+<pre class="r"><code>NEA2022$seks_col &lt;- as.numeric(NEA2022$afl_se_1)
+
+table(NEA2022$seks_col)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##   233    33    13 29468</code></pre>
+<pre class="r"><code># (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(seks_col = recode(seks_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+table(NEA2022$seks_col)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+## 29468   233    33    13</code></pre>
+<pre class="r"><code>#Unwanted sexual attention supervisors
+table(NEA2022$afl_se_2)</code></pre>
+<pre><code>## 
+## Een enkele keer            Vaak       Zeer vaak            Niet         refusal 
+##              67              10              11           29667               0</code></pre>
+<pre class="r"><code>NEA2022$seks_leid &lt;- as.numeric(NEA2022$afl_se_2)
+
+table(NEA2022$seks_leid)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##    67    10    11 29667</code></pre>
+<pre class="r"><code># (1) no, never, (2) a few times, (3) often, and (4) very often 
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(seks_leid = recode(seks_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
+
+table(NEA2022$seks_leid)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+## 29667    67    10    11</code></pre>
+<pre class="r"><code>#Conflict coworker
+table(NEA2022$conflict)</code></pre>
+<pre><code>## 
+##            nee ja, kortdurend  ja, langdurig        refusal 
+##          24233           4935            688              0</code></pre>
+<pre class="r"><code>NEA2022$conflict_col &lt;- as.numeric(NEA2022$conflict)
+
+table(NEA2022$conflict_col)</code></pre>
+<pre><code>## 
+##     1     2     3 
+## 24233  4935   688</code></pre>
+<pre class="r"><code>#Conflict supervisor
+table(NEA2022$confli_1)</code></pre>
+<pre><code>## 
+##            nee ja, kortdurend  ja, langdurig        refusal 
+##          26352           2890            594              0</code></pre>
+<pre class="r"><code>NEA2022$conflict_leid &lt;- as.numeric(NEA2022$confli_1)
+
+table(NEA2022$conflict_leid)</code></pre>
+<pre><code>## 
+##     1     2     3 
+## 26352  2890   594</code></pre>
+<pre class="r"><code>#Conflict employer
+table(NEA2022$confli_2)</code></pre>
+<pre><code>## 
+##            nee ja, kortdurend  ja, langdurig        refusal 
+##          27752           1611            438              0</code></pre>
+<pre class="r"><code>NEA2022$conflict_werk &lt;- as.numeric(NEA2022$confli_2)
+
+table(NEA2022$conflict_werk)</code></pre>
+<pre><code>## 
+##     1     2     3 
+## 27752  1611   438</code></pre>
+<pre class="r"><code>#Social support supervisor: my supervisor pays attention to the well-being of the staff 
+
+table(NEA2022$leiding_)</code></pre>
+<pre><code>## 
+## helemaal mee oneens          mee oneens            mee eens   helemaal mee eens 
+##                 765                3655               15592                8894 
+##                 nvt             refusal 
+##                 997                   0</code></pre>
+<pre class="r"><code>NEA2022$leiding_[NEA2022$leiding_ == &quot;nvt&quot;] &lt;- NA
+
+NEA2022$steunleid_welzijn &lt;- as.numeric(NEA2022$leiding_)
+
+table(NEA2022$steunleid_welzijn)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##   765  3655 15592  8894</code></pre>
+<pre class="r"><code>#Reverse coding the scale
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steunleid_welzijn = recode(steunleid_welzijn, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+table(NEA2022$steunleid_welzijn)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##  8894 15592  3655   765</code></pre>
+<pre class="r"><code>#Social support supervisor:  my supervisor pays attention to what I say
+table(NEA2022$leidin_1)</code></pre>
+<pre><code>## 
+## helemaal mee oneens          mee oneens            mee eens   helemaal mee eens 
+##                 652                3401               16316                8482 
+##                 nvt             refusal 
+##                1031                   0</code></pre>
+<pre class="r"><code>NEA2022$leidin_1[NEA2022$leidin_1 == &quot;nvt&quot;] &lt;- NA
+
+NEA2022$steunleid_aandacht &lt;- as.numeric(NEA2022$leidin_1)
+
+table(NEA2022$steunleid_aandacht)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##   652  3401 16316  8482</code></pre>
+<pre class="r"><code>#Reverse coding the scale
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steunleid_aandacht = recode(steunleid_aandacht, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+table(NEA2022$steunleid_aandacht)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##  8482 16316  3401   652</code></pre>
+<pre class="r"><code>#Social support coworkers: my co-workers take personal interest in me
+table(NEA2022$collega_)</code></pre>
+<pre><code>## 
+## helemaal mee oneens          mee oneens            mee eens   helemaal mee eens 
+##                 315                1756               16526               10426 
+##                 nvt             refusal 
+##                 866                   0</code></pre>
+<pre class="r"><code>NEA2022$collega_[NEA2022$collega_ == &quot;nvt&quot;] &lt;- NA
+
+NEA2022$steuncol_belang &lt;- as.numeric(NEA2022$collega_)
+
+table(NEA2022$steuncol_belang)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##   315  1756 16526 10426</code></pre>
+<pre class="r"><code>#Reverse coding the scale
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steuncol_belang = recode(steuncol_belang, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+table(NEA2022$steuncol_belang)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+## 10426 16526  1756   315</code></pre>
+<pre class="r"><code>#Social support coworkers: my coworkers are friendly
+table(NEA2022$colleg_1)</code></pre>
+<pre><code>## 
+## helemaal mee oneens          mee oneens            mee eens   helemaal mee eens 
+##                 109                 421               14631               14188 
+##                 nvt             refusal 
+##                 541                   0</code></pre>
+<pre class="r"><code>NEA2022$colleg_1[NEA2022$colleg_1 == &quot;nvt&quot;] &lt;- NA
+
+NEA2022$steuncol_vriendelijk &lt;- as.numeric(NEA2022$colleg_1)
+
+table(NEA2022$steuncol_vriendelijk)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##   109   421 14631 14188</code></pre>
+<pre class="r"><code>#Reverse coding the scale
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steuncol_vriendelijk = recode(steuncol_vriendelijk, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+table(NEA2022$steuncol_vriendelijk)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+## 14188 14631   421   109</code></pre>
+<pre class="r"><code>#Psychological unsafety: at my workplace it is possible to raise difficult questions
+table(NEA2022$psyveil_)</code></pre>
+<pre><code>## 
+##          Helemaal eens                   Eens Niet eens, niet oneens 
+##                   5370                  15285                   4937 
+##              Niet eens     Helemaal niet eens                refusal 
+##                   2405                   1250                      0</code></pre>
+<pre class="r"><code>NEA2022$psyveil_last &lt;- as.numeric(NEA2022$psyveil_)
+
+table(NEA2022$psyveil_last)</code></pre>
+<pre><code>## 
+##     1     2     3     4     5 
+##  5370 15285  4937  2405  1250</code></pre>
+<pre class="r"><code>#Psychological unsafety: at my workplace it is easy to ask for help
+table(NEA2022$psyvei_1)</code></pre>
+<pre><code>## 
+##          Helemaal eens                   Eens Niet eens, niet oneens 
+##                   6608                  16718                   3963 
+##              Niet eens     Helemaal niet eens                refusal 
+##                   1625                    702                      0</code></pre>
+<pre class="r"><code>NEA2022$psyveil_hulp &lt;- as.numeric(NEA2022$psyvei_1)
+
+table(NEA2022$psyveil_hulp)</code></pre>
+<pre><code>## 
+##     1     2     3     4     5 
+##  6608 16718  3963  1625   702</code></pre>
+<pre class="r"><code>#Psychological unsafety: at my workplace it is okay to make a mistake
+table(NEA2022$psyvei_2)</code></pre>
+<pre><code>## 
+##          Helemaal eens                   Eens Niet eens, niet oneens 
+##                   3931                  14033                   6991 
+##              Niet eens     Helemaal niet eens                refusal 
+##                   3155                   1486                      0</code></pre>
+<pre class="r"><code>NEA2022$psyveil_fout &lt;- as.numeric(NEA2022$psyvei_2)
+
+table(NEA2022$psyveil_fout)</code></pre>
+<pre><code>## 
+##     1     2     3     4     5 
+##  3931 14033  6991  3155  1486</code></pre>
+<p><br><br> <strong>Recoden low (15-35), middle (35-55), old
+(55-75)</strong></p>
+<pre class="r"><code>summarytools::freq(NEA2022$afl_lftc)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                         Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## -------------------- ------- --------- -------------- --------- --------------
+##       15 tot 25 jaar    3857     12.89          12.89     12.89          12.89
+##       25 tot 35 jaar    5339     17.84          30.73     17.84          30.73
+##       35 tot 45 jaar    5721     19.12          49.85     19.12          49.85
+##       45 tot 55 jaar    6420     21.46          71.31     21.46          71.31
+##       55 tot 65 jaar    7389     24.69          96.00     24.69          96.00
+##       65 tot 75 jaar    1197      4.00         100.00      4.00         100.00
+##             onbekend       0      0.00         100.00      0.00         100.00
+##                 &lt;NA&gt;       0                               0.00         100.00
+##                Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code>str(NEA2022$afl_lftc)</code></pre>
+<pre><code>##  Factor w/ 7 levels &quot;15 tot 25 jaar&quot;,..: 3 3 4 3 3 2 5 4 4 3 ...</code></pre>
+<pre class="r"><code>NEA2022$lft_num &lt;- as.numeric(NEA2022$afl_lftc)
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(leeftijd = case_when(
+    lft_num %in% c(1, 2) ~ 1,
+    lft_num %in% c(3, 4) ~ 2,
+    lft_num %in% c(5, 6) ~ 3,
+    TRUE ~ NA_real_
+  ))
+
+
+NEA2022$leeftijd_ &lt;- factor(NEA2022$leeftijd,
+                                 levels = c(1, 2, 3),
+                                 labels = c(&quot;15.35&quot;, &quot;35.55&quot;, &quot;55.75&quot;))
+
+
+summarytools::freq(NEA2022$leeftijd_)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------- --------- -------------- --------- --------------
+##       15.35    9196     30.73          30.73     30.73          30.73
+##       35.55   12141     40.57          71.31     40.57          71.31
+##       55.75    8586     28.69         100.00     28.69         100.00
+##        &lt;NA&gt;       0                               0.00         100.00
+##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<p><br><br> <strong>Preparing variables for intersections</strong></p>
+<pre class="r"><code># Easier labels
+table(NEA2022$m_v)</code></pre>
+<pre><code>## 
+##   man vrouw 
+## 14793 15130</code></pre>
+<pre class="r"><code>NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(gender = recode(m_v,
+                               &quot;man&quot; = &quot;m&quot;,
+                               &quot;vrouw&quot; = &quot;v&quot;))
+
+table(NEA2022$vrllandd)</code></pre>
+<pre><code>## 
+##                    Nederland Europa (exclusief Nederland) 
+##                        25058                         1761 
+##                Buiten Europa                     Onbekend 
+##                         3104                            0 
+##                      refusal 
+##                            0</code></pre>
+<pre class="r"><code>NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(migration = recode(vrllandd,
+                               &quot;Nederland&quot; = &quot;nl&quot;,
+                               &quot;Europa (exclusief Nederland)&quot; = &quot;eu&quot;,
+                               &quot;Buiten Europa&quot; = &quot;noeu&quot;))
+table(NEA2022$afl_soi3)</code></pre>
+<pre><code>## 
+##       laag opleidingsniveau middelbaar opleidingsniveau 
+##                        5215                       10945 
+##       hoog opleidingsniveau                    onbekend 
+##                       13763                           0</code></pre>
+<pre class="r"><code>NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(education = recode(afl_soi3,
+                               &quot;laag opleidingsniveau&quot; = &quot;laag&quot;,
+                               &quot;middelbaar opleidingsniveau&quot; = &quot;middel&quot;,
+                               &quot;hoog opleidingsniveau&quot; = &quot;hoog&quot;))
+
+NEA2022$education[NEA2022$education == &quot;onbekend&quot;] &lt;- NA
+NEA2022$education[NEA2022$migration == &quot;Onbekend&quot;] &lt;- NA
+
+# Drop unused levels
+levels(NEA2022$migration)</code></pre>
+<pre><code>## [1] &quot;nl&quot;       &quot;eu&quot;       &quot;noeu&quot;     &quot;Onbekend&quot; &quot;refusal&quot;</code></pre>
+<pre class="r"><code>NEA2022$migration &lt;- droplevels(NEA2022$migration)
+levels(NEA2022$migration)</code></pre>
+<pre><code>## [1] &quot;nl&quot;   &quot;eu&quot;   &quot;noeu&quot;</code></pre>
+<pre class="r"><code>levels(NEA2022$education)</code></pre>
+<pre><code>## [1] &quot;laag&quot;     &quot;middel&quot;   &quot;hoog&quot;     &quot;onbekend&quot;</code></pre>
+<pre class="r"><code>NEA2022$education &lt;- droplevels(NEA2022$education)
+levels(NEA2022$education)</code></pre>
+<pre><code>## [1] &quot;laag&quot;   &quot;middel&quot; &quot;hoog&quot;</code></pre>
+<pre class="r"><code>NEA2022$gender_num &lt;- as.numeric(NEA2022$gender)
+table(NEA2022$gender_num)</code></pre>
+<pre><code>## 
+##     1     2 
+## 14793 15130</code></pre>
+<pre class="r"><code>NEA2022$migration_num &lt;- as.numeric(NEA2022$migration)
+table(NEA2022$migration_num)</code></pre>
+<pre><code>## 
+##     1     2     3 
+## 25058  1761  3104</code></pre>
+<pre class="r"><code>NEA2022$education_num &lt;- as.numeric(NEA2022$education)
+table(NEA2022$education_num)</code></pre>
+<pre><code>## 
+##     1     2     3 
+##  5215 10945 13763</code></pre>
+<pre class="r"><code>NEA2022$leeftijd_num &lt;- as.numeric(NEA2022$leeftijd_)
+table(NEA2022$leeftijd_num)</code></pre>
+<pre><code>## 
+##     1     2     3 
+##  9196 12141  8586</code></pre>
+<pre class="r"><code>NEA2022$intersections &lt;- interaction(NEA2022$gender, NEA2022$migration, NEA2022$education, NEA2022$leeftijd_)
+
+summarytools::freq(NEA2022$intersections)</code></pre>
+<pre><code>## Frequencies  
+## 
+##                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ------------------------- ------- --------- -------------- --------- --------------
+##           m.nl.laag.15.35     711      2.38           2.38      2.38           2.38
+##           v.nl.laag.15.35     650      2.17           4.55      2.17           4.55
+##           m.eu.laag.15.35      64      0.21           4.76      0.21           4.76
+##           v.eu.laag.15.35      59      0.20           4.96      0.20           4.96
+##         m.noeu.laag.15.35     131      0.44           5.40      0.44           5.40
+##         v.noeu.laag.15.35     139      0.46           5.86      0.46           5.86
+##         m.nl.middel.15.35    1271      4.25          10.11      4.25          10.11
+##         v.nl.middel.15.35    1445      4.83          14.94      4.83          14.94
+##         m.eu.middel.15.35      68      0.23          15.17      0.23          15.17
+##         v.eu.middel.15.35     103      0.34          15.51      0.34          15.51
+##       m.noeu.middel.15.35     191      0.64          16.15      0.64          16.15
+##       v.noeu.middel.15.35     221      0.74          16.89      0.74          16.89
+##           m.nl.hoog.15.35    1334      4.46          21.34      4.46          21.34
+##           v.nl.hoog.15.35    2023      6.76          28.11      6.76          28.11
+##           m.eu.hoog.15.35     123      0.41          28.52      0.41          28.52
+##           v.eu.hoog.15.35     188      0.63          29.14      0.63          29.14
+##         m.noeu.hoog.15.35     187      0.62          29.77      0.62          29.77
+##         v.noeu.hoog.15.35     288      0.96          30.73      0.96          30.73
+##           m.nl.laag.35.55     651      2.18          32.91      2.18          32.91
+##           v.nl.laag.35.55     497      1.66          34.57      1.66          34.57
+##           m.eu.laag.35.55      58      0.19          34.76      0.19          34.76
+##           v.eu.laag.35.55      44      0.15          34.91      0.15          34.91
+##         m.noeu.laag.35.55     115      0.38          35.29      0.38          35.29
+##         v.noeu.laag.35.55      96      0.32          35.61      0.32          35.61
+##         m.nl.middel.35.55    1955      6.53          42.15      6.53          42.15
+##         v.nl.middel.35.55    1749      5.85          47.99      5.85          47.99
+##         m.eu.middel.35.55     105      0.35          48.34      0.35          48.34
+##         v.eu.middel.35.55     133      0.44          48.79      0.44          48.79
+##       m.noeu.middel.35.55     225      0.75          49.54      0.75          49.54
+##       v.noeu.middel.35.55     193      0.64          50.19      0.64          50.19
+##           m.nl.hoog.35.55    2375      7.94          58.12      7.94          58.12
+##           v.nl.hoog.35.55    2817      9.41          67.54      9.41          67.54
+##           m.eu.hoog.35.55     161      0.54          68.07      0.54          68.07
+##           v.eu.hoog.35.55     269      0.90          68.97      0.90          68.97
+##         m.noeu.hoog.35.55     345      1.15          70.13      1.15          70.13
+##         v.noeu.hoog.35.55     353      1.18          71.31      1.18          71.31
+##           m.nl.laag.55.75    1041      3.48          74.79      3.48          74.79
+##           v.nl.laag.55.75     715      2.39          77.17      2.39          77.17
+##           m.eu.laag.55.75      45      0.15          77.33      0.15          77.33
+##           v.eu.laag.55.75      39      0.13          77.46      0.13          77.46
+##         m.noeu.laag.55.75      91      0.30          77.76      0.30          77.76
+##         v.noeu.laag.55.75      69      0.23          77.99      0.23          77.99
+##         m.nl.middel.55.75    1625      5.43          83.42      5.43          83.42
+##         v.nl.middel.55.75    1299      4.34          87.76      4.34          87.76
+##         m.eu.middel.55.75      79      0.26          88.03      0.26          88.03
+##         v.eu.middel.55.75      65      0.22          88.24      0.22          88.24
+##       m.noeu.middel.55.75     120      0.40          88.64      0.40          88.64
+##       v.noeu.middel.55.75      98      0.33          88.97      0.33          88.97
+##           m.nl.hoog.55.75    1538      5.14          94.11      5.14          94.11
+##           v.nl.hoog.55.75    1362      4.55          98.66      4.55          98.66
+##           m.eu.hoog.55.75      67      0.22          98.89      0.22          98.89
+##           v.eu.hoog.55.75      91      0.30          99.19      0.30          99.19
+##         m.noeu.hoog.55.75     117      0.39          99.58      0.39          99.58
+##         v.noeu.hoog.55.75     125      0.42         100.00      0.42         100.00
+##                      &lt;NA&gt;       0                               0.00         100.00
+##                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<p><br><br> <strong>Creating dummy variables</strong></p>
+<pre class="r"><code>library(fastDummies)</code></pre>
+<pre><code>## Warning: package &#39;fastDummies&#39; was built under R version 4.3.3</code></pre>
+<pre class="r"><code>table(NEA2022$gender)</code></pre>
+<pre><code>## 
+##     m     v 
+## 14793 15130</code></pre>
+<pre class="r"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;gender&quot;, remove_first_dummy = FALSE)
+table(NEA2022$gender_m)</code></pre>
+<pre><code>## 
+##     0     1 
+## 15130 14793</code></pre>
+<pre class="r"><code>table(NEA2022$gender_v)</code></pre>
+<pre><code>## 
+##     0     1 
+## 14793 15130</code></pre>
+<pre class="r"><code>table(NEA2022$migration)</code></pre>
+<pre><code>## 
+##    nl    eu  noeu 
+## 25058  1761  3104</code></pre>
+<pre class="r"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;migration&quot;, remove_first_dummy = FALSE)
+table(NEA2022$migration_nl)</code></pre>
+<pre><code>## 
+##     0     1 
+##  4865 25058</code></pre>
+<pre class="r"><code>table(NEA2022$migration_eu)</code></pre>
+<pre><code>## 
+##     0     1 
+## 28162  1761</code></pre>
+<pre class="r"><code>table(NEA2022$migration_noeu)</code></pre>
+<pre><code>## 
+##     0     1 
+## 26819  3104</code></pre>
+<pre class="r"><code>table(NEA2022$education)</code></pre>
+<pre><code>## 
+##   laag middel   hoog 
+##   5215  10945  13763</code></pre>
+<pre class="r"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;education&quot;, remove_first_dummy = FALSE)
+table(NEA2022$education_laag)</code></pre>
+<pre><code>## 
+##     0     1 
+## 24708  5215</code></pre>
+<pre class="r"><code>table(NEA2022$education_middel)</code></pre>
+<pre><code>## 
+##     0     1 
+## 18978 10945</code></pre>
+<pre class="r"><code>table(NEA2022$education_hoog)</code></pre>
+<pre><code>## 
+##     0     1 
+## 16160 13763</code></pre>
+<pre class="r"><code>table(NEA2022$leeftijd_)</code></pre>
+<pre><code>## 
+## 15.35 35.55 55.75 
+##  9196 12141  8586</code></pre>
+<pre class="r"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;leeftijd_&quot;, remove_first_dummy = FALSE)
+table(NEA2022$leeftijd__15.35)</code></pre>
+<pre><code>## 
+##     0     1 
+## 20727  9196</code></pre>
+<pre class="r"><code>table(NEA2022$leeftijd__35.55)</code></pre>
+<pre><code>## 
+##     0     1 
+## 17782 12141</code></pre>
+<pre class="r"><code>table(NEA2022$leeftijd__55.75)</code></pre>
+<pre><code>## 
+##     0     1 
+## 21337  8586</code></pre>
+<pre class="r"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;intersections&quot;, remove_first_dummy = FALSE)
+
+dummy_columns &lt;- grep(&quot;^intersections_&quot;, colnames(NEA2022), value = TRUE)  # Find dummy columns
+colnames(NEA2022)[colnames(NEA2022) %in% dummy_columns] &lt;- gsub(&quot;^intersections_&quot;, &quot;&quot;, dummy_columns)</code></pre>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByZXBhcmluZyBkYXRhc2V0Ig0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wNS0wNCINCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQoNCmBgYHtyLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmxpYnJhcnkoInBzeWNoIikNCmBgYA0KPGJyPjxicj4gKipMb2FkaW5nIGluIHRoZSBkYXRhKioNCg0KYGBge3IsIHJlc3VsdHM9J2hpZGUnLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KTkVBcmF3IDwtcmVhZC5zcHNzKCJkYXRhL3Jhdy9EYXRhIDIwMTQtMjAyMi5zYXYiLCB1c2UudmFsdWUubGFiZWxzID0gVCwgdG8uZGF0YS5mcmFtZSA9IFQpDQpgYGANCg0KPGJyPjxicj4gKipTZWxlY3RpbmcgeWVhciAyMDIyIGFuZCBjbHVzdGVyIDEqKg0KDQpgYGB7cn0NCk5FQTIwMjIgPC0gTkVBcmF3W05FQXJhdyRqYWFyID09ICIyMDIyIiwgXQ0KYGBgDQoNCmBgYHtyfQ0KTkVBMjAyMiA8LSBORUEyMDIyW05FQTIwMjIkc2VfY2x1c3QgPT0gMSwgXQ0KYGBgDQoNCjxicj48YnI+ICoqRGVsZXRpbmcgbWlzc2luZyBjYXNlcyBvbiBlZHVjYXRpb25hbCBsZXZlbCoqDQoNCmBgYHtyfQ0KTkVBMjAyMiRhZmxfc29pM1tORUEyMDIyJGFmbF9zb2kzID09ICJvbmJla2VuZCJdIDwtIE5BDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgZmlsdGVyKCFpcy5uYShhZmxfc29pMykpDQpgYGANCg0KPGJyPjxicj4gKipSZWNvZGluZyB2YXJpYWJsZXMqKg0KDQpgYGB7cn0NCiNCdWxseWluZyBjb3dvcmtlcnMNCg0KTkVBMjAyMiRwZXN0ZW5fY29sIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfcGVfMSkNCg0KIyAoMSkgbm8sIG5ldmVyLCAoMikgYSBmZXcgdGltZXMsICgzKSBvZnRlbiwgYW5kICg0KSB2ZXJ5IG9mdGVuIA0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShwZXN0ZW5fY29sID0gcmVjb2RlKHBlc3Rlbl9jb2wsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRhZmxfcGVfMSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBlc3Rlbl9jb2wpDQoNCmBgYA0KDQpgYGB7cn0NCiNCdWxseWluZyBzdXBlcnZpc29ycw0KdGFibGUoTkVBMjAyMiRhZmxfcGVfMikNCg0KTkVBMjAyMiRwZXN0ZW5fbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3BlXzIpDQoNCnRhYmxlKE5FQTIwMjIkcGVzdGVuX2xlaWQpDQoNCiMgKDEpIG5vLCBuZXZlciwgKDIpIGEgZmV3IHRpbWVzLCAoMykgb2Z0ZW4sIGFuZCAoNCkgdmVyeSBvZnRlbiANCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUocGVzdGVuX2xlaWQgPSByZWNvZGUocGVzdGVuX2xlaWQsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQp0YWJsZShORUEyMDIyJHBlc3Rlbl9sZWlkKQ0KYGBgDQoNCmBgYHtyfQ0KI0ludGltaWRhdGlvbiBjb3dvcmtlcnMNCnRhYmxlKE5FQTIwMjIkYWZsX2JlXzEpDQoNCk5FQTIwMjIkaW50aW1pZGF0aW9uX2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2JlXzEpDQoNCnRhYmxlKE5FQTIwMjIkaW50aW1pZGF0aW9uX2NvbCkNCg0KIyAoMSkgbm8sIG5ldmVyLCAoMikgYSBmZXcgdGltZXMsICgzKSBvZnRlbiwgYW5kICg0KSB2ZXJ5IG9mdGVuIA0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShpbnRpbWlkYXRpb25fY29sID0gcmVjb2RlKGludGltaWRhdGlvbl9jb2wsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQp0YWJsZShORUEyMDIyJGludGltaWRhdGlvbl9jb2wpDQoNCmBgYA0KDQpgYGB7cn0NCiNJbnRpbWlkYXRpb24gc3VwZXJ2aXNvcnMNCnRhYmxlKE5FQTIwMjIkYWZsX2JlXzIpDQoNCk5FQTIwMjIkaW50aW1pZGF0aW9uX2xlaWQgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9iZV8yKQ0KDQp0YWJsZShORUEyMDIyJGludGltaWRhdGlvbl9sZWlkKQ0KDQojICgxKSBubywgbmV2ZXIsICgyKSBhIGZldyB0aW1lcywgKDMpIG9mdGVuLCBhbmQgKDQpIHZlcnkgb2Z0ZW4gDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGludGltaWRhdGlvbl9sZWlkID0gcmVjb2RlKGludGltaWRhdGlvbl9sZWlkLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0KdGFibGUoTkVBMjAyMiRpbnRpbWlkYXRpb25fbGVpZCkNCg0KYGBgDQoNCmBgYHtyfQ0KI1BoeXNpY2FsIHZpb2xlbmNlIGNvd29ya2Vycw0KdGFibGUoTkVBMjAyMiRhZmxfZ2VfMykNCg0KTkVBMjAyMiRnZXdlbGRfY29sIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfZ2VfMykNCg0KdGFibGUoTkVBMjAyMiRnZXdlbGRfY29sKQ0KDQojICgxKSBubywgbmV2ZXIsICgyKSBhIGZldyB0aW1lcywgKDMpIG9mdGVuLCBhbmQgKDQpIHZlcnkgb2Z0ZW4gDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGdld2VsZF9jb2wgPSByZWNvZGUoZ2V3ZWxkX2NvbCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkZ2V3ZWxkX2NvbCkNCg0KYGBgDQoNCmBgYHtyfQ0KI1BoeXNpY2FsIHZpb2xlbmNlIHN1cGVydmlzb3JzDQp0YWJsZShORUEyMDIyJGFmbF9nZV80KQ0KDQpORUEyMDIyJGdld2VsZF9sZWlkIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfZ2VfNCkNCg0KdGFibGUoTkVBMjAyMiRnZXdlbGRfbGVpZCkNCg0KIyAoMSkgbm8sIG5ldmVyLCAoMikgYSBmZXcgdGltZXMsICgzKSBvZnRlbiwgYW5kICg0KSB2ZXJ5IG9mdGVuIA0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShnZXdlbGRfbGVpZCA9IHJlY29kZShnZXdlbGRfbGVpZCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkZ2V3ZWxkX2xlaWQpDQpgYGANCg0KYGBge3J9DQojVW53YW50ZWQgc2V4dWFsIGF0dGVudGlvbiBjb3dvcmtlcnMNCnRhYmxlKE5FQTIwMjIkYWZsX3NlXzEpDQoNCk5FQTIwMjIkc2Vrc19jb2wgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9zZV8xKQ0KDQp0YWJsZShORUEyMDIyJHNla3NfY29sKQ0KDQojICgxKSBubywgbmV2ZXIsICgyKSBhIGZldyB0aW1lcywgKDMpIG9mdGVuLCBhbmQgKDQpIHZlcnkgb2Z0ZW4gDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHNla3NfY29sID0gcmVjb2RlKHNla3NfY29sLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0KdGFibGUoTkVBMjAyMiRzZWtzX2NvbCkNCmBgYA0KDQpgYGB7cn0NCiNVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIHN1cGVydmlzb3JzDQp0YWJsZShORUEyMDIyJGFmbF9zZV8yKQ0KDQpORUEyMDIyJHNla3NfbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3NlXzIpDQoNCnRhYmxlKE5FQTIwMjIkc2Vrc19sZWlkKQ0KDQojICgxKSBubywgbmV2ZXIsICgyKSBhIGZldyB0aW1lcywgKDMpIG9mdGVuLCBhbmQgKDQpIHZlcnkgb2Z0ZW4gDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHNla3NfbGVpZCA9IHJlY29kZShzZWtzX2xlaWQsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQp0YWJsZShORUEyMDIyJHNla3NfbGVpZCkNCg0KYGBgDQoNCmBgYHtyfQ0KI0NvbmZsaWN0IGNvd29ya2VyDQp0YWJsZShORUEyMDIyJGNvbmZsaWN0KQ0KDQpORUEyMDIyJGNvbmZsaWN0X2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpY3QpDQoNCnRhYmxlKE5FQTIwMjIkY29uZmxpY3RfY29sKQ0KYGBgDQoNCmBgYHtyfQ0KI0NvbmZsaWN0IHN1cGVydmlzb3INCnRhYmxlKE5FQTIwMjIkY29uZmxpXzEpDQoNCk5FQTIwMjIkY29uZmxpY3RfbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpXzEpDQoNCnRhYmxlKE5FQTIwMjIkY29uZmxpY3RfbGVpZCkNCmBgYA0KDQpgYGB7cn0NCiNDb25mbGljdCBlbXBsb3llcg0KdGFibGUoTkVBMjAyMiRjb25mbGlfMikNCg0KTkVBMjAyMiRjb25mbGljdF93ZXJrIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRjb25mbGlfMikNCg0KdGFibGUoTkVBMjAyMiRjb25mbGljdF93ZXJrKQ0KYGBgDQoNCg0KYGBge3J9DQojU29jaWFsIHN1cHBvcnQgc3VwZXJ2aXNvcjogbXkgc3VwZXJ2aXNvciBwYXlzIGF0dGVudGlvbiB0byB0aGUgd2VsbC1iZWluZyBvZiB0aGUgc3RhZmYgDQoNCnRhYmxlKE5FQTIwMjIkbGVpZGluZ18pDQoNCk5FQTIwMjIkbGVpZGluZ19bTkVBMjAyMiRsZWlkaW5nXyA9PSAibnZ0Il0gPC0gTkENCg0KTkVBMjAyMiRzdGV1bmxlaWRfd2VsemlqbiA8LSBhcy5udW1lcmljKE5FQTIwMjIkbGVpZGluZ18pDQoNCnRhYmxlKE5FQTIwMjIkc3RldW5sZWlkX3dlbHppam4pDQoNCiNSZXZlcnNlIGNvZGluZyB0aGUgc2NhbGUNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5sZWlkX3dlbHppam4gPSByZWNvZGUoc3RldW5sZWlkX3dlbHppam4sIGAxYCA9IDQsIGAyYCA9IDMsIGAzYCA9IDIsIGA0YCA9IDEpKQ0KDQp0YWJsZShORUEyMDIyJHN0ZXVubGVpZF93ZWx6aWpuKQ0KYGBgDQoNCmBgYHtyfQ0KI1NvY2lhbCBzdXBwb3J0IHN1cGVydmlzb3I6ICBteSBzdXBlcnZpc29yIHBheXMgYXR0ZW50aW9uIHRvIHdoYXQgSSBzYXkNCnRhYmxlKE5FQTIwMjIkbGVpZGluXzEpDQoNCk5FQTIwMjIkbGVpZGluXzFbTkVBMjAyMiRsZWlkaW5fMSA9PSAibnZ0Il0gPC0gTkENCg0KTkVBMjAyMiRzdGV1bmxlaWRfYWFuZGFjaHQgPC0gYXMubnVtZXJpYyhORUEyMDIyJGxlaWRpbl8xKQ0KDQp0YWJsZShORUEyMDIyJHN0ZXVubGVpZF9hYW5kYWNodCkNCg0KI1JldmVyc2UgY29kaW5nIHRoZSBzY2FsZQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzdGV1bmxlaWRfYWFuZGFjaHQgPSByZWNvZGUoc3RldW5sZWlkX2FhbmRhY2h0LCBgMWAgPSA0LCBgMmAgPSAzLCBgM2AgPSAyLCBgNGAgPSAxKSkNCg0KdGFibGUoTkVBMjAyMiRzdGV1bmxlaWRfYWFuZGFjaHQpDQpgYGANCmBgYHtyLCBlY2hvPUZBTFNFLCBpbmNsdWRlPVRSVUUsIHJlc3VsdHM9J2hpZGUnLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KI0Nyb25iYWNoJ3MgYWxwaGENCg0Kc3RldW5sZWlkIDwtIGRhdGEuZnJhbWUoDQogIHN0ZXVubGVpZF9hYW5kYWNodCA9IE5FQTIwMjIkc3RldW5sZWlkX2FhbmRhY2h0LA0KICBzdGV1bmxlaWRfd2VsemlqbiA9IE5FQTIwMjIkc3RldW5sZWlkX3dlbHppam4NCikNCg0KYWxwaGFfcmVzdWx0MSA8LSBhbHBoYShzdGV1bmxlaWQsIHVzZT0icGFpcndpc2UuY29tcGxldGUub2JzIikNCnByaW50KGFscGhhX3Jlc3VsdDEkdG90YWwkcmF3X2FscGhhKQ0KDQpgYGANCg0KDQpgYGB7ciwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFLCByZXN1bHRzPSdoaWRlJywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCg0KI01ha2luZyBhIG1lYW4gc2NhbGUNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX2FhbmRhY2h0KQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX3dlbHppam4pDQpORUEyMDIyJHN0ZXVubGVpZF9zY2FsZSA8LSByb3dNZWFucyhORUEyMDIyW2MoInN0ZXVubGVpZF9hYW5kYWNodCIsICJzdGV1bmxlaWRfd2VsemlqbiIpXSwgbmEucm0gPSBUUlVFKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX3NjYWxlKQ0KDQoNCk5FQTIwMjIkc3RldW5sZWlkX1IgPC0gYXMubnVtZXJpYyhmYWN0b3IoTkVBMjAyMiRzdGV1bmxlaWRfc2NhbGUpKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX1IpDQpORUEyMDIyJHN0ZXVubGVpZF9SW05FQTIwMjIkc3RldW5sZWlkX1IgPT0gIjgiXSA8LSBOQQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX1IpDQoNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5sZWlkX1JSID0gY2FzZV93aGVuKA0KICAgIHN0ZXVubGVpZF9zY2FsZSAlaW4lIGMoMSkgfiAxLA0KICAgIHN0ZXVubGVpZF9zY2FsZSAlaW4lIGMoMS41LCAyKSB+IDIsDQogICAgc3RldW5sZWlkX3NjYWxlICVpbiUgYygyLjUsIDMpIH4gMywNCiAgICBzdGV1bmxlaWRfc2NhbGUgJWluJSBjKDMuNSwgNCkgfiA0LA0KICAgIFRSVUUgfiBOQV9yZWFsXw0KICApKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRzdGV1bmxlaWRfc2NhbGUpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRzdGV1bmxlaWRfUlIpDQoNCg0KY29yKE5FQTIwMjIkc3RldW5sZWlkX3NjYWxlLCBORUEyMDIyJHN0ZXVubGVpZF9SUiwgdXNlID0gImNvbXBsZXRlLm9icyIpDQpgYGANCg0KDQoNCmBgYHtyfQ0KI1NvY2lhbCBzdXBwb3J0IGNvd29ya2VyczogbXkgY28td29ya2VycyB0YWtlIHBlcnNvbmFsIGludGVyZXN0IGluIG1lDQp0YWJsZShORUEyMDIyJGNvbGxlZ2FfKQ0KDQpORUEyMDIyJGNvbGxlZ2FfW05FQTIwMjIkY29sbGVnYV8gPT0gIm52dCJdIDwtIE5BDQoNCk5FQTIwMjIkc3RldW5jb2xfYmVsYW5nIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRjb2xsZWdhXykNCg0KdGFibGUoTkVBMjAyMiRzdGV1bmNvbF9iZWxhbmcpDQoNCiNSZXZlcnNlIGNvZGluZyB0aGUgc2NhbGUNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5jb2xfYmVsYW5nID0gcmVjb2RlKHN0ZXVuY29sX2JlbGFuZywgYDFgID0gNCwgYDJgID0gMywgYDNgID0gMiwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkc3RldW5jb2xfYmVsYW5nKQ0KYGBgDQoNCmBgYHtyfQ0KI1NvY2lhbCBzdXBwb3J0IGNvd29ya2VyczogbXkgY293b3JrZXJzIGFyZSBmcmllbmRseQ0KdGFibGUoTkVBMjAyMiRjb2xsZWdfMSkNCg0KTkVBMjAyMiRjb2xsZWdfMVtORUEyMDIyJGNvbGxlZ18xID09ICJudnQiXSA8LSBOQQ0KDQpORUEyMDIyJHN0ZXVuY29sX3ZyaWVuZGVsaWprIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRjb2xsZWdfMSkNCg0KdGFibGUoTkVBMjAyMiRzdGV1bmNvbF92cmllbmRlbGlqaykNCg0KI1JldmVyc2UgY29kaW5nIHRoZSBzY2FsZQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzdGV1bmNvbF92cmllbmRlbGlqayA9IHJlY29kZShzdGV1bmNvbF92cmllbmRlbGlqaywgYDFgID0gNCwgYDJgID0gMywgYDNgID0gMiwgYDRgID0gMSkpDQoNCnRhYmxlKE5FQTIwMjIkc3RldW5jb2xfdnJpZW5kZWxpamspDQpgYGANCmBgYHtyLCBlY2hvPUZBTFNFLCBpbmNsdWRlPVRSVUUsIHJlc3VsdHM9J2hpZGUnLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KI0Nyb25iYWNoJ3MgYWxwaGENCg0Kc3RldW5jb2wgPC0gZGF0YS5mcmFtZSgNCiAgc3RldW5jb2xfYmVsYW5nID0gTkVBMjAyMiRzdGV1bmNvbF9iZWxhbmcsDQogIHN0ZXVuY29sX3ZyaWVuZGVsaWprID0gTkVBMjAyMiRzdGV1bmNvbF92cmllbmRlbGlqaw0KKQ0KDQphbHBoYV9yZXN1bHQyIDwtIGFscGhhKHN0ZXVuY29sLCB1c2U9InBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpDQpwcmludChhbHBoYV9yZXN1bHQyJHRvdGFsJHJhd19hbHBoYSkNCg0KYGBgDQoNCg0KYGBge3IsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQoNCiNNYWtpbmcgYSBtZWFuIHNjYWxlDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVuY29sX2JlbGFuZykNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVuY29sX3ZyaWVuZGVsaWprKQ0KTkVBMjAyMiRzdGV1bmNvbF9zY2FsZSA8LSByb3dNZWFucyhORUEyMDIyW2MoInN0ZXVuY29sX2JlbGFuZyIsICJzdGV1bmNvbF92cmllbmRlbGlqayIpXSwgbmEucm0gPSBUUlVFKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5jb2xfc2NhbGUpDQoNCk5FQTIwMjIkc3RldW5jb2xfUiA8LSBhcy5udW1lcmljKGZhY3RvcihORUEyMDIyJHN0ZXVuY29sX3NjYWxlKSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVuY29sX1IpDQpORUEyMDIyJHN0ZXVuY29sX1JbTkVBMjAyMiRzdGV1bmNvbF9SID09ICI4Il0gPC0gTkENCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVuY29sX1IpDQoNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5jb2xfUlIgPSBjYXNlX3doZW4oDQogICAgc3RldW5jb2xfc2NhbGUgJWluJSBjKDEpIH4gMSwNCiAgICBzdGV1bmNvbF9zY2FsZSAlaW4lIGMoMS41LCAyKSB+IDIsDQogICAgc3RldW5jb2xfc2NhbGUgJWluJSBjKDIuNSwgMykgfiAzLA0KICAgIHN0ZXVuY29sX3NjYWxlICVpbiUgYygzLjUsIDQpIH4gNCwNCiAgICBUUlVFIH4gTkFfcmVhbF8NCiAgKSkNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5jb2xfc2NhbGUpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRzdGV1bmNvbF9SUikNCg0KY29yKE5FQTIwMjIkc3RldW5jb2xfc2NhbGUsIE5FQTIwMjIkc3RldW5jb2xfUlIsIHVzZSA9ICJjb21wbGV0ZS5vYnMiKQ0KDQpgYGANCg0KDQoNCmBgYHtyfQ0KI1BzeWNob2xvZ2ljYWwgdW5zYWZldHk6IGF0IG15IHdvcmtwbGFjZSBpdCBpcyBwb3NzaWJsZSB0byByYWlzZSBkaWZmaWN1bHQgcXVlc3Rpb25zDQp0YWJsZShORUEyMDIyJHBzeXZlaWxfKQ0KDQpORUEyMDIyJHBzeXZlaWxfbGFzdCA8LSBhcy5udW1lcmljKE5FQTIwMjIkcHN5dmVpbF8pDQoNCnRhYmxlKE5FQTIwMjIkcHN5dmVpbF9sYXN0KQ0KYGBgDQoNCmBgYHtyfQ0KI1BzeWNob2xvZ2ljYWwgdW5zYWZldHk6IGF0IG15IHdvcmtwbGFjZSBpdCBpcyBlYXN5IHRvIGFzayBmb3IgaGVscA0KdGFibGUoTkVBMjAyMiRwc3l2ZWlfMSkNCg0KTkVBMjAyMiRwc3l2ZWlsX2h1bHAgPC0gYXMubnVtZXJpYyhORUEyMDIyJHBzeXZlaV8xKQ0KDQp0YWJsZShORUEyMDIyJHBzeXZlaWxfaHVscCkNCmBgYA0KDQpgYGB7cn0NCiNQc3ljaG9sb2dpY2FsIHVuc2FmZXR5OiBhdCBteSB3b3JrcGxhY2UgaXQgaXMgb2theSB0byBtYWtlIGEgbWlzdGFrZQ0KdGFibGUoTkVBMjAyMiRwc3l2ZWlfMikNCg0KTkVBMjAyMiRwc3l2ZWlsX2ZvdXQgPC0gYXMubnVtZXJpYyhORUEyMDIyJHBzeXZlaV8yKQ0KDQp0YWJsZShORUEyMDIyJHBzeXZlaWxfZm91dCkNCmBgYA0KDQoNCmBgYHtyLCBlY2hvPUZBTFNFLCBpbmNsdWRlPVRSVUUsIHJlc3VsdHM9J2hpZGUnLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KI0Nyb25iYWNoJ3MgYWxwaGENCg0KcHN5dmVpbCA8LSBkYXRhLmZyYW1lKA0KICBwc3l2ZWlsX2xhc3QgPSBORUEyMDIyJHBzeXZlaWxfbGFzdCwNCiAgcHN5dmVpbF9odWxwID0gTkVBMjAyMiRwc3l2ZWlsX2h1bHAsDQogIHBzeXZlaWxfZm91dCA9IE5FQTIwMjIkcHN5dmVpbF9mb3V0DQopDQoNCmFscGhhX3Jlc3VsdDMgPC0gYWxwaGEocHN5dmVpbCwgdXNlPSJwYWlyd2lzZS5jb21wbGV0ZS5vYnMiKQ0KcHJpbnQoYWxwaGFfcmVzdWx0MyR0b3RhbCRyYXdfYWxwaGEpDQpgYGANCg0KYGBge3IsIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQpORUEyMDIyJHBzeXZlaWxfc2NhbGUgPC0gcm93TWVhbnMoTkVBMjAyMltjKCJwc3l2ZWlsX2xhc3QiLCAicHN5dmVpbF9odWxwIiwgInBzeXZlaWxfZm91dCIpXSwgbmEucm0gPSBUUlVFKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRwc3l2ZWlsX3NjYWxlKQ0KDQpORUEyMDIyJHBzeXZlaWxfUiA8LSBhcy5udW1lcmljKGZhY3RvcihORUEyMDIyJHBzeXZlaWxfc2NhbGUpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRwc3l2ZWlsX1IpDQoNCk5FQTIwMjIkcHN5dmVpbF9SW05FQTIwMjIkcHN5dmVpbF9SID09ICIxOCJdIDwtIE5BDQoNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcHN5dmVpbF9zY2FsZSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBzeXZlaWxfUikNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUocHN5dmVpbF9SUiA9IGNhc2Vfd2hlbigNCiAgICBwc3l2ZWlsX1IgJWluJSBjKDEsIDIpIH4gMSwNCiAgICBwc3l2ZWlsX1IgJWluJSBjKDMsIDQsIDUsIDYpIH4gMiwNCiAgICBwc3l2ZWlsX1IgJWluJSBjKDcsIDgsIDksIDEwKSB+IDMsDQogICAgcHN5dmVpbF9SICVpbiUgYygxMSwgMTIsIDEzLCAxNCkgfiA0LA0KICAgIHBzeXZlaWxfUiAlaW4lIGMoMTUsIDE2LCAxNykgfiA1LA0KICAgIFRSVUUgfiBOQV9yZWFsXw0KICApKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcHN5dmVpbF9zY2FsZSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBzeXZlaWxfUlIpDQptZWFuKE5FQTIwMjIkcHN5dmVpbF9SUiwgbmEucm09VFJVRSkNCnNkKE5FQTIwMjIkcHN5dmVpbF9SUiwgbmEucm09VFJVRSkNCmF0dGFjaChORUEyMDIyKQ0KDQoNCmNvcihORUEyMDIyJHBzeXZlaWxfc2NhbGUsIE5FQTIwMjIkcHN5dmVpbF9SUiwgdXNlID0gImNvbXBsZXRlLm9icyIpDQpgYGANCg0KDQo8YnI+PGJyPiAqKlJlY29kZW4gbG93ICgxNS0zNSksIG1pZGRsZSAoMzUtNTUpLCBvbGQgKDU1LTc1KSoqDQoNCmBgYHtyfQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX2xmdGMpDQpzdHIoTkVBMjAyMiRhZmxfbGZ0YykNCg0KDQpORUEyMDIyJGxmdF9udW0gPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9sZnRjKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShsZWVmdGlqZCA9IGNhc2Vfd2hlbigNCiAgICBsZnRfbnVtICVpbiUgYygxLCAyKSB+IDEsDQogICAgbGZ0X251bSAlaW4lIGMoMywgNCkgfiAyLA0KICAgIGxmdF9udW0gJWluJSBjKDUsIDYpIH4gMywNCiAgICBUUlVFIH4gTkFfcmVhbF8NCiAgKSkNCg0KDQpORUEyMDIyJGxlZWZ0aWpkXyA8LSBmYWN0b3IoTkVBMjAyMiRsZWVmdGlqZCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoMSwgMiwgMyksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsYWJlbHMgPSBjKCIxNS4zNSIsICIzNS41NSIsICI1NS43NSIpKQ0KDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGxlZWZ0aWpkXykNCg0KYGBgDQoNCjxicj48YnI+ICoqUHJlcGFyaW5nIHZhcmlhYmxlcyBmb3IgaW50ZXJzZWN0aW9ucyoqDQoNCmBgYHtyfQ0KIyBFYXNpZXIgbGFiZWxzDQp0YWJsZShORUEyMDIyJG1fdikNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGdlbmRlciA9IHJlY29kZShtX3YsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIm1hbiIgPSAibSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInZyb3V3IiA9ICJ2IikpDQoNCnRhYmxlKE5FQTIwMjIkdnJsbGFuZGQpDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShtaWdyYXRpb24gPSByZWNvZGUodnJsbGFuZGQsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIk5lZGVybGFuZCIgPSAibmwiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJFdXJvcGEgKGV4Y2x1c2llZiBOZWRlcmxhbmQpIiA9ICJldSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkJ1aXRlbiBFdXJvcGEiID0gIm5vZXUiKSkNCnRhYmxlKE5FQTIwMjIkYWZsX3NvaTMpDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShlZHVjYXRpb24gPSByZWNvZGUoYWZsX3NvaTMsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImxhYWcgb3BsZWlkaW5nc25pdmVhdSIgPSAibGFhZyIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIm1pZGRlbGJhYXIgb3BsZWlkaW5nc25pdmVhdSIgPSAibWlkZGVsIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiaG9vZyBvcGxlaWRpbmdzbml2ZWF1IiA9ICJob29nIikpDQoNCk5FQTIwMjIkZWR1Y2F0aW9uW05FQTIwMjIkZWR1Y2F0aW9uID09ICJvbmJla2VuZCJdIDwtIE5BDQpORUEyMDIyJGVkdWNhdGlvbltORUEyMDIyJG1pZ3JhdGlvbiA9PSAiT25iZWtlbmQiXSA8LSBOQQ0KDQojIERyb3AgdW51c2VkIGxldmVscw0KbGV2ZWxzKE5FQTIwMjIkbWlncmF0aW9uKQ0KTkVBMjAyMiRtaWdyYXRpb24gPC0gZHJvcGxldmVscyhORUEyMDIyJG1pZ3JhdGlvbikNCmxldmVscyhORUEyMDIyJG1pZ3JhdGlvbikNCg0KbGV2ZWxzKE5FQTIwMjIkZWR1Y2F0aW9uKQ0KTkVBMjAyMiRlZHVjYXRpb24gPC0gZHJvcGxldmVscyhORUEyMDIyJGVkdWNhdGlvbikNCmxldmVscyhORUEyMDIyJGVkdWNhdGlvbikNCg0KTkVBMjAyMiRnZW5kZXJfbnVtIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRnZW5kZXIpDQp0YWJsZShORUEyMDIyJGdlbmRlcl9udW0pDQoNCk5FQTIwMjIkbWlncmF0aW9uX251bSA8LSBhcy5udW1lcmljKE5FQTIwMjIkbWlncmF0aW9uKQ0KdGFibGUoTkVBMjAyMiRtaWdyYXRpb25fbnVtKQ0KDQpORUEyMDIyJGVkdWNhdGlvbl9udW0gPC0gYXMubnVtZXJpYyhORUEyMDIyJGVkdWNhdGlvbikNCnRhYmxlKE5FQTIwMjIkZWR1Y2F0aW9uX251bSkNCg0KTkVBMjAyMiRsZWVmdGlqZF9udW0gPC0gYXMubnVtZXJpYyhORUEyMDIyJGxlZWZ0aWpkXykNCnRhYmxlKE5FQTIwMjIkbGVlZnRpamRfbnVtKQ0KDQpgYGANCg0KYGBge3J9DQpORUEyMDIyJGludGVyc2VjdGlvbnMgPC0gaW50ZXJhY3Rpb24oTkVBMjAyMiRnZW5kZXIsIE5FQTIwMjIkbWlncmF0aW9uLCBORUEyMDIyJGVkdWNhdGlvbiwgTkVBMjAyMiRsZWVmdGlqZF8pDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGludGVyc2VjdGlvbnMpDQpgYGANCg0KPGJyPjxicj4gKipDcmVhdGluZyBkdW1teSB2YXJpYWJsZXMqKg0KDQpgYGB7cn0NCmxpYnJhcnkoZmFzdER1bW1pZXMpDQp0YWJsZShORUEyMDIyJGdlbmRlcikNCk5FQTIwMjIgPC0gZHVtbXlfY29scyhORUEyMDIyLCBzZWxlY3RfY29sdW1ucyA9ICJnZW5kZXIiLCByZW1vdmVfZmlyc3RfZHVtbXkgPSBGQUxTRSkNCnRhYmxlKE5FQTIwMjIkZ2VuZGVyX20pDQp0YWJsZShORUEyMDIyJGdlbmRlcl92KQ0KYGBgDQpgYGB7cn0NCnRhYmxlKE5FQTIwMjIkbWlncmF0aW9uKQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gIm1pZ3JhdGlvbiIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KdGFibGUoTkVBMjAyMiRtaWdyYXRpb25fbmwpDQp0YWJsZShORUEyMDIyJG1pZ3JhdGlvbl9ldSkNCnRhYmxlKE5FQTIwMjIkbWlncmF0aW9uX25vZXUpDQpgYGANCmBgYHtyfQ0KdGFibGUoTkVBMjAyMiRlZHVjYXRpb24pDQpORUEyMDIyIDwtIGR1bW15X2NvbHMoTkVBMjAyMiwgc2VsZWN0X2NvbHVtbnMgPSAiZWR1Y2F0aW9uIiwgcmVtb3ZlX2ZpcnN0X2R1bW15ID0gRkFMU0UpDQp0YWJsZShORUEyMDIyJGVkdWNhdGlvbl9sYWFnKQ0KdGFibGUoTkVBMjAyMiRlZHVjYXRpb25fbWlkZGVsKQ0KdGFibGUoTkVBMjAyMiRlZHVjYXRpb25faG9vZykNCmBgYA0KYGBge3J9DQp0YWJsZShORUEyMDIyJGxlZWZ0aWpkXykNCk5FQTIwMjIgPC0gZHVtbXlfY29scyhORUEyMDIyLCBzZWxlY3RfY29sdW1ucyA9ICJsZWVmdGlqZF8iLCByZW1vdmVfZmlyc3RfZHVtbXkgPSBGQUxTRSkNCnRhYmxlKE5FQTIwMjIkbGVlZnRpamRfXzE1LjM1KQ0KdGFibGUoTkVBMjAyMiRsZWVmdGlqZF9fMzUuNTUpDQp0YWJsZShORUEyMDIyJGxlZWZ0aWpkX181NS43NSkNCmBgYA0KDQpgYGB7cn0NCk5FQTIwMjIgPC0gZHVtbXlfY29scyhORUEyMDIyLCBzZWxlY3RfY29sdW1ucyA9ICJpbnRlcnNlY3Rpb25zIiwgcmVtb3ZlX2ZpcnN0X2R1bW15ID0gRkFMU0UpDQoNCmR1bW15X2NvbHVtbnMgPC0gZ3JlcCgiXmludGVyc2VjdGlvbnNfIiwgY29sbmFtZXMoTkVBMjAyMiksIHZhbHVlID0gVFJVRSkgICMgRmluZCBkdW1teSBjb2x1bW5zDQpjb2xuYW1lcyhORUEyMDIyKVtjb2xuYW1lcyhORUEyMDIyKSAlaW4lIGR1bW15X2NvbHVtbnNdIDwtIGdzdWIoIl5pbnRlcnNlY3Rpb25zXyIsICIiLCBkdW1teV9jb2x1bW5zKQ0KYGBgDQo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("Data preperation.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+---
+title: "Multinomial"
+output: html_document
+date: "2025-05-19"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+MULTINOMIAL WITH SEVEN-CLASS MODEL AS DEPENDENT
+```{r}
+library("brms")
+```
+
+```{r}
+model7_emppred <- model7_emp$predclass
+model7_emppost <- model7_emp$posterior
+
+lposteriorsmodel7_emp <- as.list(as.data.frame(model7_emppost))
+
+pmodel7_empv1 <- lposteriorsmodel7_emp[[1]]
+pmodel7_empv2 <- lposteriorsmodel7_emp[[2]]
+pmodel7_empv3 <- lposteriorsmodel7_emp[[3]]
+pmodel7_empv4 <- lposteriorsmodel7_emp[[4]]
+pmodel7_empv5 <- lposteriorsmodel7_emp[[5]]
+pmodel7_empv6 <- lposteriorsmodel7_emp[[6]]
+pmodel7_empv7 <- lposteriorsmodel7_emp[[7]]
+```
+
+```{r}
+NEA05$class_emp_7 <- model7_emp$predclass
+table(NEA05$class_emp_7)
+```
+
+
+```{r}
+NEA05$class_emp_7_f <- as.factor(NEA05$class_emp_7)
+table(NEA05$class_emp_7_f)
+NEA05$class_emp_7_f <- relevel(NEA05$class_emp_7_f, ref = "4")
+table(NEA05$class_emp_7_f)
+```
+
+```{r}
+brm_emp7_0 <- brm(
+  formula = class_emp_7_f ~ 1 + (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+
+summary(brm_emp7_0)
+```
+
+```{r}
+brm_emp7_1 <- brm(
+  formula = class_emp_7_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+    (1 | intersections),
+  data = NEA05,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)
+summary(brm_emp7_1)
+
+```
+

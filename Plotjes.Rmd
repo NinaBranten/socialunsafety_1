@@ -145,7 +145,10 @@ NEA2022_clust1$steunleid_R <- as.numeric(factor(NEA2022_clust1$steunleid_scale))
 summarytools::freq(NEA2022_clust1$steunleid_R)
 NEA2022_clust1$steunleid_R[NEA2022_clust1$steunleid_R == "8"] <- NA
 summarytools::freq(NEA2022_clust1$steunleid_R)
+```
 
+
+```{r}
 NEA2022_clust1 <- NEA2022_clust1 %>%
   mutate(steunleid_plot = (steunleid_R - 1) / 6)
 
@@ -162,7 +165,10 @@ NEA2022_clust1$steuncol_R <- as.numeric(factor(NEA2022_clust1$steuncol_scale))
 summarytools::freq(NEA2022_clust1$steuncol_R)
 NEA2022_clust1$steuncol_R[NEA2022_clust1$steuncol_R == "8"] <- NA
 summarytools::freq(NEA2022_clust1$steuncol_R)
+```
 
+
+```{r}
 NEA2022_clust1 <- NEA2022_clust1 %>%
   mutate(steuncol_plot = (steuncol_R - 1) / 6)
 
@@ -180,7 +186,10 @@ NEA2022_clust1$psyveil_R <- as.numeric(factor(NEA2022_clust1$psyveil_scale))
 NEA2022_clust1$psyveil_R[NEA2022_clust1$psyveil_R == "18"] <- NA
 
 summarytools::freq(NEA2022_clust1$psyveil_R)
+```
 
+
+```{r}
 NEA2022_clust1 <- NEA2022_clust1 %>%
   mutate(psyveil_plot = (psyveil_R - 1) / 16)
 
@@ -1983,19 +1992,8 @@ tapply(NEAfinal$steuncol_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 tapply(NEAfinal$psyveil_plot, NEAfinal$classs_29923_8, mean, na.rm = TRUE)
 ```
 
-Class 9
 
-```{r}
-tapply(NEAfinal$pesten_col_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
-```
 
-```{r}
-tapply(NEAfinal$pesten_leid_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEAfinal$int_col_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
-```
 
 ```{r}
 tapply(NEAfinal$int_leid_plot, NEAfinal$classs_29923_9, mean, na.rm = TRUE)
@@ -2924,10 +2922,6 @@ tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_2, mean, na.rm = TRUE)
-```
-
-```{r}
 tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_2, mean, na.rm = TRUE)
 ```
 
@@ -2980,10 +2974,6 @@ tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
 
 ```{r}
 tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_3, mean, na.rm = TRUE)
 ```
 
 ```{r}
@@ -3040,9 +3030,6 @@ tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
 tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
 ```
 
-```{r}
-tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_4, mean, na.rm = TRUE)
-```
 
 ```{r}
 tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_4, mean, na.rm = TRUE)
@@ -3328,10 +3315,6 @@ tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
 ```{r}
 tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
 ```
-
-```{r}
-tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_9, mean, na.rm = TRUE)
-```
 ```{r}
 tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_9, mean, na.rm = TRUE)
 ```
@@ -3385,10 +3368,6 @@ tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
 ```
 
 ```{r}
-tapply(NEAfinal$conflict_werk_plot, NEAfinal$class_emp_10, mean, na.rm = TRUE)
-```
-
-```{r}
 tapply(NEAfinal$steunleid_plot3, NEAfinal$class_emp_10, mean, na.rm = TRUE)
 ```
 
@@ -3400,12 +3379,15 @@ tapply(NEAfinal$steuncol_plot3, NEAfinal$class_emp_10, mean, na.rm = TRUE)
 tapply(NEAfinal$psyveil_plot3, NEAfinal$class_emp_10, mean, na.rm = TRUE)
 ```
 
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+library("foreign")
+NEA05 <-read.spss("data/processed/NEA05.sav", use.value.labels = T, to.data.frame = T)
+```
 
 
-
-
-
-
+```{r}
+table(NEAfinal$class_emp_7, NEAfinal$pesten_col)
+```
 
 
 Model with 8 items
@@ -3783,7 +3765,7 @@ tapply(NEA2022_clust1$seks_leid_plot, NEA2022_clust1$class8_8, mean, na.rm = TRU
 ```
 
 
-
+LCA 29923
 
 
 
@@ -3801,14 +3783,38 @@ tapply(NEA2022_clust1$seks_leid_plot, NEA2022_clust1$class8_8, mean, na.rm = TRU
 
 Modellen vergelijken:
 
+```{r}
+table(NEAfinal$classs3_29923_2, NEAfinal$classs3_29923_3)
+```
 
 ```{r}
-table(NEA2022_clust1_29923$classs3_29923_7, NEA2022_clust1_29923$classs3_29923_8)
+table(NEAfinal$classs3_29923_3, NEAfinal$classs3_29923_4)
+```
+
+```{r}
+table(NEAfinal$classs3_29923_4, NEAfinal$classs3_29923_5)
+```
+
+```{r}
+table(NEAfinal$classs3_29923_5, NEAfinal$classs3_29923_6)
+```
+
+```{r}
+table(NEAfinal$classs3_29923_6, NEAfinal$classs3_29923_7)
+```
+
+
+```{r}
+table(NEAfinal$classs3_29923_7, NEAfinal$classs3_29923_8)
 ```
 
 ```{r}
 table(NEA2022_clust1_29923$classs3_29923_8, NEA2022_clust1_29923$classs3_29923_9)
 ```
+```{r}
+table(NEAfinal$classs3_29923_9, NEAfinal$classs3_29923_10)
+```
+
 
 ```{r}
 table(NEAfinal$classs3_29923_8)
@@ -3854,7 +3860,1227 @@ summary(anova_model_sekscol)
 ```{r}
 table(NEAfinal$classs3_29923_8, NEAfinal$class_emp_7)
 ```
+
+
 ```{r}
-table(NEAfinal$classs3_29923_8, NEAfinal$class_emp_8)
+table(NEAfinal$class_emp_4, NEAfinal$class_emp_5)
 ```
+
+
+```{r}
+table(NEAfinal$class_emp_5, NEAfinal$class_emp_6)
+```
+
+```{r}
+table(NEAfinal$class_emp_6, NEAfinal$class_emp_7)
+```
+```{r}
+table(NEAfinal$class_emp_7, NEAfinal$class_emp_8)
+```
+
+```{r}
+table(NEAfinal$class_emp_8, NEAfinal$class_emp_9)
+```
+
+
+```{r}
+table(NEAfinal$class_emp_9, NEAfinal$class_emp_10)
+```
+```{r}
+table(NEAfinal$class_emp_7, NEAfinal$class_emp_9)
+```
+
+```{r}
+table(class_emp_9)
+```
+
+
+
+
+Model 7 zonder employer
+
+```{r}
+library(dplyr)
+library(janitor)
+library(stringr)
+
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(pesten_col)) %>%
+  tabyl(class_emp_7, pesten_col)
+
+pct_tab <- adorn_percentages(abs_tab, "col")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Pesten coworkers per class")
+
+```
+
+
+```{r}
+library(dplyr)
+library(janitor)
+library(stringr)
+
+abs_tab <- NEA05 %>%
+  filter(!is.na(class_emp_7), !is.na(pesten_leid)) %>%
+  tabyl(class_emp_7, pesten_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "col")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Bullying supervisors per class")
+
+```
+
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(intimidation_col)) %>%
+  tabyl(class_emp_7, intimidation_col)
+
+pct_tab <- adorn_percentages(abs_tab, "col")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Intimidation coworkers per class")
+
+```
+
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(intimidation_leid)) %>%
+  tabyl(class_emp_7, intimidation_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "col")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Intimidation supervisors per class")
+
+```
+
+
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(seks_col)) %>%
+  tabyl(class_emp_7, seks_col)
+
+pct_tab <- adorn_percentages(abs_tab, "col")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Unwanted sexual attention coworkers per class")
+
+```
+
+
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(seks_leid)) %>%
+  tabyl(class_emp_7, seks_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "col")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Unwanted sexual attention supervisors per class")
+
+```
+
+
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(geweld_col)) %>%
+  tabyl(class_emp_7, geweld_col)
+
+pct_tab <- adorn_percentages(abs_tab, "col")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Physical violence coworkers per class")
+
+```
+
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(geweld_leid)) %>%
+  tabyl(class_emp_7, geweld_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "col")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Physical violence coworkers per class")
+
+```
+
+
+
+
+```{r}
+NEA05$class_emp_7 <- model7_emp$predclass
+```
+
+
+
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class_emp_7), !is.na(pesten_col)) %>%
+  tabyl(class_emp_7, pesten_col)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Bullying coworkers per class")
+
+```
+
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class_emp_7), !is.na(pesten_leid)) %>%
+  tabyl(class_emp_7, pesten_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Bullying supervisors per class")
+
+```
+
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(intimidation_col)) %>%
+  tabyl(class_emp_7, intimidation_col)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Intimidation coworkers per class")
+
+```
+
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(intimidation_leid)) %>%
+  tabyl(class_emp_7, intimidation_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Intimidation supervisors per class")
+
+```
+
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(seks_col)) %>%
+  tabyl(class_emp_7, seks_col)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Unwanted sexual attention coworkers per class")
+
+```
+
+
+
+
+
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(seks_leid)) %>%
+  tabyl(class_emp_7, seks_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Unwanted sexual attention supervisors per class")
+
+```
+
+
+
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(geweld_col)) %>%
+  tabyl(class_emp_7, geweld_col)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Physical violence coworkers per class")
+
+```
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class_emp_7), !is.na(geweld_leid)) %>%
+  tabyl(class_emp_7, geweld_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Physical violence supervisors per class")
+
+```
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class_emp_7), !is.na(conflict_col)) %>%
+  tabyl(class_emp_7, conflict_col)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Conflict coworkers per class")
+
+```
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class_emp_7), !is.na(conflict_leid)) %>%
+  tabyl(class_emp_7, conflict_leid)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Conflict supervisors per class")
+
+```
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class_emp_7), !is.na(steuncol_RR)) %>%
+  tabyl(class_emp_7, steuncol_RR)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Incivility coworkers per class")
+
+```
+
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class_emp_7), !is.na(steunleid_RR)) %>%
+  tabyl(class_emp_7, steunleid_RR)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Incivility supervisors per class")
+
+```
+
+
+```{r}
+abs_tab <- NEA05 %>%
+  filter(!is.na(class_emp_7), !is.na(psyveil_RR)) %>%
+  tabyl(class_emp_7, psyveil_RR)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+
+```
+
+```{r}
+library(flextable)
+
+flextable(combined_tab) %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  set_caption("Tabel X. Psychological unsafety per class")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+table (afl_on_3, class_emp_7)
+```
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(afl_on_3)) %>%
+  tabyl(class_emp_7, afl_on_3)
+
+pct_tab <- adorn_percentages(abs_tab, "row")
+
+combined_tab <- abs_tab
+
+for (row in names(abs_tab)[-1]) {
+  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_7), !is.na(afl_on_3)) %>%
+  tabyl(class_emp_7, afl_on_3)
+
+pct_tab <- adorn_percentages(abs_tab, "col")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+```{r}
+abs_tab <- NEAfinal %>%
+  filter(!is.na(class_emp_6), !is.na(afl_on_3)) %>%
+  tabyl(class_emp_6, afl_on_3)
+
+pct_tab <- adorn_percentages(abs_tab, "col")
+
+combined_tab <- abs_tab
+
+for (col in names(abs_tab)[-1]) {
+  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+}
+
+print(combined_tab)
+
+```
+
+
+
+```{r}
+table(afl_on_3)
+```
+
+```{r}
+table(pesten_col, intimidation_col)
+```
+```{r}
+table(pesten_leid, intimidation_leid)
+```
+
+
+
+Analyseren transgressive behaviors
+
+
+
+
+
+```{r}
+table(NEA2022_clust1_29923$pesten_col)
+
+NEAfinal <- NEA2022_clust1_29923 %>%
+  mutate(pesten_col_D = case_when(
+    pesten_col == 1 ~ 1,
+    pesten_col %in% 2:4 ~ 2,
+    TRUE ~ NA_real_
+  ))
+
+table(NEAfinal$pesten_col_D, useNA = "ifany")
+
+```
+
+```{r}
+table(NEA2022_clust1_29923$pesten_leid)
+
+NEAfinal <- NEA2022_clust1_29923 %>%
+  mutate(pesten_leid_D = case_when(
+    pesten_leid == 1 ~ 1,
+    pesten_leid %in% 2:4 ~ 2,
+    TRUE ~ NA_real_
+  ))
+
+table(NEAfinal$pesten_leid_D, useNA = "ifany")
+
+```
+
+```{r}
+table(NEA2022_clust1_29923$intimidation_col)
+
+NEAfinal <- NEA2022_clust1_29923 %>%
+  mutate(intimidation_col_D = case_when(
+    intimidation_col == 1 ~ 1,
+    intimidation_col %in% 2:4 ~ 2,
+    TRUE ~ NA_real_
+  ))
+
+table(NEAfinal$intimidation_col_D, useNA = "ifany")
+
+```
+```{r}
+table(NEA2022_clust1_29923$intimidation_leid)
+
+NEAfinal <- NEA2022_clust1_29923 %>%
+  mutate(intimidation_leid_D = case_when(
+    intimidation_leid == 1 ~ 1,
+    intimidation_leid %in% 2:4 ~ 2,
+    TRUE ~ NA_real_
+  ))
+
+table(NEAfinal$intimidation_leid_D, useNA = "ifany")
+
+```
+
+```{r}
+table(NEA2022_clust1_29923$geweld_col)
+
+NEAfinal <- NEA2022_clust1_29923 %>%
+  mutate(geweld_col_D = case_when(
+    geweld_col == 1 ~ 1,
+    geweld_col %in% 2:4 ~ 2,
+    TRUE ~ NA_real_
+  ))
+
+table(NEAfinal$geweld_col_D, useNA = "ifany")
+
+```
+```{r}
+table(NEA2022_clust1_29923$geweld_leid)
+
+NEAfinal <- NEA2022_clust1_29923 %>%
+  mutate(geweld_leid_D = case_when(
+    geweld_leid == 1 ~ 1,
+    geweld_leid %in% 2:4 ~ 2,
+    TRUE ~ NA_real_
+  ))
+
+table(NEAfinal$geweld_leid_D, useNA = "ifany")
+
+```
+```{r}
+table(NEA2022_clust1_29923$seks_col)
+
+NEAfinal <- NEA2022_clust1_29923 %>%
+  mutate(seks_col_D = case_when(
+    seks_col == 1 ~ 1,
+    seks_col %in% 2:4 ~ 2,
+    TRUE ~ NA_real_
+  ))
+
+table(NEAfinal$seks_col_D, useNA = "ifany")
+
+```
+```{r}
+table(NEA2022_clust1_29923$seks_leid)
+
+NEAfinal <- NEA2022_clust1_29923 %>%
+  mutate(seks_leid_D = case_when(
+    seks_leid == 1 ~ 1,
+    seks_leid %in% 2:4 ~ 2,
+    TRUE ~ NA_real_
+  ))
+
+table(NEAfinal$seks_leid_D, useNA = "ifany")
+
+```
+
+```{r}
+NEAfinal$seks <- ifelse(
+  NEAfinal$seks_leid %in% c(2, 3, 4) | NEAfinal$seks_col %in% c(2, 3, 4),
+  2,
+  1
+)
+
+table(NEAfinal$seks, useNA = "ifany")
+table(NEAfinal$seks_col, useNA = "ifany")
+table(NEAfinal$seks_leid, useNA = "ifany")
+```
+```{r}
+NEAfinal$pesten <- ifelse(
+  NEAfinal$pesten_leid %in% c(2, 3, 4) | NEAfinal$pesten_col %in% c(2, 3, 4),
+  2,
+  1
+)
+
+table(NEAfinal$pesten, useNA = "ifany")
+table(NEAfinal$pesten_col, useNA = "ifany")
+table(NEAfinal$pesten_leid, useNA = "ifany")
+```
+```{r}
+NEAfinal$intimidation <- ifelse(
+  NEAfinal$intimidation_leid %in% c(2, 3, 4) | NEAfinal$intimidation_col %in% c(2, 3, 4),
+  2,
+  1
+)
+
+table(NEAfinal$intimidation, useNA = "ifany")
+table(NEAfinal$intimidation_col, useNA = "ifany")
+table(NEAfinal$intimidation_leid, useNA = "ifany")
+```
+
+```{r}
+NEAfinal$geweld <- ifelse(
+  NEAfinal$geweld_leid %in% c(2, 3, 4) | NEAfinal$geweld_col %in% c(2, 3, 4),
+  2,
+  1
+)
+
+table(NEAfinal$geweld, useNA = "ifany")
+table(NEAfinal$geweld_col, useNA = "ifany")
+table(NEAfinal$geweld_leid, useNA = "ifany")
+```
+
+
+```{r}
+NEAfinal$transcol <- with(NEAfinal, 
+  ifelse(
+    rowSums(!is.na(cbind(pesten_col_D, intimidation_col_D, geweld_col_D, seks_col_D))) == 0,
+    NA_real_,
+    rowSums(cbind(pesten_col_D, intimidation_col_D, geweld_col_D, seks_col_D), na.rm = TRUE)
+  )
+)
+
+table(NEAfinal$transcol, useNA = "ifany")
+
+```
+
+```{r}
+NEAfinal$transleid <- with(NEA2022_clust1_29923, 
+  ifelse(
+    rowSums(!is.na(cbind(pesten_leid_D, intimidation_leid_D, geweld_leid_D, seks_leid_D))) == 0,
+    NA_real_,
+    rowSums(cbind(pesten_leid_D, intimidation_leid_D, geweld_leid_D, seks_leid_D), na.rm = TRUE)
+  )
+)
+
+table(NEAfinal$transleid, useNA = "ifany")
+
+```
+
+```{r}
+NEAfinal$transtotal <- with(NEA2022_clust1_29923, 
+  ifelse(
+    rowSums(!is.na(cbind(
+      pesten_leid_D, intimidation_leid_D, geweld_leid_D, seks_leid_D,
+      pesten_col_D, intimidation_col_D, geweld_col_D, seks_col_D
+    ))) == 0,
+    NA_real_,
+    rowSums(cbind(
+      pesten_leid_D, intimidation_leid_D, geweld_leid_D, seks_leid_D,
+      pesten_col_D, intimidation_col_D, geweld_col_D, seks_col_D
+    ), na.rm = TRUE)
+  )
+)
+
+table(NEAfinal$transtotal, useNA = "ifany")
+
+table(NEAfinal$afl_on_3)
+```
+
+
+```{r}
+table(NEAfinal$pesten)
+table(NEAfinal$intimidation)
+table(NEAfinal$seks)
+table(NEAfinal$geweld)
+
+table(NEAfinal$pesten_col_D)
+table(NEAfinal$intimidation_col_D)
+table(NEAfinal$seks_col_D)
+table(NEAfinal$geweld_col_D)
+
+
+table(NEAfinal$pesten_leid_D)
+table(NEAfinal$intimidation_leid_D)
+table(NEAfinal$seks_leid_D)
+table(NEAfinal$geweld_leid_D)
+```
+
+
+
+
+Unwanted sexual attention
+
+
+```{r}
+seks <- subset(NEAfinal, seks_col %in% c(2, 3, 4) | seks_leid %in% c(2, 3, 4))
+table(seks_col, seks_leid)
+table(seks$seks_col)
+table(seks$seks_leid)
+```
+
+```{r}
+NEAfinal$ongseks <- ifelse(
+  NEAfinal$pesten_col %in% c(2, 3, 4) |
+  NEAfinal$pesten_leid %in% c(2, 3, 4) |
+  NEAfinal$intimidation_col %in% c(2, 3, 4) |
+  NEAfinal$intimidation_leid %in% c(2, 3, 4) |
+  NEAfinal$geweld_col %in% c(2, 3, 4) |
+  NEAfinal$geweld_leid %in% c(2, 3, 4),
+  2, 1
+)
+
+table(NEAfinal$ongseks)
+```
+```{r}
+NEAfinal$ongsekscol <- ifelse(
+  NEAfinal$pesten_col %in% c(2, 3, 4) |
+  NEAfinal$intimidation_col %in% c(2, 3, 4) |
+  NEAfinal$geweld_col %in% c(2, 3, 4),
+  2, 1
+)
+
+table(NEAfinal$ongsekscol)
+```
+
+```{r}
+NEAfinal$ongseksleid <- ifelse(
+  NEAfinal$pesten_leid %in% c(2, 3, 4) |
+  NEAfinal$intimidation_leid %in% c(2, 3, 4) |
+  NEAfinal$geweld_leid %in% c(2, 3, 4),
+  2, 1
+)
+
+table(NEAfinal$ongseksleid)
+```
+
+
+```{r}
+table(NEAfinal$seks, NEAfinal$ongseks)
+```
+
+```{r}
+table(NEAfinal$seks, NEAfinal$ongseks)
+```
+
+
+```{r}
+table(NEAfinal$seks, NEAfinal$pesten)
+table(NEAfinal$seks, NEAfinal$intimidation)
+table(NEAfinal$seks, NEAfinal$geweld)
+```
+```{r}
+table(NEAfinal$seks_col, NEAfinal$pesten_col)
+table(NEAfinal$seks_col, NEAfinal$intimidation_col)
+table(NEAfinal$seks_col, NEAfinal$geweld_col)
+```
+
+
+
+Pesten
+
+```{r}
+pesten <- subset(NEAfinal, pesten_col %in% c(2, 3, 4) | pesten_leid %in% c(2, 3, 4))
+table(pesten_col, pesten_leid)
+table(pesten$pesten_col)
+table(pesten$pesten_leid)
+```
+
+```{r}
+NEAfinal$ongpesten <- ifelse(
+  NEAfinal$seks_col %in% c(2, 3, 4) |
+  NEAfinal$seks_leid %in% c(2, 3, 4) |
+  NEAfinal$intimidation_col %in% c(2, 3, 4) |
+  NEAfinal$intimidation_leid %in% c(2, 3, 4) |
+  NEAfinal$geweld_col %in% c(2, 3, 4) |
+  NEAfinal$geweld_leid %in% c(2, 3, 4),
+  2, 1
+)
+
+table(NEAfinal$ongpesten)
+```
+```{r}
+table(NEAfinal$pesten, NEAfinal$ongpesten)
+```
+
+```{r}
+table(NEAfinal$pesten, NEAfinal$seks)
+table(NEAfinal$pesten, NEAfinal$intimidation)
+table(NEAfinal$pesten, NEAfinal$geweld)
+```
+Intimidation
+
+
+```{r}
+intimidation <- subset(NEAfinal, intimidation_col %in% c(2, 3, 4) | intimidation_leid %in% c(2, 3, 4))
+table(intimidation_col, intimidation_leid)
+table(intimidation$intimidation_col)
+table(intimidation$intimidation_leid)
+```
+
+```{r}
+NEAfinal$ongintimidation <- ifelse(
+  NEAfinal$seks_col %in% c(2, 3, 4) |
+  NEAfinal$seks_leid %in% c(2, 3, 4) |
+  NEAfinal$pesten_col %in% c(2, 3, 4) |
+  NEAfinal$pesten_leid %in% c(2, 3, 4) |
+  NEAfinal$geweld_col %in% c(2, 3, 4) |
+  NEAfinal$geweld_leid %in% c(2, 3, 4),
+  2, 1
+)
+
+table(NEAfinal$ongintimidation)
+```
+
+```{r}
+table(NEAfinal$intimidation, NEAfinal$ongintimidation)
+```
+
+```{r}
+table(NEAfinal$intimidation, NEAfinal$seks)
+table(NEAfinal$intimidation, NEAfinal$pesten)
+table(NEAfinal$intimidation, NEAfinal$geweld)
+```
+
+Fysiek geweld
+
+
+```{r}
+geweld <- subset(NEAfinal, geweld_col %in% c(2, 3, 4) | geweld_leid %in% c(2, 3, 4))
+table(geweld_col, geweld_leid)
+table(geweld$geweld_col)
+table(geweld$geweld_leid)
+```
+
+```{r}
+NEAfinal$onggeweld <- ifelse(
+  NEAfinal$seks_col %in% c(2, 3, 4) |
+  NEAfinal$seks_leid %in% c(2, 3, 4) |
+  NEAfinal$pesten_col %in% c(2, 3, 4) |
+  NEAfinal$pesten_leid %in% c(2, 3, 4) |
+  NEAfinal$intimidation_col %in% c(2, 3, 4) |
+  NEAfinal$intimidation_leid %in% c(2, 3, 4),
+  2, 1
+)
+
+table(NEAfinal$onggeweld)
+```
+
+```{r}
+table(NEAfinal$geweld, NEAfinal$onggeweld)
+```
+
+```{r}
+table(NEAfinal$intimidation, NEAfinal$seks)
+table(NEAfinal$intimidation, NEAfinal$pesten)
+table(NEAfinal$intimidation, NEAfinal$geweld)
+```
+
+```{r}
+cor_matrix <- cor(datafactor, use = "pairwise.complete.obs")
+print(cor_matrix)
+```
+
+```{r}
+library(Hmisc)
+cor_results <- rcorr(as.matrix(datafactor))
+
+cor_matrix <- round(cor_results$r, 3)
+p_matrix <- cor_results$P
+
+cor_with_stars <- function(cor_matrix, p_matrix) {
+  stars <- ifelse(is.na(p_matrix), "",
+           ifelse(p_matrix < 0.001, "***",
+           ifelse(p_matrix < 0.01, "**",
+           ifelse(p_matrix < 0.05, "*", ""))))
+  
+  cor_matrix_formatted <- matrix(
+    paste0(format(cor_matrix, nsmall = 3), stars),
+    nrow = nrow(cor_matrix), 
+    dimnames = dimnames(cor_matrix)
+  )
+  
+  return(cor_matrix_formatted)
+}
+
+cor_matrix_stars <- cor_with_stars(cor_matrix, p_matrix)
+
+kable(cor_matrix_stars)
+
+```
+
+```{r}
+datafactor_R <- data.frame(NEAfinal$pesten, NEAfinal$intimidation, NEAfinal$geweld, NEAfinal$seks)
+```
+
+```{r}
+cor_matrix_R <- cor(datafactor_R, use = "pairwise.complete.obs")
+print(cor_matrix_R)
+```
+```{r}
+cor_matrix_R <- cor(datafactor_R, use = "pairwise.complete.obs", method = "spearman")
+print(cor_matrix_R)
+```
+```{r}
+datafactor_S <- data.frame(NEAfinal$seks, NEAfinal$ongseks)
+```
+
+```{r}
+cor_matrix_S <- cor(datafactor_S, use = "pairwise.complete.obs", method = "spearman")
+print(cor_matrix_S)
+```
+
+
+```{r}
+library(Hmisc)
+cor_results <- rcorr(as.matrix(datafactor_R))
+
+cor_matrix <- round(cor_results$r, 3)
+p_matrix <- cor_results$P
+
+cor_with_stars <- function(cor_matrix, p_matrix) {
+  stars <- ifelse(is.na(p_matrix), "",
+           ifelse(p_matrix < 0.001, "***",
+           ifelse(p_matrix < 0.01, "**",
+           ifelse(p_matrix < 0.05, "*", ""))))
+  
+  cor_matrix_formatted <- matrix(
+    paste0(format(cor_matrix, nsmall = 3), stars),
+    nrow = nrow(cor_matrix), 
+    dimnames = dimnames(cor_matrix)
+  )
+  
+  return(cor_matrix_formatted)
+}
+
+cor_matrix_stars <- cor_with_stars(cor_matrix, p_matrix)
+
+kable(cor_matrix_stars)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+model_regr <- lm(seks_col ~ pesten_col + intimidation_col + geweld_col, data = NEAfinal)
+summary(model_regr)
+
+model_regr <- lm(seks_leid ~ pesten_leid + intimidation_leid + geweld_leid, data = NEAfinal)
+summary(model_regr)
+```
+
+
+
 

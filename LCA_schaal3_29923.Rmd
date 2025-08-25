@@ -537,3 +537,28 @@ NEA2022_clust1_29923 <- model8s3_29923pred
 ```{r}
 #write.csv(Modelss3_29923, "data/processed/modelss3_29923.sav")
 ```
+
+
+```{r}
+
+# Step 1: Extract posterior probabilities (N x K matrix)
+posterior <- model8s3_29923$posterior
+
+# Step 2: Compute individual entropy contributions
+entropy_individual <- -rowSums(posterior * log(posterior + 1e-10))  # add small value to avoid log(0)
+
+# Step 3: Calculate total (normalized) entropy
+N <- nrow(posterior)
+K <- ncol(posterior)
+entropy_total <- 1 - (sum(entropy_individual) / (N * log(K)))
+
+# Step 4: Print the result
+entropy_total
+
+```
+
+
+```{r}
+
+```
+

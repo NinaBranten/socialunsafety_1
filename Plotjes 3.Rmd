@@ -1,0 +1,1666 @@
+---
+title: "Plotjes"
+output: html_document
+date: "2025-03-04"
+---
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"))
+options(width = 100)
+rgl::setupKnitr()
+
+
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+```{r klippy1, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+```{r echo=FALSE, warning=FALSE}
+library("foreign")
+library("ggplot2")
+library("summarytools")
+library("dplyr")
+library("naniar")
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
+attach(NEAfinal)
+```
+
+```{r}
+#pesten collega's
+table(NEAfinal$pesten_col)
+
+
+NEAfinal <- NEAfinal %>%
+  mutate(pesten_col_plot = recode(pesten_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEAfinal$pesten_col_plot)
+summary(NEAfinal$pesten_col_plot)
+
+```
+
+```{r}
+#pesten leidinggevenden
+table(NEAfinal$pesten_leid)
+
+
+NEAfinal <- NEAfinal %>%
+  mutate(pesten_leid_plot = recode(pesten_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEAfinal$pesten_leid_plot)
+
+```
+
+```{r}
+#intimidatie collega's
+table(NEAfinal$intimidation_col)
+
+
+NEAfinal <- NEAfinal %>%
+  mutate(int_col_plot = recode(intimidation_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEAfinal$int_col_plot)
+
+```
+
+```{r}
+#intimidatie leidinggevenden
+table(NEAfinal$intimidation_leid)
+
+NEAfinal <- NEAfinal %>%
+  mutate(int_leid_plot = recode(intimidation_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEAfinal$int_leid_plot)
+```
+
+```{r}
+#fysiek geweld collega's
+table(NEAfinal$geweld_col)
+
+NEAfinal <- NEAfinal %>%
+  mutate(gew_col_plot = recode(geweld_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEAfinal$gew_col_plot)
+```
+
+```{r}
+#fysiek geweld leidinggevenden
+table(NEAfinal$geweld_leid)
+
+NEAfinal <- NEAfinal %>%
+  mutate(gew_leid_plot = recode(geweld_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEAfinal$gew_leid_plot)
+```
+
+```{r}
+#ongewenste seksuele aandacht collega's
+table(NEAfinal$seks_col)
+
+NEAfinal <- NEAfinal %>%
+  mutate(seks_col_plot = recode(seks_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEAfinal$seks_col_plot)
+```
+
+```{r}
+#ongewenste seksuele aandacht leidinggevenden
+table(NEAfinal$seks_leid)
+
+NEAfinal <- NEAfinal %>%
+  mutate(seks_leid_plot = recode(seks_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+table(NEAfinal$seks_leid_plot)
+```
+
+```{r}
+#conflict collega
+table(NEAfinal$conflict_col)
+NEAfinal <- NEAfinal %>%
+  mutate(conflict_col_plot = recode(conflict_col, `1` = 0, `2` = 0.50, `3` = 1))
+table(NEAfinal$conflict_col_plot)
+```
+
+```{r}
+#conflict leidinggevende
+table(NEAfinal$conflict_leid)
+NEAfinal <- NEAfinal %>%
+  mutate(conflict_leid_plot = recode(conflict_leid, `1` = 0, `2` = 0.50, `3` = 1))
+table(NEAfinal$conflict_leid_plot)
+```
+
+```{r}
+#conflict collega
+table(NEAfinal$conflict_werk)
+NEAfinal <- NEAfinal %>%
+  mutate(conflict_werk_plot = recode(conflict_werk, `1` = 0, `2` = 0.50, `3` = 1))
+table(NEAfinal$conflict_werk_plot)
+```
+
+```{r}
+table(NEAfinal$steunleid_aandacht)
+NEAfinal <- NEAfinal %>%
+  mutate(leidaandacht_plot = (steunleid_aandacht - 1) / 3)
+
+summarytools::freq(NEAfinal$leidaandacht_plot)
+```
+```{r}
+table(NEAfinal$steunleid_welzijn)
+NEAfinal <- NEAfinal %>%
+  mutate(leidwelzijn_plot = (steunleid_welzijn - 1) / 3)
+
+summarytools::freq(NEAfinal$leidwelzijn_plot)
+```
+```{r}
+#steun leidinggevenden
+table(NEAfinal$steuncol_belang)
+NEAfinal <- NEAfinal %>%
+  mutate(colbelang_plot = (steuncol_belang - 1) / 3)
+
+summarytools::freq(NEAfinal$colbelang)
+```
+```{r}
+table(NEAfinal$steuncol_vriendelijk)
+NEAfinal <- NEAfinal %>%
+  mutate(colvriendelijk_plot = (steuncol_vriendelijk - 1) / 3)
+
+summarytools::freq(NEAfinal$colvriendelijk_plot)
+```
+```{r}
+table(NEAfinal$psyveil_last)
+NEAfinal <- NEAfinal %>%
+  mutate(psyveillast_plot = (psyveil_last - 1) / 4)
+
+summarytools::freq(NEAfinal$psyveillast_plot)
+```
+```{r}
+table(NEAfinal$psyveil_hulp)
+NEAfinal <- NEAfinal %>%
+  mutate(psyveilhulp_plot = (psyveil_hulp - 1) / 4)
+
+summarytools::freq(NEAfinal$psyveilhulp_plot)
+```
+```{r}
+table(NEAfinal$psyveil_fout)
+NEAfinal <- NEAfinal %>%
+  mutate(psyveilfout_plot = (psyveil_fout - 1) / 4)
+
+summarytools::freq(NEAfinal$psyveilfout_plot)
+```
+
+
+
+
+
+Original with conflict employer
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class2 <- model2$predclass
+table(NEAfinal$class2)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class3 <- model3$predclass
+table(NEAfinal$class3)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class4 <- model4$predclass
+table(NEAfinal$class4)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class5 <- model5$predclass
+table(NEAfinal$class5)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class6 <- model6$predclass
+table(NEAfinal$class6)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class7 <- model7$predclass
+table(NEAfinal$class7)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class8 <- model8$predclass
+table(NEAfinal$class8)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class9 <- model9$predclass
+table(NEAfinal$class9)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class10 <- model10$predclass
+table(NEAfinal$class10)
+```
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class2, mean, na.rm = TRUE)
+```
+
+
+Class 3
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class3, mean, na.rm = TRUE)
+```
+
+
+Class 4
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class4, mean, na.rm = TRUE)
+```
+
+
+Class 5
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class5, mean, na.rm = TRUE)
+```
+
+
+Class 6
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class6, mean, na.rm = TRUE)
+```
+
+
+
+Class 7
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class7, mean, na.rm = TRUE)
+```
+
+
+Class 8
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class8, mean, na.rm = TRUE)
+```
+
+
+Class 9
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_werk_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class9, mean, na.rm = TRUE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Zonder conflict employer
+
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp2_2 <- model2_emp2$predclass
+table(NEAfinal$class_emp2_2)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp2_3 <- model3_emp2$predclass
+table(NEAfinal$class_emp2_3)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp2_4 <- model4_emp2$predclass
+table(NEAfinal$class_emp2_4)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp2_5 <- model5_emp2$predclass
+table(NEAfinal$class_emp2_5)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp2_6 <- model6_emp2$predclass
+table(NEAfinal$class_emp2_6)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp2_7 <- model7_emp2$predclass
+table(NEAfinal$class_emp2_7)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp2_8 <- model8_emp2$predclass
+table(NEAfinal$class_emp2_8)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp2_9 <- model9_emp2$predclass
+table(NEAfinal$class_emp2_9)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp2_10 <- model10_emp2$predclass
+table(NEAfinal$class_emp2_10)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp2_11 <- model11_emp2$predclass
+table(NEAfinal$class_emp2_11)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEAfinal$class_emp2_12 <- model12_emp2$predclass
+table(NEAfinal$class_emp2_12)
+```
+
+
+CLass 2
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class_emp2_2, mean, na.rm = TRUE)
+```
+
+
+Class 3
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class_emp2_3, mean, na.rm = TRUE)
+```
+
+
+Class 4
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class_emp2_4, mean, na.rm = TRUE)
+```
+
+
+Class 5
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class_emp2_5, mean, na.rm = TRUE)
+```
+
+
+Class 6
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class_emp2_6, mean, na.rm = TRUE)
+```
+
+
+
+Class 7
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class_emp2_7, mean, na.rm = TRUE)
+```
+
+
+Class 8
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_leid_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_col_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class_emp2_8, mean, na.rm = TRUE)
+```
+
+
+Class 9
+
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class_emp2_9, mean, na.rm = TRUE)
+```
+
+Class 10
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class_emp2_10, mean, na.rm = TRUE)
+```
+
+Class 11
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class_emp2_11, mean, na.rm = TRUE)
+```
+
+Class 12
+```{r}
+tapply(NEAfinal$pesten_col_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$pesten_leid_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$int_col_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$gew_leid_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_col_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$seks_leid_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_col_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$conflict_leid_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+
+```{r}
+tapply(NEAfinal$leidaandacht_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$leidwelzijn_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colbelang_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$colvriendelijk_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveillast_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilhulp_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+```{r}
+tapply(NEAfinal$psyveilfout_plot, NEAfinal$class_emp2_12, mean, na.rm = TRUE)
+```
+
+
+
+
+

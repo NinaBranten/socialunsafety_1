@@ -1,0 +1,155 @@
+---
+title: "gekke plotjes"
+output: html_document
+date: "2025-06-11"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+```{r}
+library(plotly)
+
+plot_ly(
+  x = pesten_col,
+  y = psyveil_RR,
+  z = conflict_leid,
+  type = 'scatter3d',
+  mode = 'markers',
+  color = ~as.factor(class_emp_9),  # color by class
+  text = ~paste("Class", class_emp_9),
+  marker = list(size = 5)
+)
+```
+
+
+
+```{r}
+library(plotly)
+
+df <- data.frame(
+  klasse = 1:9,
+  transgressive = c(0.3, 0.2, 0.7, 0.1, 0, 0, 0.08, 0, 0),  # Voeg hier je scores in
+  social_climate = c(0.9, 0.8, 0.7, 0.6, 0.2, 0.4, 0.3, 0.1, 0.5),  # Voeg hier je scores in
+  conflict = c(0.8, 0.7, 0.6, 0.4, 0.1, 0, 0.9, 0, 0.5)  # Voeg hier je scores in
+)
+
+plot_ly(
+  data = df,
+  x = ~transgressive,
+  y = ~social_climate,
+  z = ~conflict,
+  color = ~klasse,
+  type = 'scatter3d',
+  mode = 'markers',
+  marker = list(size = 8)
+)
+
+```
+
+
+```{r}
+library(ggplot2)
+library(reshape2)
+
+# Data frame with yes/no (1/0) for each class and dimension
+data <- data.frame(
+  Class = factor(1:9),
+  Transgressive = c(1, 1, 1, 1, 0, 0, 1, 0, 0),
+  Conflict = c(1, 1, 1, 1, 0, 0, 1, 0, 1),
+  Social_Climate = c(1, 0, 1, 1, 0, 1, 0, 0, 1)
+)
+
+# Reshape the data into long format
+data_long <- melt(data, id.vars = 'Class')
+
+# Plot heatmap
+ggplot(data_long, aes(x = variable, y = Class, fill = factor(value))) +
+  geom_tile() +
+  scale_fill_manual(values = c('white', 'blue')) +
+  theme_minimal() +
+  labs(x = 'Dimension', y = 'Class', fill = 'Presence') +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r}
+ggplot(data, aes(x = Transgressive, y = Conflict, color = factor(Social_Climate))) +
+  geom_point(size = 4) +
+  labs(x = "Transgressive Behaviors", y = "Conflict", color = "Social Climate") +
+  scale_color_manual(values = c("red", "green")) +
+  theme_minimal()
+
+```
+
+```{r}
+install.packages("venn")
+library(venn)
+
+# Define the sets
+sets <- list(
+  Transgressive = which(data$Transgressive == 1),
+  Conflict = which(data$Conflict == 1),
+  Social_Climate = which(data$Social_Climate == 1)
+)
+
+# Plot the Venn diagram
+venn(sets)
+
+```
+
+```{r}
+install.packages("fmsb")
+library(fmsb)
+
+# Create data for the radar plot (0 = No, 1 = Yes)
+radar_data <- data.frame(
+  Class = 1:9,
+  Transgressive = c(1, 1, 1, 1, 0, 0, 1, 0, 0),
+  Conflict = c(1, 1, 1, 1, 0, 0, 1, 0, 1),
+  Social_Climate = c(1, 0, 1, 1, 0, 1, 0, 0, 1)
+)
+
+# Radar plot
+radarchart(radar_data)
+
+```
+```{r}
+library(plotly)
+
+# Data for the 3D scatter plot
+data_3d <- data.frame(
+  Class = factor(1:9),
+  Transgressive = c(1, 1, 1, 1, 0, 0, 1, 0, 0),
+  Conflict = c(1, 1, 1, 1, 0, 0, 1, 0, 1),
+  Social_Climate = c(1, 0, 1, 1, 0, 1, 0, 0, 1),
+  Supervisor_Coworker = c("Both", "Coworker", "Both", "Supervisor", "Neither", "Neither", "Both", "Neither", "Neither")
+)
+
+# 3D plot with Transgressive, Conflict, Social Climate, and colored by Supervisor/Coworker
+plot_ly(data_3d, x = ~Transgressive, y = ~Conflict, z = ~Social_Climate, color = ~Supervisor_Coworker, type = 'scatter3d', mode = 'markers')
+
+```

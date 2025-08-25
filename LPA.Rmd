@@ -11,6 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 install.packages("tidyLPA")
 install.packages("dplyr")
+library("tidyLPA")
+library("dplyr")
 ```
 
 ```{r}
@@ -60,25 +62,120 @@ summarytools::freq(NEAfinal$psyveil_R)
 
 ```
 
-```{r}
-write.csv(NEAfinal, "data/processed/NEAfinal2503.sav")
-```
 
-```{r}
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
 attach(NEAfinal)
 ```
 
 
 ```{r}
-data_lpa <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_R, steuncol_R, psyveil_R)
+data_lpa <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_R, steuncol_R, psyveil_R)
 ```
 
 ```{r}
-results_lpa <- data_lpa %>%
-  estimate_profiles(2:9, 
-                    models = 1, # 1 means variances are equal across classes
-                    variances = "equal", 
-                    covariances = "zero") 
+
+# Step 2: Estimate latent profiles with models from 1 to 9 classes
+lpa_models <- data_lpa %>%
+  estimate_profiles(1:9, 
+                    models = 1)  # Model 1: varying means, equal variances, zero covariances
+
+# Step 3: Plot fit statistics (AIC, BIC, entropy)
+plot_profiles(lpa_models)
+
+# Step 4: Extract data with class assignment from the selected model (e.g., 9-class solution)
+lpa_9class <- get_data(lpa_models, 9)
+
+# Check the class distribution
+table(lpa_9class$Class)
+
+# Optional: Add the class assignment to the original NEAfinal dataset
+NEAfinal$class_lpa9 <- lpa_9class$Class
+
+```
+
+```{r}
+data_lpa2 <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR)
+```
+
+
+```{r}
+colSums(is.na(data_lpa2))  # How many missing values per variable?
+sum(complete.cases(data_lpa2))  # How many complete cases?
+
+```
+```{r}
+data_lpa2_clean <- na.omit(data_lpa2)
+colSums(is.na(data_lpa2_clean))
+sum(complete.cases(data_lpa2_clean))
+```
+```{r}
+table(data_lpa2_clean$pesten_col)
+table(data_lpa2_clean$pesten_leid)
+table(data_lpa2_clean$intimidation_col)
+table(data_lpa2_clean$intimidation_leid)
+
+table(NEAfinal$seks_col)
+table(data_lpa2_clean$seks_col)
+table(NEAfinal$seks_leid)
+table(data_lpa2_clean$seks_leid)
+table(NEAfinal$geweld_col)
+table(data_lpa2_clean$geweld_col)
+table(NEAfinal$geweld_leid)
+table(data_lpa2_clean$geweld_leid)
+```
+
+
+```{r}
+LPA2 <- data_lpa2_clean %>%
+  select(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
+         geweld_col, geweld_leid, seks_col, seks_leid,
+         conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR) %>%
+  estimate_profiles(1:9, models = 1)
+
+LPA2
+
+# Compare model fit statistics
+compare_solutions(LPA2, statistics = c("AIC", "BIC"))
+```
+
+```{r}
+data_lpa3 <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR)
+
+```
+
+```{r}
+data_lpa3_clean <- na.omit(data_lpa3)
+```
+
+```{r}
+LPA3 <- data_lpa3_clean %>%
+  select(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
+         seks_col, seks_leid,
+         conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR) %>%
+  estimate_profiles(1:9, models = 1)
+
+LPA3
+
+# Compare model fit statistics
+compare_solutions(LPA3, statistics = c("AIC", "BIC"))
+```
+
+
+
+
+
+```{r}
+LPA1 <-data_lpa2 %>% select(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR)%>%
+   single_imputation() %>% 
+  estimate_profiles(1:9)
+
+LPA1
+compare_solutions(LPA1, statistics = c("AIC", "BIC"))
+```
+
+```{r}
+get_estimates(LPA1[[7]])
 
 ```
 

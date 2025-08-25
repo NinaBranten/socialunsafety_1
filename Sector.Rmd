@@ -1,0 +1,472 @@
+---
+title: "Sector"
+output: html_document
+date: "2025-06-17"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA07 <-read.spss("data/processed/NEA07.sav", use.value.labels = T, to.data.frame = T)
+```
+
+```{r}
+table(NEA07$afl_sb_2, useNA = "ifany")
+```
+
+```{r}
+NEA07 <- NEA07 %>%
+  mutate(model7_7 = pmodel7_empv7 * 100)
+```
+
+```{r}
+NEA07 <- NEA07 %>%
+  mutate(model7_1 = pmodel7_empv1 * 100)
+```
+
+```{r}
+NEA07 <- NEA07 %>%
+  mutate(model7_2 = pmodel7_empv2 * 100)
+```
+
+```{r}
+NEA07 <- NEA07 %>%
+  mutate(model7_3 = pmodel7_empv3 * 100)
+```
+
+```{r}
+NEA07 <- NEA07 %>%
+  mutate(model7_4 = pmodel7_empv4 * 100)
+```
+
+```{r}
+NEA07 <- NEA07 %>%
+  mutate(model7_5 = pmodel7_empv5 * 100)
+```
+
+```{r}
+NEA07 <- NEA07 %>%
+  mutate(model7_6 = pmodel7_empv6 * 100)
+```
+
+
+
+
+
+
+```{r}
+mis_pestencol <- NEA07 %>%
+  filter(!is.na(pesten_col))
+```
+
+
+```{r}
+mis_pestencol %>%
+  group_by(afl_sb_2) %>%
+  summarize(mean_pestencol = mean(pesten_col, na.rm = TRUE)) %>%
+  arrange(desc(mean_pestencol))
+```
+```{r}
+mis_pestencol %>%
+  group_by(afl_sb_3) %>%
+  summarize(mean_pestencol = mean(pesten_col, na.rm = TRUE)) %>%
+  arrange(desc(mean_pestencol))
+```
+
+```{r}
+mis_pestenleid <- NEA07 %>%
+  filter(!is.na(pesten_leid))
+```
+
+
+```{r}
+mis_pestenleid %>%
+  group_by(afl_sb_2) %>%
+  summarize(mean_pestenleid = mean(pesten_leid, na.rm = TRUE)) %>%
+  arrange(desc(mean_pestenleid))
+```
+
+```{r}
+mis_pestenleid %>%
+  group_by(afl_sb_3) %>%
+  summarize(mean_pestenleid = mean(pesten_leid, na.rm = TRUE)) %>%
+  arrange(desc(mean_pestenleid))
+```
+
+
+```{r}
+mis_intcol <- NEA07 %>%
+  filter(!is.na(intimidation_col))
+```
+
+```{r}
+mis_intcol %>%
+  group_by(afl_sb_2) %>%
+  summarize(mean_intcol = mean(intimidation_col, na.rm = TRUE)) %>%
+  arrange(desc(mean_intcol))
+```
+
+```{r}
+mis_intcol %>%
+  group_by(afl_sb_3) %>%
+  summarize(mean_intcol = mean(intimidation_col, na.rm = TRUE)) %>%
+  arrange(desc(mean_intcol))
+```
+
+
+
+
+```{r}
+mis_intleid <- NEA07 %>%
+  filter(!is.na(intimidation_leid))
+```
+
+
+```{r}
+mis_intleid %>%
+  group_by(afl_sb_2) %>%
+  summarize(mean_intleid = mean(intimidation_leid, na.rm = TRUE)) %>%
+  arrange(desc(mean_intleid))
+```
+
+
+```{r}
+mis_intleid %>%
+  group_by(afl_sb_3) %>%
+  summarize(mean_intleid = mean(intimidation_leid, na.rm = TRUE)) %>%
+  arrange(desc(mean_intleid))
+```
+
+
+
+```{r}
+mis_sekscol <- NEA07 %>%
+  filter(!is.na(seks_col))
+```
+
+```{r}
+mis_sekscol %>%
+  group_by(afl_sb_2) %>%
+  summarize(mean_sekscol = mean(seks_col, na.rm = TRUE)) %>%
+  arrange(desc(mean_sekscol))
+```
+
+```{r}
+mis_sekscol %>%
+  group_by(afl_sb_3) %>%
+  summarize(mean_sekscol = mean(seks_col, na.rm = TRUE)) %>%
+  arrange(desc(mean_sekscol))
+```
+
+```{r}
+mis_seksleid <- NEA07 %>%
+  filter(!is.na(seks_leid))
+```
+
+```{r}
+mis_seksleid %>%
+  group_by(afl_sb_2) %>%
+  summarize(mean_seksleid = mean(seks_leid, na.rm = TRUE)) %>%
+  arrange(desc(mean_seksleid))
+```
+
+```{r}
+mis_seksleid %>%
+  group_by(afl_sb_3) %>%
+  summarize(mean_seksleid = mean(seks_leid, na.rm = TRUE)) %>%
+  arrange(desc(mean_seksleid))
+```
+
+
+```{r}
+mis_gewcol <- NEA07 %>%
+  filter(!is.na(geweld_col))
+```
+
+```{r}
+mis_gewcol %>%
+  group_by(afl_sb_2) %>%
+  summarize(mean_gewcol = mean(geweld_col, na.rm = TRUE)) %>%
+  arrange(desc(mean_gewcol))
+```
+
+
+```{r}
+mis_gewcol %>%
+  group_by(afl_sb_3) %>%
+  summarize(mean_gewcol = mean(geweld_col, na.rm = TRUE)) %>%
+  arrange(desc(mean_gewcol))
+```
+
+
+```{r}
+mis_gewleid <- NEA07 %>%
+  filter(!is.na(geweld_leid))
+```
+
+```{r}
+mis_gewleid %>%
+  group_by(afl_sb_2) %>%
+  summarize(mean_gewleid = mean(geweld_leid, na.rm = TRUE)) %>%
+  arrange(desc(mean_gewleid))
+```
+
+```{r}
+mis_gewleid %>%
+  group_by(afl_sb_3) %>%
+  summarize(mean_gewleid = mean(geweld_leid, na.rm = TRUE)) %>%
+  arrange(desc(mean_gewleid))
+```
+Supervisor unsafety
+
+```{r}
+NEA07 %>%
+  group_by(afl_sb_2) %>%
+  summarize(mean_super = mean(model7_7, na.rm = TRUE)) %>%
+  arrange(desc(mean_super))
+```
+Coworker unsafety
+
+```{r}
+NEA07 %>%
+  group_by(afl_sb_2) %>%
+  summarize(mean_cow = mean(model7_1, na.rm = TRUE)) %>%
+  arrange(desc(mean_cow))
+```
+Overall unsafety
+
+```{r}
+NEA07 %>%
+  group_by(afl_sb_2) %>%
+  summarize(mean_cow = mean(model7_5, na.rm = TRUE)) %>%
+  arrange(desc(mean_cow))
+```
+
+
+Gemiddelde per intersectie per sector
+
+supervisor
+
+```{r}
+library(dplyr)
+
+df_gemiddeld_super <- NEA07 %>%
+  group_by(intersections, afl_sb_2) %>%
+  summarise(
+    gemiddelde_model7_7 = mean(model7_7, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+
+overall unsafe
+
+```{r}
+library(dplyr)
+
+df_gemiddeld_overall <- NEA07 %>%
+  group_by(intersections, afl_sb_2) %>%
+  summarise(
+    gemiddelde_model7_5 = mean(model7_5, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+
+
+```{r}
+NEA07$gme <- interaction(NEA05$gender, NEA05$migration, NEA05$education)
+
+summarytools::freq(NEA07$gme)
+```
+OVERALL UNSAFE GME
+
+```{r}
+library(dplyr)
+
+gme_overall <- NEA07 %>%
+  group_by(gme, afl_sb_2) %>%
+  summarise(
+    gemiddelde_model7_5 = mean(model7_5, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+SUPERVISOR UNSAFETY GME
+
+```{r}
+library(dplyr)
+
+gme_super <- NEA07 %>%
+  group_by(gme, afl_sb_2) %>%
+  summarise(
+    gemiddelde_model7_7 = mean(model7_7, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+COWORKER UNSAFETY GME
+
+```{r}
+library(dplyr)
+
+gme_cow <- NEA07 %>%
+  group_by(gme, afl_sb_2) %>%
+  summarise(
+    gemiddelde_model7_1 = mean(model7_1, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+```{r}
+NEA07$gm <- interaction(NEA05$gender, NEA05$migration)
+
+summarytools::freq(NEA07$gm)
+```
+OVERALL UNSAFE GM
+
+```{r}
+library(dplyr)
+
+gm_overall <- NEA07 %>%
+  group_by(gm, afl_sb_2) %>%
+  summarise(
+    gemiddelde_model7_5 = mean(model7_5, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+
+SUPERVISOR UNSAFE GM
+
+```{r}
+library(dplyr)
+
+gm_super <- NEA07 %>%
+  group_by(gm, afl_sb_2) %>%
+  summarise(
+    gemiddelde_model7_7 = mean(model7_7, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+
+COWORKER UNSAFE GM
+
+```{r}
+library(dplyr)
+
+gm_cow <- NEA07 %>%
+  group_by(gm, afl_sb_2) %>%
+  summarise(
+    gemiddelde_model7_1 = mean(model7_1, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+
+
+
+
+OVERALL UNSAFE GM sb_3
+
+```{r}
+library(dplyr)
+
+gm_overall3 <- NEA07 %>%
+  group_by(gm, afl_sb_3) %>%
+  summarise(
+    gemiddelde_model7_5 = mean(model7_5, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+
+SUPERVISOR UNSAFE GM sb_3
+
+```{r}
+library(dplyr)
+
+gm_super3 <- NEA07 %>%
+  group_by(gm, afl_sb_3) %>%
+  summarise(
+    gemiddelde_model7_7 = mean(model7_7, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+
+COWORKER UNSAFE GM sb_3
+
+```{r}
+library(dplyr)
+
+gm_cow3 <- NEA07 %>%
+  group_by(gm, afl_sb_3) %>%
+  summarise(
+    gemiddelde_model7_1 = mean(model7_1, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+
+UNWANTED SEXUAL ATTENTION SUPERVISOR GM 
+
+```{r}
+library(dplyr)
+
+gm_seksleid <- NEA07 %>%
+  group_by(gm, afl_sb_2) %>%
+  summarise(
+    mean_seksleid = mean(seks_leid, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+
+```
+
+UNWANTED SEXUAL ATTENTION COWORKER GM 
+
+```{r}
+library(dplyr)
+
+gm_sekscow <- NEA07 %>%
+  group_by(gm, afl_sb_2) %>%
+  summarise(
+    mean_sekscow = mean(seks_col, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ungroup()
+str(NEA07$afl_sb_2)
+```
+
+
+```{r}
+library(dplyr)
+
+filtered_data <- NEA07 %>%
+  filter(
+    gm == "m.eu",
+    afl_sb_2 == "rechtskundige dienstverlening en accountancy; holdings (geen financiele); architecten en ingenieurs    "
+  )
+
+
+nrow(filtered_data)
+
+table(filtered_data$seks_leid)
+
+```
+

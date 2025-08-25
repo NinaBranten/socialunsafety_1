@@ -53,7 +53,7 @@ NEA2022_clust1 <-read.spss("data/processed/NEA2022_clust1.sav", use.value.labels
 ```
 
 
-```{r}
+```{r, warning=FALSE}
 NEA2022_clust1$afl_soi3[NEA2022_clust1$afl_soi3 == "onbekend"] <- NA
 
 NEA2022_clust1_29923 <- NEA2022_clust1 %>%
@@ -151,20 +151,12 @@ model13 <- poLCA(items, data, nclass = 13, maxiter = 5000, nrep = 10, graphs=FAL
 model14 <- poLCA(items, data, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-```{r, cache=TRUE}
-model15 <- poLCA(items, data, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
 
-```{r, cache=TRUE}
-model16 <- poLCA(items, data, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
 
-```{r, cache=TRUE}
-model17 <- poLCA(items, data, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
 
-```{r, cache=TRUE}
-model18 <- poLCA(items, data, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
+
+
+
+
 
 

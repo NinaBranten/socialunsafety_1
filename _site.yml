@@ -10,6 +10,8 @@ navbar:
   left:
     - icon: fa-home
       href: index.html
+    - text: "Data preparation"
+      href: Data preparation.html
     - text: "frequencies"
       href: frequencies.html
     - text: "intersectionality"
@@ -38,8 +40,10 @@ navbar:
       href: LCA_employer.html
     - text: "Factoranalyse"
       href: Factoranalyse.html
-
-        
+    - text: "Items seperate"
+      href: Items_seperate.html
+    - text: "2005-2018"
+      href: 2005-2018.html        
         # here, other .Rmds can be added
 
 

@@ -46,8 +46,8 @@ library("psych")
 
 
 ```{r klippy21, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1 <-read.spss("data/processed/NEA2022_clust1.sav", use.value.labels = T, to.data.frame = T)
-attach(NEA2022_clust1)
+NEAfinal <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
+attach(NEAfinal)
 set.seed(123)
 
 #NEA20142022 <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
@@ -55,57 +55,71 @@ set.seed(123)
 
 
 ```{r klippy22, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-summarytools::freq(NEA2022_clust1$steunleid_aandacht)
-summarytools::freq(NEA2022_clust1$steunleid_welzijn)
-NEA2022_clust1$steunleid_scale <- rowMeans(NEA2022_clust1[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
-summarytools::freq(NEA2022_clust1$steunleid_scale)
-summarytools::freq(NEA2022_clust1$afl_socs)
+summarytools::freq(NEAfinal$steunleid_aandacht)
+summarytools::freq(NEAfinal$steunleid_welzijn)
+NEAfinal$steunleid_scale <- rowMeans(NEAfinal[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
+summarytools::freq(NEAfinal$steunleid_scale)
+summarytools::freq(NEAfinal$afl_socs)
 
-NEA2022_clust1$steunleid_R <- as.numeric(factor(NEA2022_clust1$steunleid_scale))
-summarytools::freq(NEA2022_clust1$steunleid_R)
-NEA2022_clust1$steunleid_R[NEA2022_clust1$steunleid_R == "8"] <- NA
-summarytools::freq(NEA2022_clust1$steunleid_R)
+NEAfinal <- NEAfinal %>%
+  mutate(steunleid_RR = case_when(
+    steunleid_scale %in% c(1) ~ 1,
+    steunleid_scale %in% c(1.5, 2) ~ 2,
+    steunleid_scale %in% c(2.5, 3) ~ 3,
+    steunleid_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
 
-summarytools::freq(NEA2022_clust1$steuncol_belang)
-summarytools::freq(NEA2022_clust1$steuncol_vriendelijk)
-NEA2022_clust1$steuncol_scale <- rowMeans(NEA2022_clust1[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
-summarytools::freq(NEA2022_clust1$steuncol_scale)
-summarytools::freq(NEA2022_clust1$afl_so_2)
+summarytools::freq(NEAfinal$steunleid_scale)
+summarytools::freq(NEAfinal$steunleid_RR)
 
-NEA2022_clust1$steuncol_R <- as.numeric(factor(NEA2022_clust1$steuncol_scale))
-summarytools::freq(NEA2022_clust1$steuncol_R)
-NEA2022_clust1$steuncol_R[NEA2022_clust1$steuncol_R == "8"] <- NA
-summarytools::freq(NEA2022_clust1$steuncol_R)
+summarytools::freq(NEAfinal$steuncol_belang)
+summarytools::freq(NEAfinal$steuncol_vriendelijk)
+NEAfinal$steuncol_scale <- rowMeans(NEAfinal[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
+summarytools::freq(NEAfinal$steuncol_scale)
+summarytools::freq(NEAfinal$afl_so_2)
+
+NEAfinal <- NEAfinal %>%
+  mutate(steuncol_RR = case_when(
+    steuncol_scale %in% c(1) ~ 1,
+    steuncol_scale %in% c(1.5, 2) ~ 2,
+    steuncol_scale %in% c(2.5, 3) ~ 3,
+    steuncol_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+summarytools::freq(NEAfinal$steuncol_scale)
+summarytools::freq(NEAfinal$steuncol_RR)
 ```
 
 ```{r klippy23, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-attach(NEA2022_clust1)
+attach(NEAfinal)
 psyveil <- data.frame(psyveil_last, psyveil_hulp, psyveil_fout)
 
 alpha_result <- alpha(psyveil)
 
 print(alpha_result)
- 
+
 raw_alpha_value <- alpha_result$total$raw_alpha
 print(raw_alpha_value)
 ```
 
 ```{r klippy24, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022_clust1$psyveil_scale <- rowMeans(NEA2022_clust1[c("psyveil_last", "psyveil_hulp", "psyveil_fout")], na.rm = TRUE)
+NEAfinal$psyveil_scale <- rowMeans(NEAfinal[c("psyveil_last", "psyveil_hulp", "psyveil_fout")], na.rm = TRUE)
 
-summarytools::freq(NEA2022_clust1$psyveil_scale)
+summarytools::freq(NEAfinal$psyveil_scale)
 
-NEA2022_clust1$psyveil_R <- as.numeric(factor(NEA2022_clust1$psyveil_scale))
+NEAfinal$psyveil_R <- as.numeric(factor(NEAfinal$psyveil_scale))
 
-summarytools::freq(NEA2022_clust1$psyveil_R)
+summarytools::freq(NEAfinal$psyveil_R)
 
-NEA2022_clust1$psyveil_R[NEA2022_clust1$psyveil_R == "18"] <- NA
+NEAfinal$psyveil_R[NEAfinal$psyveil_R == "18"] <- NA
 
 
-summarytools::freq(NEA2022_clust1$psyveil_scale)
-summarytools::freq(NEA2022_clust1$psyveil_R)
+summarytools::freq(NEAfinal$psyveil_scale)
+summarytools::freq(NEAfinal$psyveil_R)
 
-NEA2022_clust1 <- NEA2022_clust1 %>%
+NEAfinal <- NEAfinal %>%
   mutate(psyveil_RR = case_when(
     psyveil_R %in% c(1, 2) ~ 1,
     psyveil_R %in% c(3, 4, 5, 6) ~ 2,
@@ -114,21 +128,19 @@ NEA2022_clust1 <- NEA2022_clust1 %>%
     psyveil_R %in% c(15, 16, 17) ~ 5,
     TRUE ~ NA_real_
   ))
-summarytools::freq(NEA2022_clust1$psyveil_scale)
-summarytools::freq(NEA2022_clust1$psyveil_RR)
-attach(NEA2022_clust1)
+summarytools::freq(NEAfinal$psyveil_scale)
+summarytools::freq(NEAfinal$psyveil_RR)
+attach(NEAfinal)
 ```
 
-```{r}
-set.seed(123)
+
+```{r, cache=TRUE, warning=FALSE}
+datasg <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR)
+
+itemssg <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR) ~ 1
 ```
 
-```{r, cache=TRUE}
-attach(NEA2022_clust1)
-datasg <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_R, steuncol_R, psyveil_RR)
 
-itemssg <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, seks_col, seks_leid, conflict_col, conflict_leid, conflict_werk, steunleid_R, steuncol_R, psyveil_RR) ~ 1
-```
 <br><br> Variabelen:
 
 <br><br> Pesten_col: **pesten door collega's.** (1) niet (2) een enkele keer (3) vaak (4) zeer vaak
@@ -186,38 +198,6 @@ model9sg <- poLCA(itemssg, datasg, nclass = 9, maxiter = 5000, nrep = 10, graphs
 
 ```{r, cache=TRUE}
 model10sg <- poLCA(itemssg, datasg, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
-
-```{r, cache=TRUE}
-model11sg <- poLCA(itemssg, datasg, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
-
-```{r, cache=TRUE}
-model12sg <- poLCA(itemssg, datasg, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
-
-```{r, cache=TRUE}
-model13sg <- poLCA(itemssg, datasg, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
-
-```{r, cache=TRUE}
-model14sg <- poLCA(itemssg, datasg, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
-
-```{r, cache=TRUE}
-model15sg <- poLCA(itemssg, datasg, nclass = 15, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
-
-```{r, cache=TRUE}
-model16sg <- poLCA(itemssg, datasg, nclass = 16, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
-
-```{r, cache=TRUE}
-model17sg <- poLCA(itemssg, datasg, nclass = 17, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-```
-
-```{r, cache=TRUE}
-model18sg <- poLCA(itemssg, datasg, nclass = 18, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 
