@@ -11,7 +11,7 @@ navbar:
     - icon: fa-home
       href: index.html
     - text: "Data preparation"
-      href: Data preparation.html
+      href: Data-preparation.html
     - text: "LCA final model"
       href: LCA_final_model.html      
     - text: "LCA 29923"
