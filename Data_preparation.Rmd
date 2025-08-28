@@ -5,7 +5,7 @@ date: "2025-05-04"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(cache = TRUE)
 ```
 
 
@@ -24,13 +24,13 @@ library("psych")
 ```
 <br><br> **Loading in the data**
 
-```{r loading data, results='hide', warning=FALSE, message=FALSE, echo=TRUE}
+```{r loading data, results='hide', warning=FALSE, message=FALSE, cache=TRUE}
 NEAraw <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
 ```
 
 <br><br> **Selecting year 2022 and cluster 1**
 
-```{r selecting year cluster, echo=TRUE}
+```{r selecting year cluster, cache=TRUE}
 NEA2022 <- NEAraw[NEAraw$jaar == "2022", ]
 
 NEA2022 <- NEA2022[NEA2022$se_clust == 1, ]
@@ -38,7 +38,7 @@ NEA2022 <- NEA2022[NEA2022$se_clust == 1, ]
 
 <br><br> **Deleting missing cases on educational level**
 
-```{r missings, echo=TRUE}
+```{r missings, cache=TRUE}
 NEA2022$afl_soi3[NEA2022$afl_soi3 == "onbekend"] <- NA
 
 NEA2022 <- NEA2022 %>%
@@ -47,7 +47,7 @@ NEA2022 <- NEA2022 %>%
 
 <br><br> **Recoding variables**
 
-```{r bul cow, echo=TRUE}
+```{r bul cow, cache=TRUE}
 #Bullying coworkers
 
 NEA2022$pesten_col <- as.numeric(NEA2022$afl_pe_1)
@@ -62,7 +62,7 @@ summarytools::freq(NEA2022$pesten_col)
 
 ```
 
-```{r bul sup, echo=TRUE}
+```{r bul sup, cache=TRUE}
 #Bullying supervisors
 NEA2022$pesten_leid <- as.numeric(NEA2022$afl_pe_2)
 
@@ -75,7 +75,7 @@ summarytools::freq(NEA2022$afl_pe_2)
 summarytools::freq(NEA2022$pesten_leid)
 ```
 
-```{r int cow, echo=TRUE}
+```{r int cow, cache=TRUE}
 #Intimidation coworkers
 
 NEA2022$intimidation_col <- as.numeric(NEA2022$afl_be_1)
@@ -90,7 +90,7 @@ summarytools::freq(NEA2022$intimidation_col)
 
 ```
 
-```{r int sup, echo=TRUE}
+```{r int sup, cache=TRUE}
 #Intimidation supervisors
 
 NEA2022$intimidation_leid <- as.numeric(NEA2022$afl_be_2)
@@ -105,7 +105,7 @@ summarytools::freq(NEA2022$intimidation_leid)
 
 ```
 
-```{r vio cow, echo=TRUE}
+```{r vio cow, cache=TRUE}
 #Physical violence coworkers
 
 NEA2022$geweld_col <- as.numeric(NEA2022$afl_ge_3)
@@ -120,7 +120,7 @@ summarytools::freq(NEA2022$geweld_col)
 
 ```
 
-```{r vio sup, echo=TRUE}
+```{r vio sup, cache=TRUE}
 #Physical violence supervisors
 
 NEA2022$geweld_leid <- as.numeric(NEA2022$afl_ge_4)
@@ -134,7 +134,7 @@ summarytools::freq(NEA2022$afl_ge_4)
 summarytools::freq(NEA2022$geweld_leid)
 ```
 
-```{r sex cow, echo=TRUE}
+```{r sex cow, cache=TRUE}
 #Unwanted sexual attention coworkers
 
 NEA2022$seks_col <- as.numeric(NEA2022$afl_se_1)
@@ -148,7 +148,7 @@ summarytools::freq(NEA2022$afl_se_1)
 summarytools::freq(NEA2022$seks_col)
 ```
 
-```{r sex sup, echo=TRUE}
+```{r sex sup, cache=TRUE}
 #Unwanted sexual attention supervisors
 NEA2022$seks_leid <- as.numeric(NEA2022$afl_se_2)
 
@@ -162,7 +162,7 @@ summarytools::freq(NEA2022$seks_leid)
 
 ```
 
-```{r con cow, echo=TRUE}
+```{r con cow, cache=TRUE}
 #Conflict coworker
 
 NEA2022$conflict_col <- as.numeric(NEA2022$conflict)
@@ -171,7 +171,7 @@ summarytools::freq(NEA2022$conflict)
 summarytools::freq(NEA2022$conflict_col)
 ```
 
-```{r con sup, echo=TRUE}
+```{r con sup, cache=TRUE}
 #Conflict supervisor
 
 NEA2022$conflict_leid <- as.numeric(NEA2022$confli_1)
@@ -180,7 +180,7 @@ summarytools::freq(NEA2022$confli_1)
 summarytools::freq(NEA2022$conflict_leid)
 ```
 
-```{r con emp, echo=TRUE}
+```{r con emp, cache=TRUE}
 #Conflict employer
 
 NEA2022$conflict_emp <- as.numeric(NEA2022$confli_2)
@@ -190,7 +190,7 @@ summarytools::freq(NEA2022$conflict_emp)
 ```
 
 
-```{r inc sup, echo=TRUE}
+```{r inc sup, cache=TRUE}
 #Social support supervisor: my supervisor pays attention to the well-being of the staff 
 
 NEA2022$leiding_[NEA2022$leiding_ == "nvt"] <- NA
@@ -256,7 +256,7 @@ cor(NEA2022$steunleid_scale, NEA2022$steunleid_RR, use = "complete.obs")
 ```
 
 
-```{r inc cow, echo=TRUE}
+```{r inc cow, cache=TRUE}
 #Social support coworkers: my co-workers take personal interest in me
 
 NEA2022$collega_[NEA2022$collega_ == "nvt"] <- NA
@@ -322,7 +322,7 @@ cor(NEA2022$steuncol_scale, NEA2022$steuncol_RR, use = "complete.obs")
 ```
 
 
-```{r psych, echo=TRUE}
+```{r psych, cache=TRUE}
 #Psychological unsafety: at my workplace it is possible to raise difficult questions
 
 NEA2022$psyveil_last <- as.numeric(NEA2022$psyveil_)
@@ -383,7 +383,7 @@ cor(NEA2022$psyveil_scale, NEA2022$psyveil_RR, use = "complete.obs")
 
 <br><br> **Recoden low (15-35), middle (35-55), old (55-75)**
 
-```{r age, echo=TRUE}
+```{r age, cache=TRUE}
 
 NEA2022$lft_num <- as.numeric(NEA2022$afl_lftc)
 
@@ -406,7 +406,7 @@ summarytools::freq(NEA2022$leeftijd_)
 
 <br><br> **Preparing variables for intersections**
 
-```{r intersections, echo=TRUE}
+```{r intersections, cache=TRUE}
 # Easier labels
 NEA2022 <- NEA2022 %>%
   mutate(gender = recode(m_v,
@@ -445,7 +445,7 @@ summarytools::freq(NEA2022$intersections)
 
 <br><br> **Creating dummy variables**
 
-```{r dummies, echo=TRUE}
+```{r dummies, cache=TRUE}
 library(fastDummies)
 NEA2022 <- dummy_cols(NEA2022, select_columns = "gender", remove_first_dummy = FALSE)
 NEA2022 <- dummy_cols(NEA2022, select_columns = "migration", remove_first_dummy = FALSE)
