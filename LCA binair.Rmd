@@ -23,200 +23,118 @@ library("psych")
 ```
 
 
+<br><br> **Loading in the data**
+
 ```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05 <-read.spss("data/processed/NEA05.sav", use.value.labels = T, to.data.frame = T)
+NEA2022 <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
+attach(NEA2022)
+set.seed(123)
 ```
 
-```{r}
-table(NEA05$pesten_col)
+<br><br> **Recoding into binary variables**
 
-NEA05 <- NEA05 %>%
+```{r}
+table(NEA2022$pesten_col)
+
+NEA2022 <- NEA2022 %>%
   mutate(bul_c = case_when(
     pesten_col == 1 ~ 1,
     pesten_col %in% c(2, 3, 4) ~ 2,
     TRUE ~ NA_real_ 
   ))
 
-table(NEA05$bul_c)
+table(NEA2022$bul_c)
 
 ```
 
 ```{r}
-table(NEA05$pesten_leid)
+table(NEA2022$pesten_leid)
 
-NEA05 <- NEA05 %>%
+NEA2022 <- NEA2022 %>%
   mutate(bul_s = case_when(
     pesten_leid == 1 ~ 1,
     pesten_leid %in% c(2, 3, 4) ~ 2,
     TRUE ~ NA_real_ 
   ))
 
-table(NEA05$bul_s)
+table(NEA2022$bul_s)
 ```
-```{r}
-table(NEA05$intimidation_col)
 
-NEA05 <- NEA05 %>%
+```{r}
+table(NEA2022$intimidation_col)
+
+NEA2022 <- NEA2022 %>%
   mutate(int_c = case_when(
     intimidation_col == 1 ~ 1,
     intimidation_col %in% c(2, 3, 4) ~ 2,
     TRUE ~ NA_real_ 
   ))
 
-table(NEA05$int_c)
+table(NEA2022$int_c)
 ```
 ```{r}
-table(NEA05$intimidation_leid)
+table(NEA2022$intimidation_leid)
 
-NEA05 <- NEA05 %>%
+NEA2022 <- NEA2022 %>%
   mutate(int_s = case_when(
     intimidation_leid == 1 ~ 1,
     intimidation_leid %in% c(2, 3, 4) ~ 2,
     TRUE ~ NA_real_ 
   ))
 
-table(NEA05$int_s)
+table(NEA2022$int_s)
 ```
 ```{r}
-table(NEA05$seks_col)
+table(NEA2022$seks_col)
 
-NEA05 <- NEA05 %>%
+NEA2022 <- NEA2022 %>%
   mutate(sex_c = case_when(
     seks_col == 1 ~ 1,
     seks_col %in% c(2, 3, 4) ~ 2,
     TRUE ~ NA_real_ 
   ))
 
-table(NEA05$sex_c)
+table(NEA2022$sex_c)
 ```
 ```{r}
-table(NEA05$seks_leid)
+table(NEA2022$seks_leid)
 
-NEA05 <- NEA05 %>%
+NEA2022 <- NEA2022 %>%
   mutate(sex_s = case_when(
     seks_leid == 1 ~ 1,
     seks_leid %in% c(2, 3, 4) ~ 2,
     TRUE ~ NA_real_ 
   ))
 
-table(NEA05$sex_s)
+table(NEA2022$sex_s)
 ```
 ```{r}
-table(NEA05$geweld_col)
+table(NEA2022$geweld_col)
 
-NEA05 <- NEA05 %>%
+NEA2022 <- NEA2022 %>%
   mutate(vio_c = case_when(
     geweld_col == 1 ~ 1,
     geweld_col %in% c(2, 3, 4) ~ 2,
     TRUE ~ NA_real_ 
   ))
 
-table(NEA05$vio_c)
+table(NEA2022$vio_c)
 ```
 ```{r}
-table(NEA05$geweld_leid)
+table(NEA2022$geweld_leid)
 
-NEA05 <- NEA05 %>%
+NEA2022 <- NEA2022 %>%
   mutate(vio_s = case_when(
     geweld_leid == 1 ~ 1,
     geweld_leid %in% c(2, 3, 4) ~ 2,
     TRUE ~ NA_real_ 
   ))
 
-table(NEA05$vio_s)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-summarytools::freq(NEA05$steunleid_aandacht)
-summarytools::freq(NEA05$steunleid_welzijn)
-NEA05$steunleid_scale <- rowMeans(NEA05[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
-summarytools::freq(NEA05$steunleid_scale)
-summarytools::freq(NEA05$afl_socs)
-
-NEA05 <- NEA05 %>%
-  mutate(steunleid_RR = case_when(
-    steunleid_scale %in% c(1) ~ 1,
-    steunleid_scale %in% c(1.5, 2) ~ 2,
-    steunleid_scale %in% c(2.5, 3) ~ 3,
-    steunleid_scale %in% c(3.5, 4) ~ 4,
-    TRUE ~ NA_real_
-  ))
-
-summarytools::freq(NEA05$steunleid_scale)
-summarytools::freq(NEA05$steunleid_RR)
-mean(NEA05$steunleid_RR, na.rm=TRUE)
-sd(NEA05$steunleid_RR, na.rm=TRUE)
-
-summarytools::freq(NEA05$steuncol_belang)
-summarytools::freq(NEA05$steuncol_vriendelijk)
-NEA05$steuncol_scale <- rowMeans(NEA05[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
-summarytools::freq(NEA05$steuncol_scale)
-summarytools::freq(NEA05$afl_so_2)
-
-NEA05 <- NEA05 %>%
-  mutate(steuncol_RR = case_when(
-    steuncol_scale %in% c(1) ~ 1,
-    steuncol_scale %in% c(1.5, 2) ~ 2,
-    steuncol_scale %in% c(2.5, 3) ~ 3,
-    steuncol_scale %in% c(3.5, 4) ~ 4,
-    TRUE ~ NA_real_
-  ))
-
-summarytools::freq(NEA05$steuncol_scale)
-summarytools::freq(NEA05$steuncol_RR)
-mean(NEA05$steuncol_RR, na.rm=TRUE)
-sd(NEA05$steuncol_RR, na.rm=TRUE)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-attach(NEA05)
-psyveil <- data.frame(psyveil_last, psyveil_hulp, psyveil_fout)
-
-alpha_result <- alpha(psyveil)
-
-print(alpha_result)
-
-raw_alpha_value <- alpha_result$total$raw_alpha
-print(raw_alpha_value)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05$psyveil_scale <- rowMeans(NEA05[c("psyveil_last", "psyveil_hulp", "psyveil_fout")], na.rm = TRUE)
-
-summarytools::freq(NEA05$psyveil_scale)
-
-NEA05$psyveil_R <- as.numeric(factor(NEA05$psyveil_scale))
-
-summarytools::freq(NEA05$psyveil_R)
-
-NEA05$psyveil_R[NEA05$psyveil_R == "18"] <- NA
-
-
-summarytools::freq(NEA05$psyveil_scale)
-summarytools::freq(NEA05$psyveil_R)
-
-NEA05 <- NEA05 %>%
-  mutate(psyveil_RR = case_when(
-    psyveil_R %in% c(1, 2) ~ 1,
-    psyveil_R %in% c(3, 4, 5, 6) ~ 2,
-    psyveil_R %in% c(7, 8, 9, 10) ~ 3,
-    psyveil_R %in% c(11, 12, 13, 14) ~ 4,
-    psyveil_R %in% c(15, 16, 17) ~ 5,
-    TRUE ~ NA_real_
-  ))
-summarytools::freq(NEA05$psyveil_scale)
-summarytools::freq(NEA05$psyveil_RR)
-mean(NEA05$psyveil_RR, na.rm=TRUE)
-sd(NEA05$psyveil_RR, na.rm=TRUE)
-attach(NEA05)
-```
-```{r}
-set.seed(123)
+table(NEA2022$vio_s)
 ```
 
 
 ```{r, cache=TRUE, warning=FALSE}
-attach(NEA05)
 data_b <- data.frame(bul_c, bul_s, int_c, int_s, vio_c, vio_s, sex_c, sex_s, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR)
 
 items_b <- cbind(bul_c, bul_s, int_c, int_s, vio_c, vio_s, sex_c, sex_s, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR) ~ 1
@@ -225,192 +143,53 @@ items_b <- cbind(bul_c, bul_s, int_c, int_s, vio_c, vio_s, sex_c, sex_s, conflic
 
 ```{r, cache=TRUE}
 model1_b <- poLCA(items_b, data_b, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model1_b
 ```
 ```{r, cache=TRUE}
 model2_b <- poLCA(items_b, data_b, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model2_b
 ```
 
 ```{r, cache=TRUE}
 model3_b <- poLCA(items_b, data_b, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model3_b
 ```
 
 ```{r, cache=TRUE}
 model4_b <- poLCA(items_b, data_b, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model4_b
 ```
 
 ```{r, cache=TRUE}
 model5_b <- poLCA(items_b, data_b, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model5_b
 ```
 
 ```{r, cache=TRUE}
 model6_b <- poLCA(items_b, data_b, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model6_b
 ```
 
 ```{r, cache=TRUE}
 model7_b <- poLCA(items_b, data_b, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model7_b
 ```
 
 ```{r, cache=TRUE}
 model8_b <- poLCA(items_b, data_b, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model8_b
 ```
 
 ```{r, cache=TRUE}
 model9_b <- poLCA(items_b, data_b, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model9_b
 ```
 
 ```{r, cache=TRUE}
 model10_b <- poLCA(items_b, data_b, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model10_b
 ```
 
 ```{r, cache=TRUE}
 model11_b <- poLCA(items_b, data_b, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model11_b
 ```
 
 ```{r, cache=TRUE}
 model12_b <- poLCA(items_b, data_b, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model12_b
 ```
 
 
-
-
-```{r}
-#pesten collega's
-table(NEA05$bul_c)
-
-
-NEA05 <- NEA05 %>%
-  mutate(bul_c_plot = recode(bul_c, `1` = 0, `2` = 1))
-table(NEA05$bul_c_plot)
-summary(NEA05$bul_c_plot)
-
-```
-
-```{r}
-#pesten leidinggevenden
-table(NEA05$bul_s)
-
-
-NEA05 <- NEA05 %>%
-  mutate(bul_s_plot = recode(bul_s, `1` = 0, `2` = 1))
-table(NEA05$bul_s_plot)
-
-```
-
-
-```{r}
-#intimidatie collega's
-table(NEA05$int_c)
-
-
-NEA05 <- NEA05 %>%
-  mutate(int_c_plot = recode(int_c, `1` = 0, `2` = 1))
-table(NEA05$int_c_plot)
-
-```
-
-```{r}
-#intimidatie leidinggevenden
-table(NEA05$int_s)
-
-NEA05 <- NEA05 %>%
-  mutate(int_s_plot = recode(int_s, `1` = 0, `2` = 1))
-table(NEA05$int_s_plot)
-```
-
-```{r}
-#intimidatie leidinggevenden
-table(NEA05$int_s)
-
-NEA05 <- NEA05 %>%
-  mutate(int_s_plot = recode(int_s, `1` = 0, `2` = 1))
-table(NEA05$int_s_plot)
-```
-
-```{r}
-#fysiek geweld collega's
-table(NEA05$vio_c)
-
-NEA05 <- NEA05 %>%
-  mutate(vio_c_plot = recode(vio_c, `1` = 0, `2` = 1))
-table(NEA05$vio_c_plot)
-```
-
-```{r}
-#fysiek geweld leidinggevenden
-table(NEA05$vio_s)
-
-NEA05 <- NEA05 %>%
-  mutate(vio_s_plot = recode(vio_s, `1` = 0, `2` = 1))
-table(NEA05$vio_s_plot)
-```
-
-```{r}
-#ongewenste seksuele aandacht collega's
-table(NEA05$sex_c)
-
-NEA05 <- NEA05 %>%
-  mutate(sex_c_plot = recode(sex_c, `1` = 0, `2` = 1))
-table(NEA05$sex_c_plot)
-```
-```{r}
-#ongewenste seksuele aandacht leidinggevenden
-table(NEA05$sex_s)
-
-NEA05 <- NEA05 %>%
-  mutate(sex_s_plot = recode(sex_s, `1` = 0, `2` = 1))
-table(NEA05$sex_s_plot)
-```
-```{r}
-#conflict collega
-table(NEA05$conflict_col)
-NEA05 <- NEA05 %>%
-  mutate(conflict_col_plot = recode(conflict_col, `1` = 0, `2` = 0.50, `3` = 1))
-table(NEA05$conflict_col_plot)
-```
-```{r}
-#conflict leidinggevende
-table(NEA05$conflict_leid)
-NEA05 <- NEA05 %>%
-  mutate(conflict_leid_plot = recode(conflict_leid, `1` = 0, `2` = 0.50, `3` = 1))
-summarytools::freq(NEA05$conflict_leid_plot)
-```
-```{r}
-
-table(NEA05$steunleid_RR)
-
-NEA05 <- NEA05 %>%
-  mutate(steunleid_plot = (steunleid_RR - 1) / 3)
-
-summarytools::freq(NEA05$steunleid_plot)
-```
-
-```{r}
-NEA05 <- NEA05 %>%
-  mutate(steuncol_plot = (steuncol_RR - 1) / 3)
-
-summarytools::freq(NEA05$steuncol_plot)
-
-```
-
-```{r}
-NEA05 <- NEA05 %>%
-  mutate(psyveil_plot = (psyveil_RR - 1) / 4)
-
-summarytools::freq(NEA05$psyveil_plot)
-summarytools::freq(NEA05$psyveil_RR)
-```
+<br><br> **Saving the models**
 
 ```{r, eval=FALSE}
 model3_bpred <- model3_b$predclass
@@ -639,878 +418,650 @@ Models_b <- cbind (volgnumm, model3_bpred	,
 ```
 
 
+<br><br> **Testing the seperation between classes**
 
 
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05$class2_b <- model2_b$predclass
-table(NEA05$class2_b)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05$class3_b <- model3_b$predclass
-table(NEA05$class3_b)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05$class2_b <- model2_b$predclass
-table(NEA05$class2_b)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05$class4_b <- model4_b$predclass
-table(NEA05$class4_b)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05$class5_b <- model5_b$predclass
-table(NEA05$class5_b)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05$class6_b <- model6_b$predclass
-table(NEA05$class6_b)
-```
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05$class7_b <- model7_b$predclass
-table(NEA05$class7_b)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05$class8_b <- model8_b$predclass
-table(NEA05$class8_b)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05$class9_b <- model9_b$predclass
-table(NEA05$class9_b)
-```
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA05$class10_b <- model10_b$predclass
-table(NEA05$class10_b)
-```
-
-Class 3
-
-```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-tapply(NEA05$bul_c_plot, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$bul_s_plot, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_c_plot, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_s_plot, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_c_plot, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_s_plot, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_c_plot, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_s_plot, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_col_plot, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_leid_plot, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steunleid_plot3, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steuncol_plot3, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$psyveil_plot3, NEA05$class3_b, mean, na.rm = TRUE)
-```
-
-Class 4
-
-```{r}
-tapply(NEA05$bul_c_plot, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$bul_s_plot, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_c_plot, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_s_plot, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_c_plot, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_s_plot, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_c_plot, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_s_plot, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_col_plot, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_leid_plot, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-
-```{r}
-tapply(NEA05$steunleid_plot3, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steuncol_plot3, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$psyveil_plot3, NEA05$class4_b, mean, na.rm = TRUE)
-```
-
-Class 5
-
-```{r}
-tapply(NEA05$bul_c_plot, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$bul_s_plot, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_c_plot, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_s_plot, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_c_plot, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_s_plot, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_c_plot, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_s_plot, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_col_plot, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_leid_plot, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_werk_plot, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steunleid_plot3, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steuncol_plot3, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$psyveil_plot3, NEA05$class5_b, mean, na.rm = TRUE)
-```
-
-Class 6
-
-```{r}
-tapply(NEA05$bul_c_plot, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$bul_s_plot, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_c_plot, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_s_plot, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_c_plot, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_s_plot, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_c_plot, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_s_plot, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_col_plot, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_leid_plot, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
 ```{r}
-tapply(NEA05$conflict_werk_plot, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steunleid_plot3, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steuncol_plot3, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$psyveil_plot3, NEA05$class6_b, mean, na.rm = TRUE)
-```
-
-Class 7
-
-```{r}
-tapply(NEA05$bul_c_plot, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$bul_s_plot, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_c_plot, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_s_plot, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_c_plot, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_s_plot, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_c_plot, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_s_plot, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_col_plot, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_leid_plot, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-
-```{r}
-tapply(NEA05$steunleid_plot3, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steuncol_plot3, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$psyveil_plot3, NEA05$class7_b, mean, na.rm = TRUE)
-```
-
-Class 8
-
-```{r}
-tapply(NEA05$bul_c_plot, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$bul_s_plot, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_c_plot, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_s_plot, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_c_plot, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_s_plot, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_c_plot, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_s_plot, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_col_plot, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_leid_plot, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_werk_plot, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steunleid_plot3, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steuncol_plot3, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$psyveil_plot3, NEA05$class8_b, mean, na.rm = TRUE)
-```
-
-Class 9
-
-```{r}
-tapply(NEA05$bul_c_plot, NEA05$class9_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$bul_s_plot, NEA05$class9_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_c_plot, NEA05$class9_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_s_plot, NEA05$class9_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_c_plot, NEA05$class9_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_s_plot, NEA05$class9_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_c_plot, NEA05$class9_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_s_plot, NEA05$class9_b, mean, na.rm = TRUE)
-```
-```{r}
-tapply(NEA05$conflict_col_plot, NEA05$class9_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_leid_plot, NEA05$class9_b, mean, na.rm = TRUE)
-```
-```{r}
-tapply(NEA05$steunleid_plot3, NEA05$class9_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steuncol_plot3, NEA05$class9_b, mean, na.rm = TRUE)
-```
+max_probs <- apply(model7_bpost, 1, max)
 
-```{r}
-tapply(NEA05$psyveil_plot3, NEA05$class9_b, mean, na.rm = TRUE)
-```
-Class 10
-
-```{r}
-tapply(NEA05$bul_c_plot, NEA05$class10_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$bul_s_plot, NEA05$class10_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$int_c_plot, NEA05$class10_b, mean, na.rm = TRUE)
-```
-```{r}
-tapply(NEA05$int_s_plot, NEA05$class10_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_c_plot, NEA05$class10_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$vio_s_plot, NEA05$class10_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_c_plot, NEA05$class10_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$sex_s_plot, NEA05$class10_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_col_plot, NEA05$class10_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$conflict_leid_plot, NEA05$class10_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$steunleid_plot3, NEA05$class10_b, mean, na.rm = TRUE)
+mean(max_probs)
+median(max_probs)
+min(max_probs)
+max(max_probs)
 ```
 
 ```{r}
-tapply(NEA05$steuncol_plot3, NEA05$class10_b, mean, na.rm = TRUE)
-```
-
-```{r}
-tapply(NEA05$psyveil_plot3, NEA05$class10_b, mean, na.rm = TRUE)
-```
-
-
-
-ITEMS PER CLASS
-
-```{r}
-library(dplyr)
-library(janitor)
-library(stringr)
-
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(pesten_col)) %>%
-  tabyl(class7_b, pesten_col)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
+K <- 7
 
-combined_tab <- abs_tab
+mean_posteriors <- numeric(K)
 
-for (col in names(abs_tab)[-1]) {
-  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+for (k in 1:K) {
+  idx <- which(model7_bpred == k)
+  mean_posteriors[k] <- mean(model7_bpost[idx, k])
 }
 
-print(combined_tab)
+names(mean_posteriors) <- paste0("Class", 1:K)
+
+mean_posteriors
 
 ```
 
 ```{r}
-library(flextable)
-
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Pesten coworkers per class")
-
+ggplot(data.frame(max_probs = max_probs), aes(x = max_probs)) +
+  geom_histogram(binwidth = 0.05, fill = "steelblue", color = "white") +
+  geom_vline(aes(xintercept = mean(max_probs)), 
+             color = "red", linetype = "dashed", linewidth = 1) +
+  labs(title = "Distribution of maximum posterior probabilities",
+       x = "Maximum posterior probability",
+       y = "Number of respondents") +
+  theme_minimal()
 ```
 
-
 ```{r}
-library(dplyr)
-library(janitor)
-library(stringr)
-
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(pesten_leid)) %>%
-  tabyl(class7_b, pesten_leid)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
-combined_tab <- abs_tab
-
-for (col in names(abs_tab)[-1]) {
-  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
 }
-
-print(combined_tab)
-
+poLCA.entropy(model2_b)
 ```
-
-
-
 ```{r}
-library(flextable)
-
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Bullying supervisors per class")
-
-```
-
-```{r}
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(intimidation_col)) %>%
-  tabyl(class7_b, intimidation_col)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
-
-combined_tab <- abs_tab
-
-for (col in names(abs_tab)[-1]) {
-  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
 }
-
-print(combined_tab)
-
+poLCA.entropy(model3_b)
 ```
-
 ```{r}
-library(flextable)
-
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Intimidation coworkers per class")
-
-```
-
-```{r}
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(intimidation_leid)) %>%
-  tabyl(class7_b, intimidation_leid)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
-
-combined_tab <- abs_tab
-
-for (col in names(abs_tab)[-1]) {
-  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
 }
-
-print(combined_tab)
-
+poLCA.entropy(model4_b)
 ```
-
 ```{r}
-library(flextable)
-
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Intimidation supervisors per class")
-
-```
-
-
-```{r}
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(seks_col)) %>%
-  tabyl(class7_b, seks_col)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
-combined_tab <- abs_tab
-
-for (col in names(abs_tab)[-1]) {
-  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
 }
-
-print(combined_tab)
-
+poLCA.entropy(model5_b)
 ```
-
 ```{r}
-library(flextable)
-
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Unwanted sexual attention coworkers per class")
-
-```
-
-
-```{r}
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(seks_leid)) %>%
-  tabyl(class7_b, seks_leid)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
-combined_tab <- abs_tab
-
-for (col in names(abs_tab)[-1]) {
-  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
 }
-
-print(combined_tab)
-
+poLCA.entropy(model6_b)
 ```
 
 ```{r}
-library(flextable)
-
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Unwanted sexual attention supervisors per class")
-
-```
-
-
-```{r}
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(geweld_col)) %>%
-  tabyl(class7_b, geweld_col)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
-combined_tab <- abs_tab
-
-for (col in names(abs_tab)[-1]) {
-  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
 }
-
-print(combined_tab)
-
+poLCA.entropy(model7_b)
 ```
 
 ```{r}
-library(flextable)
-
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Physical violence coworkers per class")
-
-```
-
-```{r}
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(geweld_leid)) %>%
-  tabyl(class7_b, geweld_leid)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
-
-combined_tab <- abs_tab
-
-for (col in names(abs_tab)[-1]) {
-  combined_tab[[col]] <- str_glue("{abs_tab[[col]]} ({round(pct_tab[[col]] * 100, 2)}%)")
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
 }
-
-print(combined_tab)
-
+poLCA.entropy(model8_b)
 ```
-
 ```{r}
-library(flextable)
-
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Physical violence coworkers per class")
-
-```
-
-
-```{r}
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(conflict_col)) %>%
-  tabyl(class7_b, conflict_col)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
-
-combined_tab <- abs_tab
-
-for (row in names(abs_tab)[-1]) {
-  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
 }
-
-print(combined_tab)
-
-
+poLCA.entropy(model9_b)
 ```
 
 ```{r}
-library(flextable)
-
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Conflict coworkers per class")
-
-```
-
-```{r}
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(conflict_leid)) %>%
-  tabyl(class7_b, conflict_leid)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
-
-combined_tab <- abs_tab
-
-
-for (row in names(abs_tab)[-1]) {
-  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
 }
-
-print(combined_tab)
-
-
+poLCA.entropy(model10_b)
 ```
-
-
 ```{r}
-library(flextable)
-
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Conflict supervisors per class")
-
-```
-
-```{r}
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(steuncol_RR)) %>%
-  tabyl(class7_b, steuncol_RR)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
-
-combined_tab <- abs_tab
-
-for (row in names(abs_tab)[-1]) {
-  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
 }
-
-print(combined_tab)
-
-
+poLCA.entropy(model11_b)
 ```
-
 ```{r}
-library(flextable)
-
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Incivility coworkers per class")
-
-```
-
-
-```{r}
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(steunleid_RR)) %>%
-  tabyl(class7_b, steunleid_RR)
-
-pct_tab <- adorn_percentages(abs_tab, "row")
-
-combined_tab <- abs_tab
-
-for (row in names(abs_tab)[-1]) {
-  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
 }
+poLCA.entropy(model12_b)
+```
 
-print(combined_tab)
 
 
+<br><br> **Plotjes**
+
+```{r}
+#Recoding variables on scale from 0 to 1
+
+NEA2022 <- NEA2022 %>%
+  mutate(bul_c_plot = recode(bul_c, `1` = 0, `2` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(bul_s_plot = recode(bul_s, `1` = 0, `2` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(int_c_plot = recode(int_c, `1` = 0, `2` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(int_s_plot = recode(int_s, `1` = 0, `2` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(vio_c_plot = recode(vio_c, `1` = 0, `2` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(vio_s_plot = recode(vio_s, `1` = 0, `2` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(sex_c_plot = recode(sex_c, `1` = 0, `2` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(sex_s_plot = recode(sex_s, `1` = 0, `2` = 1))
+```
+
+
+
+<br><br> **4 class model**
+
+```{r}
+model4_bpred <- model4_b$predclass
+NEA2022$model4_bpred <- model4_b$predclass
+table(model4_b$predclass)
+prop.table(table(model4_b$predclass)) * 100
+```
+```{r}
+vars <- c("bul_c_plot", "bul_s_plot", "int_c_plot", "int_s_plot",
+          "vio_c_plot", "vio_s_plot", "sex_c_plot", "sex_s_plot",
+          "conflict_col_plot", "conflict_leid_plot", 
+          "steuncol_plot", "steunleid_plot", "psyveil_plot")
+
+plot_data4 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model4_bpred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model4_bpred), 
+                         "1" = "1 (20.58%)", 
+                         "2" = "2 (6.14%)", 
+                         "3" = "3 (15.43%)", 
+                         "4" = "4 (57.85%)")
+  )%>% 
+  mutate(class_label = factor(class_label,
+                      levels = c("1 (20.58%)", "2 (6.14%)", "3 (15.43%)", "4 (57.85%)")))
+
+indicator_labels <- c(
+  "bul_c_plot"    = "Bullying C",
+  "bul_s_plot"   = "Bullying S",
+  "int_c_plot"       = "Intimidation C",
+  "int_s_plot"      = "Intimidation S",
+  "sex_c_plot"      = "Unwanted sexual attention C",
+  "sex_s_plot"     = "Unwanted sexual attention S",
+  "vio_c_plot"       = "Violence C",
+  "vio_s_plot"      = "Violence S",
+  "conflict_col_plot"  = "Conflict C",
+  "conflict_leid_plot" = "Conflict S",
+  "steuncol_plot"      = "Incivility C",
+  "steunleid_plot"     = "Incivility S",
+  "psyveil_plot"       = "Psychological unsafety"
+)
+
+ggplot(plot_data4, aes(x = indicator, y = mean_value,
+                      color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "1 (20.58%)"   = "#0072B2",
+      "2 (6.14%)"          = "#D55E00",
+      "3 (15.43%)"   = "#CC79A7",
+      "4 (57.85%)" = "#56B4E9"
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
+
+```
+
+<br><br> **5 class model**
+
+
+
+```{r}
+model5_bpred <- model5_b$predclass
+NEA2022$model5_bpred <- model5_b$predclass
+table(model5_b$predclass)
+prop.table(table(model5_b$predclass)) * 100
 ```
 
 ```{r}
-library(flextable)
+vars <- c("bul_c_plot", "bul_s_plot", "int_c_plot", "int_s_plot",
+          "vio_c_plot", "vio_s_plot", "sex_c_plot", "sex_s_plot",
+          "conflict_col_plot", "conflict_leid_plot", 
+          "steuncol_plot", "steunleid_plot", "psyveil_plot")
 
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Incivility supervisors per class")
+plot_data5 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model5_bpred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model5_bpred), 
+                         "1" = "1 (3.16%)", 
+                         "2" = "2 (57.54%)", 
+                         "3" = "3 (5.34%)", 
+                         "4" = "4 (13.46%)",
+                         "5" = "5 (20.49%)")
+  ) %>% 
+  mutate(class_label = factor(class_label,
+                      levels = c("1 (3.16%)", "2 (57.54%)", "3 (5.34%)", 
+                                 "4 (13.46%)", "5 (20.49%)")))
 
+indicator_labels <- c(
+  "bul_c_plot"       = "Bullying C",
+  "bul_s_plot"       = "Bullying S",
+  "int_c_plot"       = "Intimidation C",
+  "int_s_plot"       = "Intimidation S",
+  "sex_c_plot"       = "Unwanted sexual attention C",
+  "sex_s_plot"       = "Unwanted sexual attention S",
+  "vio_c_plot"       = "Violence C",
+  "vio_s_plot"       = "Violence S",
+  "conflict_col_plot"  = "Conflict C",
+  "conflict_leid_plot" = "Conflict S",
+  "steuncol_plot"      = "Incivility C",
+  "steunleid_plot"     = "Incivility S",
+  "psyveil_plot"       = "Psychological unsafety"
+)
+
+ggplot(plot_data5, aes(x = indicator, y = mean_value,
+                       color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "1 (3.16%)"   = "#D55E00",
+      "2 (57.54%)"  = "#56B4E9",
+      "3 (5.34%)"   = "#E69F00",
+      "4 (13.46%)"  = "#CC79A7",
+      "5 (20.49%)"  = "#0072B2"
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
+
+```
+
+
+<br><br> **6 class model**
+
+
+```{r}
+model6_bpred <- model6_b$predclass
+NEA2022$model6_bpred <- model6_b$predclass
+table(model6_b$predclass)
+prop.table(table(model6_b$predclass)) * 100
+```
+
+```{r}
+vars <- c("bul_c_plot", "bul_s_plot", "int_c_plot", "int_s_plot",
+          "vio_c_plot", "vio_s_plot", "sex_c_plot", "sex_s_plot",
+          "conflict_col_plot", "conflict_leid_plot", 
+          "steuncol_plot", "steunleid_plot", "psyveil_plot")
+
+plot_data6 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model6_bpred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model6_bpred), 
+                         "1" = "1 (4.73%)", 
+                         "2" = "2 (2.03%)", 
+                         "3" = "3 (13.70%)", 
+                         "4" = "4 (20.41%)",
+                         "5" = "5 (57.37%)",
+                         "6" = "6 (1.77%)")
+  ) %>% 
+  mutate(class_label = factor(class_label,
+                      levels = c("1 (4.73%)", "2 (2.03%)", "3 (13.70%)", 
+                                 "4 (20.41%)", "5 (57.37%)", "6 (1.77%)")))
+
+indicator_labels <- c(
+  "bul_c_plot"       = "Bullying C",
+  "bul_s_plot"       = "Bullying S",
+  "int_c_plot"       = "Intimidation C",
+  "int_s_plot"       = "Intimidation S",
+  "sex_c_plot"       = "Unwanted sexual attention C",
+  "sex_s_plot"       = "Unwanted sexual attention S",
+  "vio_c_plot"       = "Violence C",
+  "vio_s_plot"       = "Violence S",
+  "conflict_col_plot"  = "Conflict C",
+  "conflict_leid_plot" = "Conflict S",
+  "steuncol_plot"      = "Incivility C",
+  "steunleid_plot"     = "Incivility S",
+  "psyveil_plot"       = "Psychological unsafety"
+)
+
+ggplot(plot_data6, aes(x = indicator, y = mean_value,
+                       color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "1 (4.73%)"   = "#E69F00",
+      "2 (2.03%)"   = "#D55E00",
+      "3 (13.70%)"  = "#CC79A7",
+      "4 (20.41%)"  = "#0072B2",
+      "5 (57.37%)"  = "#56B4E9",
+      "6 (1.77%)"   = "#000000"
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
+
+```
+
+
+
+
+<br><br> **7 class model**
+
+```{r}
+model7_bpred <- model7_b$predclass
+NEA2022$model7_bpred <- model7_b$predclass
+table(model7_bpred)
+prop.table(table(model7_b$predclass)) * 100
 ```
 
 
 ```{r}
-abs_tab <- NEA05 %>%
-  filter(!is.na(class7_b), !is.na(psyveil_RR)) %>%
-  tabyl(class7_b, psyveil_RR)
+vars <- c("bul_c_plot", "bul_s_plot", "int_c_plot", "int_s_plot",
+          "vio_c_plot", "vio_s_plot", "sex_c_plot", "sex_s_plot",
+          "conflict_col_plot", "conflict_leid_plot", 
+          "steuncol_plot", "steunleid_plot", "psyveil_plot")
 
-pct_tab <- adorn_percentages(abs_tab, "row")
+plot_data7 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model7_bpred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model7_bpred),
+                         "1" = "Short-term conflict (6.48%)",
+                         "2" = "Supervisor unsafety (1.99%)",
+                         "3" = "Coworker unsafety (2.95%)",
+                         "4" = "Unsafe social climate (10.41%)",
+                         "5" = "Overall safe (56.00%)",
+                         "6" = "Overall highly safe (20.36%)",
+                         "7" = "Overall unsafe (1.81%)")
+  ) %>%
+  mutate(class_label = factor(class_label,
+                              levels = c("Overall highly safe (20.36%)", 
+                                         "Overall safe (56.00%)",
+                                         "Short-term conflict (6.48%)", 
+                                         "Unsafe social climate (10.41%)", 
+                                         "Coworker unsafety (2.95%)", 
+                                         "Supervisor unsafety (1.99%)", 
+                                         "Overall unsafe (1.81%)")))
 
-combined_tab <- abs_tab
+indicator_labels <- c(
+  "bul_c_plot"    = "Bullying C",
+  "bul_s_plot"   = "Bullying S",
+  "int_c_plot"       = "Intimidation C",
+  "int_s_plot"      = "Intimidation S",
+  "sex_c_plot"      = "Unwanted sexual attention C",
+  "sex_s_plot"     = "Unwanted sexual attention S",
+  "vio_c_plot"       = "Violence C",
+  "vio_s_plot"      = "Violence S",
+  "conflict_col_plot"  = "Conflict C",
+  "conflict_leid_plot" = "Conflict S",
+  "steuncol_plot"      = "Incivility C",
+  "steunleid_plot"     = "Incivility S",
+  "psyveil_plot"       = "Psychological unsafety"
+)
 
-for (row in names(abs_tab)[-1]) {
-  combined_tab[[row]] <- str_glue("{abs_tab[[row]]} ({round(pct_tab[[row]] * 100, 2)}%)")
-}
+ggplot(plot_data7, aes(x = indicator, y = mean_value,
+                      color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "Overall highly safe (20.36%)"   = "#0072B2",
+      "Overall safe (56.00%)"          = "#56B4E9",
+      "Short-term conflict (6.48%)"   = "#009E73",
+      "Unsafe social climate (10.41%)" = "#CC79A7",
+      "Coworker unsafety (2.95%)"     = "#E69F00",
+      "Supervisor unsafety (1.99%)"   = "#D55E00",
+      "Overall unsafe (1.81%)"        = "#000000" 
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
+```
 
-print(combined_tab)
 
 
+<br><br> **8 class model**
+
+
+```{r}
+model8_bpred <- model8_b$predclass
+NEA2022$model8_bpred <- model8_b$predclass
+table(model8_b$predclass)
+prop.table(table(model8_b$predclass)) * 100
 ```
 
 ```{r}
-library(flextable)
+vars <- c("bul_c_plot", "bul_s_plot", "int_c_plot", "int_s_plot",
+          "vio_c_plot", "vio_s_plot", "sex_c_plot", "sex_s_plot",
+          "conflict_col_plot", "conflict_leid_plot", 
+          "steuncol_plot", "steunleid_plot", "psyveil_plot")
 
-flextable(combined_tab) %>%
-  autofit() %>%
-  theme_booktabs() %>%
-  set_caption("Tabel X. Psychological unsafety per class")
+plot_data8 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model8_bpred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model8_bpred), 
+                         "1" = "1 (20.43%)", 
+                         "2" = "2 (1.75%)", 
+                         "3" = "3 (6.41%)", 
+                         "4" = "4 (55.64%)",
+                         "5" = "5 (10.40%)",
+                         "6" = "6 (2.76%)",
+                         "7" = "7 (1.67%)",
+                         "8" = "8 (0.94%)")
+  ) %>% 
+  mutate(class_label = factor(class_label,
+                      levels = c("1 (20.43%)", "2 (1.75%)", "3 (6.41%)", 
+                                 "4 (55.64%)", "5 (10.40%)", "6 (2.76%)", 
+                                 "7 (1.67%)", "8 (0.94%)")))
 
+indicator_labels <- c(
+  "bul_c_plot"        = "Bullying C",
+  "bul_s_plot"        = "Bullying S",
+  "int_c_plot"        = "Intimidation C",
+  "int_s_plot"        = "Intimidation S",
+  "sex_c_plot"        = "Unwanted sexual attention C",
+  "sex_s_plot"        = "Unwanted sexual attention S",
+  "vio_c_plot"        = "Violence C",
+  "vio_s_plot"        = "Violence S",
+  "conflict_col_plot" = "Conflict C",
+  "conflict_leid_plot"= "Conflict S",
+  "steuncol_plot"     = "Incivility C",
+  "steunleid_plot"    = "Incivility S",
+  "psyveil_plot"      = "Psychological unsafety"
+)
+
+ggplot(plot_data8, aes(x = indicator, y = mean_value,
+                       color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "1 (20.43%)" = "#0072B2",
+      "2 (1.75%)"  = "#D55E00",
+      "3 (6.41%)"  = "#009E73",
+      "4 (55.64%)" = "#56B4E9",
+      "5 (10.40%)" = "#CC79A7",
+      "6 (2.76%)"  = "#E69F00",
+      "7 (1.67%)"  = "#000000",
+      "8 (0.94%)"  = "#F0E442"
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
 ```
 
+
+<br><br> **9 class model**
 
 
 ```{r}
-table(NEA05$class7_b, NEA2022_clust1$classs3_8)
+model9_bpred <- model9_b$predclass
+NEA2022$model9_bpred <- model9_b$predclass
+table(model9_b$predclass)
+prop.table(table(model9_b$predclass)) * 100
 ```
 
+```{r}
+vars <- c("bul_c_plot", "bul_s_plot", "int_c_plot", "int_s_plot",
+          "vio_c_plot", "vio_s_plot", "sex_c_plot", "sex_s_plot",
+          "conflict_col_plot", "conflict_leid_plot", 
+          "steuncol_plot", "steunleid_plot", "psyveil_plot")
 
+plot_data9 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model9_bpred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model9_bpred), 
+                         "1" = "1 (11.33%)", 
+                         "2" = "2 (2.16%)", 
+                         "3" = "3 (5.62%)", 
+                         "4" = "4 (1.63%)",
+                         "5" = "5 (0.38%)",
+                         "6" = "6 (1.60%)",
+                         "7" = "7 (55.82%)",
+                         "8" = "8 (20.40%)",
+                         "9" = "9 (1.06%)")
+  ) %>% 
+  mutate(class_label = factor(class_label,
+                      levels = c("1 (11.33%)", "2 (2.16%)", "3 (5.62%)", "4 (1.63%)",
+                                 "5 (0.38%)", "6 (1.60%)", "7 (55.82%)", 
+                                 "8 (20.40%)", "9 (1.06%)")))
+
+indicator_labels <- c(
+  "bul_c_plot"        = "Bullying C",
+  "bul_s_plot"        = "Bullying S",
+  "int_c_plot"        = "Intimidation C",
+  "int_s_plot"        = "Intimidation S",
+  "sex_c_plot"        = "Unwanted sexual attention C",
+  "sex_s_plot"        = "Unwanted sexual attention S",
+  "vio_c_plot"        = "Violence C",
+  "vio_s_plot"        = "Violence S",
+  "conflict_col_plot" = "Conflict C",
+  "conflict_leid_plot"= "Conflict S",
+  "steuncol_plot"     = "Incivility C",
+  "steunleid_plot"    = "Incivility S",
+  "psyveil_plot"      = "Psychological unsafety"
+)
+
+ggplot(plot_data9, aes(x = indicator, y = mean_value,
+                       color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "1 (11.33%)" = "#CC79A7",
+      "2 (2.16%)"  = "#E69F00",
+      "3 (5.62%)"  = "#009E73",
+      "4 (1.63%)"  = "#000000",
+      "5 (0.38%)"  = "#999999",
+      "6 (1.60%)"  = "#D55E00",
+      "7 (55.82%)" = "#56B4E9",
+      "8 (20.40%)" = "#0072B2",
+      "9 (1.06%)"  = "#F0E442"
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
+```

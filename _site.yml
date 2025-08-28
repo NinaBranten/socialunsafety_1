@@ -12,18 +12,8 @@ navbar:
       href: index.html
     - text: "Data preparation"
       href: Data preparation.html
-    - text: "frequencies"
-      href: frequencies.html
-    - text: "intersectionality"
-      href: intersectionality.html
-    - text: "Recoding variables"
-      href: Recoding_variables.html
-    - text: "LCA 30501"
-      href: LCA_30501.html
-    - text: "LCA schaal"
-      href: LCA_schaal.html
-    - text: "LCA schaal3"
-      href: LCA_schaal3.html     
+    - text: "LCA final model"
+      href: LCA_final_model.html      
     - text: "LCA 29923"
       href: LCA_29923.html
     - text: "LCA schaal3_29923"

@@ -1,0 +1,1145 @@
+---
+title: "LCA_schaal3_29923"
+output: html_document
+date: "2025-03-12"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE, echo = TRUE)
+```
+
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"))
+options(width = 100)
+rgl::setupKnitr()
+
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+
+
+```{r klippy20, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+
+```{r loading packages}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+library("dplyr")
+library("haven")
+library("psych")
+```
+
+
+<br><br> **Loading in the data**
+
+```{r loading data, cache=TRUE, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022 <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
+attach(NEA2022)
+set.seed(123)
+```
+
+
+```{r data items, cache=TRUE, warning=FALSE}
+data_emp <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR)
+
+items_emp <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR) ~ 1
+```
+<br><br> Variabelen:
+
+<br><br> Pesten_col: **Bullying coworkers.** (1) no, never (2) a few times (3) often (4) very often
+<br><br> Pesten_leid: **Bullying supervisors.** (1) no, never (2) a few times (3) often (4) very often
+<br><br> Intimidation_col: **Intimidation coworkers.** (1) no, never (2) a few times (3) often (4) very often
+<br><br> Intimidation_leid: *Intimidation supervisors.* (1) no, never (2) a few times (3) often (4) very often
+<br><br> Geweld_col: **Physical violence coworkers.** (1) no, never (2) a few times (3) often (4) very often
+<br><br> Geweld_leid: **Physical violence supervisors.** (1) no, never (2) a few times (3) often (4) very often
+<br><br> Seks_col: **Unwanted sexual attention coworkers.** (1) no, never (2) a few times (3) often (4) very often
+<br><br> Seks_leid: **Unwanted sexual attention supervisors.** (1) no, never (2) a few times (3) often (4) very often
+<br><br> Conflict_col: **Conflict coworkers.** (1) no (2) yes, short-term (3) yes, long-term
+<br><br> Conflict_leid: **Conflict supervisors.** (1) no (2) yes, short-term (3) yes, long-term
+<br><br> Steunleid_RR: **My supervisor pays attention to what I say.** **My supervisor pays attention to the well-being of the staff.** Mean score of the two items, rounded. (1) fully agree (2) agree (3) disagree (4) fully disagree
+<br><br> Steuncol_RR: **My co-workers take personal interest in me.** **My co-workers are friendly.** Mean score of the two items, rounded. (1) fully agree (2) agree (3) disagree (4) fully disagree
+<br><br> Psyveil_RR: **At my workplace it is possible to raise difficult questions.** **At my workplace it is easy to ask for help.** **At my workplace it is okay to make a mistake.** Mean score of the three items, rounded. (1) fully agree (2) agree (3) don't agree, don't disagree (4) disagree (5) fully disagree
+
+<br><br> **Latent class analysis**
+
+```{r model1, cache=TRUE}
+model1_emp <- poLCA(items_emp, data_emp, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model2, cache=TRUE}
+model2_emp <- poLCA(items_emp, data_emp, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model3, cache=TRUE}
+model3_emp <- poLCA(items_emp, data_emp, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model4, cache=TRUE}
+model4_emp <- poLCA(items_emp, data_emp, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model5, cache=TRUE}
+model5_emp <- poLCA(items_emp, data_emp, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model6, cache=TRUE}
+model6_emp <- poLCA(items_emp, data_emp, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model7, cache=TRUE}
+model7_emp <- poLCA(items_emp, data_emp, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+model7_emp
+```
+
+```{r model8, cache=TRUE}
+model8_emp <- poLCA(items_emp, data_emp, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model9, cache=TRUE}
+model9_emp <- poLCA(items_emp, data_emp, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model10, cache=TRUE}
+model10_emp <- poLCA(items_emp, data_emp, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model11, cache=TRUE}
+model11_emp <- poLCA(items_emp, data_emp, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model12, cache=TRUE}
+model12_emp <- poLCA(items_emp, data_emp, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model13, cache=TRUE}
+model13_emp <- poLCA(items_emp, data_emp, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+```{r model14, cache=TRUE}
+model14_emp <- poLCA(items_emp, data_emp, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
+```
+
+<br><br> **Saving the models**
+
+```{r saving models}
+model3_emppred <- model3_emp$predclass
+model3_emppost <- model3_emp$posterior
+
+lposteriorsmodel3_emp <- as.list(as.data.frame(model3_emppost))
+
+pmodel3_empv1 <- lposteriorsmodel3_emp[[1]]
+pmodel3_empv2 <- lposteriorsmodel3_emp[[2]]
+pmodel3_empv3 <- lposteriorsmodel3_emp[[3]]
+
+model4_emppred <- model4_emp$predclass
+model4_emppost <- model4_emp$posterior
+
+lposteriorsmodel4_emp <- as.list(as.data.frame(model4_emppost))
+
+pmodel4_empv1 <- lposteriorsmodel4_emp[[1]]
+pmodel4_empv2 <- lposteriorsmodel4_emp[[2]]
+pmodel4_empv3 <- lposteriorsmodel4_emp[[3]]
+pmodel4_empv4 <- lposteriorsmodel4_emp[[4]]
+
+
+model5_emppred <- model5_emp$predclass
+model5_emppost <- model5_emp$posterior
+
+lposteriorsmodel5_emp <- as.list(as.data.frame(model5_emppost))
+
+pmodel5_empv1 <- lposteriorsmodel5_emp[[1]]
+pmodel5_empv2 <- lposteriorsmodel5_emp[[2]]
+pmodel5_empv3 <- lposteriorsmodel5_emp[[3]]
+pmodel5_empv4 <- lposteriorsmodel5_emp[[4]]
+pmodel5_empv5 <- lposteriorsmodel5_emp[[5]]
+
+model6_emppred <- model6_emp$predclass
+model6_emppost <- model6_emp$posterior
+
+lposteriorsmodel6_emp <- as.list(as.data.frame(model6_emppost))
+
+pmodel6_empv1 <- lposteriorsmodel6_emp[[1]]
+pmodel6_empv2 <- lposteriorsmodel6_emp[[2]]
+pmodel6_empv3 <- lposteriorsmodel6_emp[[3]]
+pmodel6_empv4 <- lposteriorsmodel6_emp[[4]]
+pmodel6_empv5 <- lposteriorsmodel6_emp[[5]]
+pmodel6_empv6 <- lposteriorsmodel6_emp[[6]]
+
+model7_emppred <- model7_emp$predclass
+model7_emppost <- model7_emp$posterior
+
+lposteriorsmodel7_emp <- as.list(as.data.frame(model7_emppost))
+
+pmodel7_empv1 <- lposteriorsmodel7_emp[[1]]
+pmodel7_empv2 <- lposteriorsmodel7_emp[[2]]
+pmodel7_empv3 <- lposteriorsmodel7_emp[[3]]
+pmodel7_empv4 <- lposteriorsmodel7_emp[[4]]
+pmodel7_empv5 <- lposteriorsmodel7_emp[[5]]
+pmodel7_empv6 <- lposteriorsmodel7_emp[[6]]
+pmodel7_empv7 <- lposteriorsmodel7_emp[[7]]
+
+model8_emppred <- model8_emp$predclass
+model8_emppost <- model8_emp$posterior
+
+lposteriorsmodel8_emp <- as.list(as.data.frame(model8_emppost))
+
+pmodel8_empv1 <- lposteriorsmodel8_emp[[1]]
+pmodel8_empv2 <- lposteriorsmodel8_emp[[2]]
+pmodel8_empv3 <- lposteriorsmodel8_emp[[3]]
+pmodel8_empv4 <- lposteriorsmodel8_emp[[4]]
+pmodel8_empv5 <- lposteriorsmodel8_emp[[5]]
+pmodel8_empv6 <- lposteriorsmodel8_emp[[6]]
+pmodel8_empv7 <- lposteriorsmodel8_emp[[7]]
+pmodel8_empv8 <- lposteriorsmodel8_emp[[8]]
+
+model9_emppred <- model9_emp$predclass
+model9_emppost <- model9_emp$posterior
+
+lposteriorsmodel9_emp <- as.list(as.data.frame(model9_emppost))
+
+pmodel9_empv1 <- lposteriorsmodel9_emp[[1]]
+pmodel9_empv2 <- lposteriorsmodel9_emp[[2]]
+pmodel9_empv3 <- lposteriorsmodel9_emp[[3]]
+pmodel9_empv4 <- lposteriorsmodel9_emp[[4]]
+pmodel9_empv5 <- lposteriorsmodel9_emp[[5]]
+pmodel9_empv6 <- lposteriorsmodel9_emp[[6]]
+pmodel9_empv7 <- lposteriorsmodel9_emp[[7]]
+pmodel9_empv8 <- lposteriorsmodel9_emp[[8]]
+pmodel9_empv9 <- lposteriorsmodel9_emp[[9]]
+
+model10_emppred <- model10_emp$predclass
+model10_emppost <- model10_emp$posterior
+
+lposteriorsmodel10_emp <- as.list(as.data.frame(model10_emppost))
+
+pmodel10_empv1 <- lposteriorsmodel10_emp[[1]]
+pmodel10_empv2 <- lposteriorsmodel10_emp[[2]]
+pmodel10_empv3 <- lposteriorsmodel10_emp[[3]]
+pmodel10_empv4 <- lposteriorsmodel10_emp[[4]]
+pmodel10_empv5 <- lposteriorsmodel10_emp[[5]]
+pmodel10_empv6 <- lposteriorsmodel10_emp[[6]]
+pmodel10_empv7 <- lposteriorsmodel10_emp[[7]]
+pmodel10_empv8 <- lposteriorsmodel10_emp[[8]]
+pmodel10_empv9 <- lposteriorsmodel10_emp[[9]]
+pmodel10_empv10 <- lposteriorsmodel10_emp[[10]]
+
+model11_emppred <- model11_emp$predclass
+model11_emppost <- model11_emp$posterior
+
+lposteriorsmodel11_emp <- as.list(as.data.frame(model11_emppost))
+
+pmodel11_empv1 <- lposteriorsmodel11_emp[[1]]
+pmodel11_empv2 <- lposteriorsmodel11_emp[[2]]
+pmodel11_empv3 <- lposteriorsmodel11_emp[[3]]
+pmodel11_empv4 <- lposteriorsmodel11_emp[[4]]
+pmodel11_empv5 <- lposteriorsmodel11_emp[[5]]
+pmodel11_empv6 <- lposteriorsmodel11_emp[[6]]
+pmodel11_empv7 <- lposteriorsmodel11_emp[[7]]
+pmodel11_empv8 <- lposteriorsmodel11_emp[[8]]
+pmodel11_empv9 <- lposteriorsmodel11_emp[[9]]
+pmodel11_empv10 <- lposteriorsmodel11_emp[[10]]
+pmodel11_empv11 <- lposteriorsmodel11_emp[[11]]
+
+model12_emppred <- model12_emp$predclass
+model12_emppost <- model12_emp$posterior
+
+lposteriorsmodel12_emp <- as.list(as.data.frame(model12_emppost))
+
+pmodel12_empv1 <- lposteriorsmodel12_emp[[1]]
+pmodel12_empv2 <- lposteriorsmodel12_emp[[2]]
+pmodel12_empv3 <- lposteriorsmodel12_emp[[3]]
+pmodel12_empv4 <- lposteriorsmodel12_emp[[4]]
+pmodel12_empv5 <- lposteriorsmodel12_emp[[5]]
+pmodel12_empv6 <- lposteriorsmodel12_emp[[6]]
+pmodel12_empv7 <- lposteriorsmodel12_emp[[7]]
+pmodel12_empv8 <- lposteriorsmodel12_emp[[8]]
+pmodel12_empv9 <- lposteriorsmodel12_emp[[9]]
+pmodel12_empv10 <- lposteriorsmodel12_emp[[10]]
+pmodel12_empv11 <- lposteriorsmodel12_emp[[11]]
+pmodel12_empv12 <- lposteriorsmodel12_emp[[12]]
+
+model13_emppred <- model13_emp$predclass
+model13_emppost <- model13_emp$posterior
+
+lposteriorsmodel13_emp <- as.list(as.data.frame(model13_emppost))
+
+pmodel13_empv1 <- lposteriorsmodel13_emp[[1]]
+pmodel13_empv2 <- lposteriorsmodel13_emp[[2]]
+pmodel13_empv3 <- lposteriorsmodel13_emp[[3]]
+pmodel13_empv4 <- lposteriorsmodel13_emp[[4]]
+pmodel13_empv5 <- lposteriorsmodel13_emp[[5]]
+pmodel13_empv6 <- lposteriorsmodel13_emp[[6]]
+pmodel13_empv7 <- lposteriorsmodel13_emp[[7]]
+pmodel13_empv8 <- lposteriorsmodel13_emp[[8]]
+pmodel13_empv9 <- lposteriorsmodel13_emp[[9]]
+pmodel13_empv10 <- lposteriorsmodel13_emp[[10]]
+pmodel13_empv11 <- lposteriorsmodel13_emp[[11]]
+pmodel13_empv12 <- lposteriorsmodel13_emp[[12]]
+pmodel13_empv13 <- lposteriorsmodel13_emp[[13]]
+
+model14_emppred <- model14_emp$predclass
+model14_emppost <- model14_emp$posterior
+
+lposteriorsmodel14_emp <- as.list(as.data.frame(model14_emppost))
+
+pmodel14_empv1 <- lposteriorsmodel14_emp[[1]]
+pmodel14_empv2 <- lposteriorsmodel14_emp[[2]]
+pmodel14_empv3 <- lposteriorsmodel14_emp[[3]]
+pmodel14_empv4 <- lposteriorsmodel14_emp[[4]]
+pmodel14_empv5 <- lposteriorsmodel14_emp[[5]]
+pmodel14_empv6 <- lposteriorsmodel14_emp[[6]]
+pmodel14_empv7 <- lposteriorsmodel14_emp[[7]]
+pmodel14_empv8 <- lposteriorsmodel14_emp[[8]]
+pmodel14_empv9 <- lposteriorsmodel14_emp[[9]]
+pmodel14_empv10 <- lposteriorsmodel14_emp[[10]]
+pmodel14_empv11 <- lposteriorsmodel14_emp[[11]]
+pmodel14_empv12 <- lposteriorsmodel14_emp[[12]]
+pmodel14_empv13 <- lposteriorsmodel14_emp[[13]]
+pmodel14_empv14 <- lposteriorsmodel14_emp[[14]]
+```
+
+```{r saving models2}
+Models_emp <- cbind (volgnumm, model3_emppred	,
+                 pmodel3_empv1	,
+                 pmodel3_empv2	,
+                 pmodel3_empv3	,
+                 model4_emppred	,
+                 pmodel4_empv1	,
+                 pmodel4_empv2	,
+                 pmodel4_empv3	,
+                 pmodel4_empv4	,
+                 model5_emppred	,
+                 pmodel5_empv1	,
+                 pmodel5_empv2	,
+                 pmodel5_empv3	,
+                 pmodel5_empv4	,
+                 pmodel5_empv5	,
+                 model6_emppred	,
+                 pmodel6_empv1	,
+                 pmodel6_empv2	,
+                 pmodel6_empv3	,
+                 pmodel6_empv4	,
+                 pmodel6_empv5	,
+                 pmodel6_empv6	,
+                 model7_emppred	,
+                 pmodel7_empv1	,
+                 pmodel7_empv2	,
+                 pmodel7_empv3	,
+                 pmodel7_empv4	,
+                 pmodel7_empv5	,
+                 pmodel7_empv6	,
+                 pmodel7_empv7	,
+                 model8_emppred	,
+                 pmodel8_empv1	,
+                 pmodel8_empv2	,
+                 pmodel8_empv3	,
+                 pmodel8_empv4	,
+                 pmodel8_empv5	,
+                 pmodel8_empv6	,
+                 pmodel8_empv7	,
+                 pmodel8_empv8 ,
+                 model9_emppred	,
+                 pmodel9_empv1	,
+                 pmodel9_empv2	,
+                 pmodel9_empv3	,
+                 pmodel9_empv4	,
+                 pmodel9_empv5	,
+                 pmodel9_empv6	,
+                 pmodel9_empv7	,
+                 pmodel9_empv8	,
+                 pmodel9_empv9 ,
+                 model10_emppred	,
+                 pmodel10_empv1 ,
+                 pmodel10_empv2 ,
+                 pmodel10_empv3 ,
+                 pmodel10_empv4 ,
+                 pmodel10_empv5 ,
+                 pmodel10_empv6 ,
+                 pmodel10_empv7 ,
+                 pmodel10_empv8 ,
+                 pmodel10_empv9 ,
+                 pmodel10_empv10 ,
+                 model11_emppred	,
+                 pmodel11_empv1 ,
+                 pmodel11_empv2 ,
+                 pmodel11_empv3 ,
+                 pmodel11_empv4 ,
+                 pmodel11_empv5 ,
+                 pmodel11_empv6 ,
+                 pmodel11_empv7 ,
+                 pmodel11_empv8 ,
+                 pmodel11_empv9 ,
+                 pmodel11_empv10 ,
+                 pmodel11_empv11 ,
+                 model12_emppred	,
+                 pmodel12_empv1 ,
+                 pmodel12_empv2 ,
+                 pmodel12_empv3 ,
+                 pmodel12_empv4 ,
+                 pmodel12_empv5 ,
+                 pmodel12_empv6 ,
+                 pmodel12_empv7 ,
+                 pmodel12_empv8 ,
+                 pmodel12_empv9 ,
+                 pmodel12_empv10 ,
+                 pmodel12_empv11 ,
+                 pmodel12_empv12 ,
+                 model13_emppred	,
+                 pmodel13_empv1 ,
+                 pmodel13_empv2 ,
+                 pmodel13_empv3 ,
+                 pmodel13_empv4 ,
+                 pmodel13_empv5 ,
+                 pmodel13_empv6 ,
+                 pmodel13_empv7 ,
+                 pmodel13_empv8 ,
+                 pmodel13_empv9 ,
+                 pmodel13_empv10 ,
+                 pmodel13_empv11 ,
+                 pmodel13_empv12 ,
+                 pmodel13_empv13 ,
+                 model14_emppred	,
+                 pmodel14_empv1 ,
+                 pmodel14_empv2 ,
+                 pmodel14_empv3 ,
+                 pmodel14_empv4 ,
+                 pmodel14_empv5 ,
+                 pmodel14_empv6 ,
+                 pmodel14_empv7 ,
+                 pmodel14_empv8 ,
+                 pmodel14_empv9 ,
+                 pmodel14_empv10 ,
+                 pmodel14_empv11 ,
+                 pmodel14_empv12 ,
+                 pmodel14_empv13 ,
+                 pmodel14_empv14 )
+```
+
+
+<br><br> **Testing the seperation between classes**
+
+```{r post prob}
+max_probs <- apply(model7_emppost, 1, max)
+
+mean(max_probs)
+median(max_probs)
+min(max_probs)
+max(max_probs)
+
+K <- 7
+
+mean_posteriors <- numeric(K)
+
+for (k in 1:K) {
+  idx <- which(model7_emppred == k)
+  mean_posteriors[k] <- mean(model7_emppost[idx, k])
+}
+
+names(mean_posteriors) <- paste0("Class", 1:K)
+
+mean_posteriors
+
+ggplot(data.frame(max_probs = max_probs), aes(x = max_probs)) +
+  geom_histogram(binwidth = 0.05, fill = "steelblue", color = "white") +
+  geom_vline(aes(xintercept = mean(max_probs)), 
+             color = "red", linetype = "dashed", linewidth = 1) +
+  labs(title = "Distribution of maximum posterior probabilities",
+       x = "Maximum posterior probability",
+       y = "Number of respondents") +
+  theme_minimal()
+```
+
+
+
+```{r entropy}
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model2_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model3_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model4_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model5_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model6_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model7_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model8_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model9_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model10_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model11_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model12_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model13_emp)
+
+poLCA.entropy <- function(model) {
+  P <- model$posterior
+  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model14_emp)
+```
+
+
+<br><br> **Plotjes**
+
+```{r plotjes}
+#Recoding variables on scale from 0 to 1
+
+NEA2022 <- NEA2022 %>%
+  mutate(pesten_col_plot = recode(pesten_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(pesten_leid_plot = recode(pesten_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(int_col_plot = recode(intimidation_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(int_leid_plot = recode(intimidation_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(gew_col_plot = recode(geweld_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(gew_leid_plot = recode(geweld_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(seks_col_plot = recode(seks_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(seks_leid_plot = recode(seks_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(conflict_col_plot = recode(conflict_col, `1` = 0, `2` = 0.50, `3` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(conflict_leid_plot = recode(conflict_leid, `1` = 0, `2` = 0.50, `3` = 1))
+
+NEA2022 <- NEA2022 %>%
+  mutate(steunleid_plot = (steunleid_RR - 1) / 3)
+
+NEA2022 <- NEA2022 %>%
+  mutate(steuncol_plot = (steuncol_RR - 1) / 3)
+
+NEA2022 <- NEA2022 %>%
+  mutate(psyveil_plot = (psyveil_RR - 1) / 4)
+
+```
+
+
+
+<br><br> **4 class model**
+
+
+```{r plot4}
+model4_emppred <- model4_emp$predclass
+NEA2022$model4_emppred <- model4_emp$predclass
+table(model4_emp$predclass)
+
+vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
+          "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
+          "conflict_col_plot", "conflict_leid_plot", 
+          "steuncol_plot", "steunleid_plot", "psyveil_plot")
+
+plot_data4 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model4_emppred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model4_emppred), 
+                         "1" = "1 (17.51%)", 
+                         "2" = "2 (4.67%)", 
+                         "3" = "3 (20.59%)", 
+                         "4" = "4 (57.23%)")
+  )%>% 
+  mutate(class_label = factor(class_label,
+                      levels = c("1 (17.51%)", "2 (4.67%)", "3 (20.59%)", "4 (57.23%)")))
+
+indicator_labels <- c(
+  "pesten_col_plot"    = "Bullying C",
+  "pesten_leid_plot"   = "Bullying S",
+  "int_col_plot"       = "Intimidation C",
+  "int_leid_plot"      = "Intimidation S",
+  "seks_col_plot"      = "Unwanted sexual attention C",
+  "seks_leid_plot"     = "Unwanted sexual attention S",
+  "gew_col_plot"       = "Violence C",
+  "gew_leid_plot"      = "Violence S",
+  "conflict_col_plot"  = "Conflict C",
+  "conflict_leid_plot" = "Conflict S",
+  "steuncol_plot"      = "Incivility C",
+  "steunleid_plot"     = "Incivility S",
+  "psyveil_plot"       = "Psychological unsafety"
+)
+
+ggplot(plot_data4, aes(x = indicator, y = mean_value,
+                      color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "1 (17.51%)"   = "#CC79A7",
+      "2 (4.67%)"          = "#D55E00",
+      "3 (20.59%)"   = "#0072B2",
+      "4 (57.23%)" = "#56B4E9"
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
+
+```
+
+
+
+
+<br><br> **5 class model**
+
+
+```{r plot5}
+model5_emppred <- model5_emp$predclass
+NEA2022$model5_emppred <- model5_emp$predclass
+table(model5_emp$predclass)
+prop.table(table(model5_emp$predclass)) * 100
+
+table(model4_emppred, model5_emppred)
+
+vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
+          "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
+          "conflict_col_plot", "conflict_leid_plot", "steuncol_plot", 
+          "steunleid_plot", "psyveil_plot")
+
+plot_data5 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model5_emppred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model5_emppred), 
+                         "1" = "1 (13.73%)", 
+                         "2" = "2 (2.74%)", 
+                         "3" = "3 (57.64%)", 
+                         "4" = "4 (5.40%)",
+                         "5" = "5 (20.50%)")
+  )%>% 
+  mutate(class_label = factor(class_label,
+                      levels = c("1 (13.73%)", "2 (2.74%)", "3 (57.64%)", "4 (5.40%)", "5 (20.50%)")))
+
+
+indicator_labels <- c(
+  "pesten_col_plot"    = "Bullying C",
+  "pesten_leid_plot"   = "Bullying S",
+  "int_col_plot"       = "Intimidation C",
+  "int_leid_plot"      = "Intimidation S",
+  "seks_col_plot"      = "Unwanted sexual attention C",
+  "seks_leid_plot"     = "Unwanted sexual attention S",
+  "gew_col_plot"       = "Violence C",
+  "gew_leid_plot"      = "Violence S",
+  "conflict_col_plot"  = "Conflict C",
+  "conflict_leid_plot" = "Conflict S",
+  "steuncol_plot"      = "Incivility C",
+  "steunleid_plot"     = "Incivility S",
+  "psyveil_plot"       = "Psychological unsafety"
+)
+
+ggplot(plot_data5, aes(x = indicator, y = mean_value,
+                      color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "1 (13.73%)"   = "#CC79A7",
+      "2 (2.74%)"          = "#D55E00",
+      "3 (57.64%)"   = "#56B4E9",
+      "4 (5.40%)" = "#E69F00",
+      "5 (20.50%)" = "#0072B2"
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
+
+```
+
+
+
+<br><br> **6 class model**
+
+
+```{r plot6}
+model6_emppred <- model6_emp$predclass
+NEA2022$model6_emppred <- model6_emp$predclass
+table(model6_emp$predclass)
+prop.table(table(model6_emp$predclass)) * 100
+
+table(model5_emppred, model6_emppred)
+
+vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
+          "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
+          "conflict_col_plot", "conflict_leid_plot", "steuncol_plot", 
+          "steunleid_plot", "psyveil_plot")
+
+plot_data6 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model6_emppred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model6_emppred), 
+                         "1" = "1 (4.75%)", 
+                         "2" = "2 (13.96%)", 
+                         "3" = "3 (57.46%)", 
+                         "4" = "4 (1.59%)",
+                         "5" = "5 (1.84%)",
+                         "6" = "6 (20.41%)")
+  )%>% 
+  mutate(class_label = factor(class_label,
+                      levels = c("1 (4.75%)", "2 (13.96%)", "3 (57.46%)", "4 (1.59%)", "5 (1.84%)", "6 (20.41%)")))
+
+
+indicator_labels <- c(
+  "pesten_col_plot"    = "Bullying C",
+  "pesten_leid_plot"   = "Bullying S",
+  "int_col_plot"       = "Intimidation C",
+  "int_leid_plot"      = "Intimidation S",
+  "seks_col_plot"      = "Unwanted sexual attention C",
+  "seks_leid_plot"     = "Unwanted sexual attention S",
+  "gew_col_plot"       = "Violence C",
+  "gew_leid_plot"      = "Violence S",
+  "conflict_col_plot"  = "Conflict C",
+  "conflict_leid_plot" = "Conflict S",
+  "steuncol_plot"      = "Incivility C",
+  "steunleid_plot"     = "Incivility S",
+  "psyveil_plot"       = "Psychological unsafety"
+)
+
+ggplot(plot_data6, aes(x = indicator, y = mean_value,
+                      color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "1 (4.75%)"   = "#E69F00",
+      "2 (13.96%)"          = "#CC79A7",
+      "3 (57.46%)"   = "#56B4E9",
+      "4 (1.59%)" = "#000000",
+      "5 (1.84%)" = "#D55E00",
+      "6 (20.41%)" = "#0072B2"
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
+
+```
+
+
+<br><br> **7 class model**
+
+```{r plot7}
+model7_emppred <- model7_emp$predclass
+NEA2022$model7_emppred <- model7_emp$predclass
+table(model7_emp$predclass)
+prop.table(table(model7_emp$predclass)) * 100
+
+table(model6_emppred, model7_emppred)
+
+vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
+          "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
+          "conflict_col_plot", "conflict_leid_plot", "steuncol_plot", 
+          "steunleid_plot", "psyveil_plot")
+
+plot_data7 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model7_emppred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model7_emppred),
+                         "1" = "Short-term conflict (6.84%)",
+                         "2" = "Overall safe (56.37%)",
+                         "3" = "Overall highly safe (20.36%)",
+                         "4" = "Supervisor unsafety (1.83%)",
+                         "5" = "Unsafe social climate (10.20%)",
+                         "6" = "Overall unsafe (1.55%)",
+                         "7" = "Coworker unsafety (2.86%)")
+  ) %>%
+  mutate(class_label = factor(class_label,
+                              levels = c("Overall highly safe (20.36%)", 
+                                         "Overall safe (56.37%)",
+                                         "Short-term conflict (6.84%)", 
+                                         "Unsafe social climate (10.20%)", 
+                                         "Coworker unsafety (2.86%)", 
+                                         "Supervisor unsafety (1.83%)", 
+                                         "Overall unsafe (1.55%)")))
+
+indicator_labels <- c(
+  "pesten_col_plot"    = "Bullying C",
+  "pesten_leid_plot"   = "Bullying S",
+  "int_col_plot"       = "Intimidation C",
+  "int_leid_plot"      = "Intimidation S",
+  "seks_col_plot"      = "Unwanted sexual attention C",
+  "seks_leid_plot"     = "Unwanted sexual attention S",
+  "gew_col_plot"       = "Violence C",
+  "gew_leid_plot"      = "Violence S",
+  "conflict_col_plot"  = "Conflict C",
+  "conflict_leid_plot" = "Conflict S",
+  "steuncol_plot"      = "Incivility C",
+  "steunleid_plot"     = "Incivility S",
+  "psyveil_plot"       = "Psychological unsafety"
+)
+
+ggplot(plot_data7, aes(x = indicator, y = mean_value,
+                      color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "Overall highly safe (20.36%)"   = "#0072B2",
+      "Overall safe (56.37%)"          = "#56B4E9",
+      "Short-term conflict (6.84%)"   = "#009E73",
+      "Unsafe social climate (10.20%)" = "#CC79A7",
+      "Coworker unsafety (2.86%)"     = "#E69F00",
+      "Supervisor unsafety (1.83%)"   = "#D55E00",
+      "Overall unsafe (1.55%)"        = "#000000" 
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
+```
+
+<br><br> **8 class model**
+
+
+```{r plot8}
+model8_emppred <- model8_emp$predclass
+NEA2022$model8_emppred <- model8_emp$predclass
+table(model8_emp$predclass)
+prop.table(table(model8_emp$predclass)) * 100
+
+table(model7_emppred, model8_emppred)
+
+# Predicted classes toevoegen
+model8_emppred <- model8_emp$predclass
+NEA2022$model8_emppred <- model8_emppred
+
+# Tabel en percentages
+table(model8_emppred)
+prop.table(table(model8_emppred)) * 100
+
+# Variabelen voor plotting
+vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
+          "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
+          "conflict_col_plot", "conflict_leid_plot", "steuncol_plot", 
+          "steunleid_plot", "psyveil_plot")
+
+# Data voor plot
+plot_data8 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model8_emppred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model8_emppred), 
+                         "1" = "1 (2.69%)", 
+                         "2" = "2 (55.04%)", 
+                         "3" = "3 (2.52%)", 
+                         "4" = "4 (10.19%)",
+                         "5" = "5 (20.36%)",
+                         "6" = "6 (6.91%)",
+                         "7" = "7 (0.62%)",
+                         "8" = "8 (1.67%)")
+  ) %>% 
+  mutate(class_label = factor(class_label,
+                      levels = c("1 (2.69%)", "2 (55.04%)", "3 (2.52%)", "4 (10.19%)",
+                                 "5 (20.36%)", "6 (6.91%)", "7 (0.62%)", "8 (1.67%)")))
+
+# Labels voor indicatoren
+indicator_labels <- c(
+  "pesten_col_plot"    = "Bullying C",
+  "pesten_leid_plot"   = "Bullying S",
+  "int_col_plot"       = "Intimidation C",
+  "int_leid_plot"      = "Intimidation S",
+  "seks_col_plot"      = "Unwanted sexual attention C",
+  "seks_leid_plot"     = "Unwanted sexual attention S",
+  "gew_col_plot"       = "Violence C",
+  "gew_leid_plot"      = "Violence S",
+  "conflict_col_plot"  = "Conflict C",
+  "conflict_leid_plot" = "Conflict S",
+  "steuncol_plot"      = "Incivility C",
+  "steunleid_plot"     = "Incivility S",
+  "psyveil_plot"       = "Psychological unsafety"
+)
+
+# Plotten
+ggplot(plot_data8, aes(x = indicator, y = mean_value,
+                       color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "1 (2.69%)"   = "#E69F00",
+      "2 (55.04%)"  = "#56B4E9",
+      "3 (2.52%)"   = "#F0E442",
+      "4 (10.19%)"  = "#CC79A7",
+      "5 (20.36%)"  = "#0072B2",
+      "6 (6.91%)"   = "#009E73",
+      "7 (0.62%)"   = "#D55E00",
+      "8 (1.67%)"   = "#000000" 
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
+
+```
+
+
+
+
+<br><br> **9 class model**
+
+
+```{r plot9}
+model9_emppred <- model9_emp$predclass
+NEA2022$model9_emppred <- model9_emp$predclass
+table(model9_emp$predclass)
+prop.table(table(model9_emp$predclass)) * 100
+
+table(model8_emppred, model9_emppred)
+
+# Predicted classes toevoegen
+model9_emppred <- model9_emp$predclass
+NEA2022$model9_emppred <- model9_emppred
+
+# Tabel en percentages
+table(model9_emppred)
+prop.table(table(model9_emppred)) * 100
+
+# Variabelen voor plotting
+vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
+          "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
+          "conflict_col_plot", "conflict_leid_plot", "steuncol_plot", 
+          "steunleid_plot", "psyveil_plot")
+
+# Data voor plot
+plot_data9 <- NEA2022 %>%
+  pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
+  group_by(model9_emppred, indicator) %>%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model9_emppred), 
+                         "1" = "1 (1.51%)", 
+                         "2" = "2 (2.11%)", 
+                         "3" = "3 (0.38%)", 
+                         "4" = "4 (2.33%)",
+                         "5" = "5 (55.46%)",
+                         "6" = "6 (9.79%)",
+                         "7" = "7 (0.98%)",
+                         "8" = "8 (20.52%)",
+                         "9" = "9 (6.92%)")
+  ) %>% 
+  mutate(class_label = factor(class_label,
+                      levels = c("1 (1.51%)", "2 (2.11%)", "3 (0.38%)", "4 (2.33%)",
+                                 "5 (55.46%)", "6 (9.79%)", "7 (0.98%)", "8 (20.52%)", "9 (6.92%)")))
+
+# Labels voor indicatoren
+indicator_labels <- c(
+  "pesten_col_plot"    = "Bullying C",
+  "pesten_leid_plot"   = "Bullying S",
+  "int_col_plot"       = "Intimidation C",
+  "int_leid_plot"      = "Intimidation S",
+  "seks_col_plot"      = "Unwanted sexual attention C",
+  "seks_leid_plot"     = "Unwanted sexual attention S",
+  "gew_col_plot"       = "Violence C",
+  "gew_leid_plot"      = "Violence S",
+  "conflict_col_plot"  = "Conflict C",
+  "conflict_leid_plot" = "Conflict S",
+  "steuncol_plot"      = "Incivility C",
+  "steunleid_plot"     = "Incivility S",
+  "psyveil_plot"       = "Psychological unsafety"
+)
+
+# Plotten
+ggplot(plot_data9, aes(x = indicator, y = mean_value,
+                       color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      "1 (1.51%)"   = "#000000",
+      "2 (2.11%)"   = "#E69F00",
+      "3 (0.38%)"   = "#D55E00",
+      "4 (2.33%)"   = "#F0E442",
+      "5 (55.46%)"  = "#56B4E9",
+      "6 (9.79%)"   = "#CC79A7",
+      "7 (0.98%)"   = "#999999",
+      "8 (20.52%)"  = "#0072B2",
+      "9 (6.92%)"   = "#009E73"  # extra kleur voor klasse 9
+    )
+  ) +
+  labs(x = NULL, y = "Mean score", color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom",
+    legend.text = element_text(size = 11)
+  )
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

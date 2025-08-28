@@ -32,9 +32,7 @@ NEAraw <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.
 
 ```{r}
 NEA2022 <- NEAraw[NEAraw$jaar == "2022", ]
-```
 
-```{r}
 NEA2022 <- NEA2022[NEA2022$se_clust == 1, ]
 ```
 
@@ -483,32 +481,12 @@ summarytools::freq(NEA2022$intersections)
 ```{r}
 library(fastDummies)
 NEA2022 <- dummy_cols(NEA2022, select_columns = "gender", remove_first_dummy = FALSE)
-
-summarytools::freq(NEA2022$gender)
-summarytools::freq(NEA2022$gender_v)
-```
-```{r}
 NEA2022 <- dummy_cols(NEA2022, select_columns = "migration", remove_first_dummy = FALSE)
-summarytools::freq(NEA2022$migration)
-summarytools::freq(NEA2022$migration_eu)
-summarytools::freq(NEA2022$migration_noeu)
-```
-```{r}
 NEA2022 <- dummy_cols(NEA2022, select_columns = "education", remove_first_dummy = FALSE)
-summarytools::freq(NEA2022$education)
-summarytools::freq(NEA2022$education_laag)
-summarytools::freq(NEA2022$education_middel)
-```
-```{r}
 NEA2022 <- dummy_cols(NEA2022, select_columns = "leeftijd_", remove_first_dummy = FALSE)
-summarytools::freq(NEA2022$leeftijd_)
-summarytools::freq(NEA2022$leeftijd__15.35)
-summarytools::freq(NEA2022$leeftijd__35.55)
-```
-
-```{r}
 NEA2022 <- dummy_cols(NEA2022, select_columns = "intersections", remove_first_dummy = FALSE)
 
-dummy_columns <- grep("^intersections_", colnames(NEA2022), value = TRUE)  # Find dummy columns
+dummy_columns <- grep("^intersections_", colnames(NEA2022), value = TRUE)
 colnames(NEA2022)[colnames(NEA2022) %in% dummy_columns] <- gsub("^intersections_", "", dummy_columns)
 ```
+

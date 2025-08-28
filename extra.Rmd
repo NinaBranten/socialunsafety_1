@@ -521,3 +521,241 @@ write_sav(NEA2022, "data/processed/NEA07.sav")
 ```{r}
 mean(NEA2022$leeftijd__55.75)
 ```
+
+
+
+```{r}
+# Predicted class for each respondent (highest posterior prob)
+assigned_class <- apply(model2_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model2_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model2_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+```
+```{r}
+# Get predicted class for each person (highest posterior prob)
+assigned_class <- apply(model3_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model3_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model3_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+```
+```{r}
+# Get predicted class for each person (highest posterior prob)
+assigned_class <- apply(model4_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model4_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model4_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+```
+```{r}
+# Get predicted class for each person (highest posterior prob)
+assigned_class <- apply(model5_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model5_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model5_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+```
+```{r}
+# Get predicted class for each person (highest posterior prob)
+assigned_class <- apply(model6_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model6_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model6_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+```
+
+```{r}
+# Get predicted class for each person (highest posterior prob)
+assigned_class <- apply(model7_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model7_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model7_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+
+```
+```{r}
+# Get predicted class for each person (highest posterior prob)
+assigned_class <- apply(model8_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model8_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model8_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+```
+
+```{r}
+# Get predicted class for each person (highest posterior prob)
+assigned_class <- apply(model9_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model9_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model9_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+```
+
+```{r}
+# Get predicted class for each person (highest posterior prob)
+assigned_class <- apply(model10_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model10_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model10_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+```
+
+```{r}
+# Get predicted class for each person (highest posterior prob)
+assigned_class <- apply(model11_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model11_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model11_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+```
+
+```{r}
+# Get predicted class for each person (highest posterior prob)
+assigned_class <- apply(model12_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model12_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model12_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+```
+
+```{r}
+# Get predicted class for each person (highest posterior prob)
+assigned_class <- apply(model13_emp$posterior, 1, which.max)
+
+# Get number of classes
+K <- ncol(model13_emp$posterior)
+
+# Initialize AvePP vector
+avepp <- numeric(K)
+
+# Loop through each class to compute AvePP
+for (k in 1:K) {
+  class_members <- which(assigned_class == k)
+  avepp[k] <- mean(model13_emp$posterior[class_members, k])
+}
+
+# Print the AvePP per class
+round(avepp, 3)
+```
