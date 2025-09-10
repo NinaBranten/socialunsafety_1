@@ -1,0 +1,1707 @@
+---
+title: "MAIHDA binair"
+output: html_document
+date: "2025-07-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r loading packages, warning=FALSE, results='hide', message=FALSE}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+library("dplyr")
+library("haven")
+library("psych")
+library("Matrix")
+library("lme4")
+library("merTools")
+library("sjPlot")
+library("glmmTMB")
+library("foreign")
+library("gt")
+library("tibble")
+library("dplyr")
+```
+
+
+<br><br> **Loading in the data**
+
+```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022 <- readRDS("data/processed/NEA1009.rds")
+
+attach(NEA2022)
+set.seed(123)
+```
+
+
+```{r transform in factor, cache=TRUE}
+#Transform in factor
+NEA2022 <- NEA2022 %>%
+  mutate(
+    migration = trimws(migration),
+    education = trimws(education),
+    gender = trimws(gender),
+    leeftijd = trimws(leeftijd)
+  )
+
+NEA2022$gender <- factor(NEA2022$gender, levels = c("m", "v"))
+NEA2022$migration <- factor(NEA2022$migration,
+                            levels = c("nl", "eu", "noeu"))
+NEA2022$education <- factor(NEA2022$education,
+                            levels = c("laag", "middel", "hoog"))
+NEA2022$leeftijd <- factor(NEA2022$leeftijd,
+                            levels = c("15.35", "35.55", "55.75"))
+```
+
+
+<br><br> **Overall unsafety (class 7)**
+
+
+```{r regression overall unsafety, cache=TRUE}
+#Regression
+NEA2022 <- NEA2022 %>%
+  mutate(modelb7_7 = pmodel7_bv7 * 100)
+
+Lb_7_0 <- lmer(modelb7_7 ~ 1 + (1|intersections), data=NEA2022) 
+
+Lb_7_1 <- lmer(modelb7_7 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
+tab_model(Lb_7_0, Lb_7_1, p.style="stars")
+
+#ICC
+0.1802/(0.1802+129.4920)
+#PCV
+(0.9627-0.1802)/0.9627
+```
+
+```{r estimated overall unsafety, cache=TRUE}
+#Predicted probability belonging to overall unsafety class
+
+NEA2022$predicted_7 <- predict(Lb_7_1, re.form = NULL, type = "response")
+
+NEA2022$residual_7 <- NEA2022$modelb7_7 - NEA2022$predicted_7
+
+summary_preds_7 <- NEA2022 %>%
+  group_by(gender, migration, education, leeftijd) %>%
+  summarise(
+    mean_pred_7 = mean(predicted_7, na.rm = TRUE),
+    se_pred_7 = sd(residual_7, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+gender_labels <- as_labeller(c(
+  "m" = "Men",
+  "v" = "Women"
+))
+
+migration_labels <- as_labeller(c(
+  "nl"   = "No migration background",
+  "eu"   = "European",
+  "noeu" = "Non-European"
+))
+
+education_labels <- as_labeller(c(
+  "laag"   = "Low",
+  "middel" = "Middle",
+  "hoog"   = "High"
+))
+
+ggplot(summary_preds_7, aes(x = leeftijd, y = mean_pred_7, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_7 - se_pred_7,
+                    ymax = mean_pred_7 + se_pred_7),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+```
+
+
+```{r estimated intersectional effects overall unsafety, cache=TRUE}
+#Estimated intersectional effects
+
+re <- ranef(Lb_7_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Lb_7_1, condVar = TRUE)
+
+post_var <- attr(re_with_var$intersections, "postVar")
+
+se <- sqrt(post_var[1, 1, ])
+
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+
+
+re_df %>%
+  gt() %>%
+  tab_header(
+    title = "Estimated intersectional effect overall unsafety"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, se, lower, upper),
+    decimals = 3
+  ) %>%
+  tab_style(
+    style = cell_text(color = "#009E73"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Advantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "tomato"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Disadvantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "gray"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Not Significant"
+    )
+  )
+
+
+
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+```
+
+
+
+
+```{r top/bottom 10 overall unsafety model1, cache=TRUE}
+#Top/bottom 10 based on model1
+pred_df_7 <- NEA2022 %>%
+  mutate(
+    pred_7 = predict(Lb_7_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_7 = mean(pred_7, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_7)) %>%
+  mutate(rank = row_number())
+
+
+list_7 <- pred_df_7 %>%
+  arrange(desc(pred_mean_7)) %>%
+  mutate(rank = row_number())
+
+top10_7 <- list_7 %>% slice(1:10)
+bottom10_7 <- list_7 %>% slice((n() - 9):n())
+
+
+list_7 <- bind_rows(
+  top10_7 %>% mutate(type = "Top 10"),
+  bottom10_7 %>% mutate(type = "Bottom 10")
+)
+
+df7 <- as_tibble(list_7)
+
+df7 %>%
+  select(rank, intersections, pred_mean_7) %>%  # Rank eerst, Type weggelaten
+  gt() %>%
+  tab_header(
+    title = md("**Highest and lowest intersections probability overall unsafety**")
+  ) %>%
+  fmt_number(
+    columns = "pred_mean_7",
+    decimals = 3
+  ) %>%
+  fmt_number(
+    columns = "rank",
+    decimals = 0
+  ) %>%
+  cols_label(
+    intersections = md("**Intersections**"),
+    pred_mean_7    = md("**Predicted probability**"),
+    rank           = md("**Rank**")
+  )
+```
+
+
+
+<br><br> **Supervisor unsafety (class 2)**
+
+
+
+```{r regression supervisor unsafety, cache=TRUE}
+#Regression
+NEA2022 <- NEA2022 %>%
+  mutate(modelb7_2 = pmodel7_bv2 * 100)
+
+Lb_2_0 <- lmer(modelb7_2 ~ 1 + (1|intersections), data=NEA2022) 
+
+Lb_2_1 <- lmer(modelb7_2 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
+tab_model(Lb_2_0, Lb_2_1, p.style="stars")
+
+#ICC
+0.1316/(0.1316+147.0932)
+#PCV
+(0.233-0.1316)/0.233
+```
+
+```{r estimated supervisor unsafety, cache=TRUE}
+#Predicted probability belonging to overall unsafety class
+
+NEA2022$predicted_2 <- predict(Lb_2_1, re.form = NULL, type = "response")
+
+NEA2022$residual_2 <- NEA2022$modelb7_2 - NEA2022$predicted_2
+
+summary_preds_2 <- NEA2022 %>%
+  group_by(gender, migration, education, leeftijd) %>%
+  summarise(
+    mean_pred_2 = mean(predicted_2, na.rm = TRUE),
+    se_pred_2 = sd(residual_2, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+gender_labels <- as_labeller(c(
+  "m" = "Men",
+  "v" = "Women"
+))
+
+migration_labels <- as_labeller(c(
+  "nl"   = "No migration background",
+  "eu"   = "European",
+  "noeu" = "Non-European"
+))
+
+education_labels <- as_labeller(c(
+  "laag"   = "Low",
+  "middel" = "Middle",
+  "hoog"   = "High"
+))
+
+ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_2 - se_pred_2,
+                    ymax = mean_pred_2 + se_pred_2),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+```
+
+
+
+```{r estimated intersectional effects supervisor unsafety, cache=TRUE}
+#Estimated intersectional effects
+
+re <- ranef(Lb_2_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Lb_2_1, condVar = TRUE)
+
+post_var <- attr(re_with_var$intersections, "postVar")
+
+se <- sqrt(post_var[1, 1, ])
+
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+
+
+re_df %>%
+  gt() %>%
+  tab_header(
+    title = "Estimated intersectional effect overall unsafety"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, se, lower, upper),
+    decimals = 3
+  ) %>%
+  tab_style(
+    style = cell_text(color = "#009E73"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Advantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "tomato"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Disadvantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "gray"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Not Significant"
+    )
+  )
+
+
+
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+```
+
+
+```{r top/bottom 10 supervisor unsafety model1, cache=TRUE}
+#Top/bottom 10 based on model1
+pred_df_2 <- NEA2022 %>%
+  mutate(
+    pred_2 = predict(Lb_2_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_2 = mean(pred_2, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_2)) %>%
+  mutate(rank = row_number())
+
+
+list_2 <- pred_df_2 %>%
+  arrange(desc(pred_mean_2)) %>%
+  mutate(rank = row_number())
+
+top10_2 <- list_2 %>% slice(1:10)
+bottom10_2 <- list_2 %>% slice((n() - 9):n())
+
+
+list_2 <- bind_rows(
+  top10_2 %>% mutate(type = "Top 10"),
+  bottom10_2 %>% mutate(type = "Bottom 10")
+)
+
+df2 <- as_tibble(list_2)
+
+df2 %>%
+  select(rank, intersections, pred_mean_2) %>%
+  gt() %>%
+  tab_header(
+    title = md("**Highest and lowest intersections probability supervisor unsafety**")
+  ) %>%
+  fmt_number(
+    columns = "pred_mean_2",
+    decimals = 3
+  ) %>%
+  fmt_number(
+    columns = "rank",
+    decimals = 0
+  ) %>%
+  cols_label(
+    intersections = md("**Intersections**"),
+    pred_mean_2    = md("**Predicted probability**"),
+    rank           = md("**Rank**")
+  )
+```
+
+
+
+
+<br><br> **Coworker unsafety (class 3)**
+
+
+```{r regression coworker unsafety, cache=TRUE}
+#Regression
+NEA2022 <- NEA2022 %>%
+  mutate(modelb7_3 = pmodel7_bv3 * 100)
+
+Lb_3_0 <- lmer(modelb7_3 ~ 1 + (1|intersections), data=NEA2022) 
+
+Lb_3_1 <- lmer(modelb7_3 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
+tab_model(Lb_3_0, Lb_3_1, p.style="stars")
+
+#ICC
+0.08042/(0.08042+214.96827)
+#PCV
+(0.4709-0.08042)/0.4709
+```
+
+```{r estimated coworker unsafety, cache=TRUE}
+#Predicted probability belonging to overall unsafety class
+
+NEA2022$predicted_3 <- predict(Lb_3_1, re.form = NULL, type = "response")
+
+NEA2022$residual_3 <- NEA2022$modelb7_3 - NEA2022$predicted_3
+
+summary_preds_3 <- NEA2022 %>%
+  group_by(gender, migration, education, leeftijd) %>%
+  summarise(
+    mean_pred_3 = mean(predicted_3, na.rm = TRUE),
+    se_pred_3 = sd(residual_3, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+gender_labels <- as_labeller(c(
+  "m" = "Men",
+  "v" = "Women"
+))
+
+migration_labels <- as_labeller(c(
+  "nl"   = "No migration background",
+  "eu"   = "European",
+  "noeu" = "Non-European"
+))
+
+education_labels <- as_labeller(c(
+  "laag"   = "Low",
+  "middel" = "Middle",
+  "hoog"   = "High"
+))
+
+ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_3 - se_pred_3,
+                    ymax = mean_pred_3 + se_pred_3),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+```
+
+
+
+```{r estimated intersectional effects coworker unsafety, cache=TRUE}
+#Estimated intersectional effects
+
+re <- ranef(Lb_3_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Lb_3_1, condVar = TRUE)
+
+post_var <- attr(re_with_var$intersections, "postVar")
+
+se <- sqrt(post_var[1, 1, ])
+
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+
+
+re_df %>%
+  gt() %>%
+  tab_header(
+    title = "Estimated intersectional effect overall unsafety"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, se, lower, upper),
+    decimals = 3
+  ) %>%
+  tab_style(
+    style = cell_text(color = "#009E73"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Advantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "tomato"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Disadvantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "gray"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Not Significant"
+    )
+  )
+
+
+
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+```
+
+
+```{r top/bottom 10 coworker unsafety model1, cache=TRUE}
+#Top/bottom 10 based on model1
+pred_df_3 <- NEA2022 %>%
+  mutate(
+    pred_3 = predict(Lb_3_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_3 = mean(pred_3, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_3)) %>%
+  mutate(rank = row_number())
+
+
+list_3 <- pred_df_3 %>%
+  arrange(desc(pred_mean_3)) %>%
+  mutate(rank = row_number())
+
+top10_3 <- list_3 %>% slice(1:10)
+bottom10_3 <- list_3 %>% slice((n() - 9):n())
+
+
+list_3 <- bind_rows(
+  top10_3 %>% mutate(type = "Top 10"),
+  bottom10_3 %>% mutate(type = "Bottom 10")
+)
+
+df3 <- as_tibble(list_3)
+
+df3 %>%
+  select(rank, intersections, pred_mean_3) %>%  # Rank eerst, Type weggelaten
+  gt() %>%
+  tab_header(
+    title = md("**Highest and lowest intersections probability coworker unsafety**")
+  ) %>%
+  fmt_number(
+    columns = "pred_mean_3",
+    decimals = 3
+  ) %>%
+  fmt_number(
+    columns = "rank",
+    decimals = 0
+  ) %>%
+  cols_label(
+    intersections = md("**Intersections**"),
+    pred_mean_3    = md("**Predicted probability**"),
+    rank           = md("**Rank**")
+  )
+```
+
+
+
+
+
+<br><br> **Unsafe social climate (class 4)**
+
+
+```{r regression unsafe social climate, cache=TRUE}
+#Regression
+NEA2022 <- NEA2022 %>%
+  mutate(modelb7_4 = pmodel7_bv4 * 100)
+
+Lb_4_0 <- lmer(modelb7_4 ~ 1 + (1|intersections), data=NEA2022) 
+
+Lb_4_1 <- lmer(modelb7_4 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
+tab_model(Lb_4_0, Lb_4_1, p.style="stars")
+
+#ICC
+0.21/(0.21+633.04)
+#PCV
+(3.939-0.21)/3.939
+```
+
+```{r estimated unsafe social climate, cache=TRUE}
+#Predicted probability belonging to overall unsafety class
+
+NEA2022$predicted_4 <- predict(Lb_4_1, re.form = NULL, type = "response")
+
+NEA2022$residual_4 <- NEA2022$modelb7_4 - NEA2022$predicted_4
+
+summary_preds_4 <- NEA2022 %>%
+  group_by(gender, migration, education, leeftijd) %>%
+  summarise(
+    mean_pred_4 = mean(predicted_4, na.rm = TRUE),
+    se_pred_4 = sd(residual_4, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+gender_labels <- as_labeller(c(
+  "m" = "Men",
+  "v" = "Women"
+))
+
+migration_labels <- as_labeller(c(
+  "nl"   = "No migration background",
+  "eu"   = "European",
+  "noeu" = "Non-European"
+))
+
+education_labels <- as_labeller(c(
+  "laag"   = "Low",
+  "middel" = "Middle",
+  "hoog"   = "High"
+))
+
+ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_4 - se_pred_4,
+                    ymax = mean_pred_4 + se_pred_4),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+```
+
+
+
+```{r estimated intersectional effects unsafe social climate, cache=TRUE}
+#Estimated intersectional effects
+
+re <- ranef(Lb_4_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Lb_4_1, condVar = TRUE)
+
+post_var <- attr(re_with_var$intersections, "postVar")
+
+se <- sqrt(post_var[1, 1, ])
+
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+
+
+re_df %>%
+  gt() %>%
+  tab_header(
+    title = "Estimated intersectional effect overall unsafety"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, se, lower, upper),
+    decimals = 3
+  ) %>%
+  tab_style(
+    style = cell_text(color = "#009E73"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Advantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "tomato"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Disadvantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "gray"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Not Significant"
+    )
+  )
+
+
+
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+```
+
+
+```{r top/bottom 10 unsafe social climate model1, cache=TRUE}
+#Top/bottom 10 based on model1
+pred_df_4 <- NEA2022 %>%
+  mutate(
+    pred_4 = predict(Lb_4_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_4 = mean(pred_4, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_4)) %>%
+  mutate(rank = row_number())
+
+
+list_4 <- pred_df_4 %>%
+  arrange(desc(pred_mean_4)) %>%
+  mutate(rank = row_number())
+
+top10_4 <- list_4 %>% slice(1:10)
+bottom10_4 <- list_4 %>% slice((n() - 9):n())
+
+
+list_4 <- bind_rows(
+  top10_4 %>% mutate(type = "Top 10"),
+  bottom10_4 %>% mutate(type = "Bottom 10")
+)
+
+df4 <- as_tibble(list_4)
+
+df4 %>%
+  select(rank, intersections, pred_mean_4) %>%  # Rank eerst, Type weggelaten
+  gt() %>%
+  tab_header(
+    title = md("**Highest and lowest intersections probability unsafe social climate**")
+  ) %>%
+  fmt_number(
+    columns = "pred_mean_4",
+    decimals = 4
+  ) %>%
+  fmt_number(
+    columns = "rank",
+    decimals = 0
+  ) %>%
+  cols_label(
+    intersections = md("**Intersections**"),
+    pred_mean_4    = md("**Predicted probability**"),
+    rank           = md("**Rank**")
+  )
+```
+
+
+
+
+<br><br> **Short-term conflict (class 1)**
+
+
+```{r regression short-term conflict, cache=TRUE}
+#Regression
+NEA2022 <- NEA2022 %>%
+  mutate(modelb7_1 = pmodel7_bv1 * 100)
+
+Lb_1_0 <- lmer(modelb7_1 ~ 1 + (1|intersections), data=NEA2022) 
+
+Lb_1_1 <- lmer(modelb7_1 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
+tab_model(Lb_1_0, Lb_1_1, p.style="stars")
+
+#ICC
+0.7291/(0.7291+424.4979)
+#PCV
+(1.551-0.7291)/1.551
+```
+
+```{r estimated short-term conflict, cache=TRUE}
+#Predicted probability belonging to overall unsafety class
+
+NEA2022$predicted_1 <- predict(Lb_1_1, re.form = NULL, type = "response")
+
+NEA2022$residual_1 <- NEA2022$modelb7_1 - NEA2022$predicted_1
+
+summary_preds_1 <- NEA2022 %>%
+  group_by(gender, migration, education, leeftijd) %>%
+  summarise(
+    mean_pred_1 = mean(predicted_1, na.rm = TRUE),
+    se_pred_1 = sd(residual_1, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+gender_labels <- as_labeller(c(
+  "m" = "Men",
+  "v" = "Women"
+))
+
+migration_labels <- as_labeller(c(
+  "nl"   = "No migration background",
+  "eu"   = "European",
+  "noeu" = "Non-European"
+))
+
+education_labels <- as_labeller(c(
+  "laag"   = "Low",
+  "middel" = "Middle",
+  "hoog"   = "High"
+))
+
+ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
+                    ymax = mean_pred_1 + se_pred_1),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+```
+
+
+
+```{r estimated intersectional effects short-term conflict, cache=TRUE}
+#Estimated intersectional effects
+
+re <- ranef(Lb_1_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Lb_1_1, condVar = TRUE)
+
+post_var <- attr(re_with_var$intersections, "postVar")
+
+se <- sqrt(post_var[1, 1, ])
+
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+
+
+re_df %>%
+  gt() %>%
+  tab_header(
+    title = "Estimated intersectional effect overall unsafety"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, se, lower, upper),
+    decimals = 3
+  ) %>%
+  tab_style(
+    style = cell_text(color = "#009E73"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Advantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "tomato"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Disadvantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "gray"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Not Significant"
+    )
+  )
+
+
+
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+```
+
+
+```{r top/bottom 10 short-term conflict model1, cache=TRUE}
+#Top/bottom 10 based on model1
+pred_df_1 <- NEA2022 %>%
+  mutate(
+    pred_1 = predict(Lb_1_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_1 = mean(pred_1, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+
+list_1 <- pred_df_1 %>%
+  arrange(desc(pred_mean_1)) %>%
+  mutate(rank = row_number())
+
+top10_1 <- list_1 %>% slice(1:10)
+bottom10_1 <- list_1 %>% slice((n() - 9):n())
+
+
+list_1 <- bind_rows(
+  top10_1 %>% mutate(type = "Top 10"),
+  bottom10_1 %>% mutate(type = "Bottom 10")
+)
+
+df1 <- as_tibble(list_1)
+
+df1 %>%
+  select(rank, intersections, pred_mean_1) %>%  # Rank eerst, Type weggelaten
+  gt() %>%
+  tab_header(
+    title = md("**Highest and lowest intersections probability short-term conflict**")
+  ) %>%
+  fmt_number(
+    columns = "pred_mean_1",
+    decimals = 4
+  ) %>%
+  fmt_number(
+    columns = "rank",
+    decimals = 0
+  ) %>%
+  cols_label(
+    intersections = md("**Intersections**"),
+    pred_mean_1    = md("**Predicted probability**"),
+    rank           = md("**Rank**")
+  )
+```
+
+
+
+
+<br><br> **Overall safe (class 5)**
+
+
+```{r regression overall safe, cache=TRUE}
+#Regression
+NEA2022 <- NEA2022 %>%
+  mutate(modelb7_5 = pmodel7_bv5 * 100)
+
+Lb_5_0 <- lmer(modelb7_5 ~ 1 + (1|intersections), data=NEA2022) 
+
+Lb_5_1 <- lmer(modelb7_5 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
+tab_model(Lb_5_0, Lb_5_1, p.style="stars")
+
+#ICC
+2.152/(2.152+1436.346)
+#PCV
+(3.643-2.152)/3.643
+```
+
+```{r estimated overall safe, cache=TRUE}
+#Predicted probability belonging to overall unsafety class
+
+NEA2022$predicted_5 <- predict(Lb_5_1, re.form = NULL, type = "response")
+
+NEA2022$residual_5 <- NEA2022$modelb7_5 - NEA2022$predicted_5
+
+summary_preds_5 <- NEA2022 %>%
+  group_by(gender, migration, education, leeftijd) %>%
+  summarise(
+    mean_pred_5 = mean(predicted_5, na.rm = TRUE),
+    se_pred_5 = sd(residual_5, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+gender_labels <- as_labeller(c(
+  "m" = "Men",
+  "v" = "Women"
+))
+
+migration_labels <- as_labeller(c(
+  "nl"   = "No migration background",
+  "eu"   = "European",
+  "noeu" = "Non-European"
+))
+
+education_labels <- as_labeller(c(
+  "laag"   = "Low",
+  "middel" = "Middle",
+  "hoog"   = "High"
+))
+
+ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_5 - se_pred_5,
+                    ymax = mean_pred_5 + se_pred_5),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+```
+
+
+
+```{r estimated intersectional effects overall safe, cache=TRUE}
+#Estimated intersectional effects
+
+re <- ranef(Lb_5_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Lb_5_1, condVar = TRUE)
+
+post_var <- attr(re_with_var$intersections, "postVar")
+
+se <- sqrt(post_var[1, 1, ])
+
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+
+
+re_df %>%
+  gt() %>%
+  tab_header(
+    title = "Estimated intersectional effect overall unsafety"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, se, lower, upper),
+    decimals = 3
+  ) %>%
+  tab_style(
+    style = cell_text(color = "#009E73"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Advantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "tomato"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Disadvantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "gray"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Not Significant"
+    )
+  )
+
+
+
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+```
+
+
+```{r top/bottom 10 overall safe model1, cache=TRUE}
+#Top/bottom 10 based on model1
+pred_df_5 <- NEA2022 %>%
+  mutate(
+    pred_5 = predict(Lb_5_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_5 = mean(pred_5, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_5)) %>%
+  mutate(rank = row_number())
+
+
+list_5 <- pred_df_5 %>%
+  arrange(desc(pred_mean_5)) %>%
+  mutate(rank = row_number())
+
+top10_5 <- list_5 %>% slice(1:10)
+bottom10_5 <- list_5 %>% slice((n() - 9):n())
+
+
+list_5 <- bind_rows(
+  top10_5 %>% mutate(type = "Top 10"),
+  bottom10_5 %>% mutate(type = "Bottom 10")
+)
+
+df5 <- as_tibble(list_5)
+
+df5 %>%
+  select(rank, intersections, pred_mean_5) %>%  # Rank eerst, Type weggelaten
+  gt() %>%
+  tab_header(
+    title = md("**Highest and lowest intersections probability overall safe**")
+  ) %>%
+  fmt_number(
+    columns = "pred_mean_5",
+    decimals = 5
+  ) %>%
+  fmt_number(
+    columns = "rank",
+    decimals = 0
+  ) %>%
+  cols_label(
+    intersections = md("**Intersections**"),
+    pred_mean_5    = md("**Predicted probability**"),
+    rank           = md("**Rank**")
+  )
+```
+
+
+
+
+
+<br><br> **Overall highly safe (class 6)**
+
+
+```{r regression overall highly safe, cache=TRUE}
+#Regression
+NEA2022 <- NEA2022 %>%
+  mutate(modelb7_6 = pmodel7_bv6 * 100)
+
+Lb_6_0 <- lmer(modelb7_6 ~ 1 + (1|intersections), data=NEA2022) 
+
+Lb_6_1 <- lmer(modelb7_6 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
+tab_model(Lb_6_0, Lb_6_1, p.style="stars")
+
+#ICC
+2.243/(2.243+1254.959)
+#PCV
+(15.09-2.243)/15.09
+```
+
+```{r estimated overall highly safe, cache=TRUE}
+#Predicted probability belonging to overall unsafety class
+
+NEA2022$predicted_6 <- predict(Lb_6_1, re.form = NULL, type = "response")
+
+NEA2022$residual_6 <- NEA2022$modelb7_6 - NEA2022$predicted_6
+
+summary_preds_6 <- NEA2022 %>%
+  group_by(gender, migration, education, leeftijd) %>%
+  summarise(
+    mean_pred_6 = mean(predicted_6, na.rm = TRUE),
+    se_pred_6 = sd(residual_6, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+gender_labels <- as_labeller(c(
+  "m" = "Men",
+  "v" = "Women"
+))
+
+migration_labels <- as_labeller(c(
+  "nl"   = "No migration background",
+  "eu"   = "European",
+  "noeu" = "Non-European"
+))
+
+education_labels <- as_labeller(c(
+  "laag"   = "Low",
+  "middel" = "Middle",
+  "hoog"   = "High"
+))
+
+ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
+  geom_point() +   # geen position_dodge
+  geom_errorbar(aes(ymin = mean_pred_6 - se_pred_6,
+                    ymax = mean_pred_6 + se_pred_6),
+                width = 0,
+                alpha = 0.4,
+                size = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+```
+
+
+
+```{r estimated intersectional effects overall highly safe, cache=TRUE}
+#Estimated intersectional effects
+
+re <- ranef(Lb_6_1, condVar = TRUE)$intersections
+
+re_with_var <- ranef(Lb_6_1, condVar = TRUE)
+
+post_var <- attr(re_with_var$intersections, "postVar")
+
+se <- sqrt(post_var[1, 1, ])
+
+re_df <- data.frame(
+  intersection = rownames(re),
+  estimate = re[,1],
+  se = se
+)
+
+
+re_df <- re_df %>%
+  mutate(
+    lower = estimate - 1.96 * se,
+    upper = estimate + 1.96 * se,
+    significance = case_when(
+      upper < 0 ~ "Advantaged",
+      lower > 0 ~ "Disadvantaged",
+      TRUE ~ "Not Significant"
+    )
+  )
+
+
+re_df %>%
+  gt() %>%
+  tab_header(
+    title = "Estimated intersectional effect overall unsafety"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, se, lower, upper),
+    decimals = 3
+  ) %>%
+  tab_style(
+    style = cell_text(color = "#009E73"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Advantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "tomato"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Disadvantaged"
+    )
+  ) %>%
+  tab_style(
+    style = cell_text(color = "gray"),
+    locations = cells_body(
+      columns = significance,
+      rows = significance == "Not Significant"
+    )
+  )
+
+
+
+re_df <- re_df %>%
+  arrange(estimate) %>%
+  mutate(rank = row_number())
+
+re_df$color <- case_when(
+  re_df$significance == "Advantaged" ~ "steelblue",
+  re_df$significance == "Disadvantaged" ~ "tomato",
+  TRUE ~ "black"
+)
+
+ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+  scale_color_identity() +
+  labs(
+    x = "Rank",
+    y = "Intersectional Effects"
+  ) +
+  theme_minimal()
+
+```
+
+
+```{r top/bottom 10 overall highly safe model1, cache=TRUE}
+#Top/bottom 10 based on model1
+pred_df_6 <- NEA2022 %>%
+  mutate(
+    pred_6 = predict(Lb_6_1, re.form = NULL)
+  ) %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean_6 = mean(pred_6, na.rm = TRUE)
+  ) %>%
+  arrange(desc(pred_mean_6)) %>%
+  mutate(rank = row_number())
+
+
+list_6 <- pred_df_6 %>%
+  arrange(desc(pred_mean_6)) %>%
+  mutate(rank = row_number())
+
+top10_6 <- list_6 %>% slice(1:10)
+bottom10_6 <- list_6 %>% slice((n() - 9):n())
+
+
+list_6 <- bind_rows(
+  top10_6 %>% mutate(type = "Top 10"),
+  bottom10_6 %>% mutate(type = "Bottom 10")
+)
+
+df6 <- as_tibble(list_6)
+
+df6 %>%
+  select(rank, intersections, pred_mean_6) %>%  # Rank eerst, Type weggelaten
+  gt() %>%
+  tab_header(
+    title = md("**Highest and lowest intersections probability overall highly safe**")
+  ) %>%
+  fmt_number(
+    columns = "pred_mean_6",
+    decimals = 4
+  ) %>%
+  fmt_number(
+    columns = "rank",
+    decimals = 0
+  ) %>%
+  cols_label(
+    intersections = md("**Intersections**"),
+    pred_mean_6    = md("**Predicted probability**"),
+    rank           = md("**Rank**")
+  )
+```
+
+
+
+
+
+
