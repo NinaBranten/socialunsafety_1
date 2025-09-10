@@ -24,7 +24,7 @@ library("psych")
 ```
 <br><br> **Loading in the data**
 
-```{r loading data, results='hide', warning=FALSE, message=FALSE, cache=TRUE}
+```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEAraw <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
 ```
 

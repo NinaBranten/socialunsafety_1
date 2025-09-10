@@ -8,7 +8,7 @@ date: "2025-06-18"
 knitr::opts_chunk$set(cache = TRUE)
 ```
 
-```{r}
+```{r loading packages, warning=FALSE, results='hide', message=FALSE}
 library("formatR")
 library("foreign")
 library("ggplot2")
@@ -25,8 +25,9 @@ library("psych")
 
 <br><br> **Loading in the data**
 
-```{r loading data, echo=TRUE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022 <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
+```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022 <- readRDS("data/processed/NEA1009.rds")
+
 attach(NEA2022)
 set.seed(123)
 ```
@@ -410,6 +411,36 @@ Models_b <- cbind (volgnumm, model3_bpred	,
 ```
 
 
+```{r}
+models_b <- list(
+  model3_b, model4_b, model5_b, model6_b, model7_b,
+  model8_b, model9_b, model10_b, model11_b, model12_b
+)
+
+model_nums_b <- 3:12
+
+Models_b <- data.frame(volgnumm = volgnumm)
+
+for (i in seq_along(models_b)) {
+  
+  m <- models_b[[i]]
+  num <- model_nums_b[i]
+  
+  Models_b[[paste0("model", num, "_bpred")]] <- m$predclass
+  
+  post <- as.data.frame(m$posterior)
+  names(post) <- paste0("pmodel", num, "_bv", 1:ncol(post))
+  
+  Models_b <- cbind(Models_b, post)
+}
+
+```
+
+```{r}
+NEA2022 <- merge(NEA2022, Models_b, by = "volgnumm", all.x = TRUE)
+```
+
+
 <br><br> **Testing the seperation between classes**
 
 
@@ -554,6 +585,7 @@ NEA2022 <- NEA2022 %>%
 
 NEA2022 <- NEA2022 %>%
   mutate(sex_s_plot = recode(sex_s, `1` = 0, `2` = 1))
+
 NEA2022 <- NEA2022 %>%
   mutate(conflict_col_plot = recode(conflict_col, `1` = 0, `2` = 0.50, `3` = 1))
 

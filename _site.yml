@@ -16,8 +16,10 @@ navbar:
       href: LCA_final_model.html
     - text: "LCA binary"
       href: LCA_binair.html 
-    - text: "LCA 29923"
-      href: LCA_29923.html
+    - text: "LCA listwise"
+      href: LCA_listwise.html
+    - text: "MAIHDA"
+      href: Lineair.html      
     - text: "LCA schaal3_29923"
       href: LCA_schaal3_29923.html      
     - text: "LCA 8 items"
