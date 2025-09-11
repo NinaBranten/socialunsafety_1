@@ -32,7 +32,7 @@ library("dplyr")
 ```
 
 
-<br><br> **Loading in the data**
+<br><br> **Loading the data**
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEA2022 <- readRDS("data/processed/NEA1009.rds")

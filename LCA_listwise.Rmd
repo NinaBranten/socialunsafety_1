@@ -4,6 +4,7 @@ output: html_document
 date: "2025-03-12"
 ---
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(cache=TRUE, echo = TRUE)
 ```
@@ -46,12 +47,16 @@ library("psych")
 ```
 
 
-<br><br> **Loading in the data**
+<br><br> **Loading the data**
 
 ```{r loading data, cache=TRUE, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022 <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
+NEA2022 <- readRDS("data/processed/NEA1009.rds")
 attach(NEA2022)
 set.seed(123)
+```
+
+```{r}
+table(NEA2022$afl_on_3)
 ```
 
 

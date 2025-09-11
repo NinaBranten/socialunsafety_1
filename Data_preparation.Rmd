@@ -22,7 +22,7 @@ library("dplyr")
 library("haven")
 library("psych")
 ```
-<br><br> **Loading in the data**
+<br><br> **Loading the data**
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEAraw <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)

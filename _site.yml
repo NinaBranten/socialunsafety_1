@@ -1,45 +1,33 @@
-name: "Social unsafety"
-author: 
-  - 'Nina Branten'
 output_dir: "docs"
 exclude: 
   - "data"
   - "_test"
 bibliography: references.bib
+
 navbar:
   left:
     - icon: fa-home
       href: index.html
     - text: "Data preparation"
       href: Data_preparation.html
-    - text: "LCA final model"
-      href: LCA_final_model.html
-    - text: "LCA binary"
-      href: LCA_binair.html 
-    - text: "LCA listwise"
-      href: LCA_listwise.html
-    - text: "MAIHDA final model"
-      href: MAIHDA_final_model.html
-    - text: "MAIHDA binary"
-      href: MAIHDA_binary.html       
-    - text: "LCA schaal3_29923"
-      href: LCA_schaal3_29923.html      
-    - text: "LCA 8 items"
-      href: LCA_8items.html
-    - text: "LCA conflict"
-      href: LCA_conflict.html
-    - text: "LCA without missings"
-      href: LCA_na.rm=true.html
-    - text: "LCA zonder geweld"
-      href: LCA_geweld.html
-    - text: "Zonder employer"
-      href: LCA_employer.html
-    - text: "Factoranalyse"
-      href: Factoranalyse.html
-    - text: "Items seperate"
-      href: Items_seperate.html
-    - text: "2005-2018"
-      href: 2005-2018.html        
+    - text: "LCAs"
+      menu:
+        - text: "final model"
+          href: LCA_final_model.html
+        - text: "binary"
+          href: LCA_binair.html
+        - text: "listwise"
+          href: LCA_listwise.html  
+    - text: "MAIHDA"
+      menu:
+        - text: "final model"
+          href: MAIHDA_final_model.html
+        - text: "binary"
+          href: MAIHDA_binary.html
+        - text: "listwise"
+          href: LCA_listwise.html
+
+      
         # here, other .Rmds can be added
 
 

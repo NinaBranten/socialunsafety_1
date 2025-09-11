@@ -23,7 +23,7 @@ library("psych")
 ```
 
 
-<br><br> **Loading in the data**
+<br><br> **Loading the data**
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEA2022 <- readRDS("data/processed/NEA1009.rds")
@@ -852,13 +852,13 @@ plot_data7 <- NEA2022 %>%
                          "2" = "Supervisor unsafety (1.99%)",
                          "3" = "Coworker unsafety (2.95%)",
                          "4" = "Unsafe social climate (10.41%)",
-                         "5" = "Overall safe (56.00%)",
-                         "6" = "Overall highly safe (20.36%)",
+                         "5" = "Safe (56.00%)",
+                         "6" = "Highly safe (20.36%)",
                          "7" = "Overall unsafe (1.81%)")
   ) %>%
   mutate(class_label = factor(class_label,
-                              levels = c("Overall highly safe (20.36%)", 
-                                         "Overall safe (56.00%)",
+                              levels = c("Highly safe (20.36%)", 
+                                         "Safe (56.00%)",
                                          "Short-term conflict (6.48%)", 
                                          "Unsafe social climate (10.41%)", 
                                          "Coworker unsafety (2.95%)", 
@@ -891,8 +891,8 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
                      expand = c(0,0)) +
   scale_color_manual(
     values = c(
-      "Overall highly safe (20.36%)"   = "#0072B2",
-      "Overall safe (56.00%)"          = "#56B4E9",
+      "Highly safe (20.36%)"   = "#0072B2",
+      "Safe (56.00%)"          = "#56B4E9",
       "Short-term conflict (6.48%)"   = "#009E73",
       "Unsafe social climate (10.41%)" = "#CC79A7",
       "Coworker unsafety (2.95%)"     = "#E69F00",
@@ -908,8 +908,6 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
     legend.text = element_text(size = 11)
   )
 ```
-
-
 
 <br><br> **8 class model**
 

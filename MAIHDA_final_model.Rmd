@@ -39,7 +39,7 @@ library("dplyr")
 ```
 
 
-<br><br> **Loading in the data**
+<br><br> **Loading the data**
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEA2022 <- readRDS("data/processed/NEA1009.rds")
@@ -70,6 +70,8 @@ NEA2022$leeftijd <- factor(NEA2022$leeftijd,
 
 <br><br> **Overall unsafety (class 6)**
 
+
+## Regression overall unsafety
 
 ```{r regression overall unsafety, cache=TRUE}
 #Regression
@@ -1317,10 +1319,10 @@ df1 %>%
 
 
 
-<br><br> **Overall safe (class 2)**
+<br><br> **safe (class 2)**
 
 
-```{r regression overall safe, cache=TRUE}
+```{r regression safe, cache=TRUE}
 #Regression
 NEA2022 <- NEA2022 %>%
   mutate(model7_2 = pmodel7_empv2 * 100)
@@ -1339,8 +1341,8 @@ tab_model(L_2_0, L_2_1, p.style="stars")
 (3.552-2.092)/3.552
 ```
 
-```{r estimated overall safe, cache=TRUE}
-#Predicted probability belonging to overall safe class
+```{r estimated safe, cache=TRUE}
+#Predicted probability belonging to safe class
 
 NEA2022$predicted_2 <- predict(L_2_1, re.form = NULL, type = "response")
 
@@ -1394,8 +1396,8 @@ ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
   )
 ```
 
-```{r estimated intersectional effects overall safe, cache=TRUE}
-#Estimated intersectional effects overall safe
+```{r estimated intersectional effects safe, cache=TRUE}
+#Estimated intersectional effects safe
 
 re <- ranef(L_2_1, condVar = TRUE)$intersections
 
@@ -1427,7 +1429,7 @@ re_df <- re_df %>%
 re_df %>%
   gt() %>%
   tab_header(
-    title = "Estimated intersectional effect overall safe"
+    title = "Estimated intersectional effect safe"
   ) %>%
   fmt_number(
     columns = c(estimate, se, lower, upper),
@@ -1478,7 +1480,7 @@ ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
 
 ```
 
-```{r top/bottom 10 overall safe model0, cache=TRUE, results='hide'}
+```{r top/bottom 10 safe model0, cache=TRUE, results='hide'}
 #Top/bottom 10 based on model0
 
 pred_df_2 <- NEA2022 %>%
@@ -1510,7 +1512,7 @@ print(list_2)
 
 ```
 
-```{r top/bottom 10 overall safe model1, cache=TRUE}
+```{r top/bottom 10 safe model1, cache=TRUE}
 #Top/bottom 10 based on model1
 
 pred_df_2 <- NEA2022 %>%
@@ -1565,10 +1567,10 @@ df2 %>%
 
 
 
-<br><br> **Overall highly safe (class 3)**
+<br><br> **highly safe (class 3)**
 
 
-```{r regression overall highly safe, cache=TRUE}
+```{r regression highly safe, cache=TRUE}
 #Regression
 
 NEA2022 <- NEA2022 %>%
@@ -1589,8 +1591,8 @@ tab_model(L_3_0, L_3_1, p.style="stars")
 (15-2.231)/15
 ```
 
-```{r estimated overall highly safe, cache=TRUE}
-#Predicted probability belonging to overall highly safe class
+```{r estimated highly safe, cache=TRUE}
+#Predicted probability belonging to highly safe class
 
 NEA2022$predicted_3 <- predict(L_3_1, re.form = NULL, type = "response")
 
@@ -1644,8 +1646,8 @@ ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
   )
 ```
 
-```{r estimated intersectional effects overall highly safe, cache=TRUE}
-#Estimated intersectional effect overall highly safe
+```{r estimated intersectional effects highly safe, cache=TRUE}
+#Estimated intersectional effect highly safe
 
 re <- ranef(L_3_1, condVar = TRUE)$intersections
 
@@ -1677,7 +1679,7 @@ re_df <- re_df %>%
 re_df %>%
   gt() %>%
   tab_header(
-    title = "Estimated intersectional effect overall highly safe"
+    title = "Estimated intersectional effect highly safe"
   ) %>%
   fmt_number(
     columns = c(estimate, se, lower, upper),
@@ -1727,7 +1729,7 @@ ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
 
 ```
 
-```{r top/bottom 10 overall highly safe model0, cache=TRUE}
+```{r top/bottom 10 highly safe model0, cache=TRUE}
 #Top/bottom 10 based on model0
 
 pred_df_3 <- NEA2022 %>%
@@ -1759,7 +1761,7 @@ print(list_3)
 
 ```
 
-```{r top/bottom 10 overall highly safe model1, cache=TRUE}
+```{r top/bottom 10 highly safe model1, cache=TRUE}
 #Top/bottom 10 based on model1
 
 pred_df_3 <- NEA2022 %>%
@@ -1793,7 +1795,7 @@ df3 %>%
   select(rank, intersections, pred_mean_3) %>%
   gt() %>%
   tab_header(
-    title = md("**Highest and lowest intersections probability overall highly safe**")
+    title = md("**Highest and lowest intersections probability highly safe**")
   ) %>%
   fmt_number(
     columns = "pred_mean_3",

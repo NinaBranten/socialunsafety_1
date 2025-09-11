@@ -46,7 +46,7 @@ library("psych")
 ```
 
 
-<br><br> **Loading in the data**
+<br><br> **Loading the data**
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEA2022 <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
@@ -703,7 +703,9 @@ ggplot(plot_data4, aes(x = indicator, y = mean_value,
   )
 
 ```
-
+```{r}
+table(model4_emppred, model5_emppred)
+```
 
 
 
@@ -783,6 +785,9 @@ ggplot(plot_data5, aes(x = indicator, y = mean_value,
 
 ```
 
+```{r}
+table(model5_emppred, model6_emppred)
+```
 
 
 <br><br> **6 class model**
@@ -887,16 +892,16 @@ plot_data7 <- NEA2022 %>%
     indicator   = factor(indicator, levels = vars),
     class_label = recode(as.character(model7_emppred),
                          "1" = "Short-term conflict (6.84%)",
-                         "2" = "Overall safe (56.37%)",
-                         "3" = "Overall highly safe (20.36%)",
+                         "2" = "Safe (56.37%)",
+                         "3" = "Highly safe (20.36%)",
                          "4" = "Supervisor unsafety (1.83%)",
                          "5" = "Unsafe social climate (10.20%)",
                          "6" = "Overall unsafe (1.55%)",
                          "7" = "Coworker unsafety (2.86%)")
   ) %>%
   mutate(class_label = factor(class_label,
-                              levels = c("Overall highly safe (20.36%)", 
-                                         "Overall safe (56.37%)",
+                              levels = c("Highly safe (20.36%)", 
+                                         "Safe (56.37%)",
                                          "Short-term conflict (6.84%)", 
                                          "Unsafe social climate (10.20%)", 
                                          "Coworker unsafety (2.86%)", 
@@ -929,8 +934,8 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
                      expand = c(0,0)) +
   scale_color_manual(
     values = c(
-      "Overall highly safe (20.36%)"   = "#0072B2",
-      "Overall safe (56.37%)"          = "#56B4E9",
+      "Highly safe (20.36%)"   = "#0072B2",
+      "Safe (56.37%)"          = "#56B4E9",
       "Short-term conflict (6.84%)"   = "#009E73",
       "Unsafe social climate (10.20%)" = "#CC79A7",
       "Coworker unsafety (2.86%)"     = "#E69F00",
