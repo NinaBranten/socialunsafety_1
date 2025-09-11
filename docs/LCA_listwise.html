@@ -1,0 +1,3813 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2025-03-12" />
+
+<title>LCA_schaal3_29923</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="site_libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="site_libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="site_libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="tweaks.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="Data_preparation.html">Data preparation</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    LCAs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="LCA_final_model.html">final model</a>
+    </li>
+    <li>
+      <a href="LCA_binair.html">binary</a>
+    </li>
+    <li>
+      <a href="LCA_listwise.html">listwise</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    MAIHDA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="MAIHDA_final_model.html">final model</a>
+    </li>
+    <li>
+      <a href="MAIHDA_binary.html">binary</a>
+    </li>
+    <li>
+      <a href="Items_seperate.html">items separate</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ninabranten/socialunsafety_1">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">LCA_schaal3_29923</h1>
+<h4 class="date">2025-03-12</h4>
+
+</div>
+
+
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
+</script>
+<pre class="r"><code>library(&quot;formatR&quot;)
+library(&quot;foreign&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;lme4&quot;)
+library(&quot;poLCA&quot;)
+library(&quot;reprex&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;klippy&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;haven&quot;)
+library(&quot;psych&quot;)</code></pre>
+<p><br><br> <strong>Loading the data</strong></p>
+<div id="latent-class-analysis" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Latent class
+analysis</h1>
+<pre class="r"><code>data_m &lt;- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR)
+
+items_m &lt;- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR) ~ 1</code></pre>
+<p><br><br> Variabelen:</p>
+<p><br><br> Pesten_col: <strong>Bullying coworkers.</strong> (1) no,
+never (2) a few times (3) often (4) very often <br><br> Pesten_leid:
+<strong>Bullying supervisors.</strong> (1) no, never (2) a few times (3)
+often (4) very often <br><br> Intimidation_col: <strong>Intimidation
+coworkers.</strong> (1) no, never (2) a few times (3) often (4) very
+often <br><br> Intimidation_leid: <em>Intimidation supervisors.</em> (1)
+no, never (2) a few times (3) often (4) very often <br><br> Geweld_col:
+<strong>Physical violence coworkers.</strong> (1) no, never (2) a few
+times (3) often (4) very often <br><br> Geweld_leid: <strong>Physical
+violence supervisors.</strong> (1) no, never (2) a few times (3) often
+(4) very often <br><br> Seks_col: <strong>Unwanted sexual attention
+coworkers.</strong> (1) no, never (2) a few times (3) often (4) very
+often <br><br> Seks_leid: <strong>Unwanted sexual attention
+supervisors.</strong> (1) no, never (2) a few times (3) often (4) very
+often <br><br> Conflict_col: <strong>Conflict coworkers.</strong> (1) no
+(2) yes, short-term (3) yes, long-term <br><br> Conflict_leid:
+<strong>Conflict supervisors.</strong> (1) no (2) yes, short-term (3)
+yes, long-term <br><br> Steunleid_RR: <strong>My supervisor pays
+attention to what I say.</strong> <strong>My supervisor pays attention
+to the well-being of the staff.</strong> Mean score of the two items,
+rounded. (1) fully agree (2) agree (3) disagree (4) fully disagree
+<br><br> Steuncol_RR: <strong>My co-workers take personal interest in
+me.</strong> <strong>My co-workers are friendly.</strong> Mean score of
+the two items, rounded. (1) fully agree (2) agree (3) disagree (4) fully
+disagree <br><br> Psyveil_RR: <strong>At my workplace it is possible to
+raise difficult questions.</strong> <strong>At my workplace it is easy
+to ask for help.</strong> <strong>At my workplace it is okay to make a
+mistake.</strong> Mean score of the three items, rounded. (1) fully
+agree (2) agree (3) don’t agree, don’t disagree (4) disagree (5) fully
+disagree</p>
+<div id="model1" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Model1</h2>
+<pre class="r"><code>model1_m &lt;- poLCA(items_m, data_m, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1) Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9764 0.018 0.0045 0.0012
+## 
+## $pesten_leid
+##            Pr(1) Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9882 0.007 0.0036 0.0013
+## 
+## $intimidation_col
+##            Pr(1) Pr(2)  Pr(3) Pr(4)
+## class 1:  0.9872 0.011 0.0012 7e-04
+## 
+## $intimidation_leid
+##            Pr(1) Pr(2)  Pr(3) Pr(4)
+## class 1:  0.9848 0.011 0.0032 0.001
+## 
+## $geweld_col
+##            Pr(1) Pr(2) Pr(3) Pr(4)
+## class 1:  0.9992 6e-04 1e-04 1e-04
+## 
+## $geweld_leid
+##            Pr(1) Pr(2) Pr(3) Pr(4)
+## class 1:  0.9997 1e-04 1e-04     0
+## 
+## $seks_col
+##            Pr(1)  Pr(2) Pr(3) Pr(4)
+## class 1:  0.9909 0.0077 0.001 4e-04
+## 
+## $seks_leid
+##            Pr(1)  Pr(2) Pr(3) Pr(4)
+## class 1:  0.9972 0.0022 3e-04 3e-04
+## 
+## $conflict_col
+##            Pr(1)  Pr(2) Pr(3)
+## class 1:  0.8141 0.1639 0.022
+## 
+## $conflict_leid
+##           Pr(1) Pr(2)  Pr(3)
+## class 1:  0.885 0.096 0.0191
+## 
+## $steunleid_RR
+##           Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.245 0.5747 0.1521 0.0282
+## 
+## $steuncol_RR
+##           Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.342 0.5911 0.0615 0.0054
+## 
+## $psyveil_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:  0.1422 0.5413 0.2514 0.0498 0.0153
+## 
+## Estimated class population shares 
+##  1 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  1 
+##  
+## ========================================================= 
+## Fit for 1 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 38 
+## residual degrees of freedom: 28224 
+## maximum log-likelihood: -127455 
+##  
+## AIC(1): 254986
+## BIC(1): 255299.5
+## G^2(1): 34566.7 (Likelihood ratio/deviance statistic) 
+## X^2(1): 2.089422e+21 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model2" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Model2</h2>
+<pre class="r"><code>model2_m &lt;- poLCA(items_m, data_m, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -120549.2 ... best llik = -120549.2
+## Model 2: llik = -120549.2 ... best llik = -120549.2
+## Model 3: llik = -120549.2 ... best llik = -120549.2
+## Model 4: llik = -120549.2 ... best llik = -120549.2
+## Model 5: llik = -120849.4 ... best llik = -120549.2
+## Model 6: llik = -120849.4 ... best llik = -120549.2
+## Model 7: llik = -120549.2 ... best llik = -120549.2
+## Model 8: llik = -120549.2 ... best llik = -120549.2
+## Model 9: llik = -120549.2 ... best llik = -120549.2
+## Model 10: llik = -120549.2 ... best llik = -120549.2
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9974 0.0025 0.0002 0.0000
+## class 2:  0.9176 0.0614 0.0165 0.0046
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9998 0.0001 0.0001 0.0000
+## class 2:  0.9557 0.0261 0.0134 0.0048
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9975 0.0025 0.0000 0.0000
+## class 2:  0.9584 0.0347 0.0043 0.0025
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  1.0000 0.0000 0.0000 0.0000
+## class 2:  0.9422 0.0418 0.0122 0.0038
+## 
+## $geweld_col
+##            Pr(1)  Pr(2) Pr(3) Pr(4)
+## class 1:  1.0000 0.0000 0e+00 0e+00
+## class 2:  0.9969 0.0023 5e-04 3e-04
+## 
+## $geweld_leid
+##            Pr(1) Pr(2) Pr(3) Pr(4)
+## class 1:  1.0000 0e+00 0e+00 0e+00
+## class 2:  0.9988 5e-04 5e-04 1e-04
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9958 0.0037 0.0005 0.0000
+## class 2:  0.9772 0.0189 0.0024 0.0015
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3) Pr(4)
+## class 1:  0.9994 0.0006 0.0000 0.000
+## class 2:  0.9910 0.0068 0.0012 0.001
+## 
+## $conflict_col
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.8971 0.0985 0.0044
+## class 2:  0.5818 0.3467 0.0715
+## 
+## $conflict_leid
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.9767 0.0221 0.0012
+## class 2:  0.6284 0.3026 0.0691
+## 
+## $steunleid_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.3213 0.6267 0.0512 0.0008
+## class 2:  0.0315 0.4293 0.4345 0.1047
+## 
+## $steuncol_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.4082 0.5758 0.0160 0.0000
+## class 2:  0.1571 0.6338 0.1887 0.0204
+## 
+## $psyveil_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:  0.1863 0.6243 0.1698 0.0082 0.0113
+## class 2:  0.0190 0.3092 0.4794 0.1662 0.0262
+## 
+## Estimated class population shares 
+##  0.7366 0.2634 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.7592 0.2408 
+##  
+## ========================================================= 
+## Fit for 2 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 77 
+## residual degrees of freedom: 28185 
+## maximum log-likelihood: -120549.2 
+##  
+## AIC(2): 241252.4
+## BIC(2): 241887.6
+## G^2(2): 20755.06 (Likelihood ratio/deviance statistic) 
+## X^2(2): 1.827982e+16 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model3" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Model3</h2>
+<pre class="r"><code>model3_m &lt;- poLCA(items_m, data_m, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -116246.6 ... best llik = -116246.6
+## Model 2: llik = -116246.6 ... best llik = -116246.6
+## Model 3: llik = -116246.6 ... best llik = -116246.6
+## Model 4: llik = -116246.6 ... best llik = -116246.6
+## Model 5: llik = -116246.6 ... best llik = -116246.6
+## Model 6: llik = -116246.6 ... best llik = -116246.6
+## Model 7: llik = -116246.6 ... best llik = -116246.6
+## Model 8: llik = -116246.6 ... best llik = -116246.6
+## Model 9: llik = -116246.6 ... best llik = -116246.6
+## Model 10: llik = -116246.6 ... best llik = -116246.6
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.8786 0.0864 0.0273 0.0077
+## class 2:  0.9972 0.0023 0.0005 0.0000
+## class 3:  0.9934 0.0065 0.0001 0.0000
+## 
+## $pesten_leid
+##           Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.926 0.0434 0.0224 0.0081
+## class 2:  0.999 0.0007 0.0003 0.0000
+## class 3:  1.000 0.0000 0.0000 0.0000
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9364 0.0522 0.0072 0.0042
+## class 2:  0.9961 0.0037 0.0001 0.0001
+## class 3:  0.9968 0.0032 0.0000 0.0000
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9060 0.0671 0.0206 0.0063
+## class 2:  0.9991 0.0009 0.0000 0.0000
+## class 3:  0.9995 0.0005 0.0000 0.0000
+## 
+## $geweld_col
+##            Pr(1)  Pr(2) Pr(3) Pr(4)
+## class 1:  0.9948 0.0038 9e-04 5e-04
+## class 2:  1.0000 0.0000 0e+00 0e+00
+## class 3:  1.0000 0.0000 0e+00 0e+00
+## 
+## $geweld_leid
+##           Pr(1) Pr(2) Pr(3) Pr(4)
+## class 1:  0.998 9e-04 9e-04 2e-04
+## class 2:  1.000 0e+00 0e+00 0e+00
+## class 3:  1.000 0e+00 0e+00 0e+00
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9679 0.0267 0.0031 0.0023
+## class 2:  0.9950 0.0047 0.0003 0.0001
+## class 3:  0.9952 0.0040 0.0007 0.0000
+## 
+## $seks_leid
+##            Pr(1)  Pr(2) Pr(3)  Pr(4)
+## class 1:  0.9858 0.0106 0.002 0.0016
+## class 2:  0.9993 0.0007 0.000 0.0000
+## class 3:  0.9993 0.0007 0.000 0.0000
+## 
+## $conflict_col
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.4869 0.4034 0.1097
+## class 2:  0.9048 0.0860 0.0091
+## class 3:  0.8626 0.1330 0.0044
+## 
+## $conflict_leid
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.4857 0.4007 0.1136
+## class 2:  0.9764 0.0182 0.0053
+## class 3:  0.9520 0.0480 0.0000
+## 
+## $steunleid_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.0427 0.2958 0.4994 0.1622
+## class 2:  0.7903 0.1975 0.0103 0.0019
+## class 3:  0.0773 0.7999 0.1190 0.0039
+## 
+## $steuncol_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.1889 0.5520 0.2265 0.0327
+## class 2:  0.8000 0.1978 0.0022 0.0000
+## class 3:  0.1969 0.7603 0.0424 0.0004
+## 
+## $psyveil_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:  0.0300 0.2464 0.4469 0.2320 0.0447
+## class 2:  0.4921 0.4196 0.0469 0.0075 0.0340
+## class 3:  0.0301 0.6674 0.2831 0.0195 0.0000
+## 
+## Estimated class population shares 
+##  0.1565 0.2428 0.6007 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.1422 0.2083 0.6494 
+##  
+## ========================================================= 
+## Fit for 3 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 116 
+## residual degrees of freedom: 28146 
+## maximum log-likelihood: -116246.6 
+##  
+## AIC(3): 232725.2
+## BIC(3): 233682.1
+## G^2(3): 12149.88 (Likelihood ratio/deviance statistic) 
+## X^2(3): 1.67231e+14 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model4" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Model4</h2>
+<pre class="r"><code>model4_m &lt;- poLCA(items_m, data_m, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -115398.6 ... best llik = -115398.6
+## Model 2: llik = -115398.6 ... best llik = -115398.6
+## Model 3: llik = -115398.6 ... best llik = -115398.6
+## Model 4: llik = -115398.6 ... best llik = -115398.6
+## Model 5: llik = -115504.1 ... best llik = -115398.6
+## Model 6: llik = -115507.1 ... best llik = -115398.6
+## Model 7: llik = -115398.6 ... best llik = -115398.6
+## Model 8: llik = -115398.6 ... best llik = -115398.6
+## Model 9: llik = -115398.6 ... best llik = -115398.6
+## Model 10: llik = -115398.6 ... best llik = -115398.6
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.7381 0.1644 0.0755 0.0219
+## class 2:  0.9709 0.0284 0.0005 0.0001
+## class 3:  0.9931 0.0065 0.0004 0.0000
+## class 4:  0.9982 0.0016 0.0002 0.0000
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.8186 0.0932 0.0648 0.0234
+## class 2:  0.9902 0.0098 0.0000 0.0000
+## class 3:  1.0000 0.0000 0.0000 0.0000
+## class 4:  0.9993 0.0005 0.0002 0.0000
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.8521 0.1151 0.0209 0.0119
+## class 2:  0.9893 0.0107 0.0000 0.0000
+## class 3:  0.9961 0.0039 0.0000 0.0000
+## class 4:  0.9967 0.0030 0.0001 0.0001
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.8046 0.1193 0.0579 0.0182
+## class 2:  0.9757 0.0239 0.0004 0.0000
+## class 3:  0.9999 0.0001 0.0000 0.0000
+## class 4:  0.9997 0.0003 0.0000 0.0000
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9860 0.0101 0.0026 0.0013
+## class 2:  1.0000 0.0000 0.0000 0.0000
+## class 3:  0.9999 0.0001 0.0000 0.0000
+## class 4:  1.0000 0.0000 0.0000 0.0000
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3) Pr(4)
+## class 1:  0.9949 0.0019 0.0026 7e-04
+## class 2:  0.9998 0.0002 0.0000 0e+00
+## class 3:  1.0000 0.0000 0.0000 0e+00
+## class 4:  1.0000 0.0000 0.0000 0e+00
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9372 0.0521 0.0052 0.0056
+## class 2:  0.9896 0.0086 0.0014 0.0004
+## class 3:  0.9948 0.0044 0.0007 0.0000
+## class 4:  0.9955 0.0042 0.0003 0.0000
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9692 0.0218 0.0045 0.0046
+## class 2:  0.9970 0.0026 0.0004 0.0000
+## class 3:  0.9991 0.0009 0.0000 0.0001
+## class 4:  0.9995 0.0005 0.0000 0.0000
+## 
+## $conflict_col
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.3151 0.3952 0.2896
+## class 2:  0.6760 0.3135 0.0104
+## class 3:  0.8715 0.1223 0.0062
+## class 4:  0.9089 0.0864 0.0048
+## 
+## $conflict_leid
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.3724 0.3320 0.2956
+## class 2:  0.6753 0.3122 0.0125
+## class 3:  0.9695 0.0299 0.0006
+## class 4:  0.9781 0.0202 0.0017
+## 
+## $steunleid_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.1205 0.3079 0.3307 0.2410
+## class 2:  0.0000 0.3750 0.5463 0.0786
+## class 3:  0.1010 0.8429 0.0561 0.0000
+## class 4:  0.7929 0.1868 0.0176 0.0026
+## 
+## $steuncol_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.2011 0.5100 0.2214 0.0675
+## class 2:  0.2014 0.6106 0.1795 0.0086
+## class 3:  0.1930 0.7768 0.0299 0.0003
+## class 4:  0.8230 0.1743 0.0027 0.0000
+## 
+## $psyveil_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:  0.0807 0.2772 0.3018 0.2416 0.0986
+## class 2:  0.0044 0.2938 0.5310 0.1621 0.0088
+## class 3:  0.0384 0.7154 0.2374 0.0088 0.0000
+## class 4:  0.5002 0.4036 0.0511 0.0096 0.0355
+## 
+## Estimated class population shares 
+##  0.0543 0.1838 0.5284 0.2334 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0458 0.1726 0.5748 0.2069 
+##  
+## ========================================================= 
+## Fit for 4 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 155 
+## residual degrees of freedom: 28107 
+## maximum log-likelihood: -115398.6 
+##  
+## AIC(4): 231107.2
+## BIC(4): 232385.9
+## G^2(4): 10453.93 (Likelihood ratio/deviance statistic) 
+## X^2(4): 42885832985 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model5" class="section level2" number="1.5">
+<h2><span class="header-section-number">1.5</span> Model5</h2>
+<pre class="r"><code>model5_m &lt;- poLCA(items_m, data_m, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -114688.3 ... best llik = -114688.3
+## Model 2: llik = -114688.9 ... best llik = -114688.3
+## Model 3: llik = -114687.3 ... best llik = -114687.3
+## Model 4: llik = -114687.3 ... best llik = -114687.3
+## Model 5: llik = -114689.1 ... best llik = -114687.3
+## Model 6: llik = -114687.3 ... best llik = -114687.3
+## Model 7: llik = -114688.3 ... best llik = -114687.3
+## Model 8: llik = -114688.3 ... best llik = -114687.3
+## Model 9: llik = -114688 ... best llik = -114687.3
+## Model 10: llik = -114704.7 ... best llik = -114687.3
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9842 0.0149 0.0006 0.0004
+## class 2:  0.7865 0.1168 0.0720 0.0247
+## class 3:  0.9962 0.0037 0.0002 0.0000
+## class 4:  0.8188 0.1445 0.0306 0.0060
+## class 5:  0.9983 0.0015 0.0002 0.0000
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9899 0.0101 0.0000 0.0000
+## class 2:  0.6843 0.1580 0.1145 0.0432
+## class 3:  1.0000 0.0000 0.0000 0.0000
+## class 4:  0.9898 0.0086 0.0016 0.0000
+## class 5:  0.9990 0.0006 0.0004 0.0000
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9958 0.0042 0.0000 0.0000
+## class 2:  0.9058 0.0579 0.0227 0.0136
+## class 3:  0.9988 0.0012 0.0000 0.0000
+## class 4:  0.8819 0.1080 0.0067 0.0034
+## class 5:  0.9976 0.0021 0.0001 0.0001
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9743 0.0250 0.0008 0.0000
+## class 2:  0.6878 0.1747 0.1052 0.0323
+## class 3:  0.9997 0.0003 0.0000 0.0000
+## class 4:  0.9747 0.0248 0.0000 0.0005
+## class 5:  0.9992 0.0008 0.0000 0.0000
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  1.0000 0.0000 0.0000 0.0000
+## class 2:  0.9860 0.0068 0.0048 0.0024
+## class 3:  1.0000 0.0000 0.0000 0.0000
+## class 4:  0.9946 0.0054 0.0000 0.0000
+## class 5:  1.0000 0.0000 0.0000 0.0000
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3) Pr(4)
+## class 1:  1.0000 0.0000 0.0000 0e+00
+## class 2:  0.9933 0.0019 0.0048 0e+00
+## class 3:  1.0000 0.0000 0.0000 0e+00
+## class 4:  0.9982 0.0012 0.0000 5e-04
+## class 5:  1.0000 0.0000 0.0000 0e+00
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9909 0.0072 0.0015 0.0004
+## class 2:  0.9376 0.0551 0.0050 0.0024
+## class 3:  0.9959 0.0035 0.0006 0.0000
+## class 4:  0.9612 0.0321 0.0030 0.0037
+## class 5:  0.9955 0.0042 0.0003 0.0000
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9969 0.0027 0.0004 0.0000
+## class 2:  0.9502 0.0352 0.0062 0.0084
+## class 3:  0.9990 0.0010 0.0000 0.0001
+## class 4:  0.9964 0.0026 0.0011 0.0000
+## class 5:  0.9995 0.0005 0.0000 0.0000
+## 
+## $conflict_col
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.7655 0.2336 0.0009
+## class 2:  0.4470 0.3362 0.2168
+## class 3:  0.9042 0.0958 0.0000
+## class 4:  0.0730 0.7196 0.2074
+## class 5:  0.9138 0.0815 0.0047
+## 
+## $conflict_leid
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.7001 0.2851 0.0148
+## class 2:  0.2590 0.3723 0.3687
+## class 3:  0.9744 0.0250 0.0005
+## class 4:  0.5785 0.3495 0.0720
+## class 5:  0.9790 0.0182 0.0028
+## 
+## $steunleid_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.0000 0.2854 0.6182 0.0964
+## class 2:  0.0397 0.1078 0.4164 0.4361
+## class 3:  0.0922 0.8541 0.0537 0.0000
+## class 4:  0.1434 0.6588 0.1978 0.0000
+## class 5:  0.7928 0.1874 0.0173 0.0024
+## 
+## $steuncol_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.2178 0.5920 0.1793 0.0109
+## class 2:  0.1922 0.4359 0.2608 0.1111
+## class 3:  0.1921 0.7757 0.0318 0.0004
+## class 4:  0.1722 0.6879 0.1364 0.0035
+## class 5:  0.8184 0.1791 0.0025 0.0000
+## 
+## $psyveil_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:  0.0006 0.2761 0.5379 0.1750 0.0104
+## class 2:  0.0647 0.1046 0.2702 0.3904 0.1702
+## class 3:  0.0364 0.7093 0.2430 0.0112 0.0000
+## class 4:  0.0659 0.5250 0.3534 0.0520 0.0037
+## class 5:  0.4972 0.4071 0.0509 0.0093 0.0356
+## 
+## Estimated class population shares 
+##  0.1529 0.0295 0.5129 0.0694 0.2353 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.1368 0.0257 0.5795 0.0525 0.2055 
+##  
+## ========================================================= 
+## Fit for 5 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 194 
+## residual degrees of freedom: 28068 
+## maximum log-likelihood: -114687.3 
+##  
+## AIC(5): 229762.6
+## BIC(5): 231362.9
+## G^2(5): 9031.269 (Likelihood ratio/deviance statistic) 
+## X^2(5): 2577235545 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model6" class="section level2" number="1.6">
+<h2><span class="header-section-number">1.6</span> Model6</h2>
+<pre class="r"><code>model6_m &lt;- poLCA(items_m, data_m, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -114388.3 ... best llik = -114388.3
+## Model 2: llik = -114387.6 ... best llik = -114387.6
+## Model 3: llik = -114372.2 ... best llik = -114372.2
+## Model 4: llik = -114438.2 ... best llik = -114372.2
+## Model 5: llik = -114384.7 ... best llik = -114372.2
+## Model 6: llik = -114371.6 ... best llik = -114371.6
+## Model 7: llik = -114438.1 ... best llik = -114371.6
+## Model 8: llik = -114370.6 ... best llik = -114370.6
+## Model 9: llik = -114432.7 ... best llik = -114370.6
+## Model 10: llik = -114370.5 ... best llik = -114370.5
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.8886 0.0959 0.0128 0.0027
+## class 2:  0.9862 0.0135 0.0003 0.0000
+## class 3:  0.9964 0.0034 0.0002 0.0000
+## class 4:  0.3709 0.3874 0.1873 0.0545
+## class 5:  0.9699 0.0212 0.0064 0.0025
+## class 6:  0.9986 0.0013 0.0001 0.0000
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9919 0.0070 0.0011 0.0000
+## class 2:  0.9928 0.0072 0.0000 0.0000
+## class 3:  1.0000 0.0000 0.0000 0.0000
+## class 4:  0.8646 0.0599 0.0506 0.0249
+## class 5:  0.6552 0.1904 0.1162 0.0382
+## class 6:  0.9993 0.0004 0.0003 0.0000
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9149 0.0838 0.0013 0.0000
+## class 2:  0.9946 0.0054 0.0000 0.0000
+## class 3:  0.9992 0.0008 0.0000 0.0000
+## class 4:  0.7060 0.1980 0.0596 0.0364
+## class 5:  0.9932 0.0068 0.0000 0.0000
+## class 6:  0.9982 0.0015 0.0001 0.0002
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9730 0.0270 0.0000 0.0000
+## class 2:  0.9810 0.0186 0.0003 0.0000
+## class 3:  0.9998 0.0002 0.0000 0.0000
+## class 4:  0.9148 0.0406 0.0332 0.0114
+## class 5:  0.6013 0.2449 0.1178 0.0361
+## class 6:  1.0000 0.0000 0.0000 0.0000
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3) Pr(4)
+## class 1:  0.9960 0.0040 0.0000 0.000
+## class 2:  1.0000 0.0000 0.0000 0.000
+## class 3:  1.0000 0.0000 0.0000 0.000
+## class 4:  0.9751 0.0128 0.0081 0.004
+## class 5:  0.9962 0.0038 0.0000 0.000
+## class 6:  1.0000 0.0000 0.0000 0.000
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3) Pr(4)
+## class 1:  0.9989 0.0011 0.0000 0.000
+## class 2:  1.0000 0.0000 0.0000 0.000
+## class 3:  1.0000 0.0000 0.0000 0.000
+## class 4:  0.9952 0.0000 0.0028 0.002
+## class 5:  0.9929 0.0029 0.0043 0.000
+## class 6:  1.0000 0.0000 0.0000 0.000
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9686 0.0293 0.0010 0.0010
+## class 2:  0.9896 0.0084 0.0016 0.0004
+## class 3:  0.9962 0.0031 0.0007 0.0000
+## class 4:  0.8903 0.0808 0.0143 0.0146
+## class 5:  0.9763 0.0237 0.0000 0.0000
+## class 6:  0.9958 0.0039 0.0003 0.0000
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9980 0.0016 0.0004 0.0000
+## class 2:  0.9965 0.0031 0.0004 0.0000
+## class 3:  0.9990 0.0009 0.0000 0.0001
+## class 4:  0.9703 0.0145 0.0084 0.0068
+## class 5:  0.9539 0.0368 0.0035 0.0059
+## class 6:  0.9995 0.0005 0.0000 0.0000
+## 
+## $conflict_col
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.1378 0.7009 0.1613
+## class 2:  0.7332 0.2607 0.0061
+## class 3:  0.9163 0.0837 0.0000
+## class 4:  0.1125 0.5241 0.3633
+## class 5:  0.6069 0.2579 0.1353
+## class 6:  0.9213 0.0758 0.0029
+## 
+## $conflict_leid
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.6122 0.3176 0.0702
+## class 2:  0.7002 0.2895 0.0103
+## class 3:  0.9789 0.0209 0.0002
+## class 4:  0.5228 0.3599 0.1172
+## class 5:  0.1827 0.3522 0.4651
+## class 6:  0.9831 0.0157 0.0012
+## 
+## $steunleid_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.1884 0.6979 0.1137 0.0000
+## class 2:  0.0000 0.3078 0.6015 0.0907
+## class 3:  0.0905 0.8533 0.0562 0.0000
+## class 4:  0.0326 0.3093 0.4997 0.1584
+## class 5:  0.0639 0.1063 0.3569 0.4729
+## class 6:  0.7937 0.1862 0.0175 0.0026
+## 
+## $steuncol_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.2231 0.7212 0.0557 0.0000
+## class 2:  0.2053 0.5978 0.1866 0.0104
+## class 3:  0.1924 0.7755 0.0317 0.0004
+## class 4:  0.0336 0.3661 0.5020 0.0983
+## class 5:  0.2927 0.5004 0.1250 0.0818
+## class 6:  0.8197 0.1777 0.0026 0.0000
+## 
+## $psyveil_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:  0.0903 0.6336 0.2693 0.0068 0.0000
+## class 2:  0.0008 0.2677 0.5444 0.1761 0.0110
+## class 3:  0.0357 0.7109 0.2424 0.0111 0.0000
+## class 4:  0.0063 0.1318 0.4092 0.3469 0.1057
+## class 5:  0.0928 0.1336 0.2783 0.3441 0.1511
+## class 6:  0.4977 0.4059 0.0510 0.0096 0.0358
+## 
+## Estimated class population shares 
+##  0.0687 0.1589 0.5002 0.0175 0.0219 0.2329 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.048 0.1384 0.5753 0.0152 0.0185 0.2047 
+##  
+## ========================================================= 
+## Fit for 6 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 233 
+## residual degrees of freedom: 28029 
+## maximum log-likelihood: -114370.5 
+##  
+## AIC(6): 229207
+## BIC(6): 231129.1
+## G^2(6): 8397.695 (Likelihood ratio/deviance statistic) 
+## X^2(6): 45923249628 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model7" class="section level2" number="1.7">
+<h2><span class="header-section-number">1.7</span> Model7</h2>
+<pre class="r"><code>model7_m &lt;- poLCA(items_m, data_m, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -114154 ... best llik = -114154
+## Model 2: llik = -114142.5 ... best llik = -114142.5
+## Model 3: llik = -114340.6 ... best llik = -114142.5
+## Model 4: llik = -114147.5 ... best llik = -114142.5
+## Model 5: llik = -114158.2 ... best llik = -114142.5
+## Model 6: llik = -114206.6 ... best llik = -114142.5
+## Model 7: llik = -114142.7 ... best llik = -114142.5
+## Model 8: llik = -114191.6 ... best llik = -114142.5
+## Model 9: llik = -114213.6 ... best llik = -114142.5
+## Model 10: llik = -114306.1 ... best llik = -114142.5
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9836 0.0164 0.0000 0.0000
+## class 2:  0.9974 0.0025 0.0001 0.0000
+## class 3:  0.9988 0.0012 0.0000 0.0000
+## class 4:  0.9753 0.0170 0.0052 0.0025
+## class 5:  0.9786 0.0197 0.0011 0.0006
+## class 6:  0.3882 0.3760 0.1863 0.0495
+## class 7:  0.8499 0.1250 0.0204 0.0047
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9718 0.0275 0.0007 0.0000
+## class 2:  0.9998 0.0002 0.0000 0.0000
+## class 3:  0.9993 0.0004 0.0003 0.0000
+## class 4:  0.6726 0.1718 0.1148 0.0409
+## class 5:  0.9991 0.0009 0.0000 0.0000
+## class 6:  0.8529 0.0617 0.0597 0.0256
+## class 7:  0.9943 0.0036 0.0021 0.0000
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9924 0.0076 0.0000 0.0000
+## class 2:  0.9992 0.0008 0.0000 0.0000
+## class 3:  0.9989 0.0009 0.0001 0.0001
+## class 4:  0.9948 0.0052 0.0000 0.0000
+## class 5:  0.9939 0.0061 0.0000 0.0000
+## class 6:  0.7094 0.2007 0.0563 0.0336
+## class 7:  0.8784 0.1165 0.0037 0.0014
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9398 0.0587 0.0015 0.0000
+## class 2:  0.9995 0.0005 0.0000 0.0000
+## class 3:  1.0000 0.0000 0.0000 0.0000
+## class 4:  0.6325 0.2091 0.1203 0.0380
+## class 5:  0.9955 0.0043 0.0002 0.0000
+## class 6:  0.9049 0.0480 0.0365 0.0106
+## class 7:  0.9772 0.0222 0.0000 0.0006
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  1.0000 0.0000 0.0000 0.0000
+## class 2:  1.0000 0.0000 0.0000 0.0000
+## class 3:  1.0000 0.0000 0.0000 0.0000
+## class 4:  0.9957 0.0043 0.0000 0.0000
+## class 5:  0.9998 0.0002 0.0000 0.0000
+## class 6:  0.9768 0.0107 0.0083 0.0041
+## class 7:  0.9936 0.0064 0.0000 0.0000
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9990 0.0010 0.0000 0.0000
+## class 2:  1.0000 0.0000 0.0000 0.0000
+## class 3:  1.0000 0.0000 0.0000 0.0000
+## class 4:  0.9919 0.0035 0.0047 0.0000
+## class 5:  1.0000 0.0000 0.0000 0.0000
+## class 6:  0.9952 0.0000 0.0027 0.0021
+## class 7:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9906 0.0094 0.0000 0.0000
+## class 2:  0.9962 0.0031 0.0006 0.0000
+## class 3:  0.9961 0.0036 0.0003 0.0000
+## class 4:  0.9766 0.0234 0.0000 0.0000
+## class 5:  0.9898 0.0073 0.0024 0.0005
+## class 6:  0.8930 0.0834 0.0117 0.0119
+## class 7:  0.9569 0.0389 0.0018 0.0024
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9939 0.0061 0.0000 0.0000
+## class 2:  0.9989 0.0010 0.0000 0.0001
+## class 3:  0.9996 0.0004 0.0000 0.0000
+## class 4:  0.9545 0.0352 0.0037 0.0066
+## class 5:  0.9981 0.0014 0.0005 0.0000
+## class 6:  0.9687 0.0161 0.0085 0.0066
+## class 7:  0.9984 0.0010 0.0006 0.0000
+## 
+## $conflict_col
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.5349 0.4506 0.0145
+## class 2:  0.9034 0.0966 0.0000
+## class 3:  0.9239 0.0741 0.0020
+## class 4:  0.6567 0.2207 0.1226
+## class 5:  0.8125 0.1797 0.0078
+## class 6:  0.0919 0.5460 0.3621
+## class 7:  0.1117 0.6594 0.2289
+## 
+## $conflict_leid
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.1085 0.8458 0.0457
+## class 2:  0.9783 0.0215 0.0001
+## class 3:  0.9830 0.0160 0.0009
+## class 4:  0.2301 0.3356 0.4343
+## class 5:  1.0000 0.0000 0.0000
+## class 6:  0.4931 0.3713 0.1356
+## class 7:  0.6781 0.2278 0.0940
+## 
+## $steunleid_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.0000 0.3708 0.5709 0.0583
+## class 2:  0.0962 0.8466 0.0572 0.0000
+## class 3:  0.7976 0.1804 0.0190 0.0031
+## class 4:  0.0639 0.0790 0.3040 0.5531
+## class 5:  0.0107 0.4642 0.4568 0.0683
+## class 6:  0.0276 0.2808 0.5280 0.1636
+## class 7:  0.2691 0.6581 0.0728 0.0000
+## 
+## $steuncol_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.2383 0.6434 0.1162 0.0020
+## class 2:  0.1999 0.7771 0.0230 0.0000
+## class 3:  0.8239 0.1729 0.0032 0.0000
+## class 4:  0.2739 0.4907 0.1422 0.0931
+## class 5:  0.1685 0.6175 0.2023 0.0117
+## class 6:  0.0323 0.3600 0.5078 0.0999
+## class 7:  0.2452 0.7023 0.0525 0.0000
+## 
+## $psyveil_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:  0.0105 0.3587 0.5007 0.1260 0.0041
+## class 2:  0.0395 0.7432 0.2160 0.0014 0.0000
+## class 3:  0.5009 0.3996 0.0525 0.0110 0.0360
+## class 4:  0.0908 0.1064 0.2418 0.3841 0.1770
+## class 5:  0.0000 0.2385 0.5778 0.1746 0.0091
+## class 6:  0.0030 0.1196 0.4124 0.3563 0.1088
+## class 7:  0.1235 0.6579 0.2152 0.0034 0.0000
+## 
+## Estimated class population shares 
+##  0.0685 0.4807 0.2292 0.0205 0.1368 0.0171 0.0473 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0678 0.5634 0.2046 0.0185 0.1035 0.0149 0.0273 
+##  
+## ========================================================= 
+## Fit for 7 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 272 
+## residual degrees of freedom: 27990 
+## maximum log-likelihood: -114142.5 
+##  
+## AIC(7): 228828.9
+## BIC(7): 231072.7
+## G^2(7): 7941.641 (Likelihood ratio/deviance statistic) 
+## X^2(7): 41142891125 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model8" class="section level2" number="1.8">
+<h2><span class="header-section-number">1.8</span> Model8</h2>
+<pre class="r"><code>model8_m &lt;- poLCA(items_m, data_m, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -113986.3 ... best llik = -113986.3
+## Model 2: llik = -114216.7 ... best llik = -113986.3
+## Model 3: llik = -114006.8 ... best llik = -113986.3
+## Model 4: llik = -113965.2 ... best llik = -113965.2
+## Model 5: llik = -113974 ... best llik = -113965.2
+## Model 6: llik = -114003.1 ... best llik = -113965.2
+## Model 7: llik = -113999.9 ... best llik = -113965.2
+## Model 8: llik = -113999.9 ... best llik = -113965.2
+## Model 9: llik = -114009.7 ... best llik = -113965.2
+## Model 10: llik = -114070.3 ... best llik = -113965.2
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.8861 0.0964 0.0134 0.0041
+## class 2:  0.9966 0.0032 0.0002 0.0000
+## class 3:  0.9857 0.0143 0.0000 0.0000
+## class 4:  0.9874 0.0117 0.0005 0.0003
+## class 5:  0.9991 0.0009 0.0000 0.0000
+## class 6:  0.9872 0.0128 0.0000 0.0000
+## class 7:  0.7411 0.0882 0.1170 0.0536
+## class 8:  0.4847 0.3707 0.1198 0.0248
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9785 0.0173 0.0042 0.0000
+## class 2:  0.9998 0.0002 0.0000 0.0000
+## class 3:  0.8901 0.0995 0.0104 0.0000
+## class 4:  1.0000 0.0000 0.0000 0.0000
+## class 5:  0.9993 0.0004 0.0003 0.0000
+## class 6:  0.9765 0.0224 0.0011 0.0000
+## class 7:  0.2854 0.1790 0.3666 0.1690
+## class 8:  0.9627 0.0249 0.0115 0.0009
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.8860 0.1140 0.0000 0.0000
+## class 2:  0.9990 0.0010 0.0000 0.0000
+## class 3:  0.9894 0.0106 0.0000 0.0000
+## class 4:  0.9965 0.0035 0.0000 0.0000
+## class 5:  0.9994 0.0003 0.0002 0.0002
+## class 6:  0.9951 0.0049 0.0000 0.0000
+## class 7:  0.8587 0.0521 0.0584 0.0308
+## class 8:  0.7620 0.1930 0.0284 0.0166
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9552 0.0439 0.0000 0.0009
+## class 2:  0.9997 0.0003 0.0000 0.0000
+## class 3:  0.8284 0.1473 0.0242 0.0000
+## class 4:  0.9973 0.0024 0.0003 0.0000
+## class 5:  1.0000 0.0000 0.0000 0.0000
+## class 6:  0.9478 0.0511 0.0011 0.0000
+## class 7:  0.4116 0.1317 0.3273 0.1294
+## class 8:  0.9817 0.0177 0.0006 0.0000
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9955 0.0045 0.0000 0.0000
+## class 2:  1.0000 0.0000 0.0000 0.0000
+## class 3:  0.9978 0.0022 0.0000 0.0000
+## class 4:  0.9998 0.0002 0.0000 0.0000
+## class 5:  1.0000 0.0000 0.0000 0.0000
+## class 6:  1.0000 0.0000 0.0000 0.0000
+## class 7:  0.9748 0.0099 0.0057 0.0096
+## class 8:  0.9850 0.0110 0.0040 0.0000
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9987 0.0013 0.0000 0.0000
+## class 2:  1.0000 0.0000 0.0000 0.0000
+## class 3:  1.0000 0.0000 0.0000 0.0000
+## class 4:  1.0000 0.0000 0.0000 0.0000
+## class 5:  1.0000 0.0000 0.0000 0.0000
+## class 6:  0.9991 0.0009 0.0000 0.0000
+## class 7:  0.9813 0.0048 0.0138 0.0000
+## class 8:  0.9970 0.0000 0.0016 0.0014
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9563 0.0411 0.0000 0.0026
+## class 2:  0.9959 0.0034 0.0007 0.0000
+## class 3:  0.9784 0.0216 0.0000 0.0000
+## class 4:  0.9919 0.0058 0.0019 0.0005
+## class 5:  0.9964 0.0033 0.0003 0.0000
+## class 6:  0.9926 0.0074 0.0000 0.0000
+## class 7:  0.9002 0.0896 0.0050 0.0052
+## class 8:  0.9277 0.0537 0.0110 0.0076
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9973 0.0020 0.0007 0.0000
+## class 2:  0.9989 0.0010 0.0000 0.0001
+## class 3:  0.9824 0.0155 0.0000 0.0021
+## class 4:  0.9986 0.0008 0.0005 0.0000
+## class 5:  0.9996 0.0004 0.0000 0.0000
+## class 6:  0.9942 0.0058 0.0000 0.0000
+## class 7:  0.9068 0.0617 0.0154 0.0161
+## class 8:  0.9849 0.0080 0.0042 0.0029
+## 
+## $conflict_col
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.1889 0.5592 0.2520
+## class 2:  0.8941 0.1053 0.0006
+## class 3:  0.6649 0.2744 0.0607
+## class 4:  0.8401 0.1557 0.0042
+## class 5:  0.9288 0.0705 0.0008
+## class 6:  0.5305 0.4529 0.0165
+## class 7:  0.4013 0.2781 0.3206
+## class 8:  0.0986 0.6320 0.2694
+## 
+## $conflict_leid
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.6552 0.2145 0.1303
+## class 2:  0.9863 0.0137 0.0000
+## class 3:  0.3151 0.4847 0.2002
+## class 4:  1.0000 0.0000 0.0000
+## class 5:  0.9843 0.0150 0.0007
+## class 6:  0.1408 0.8204 0.0388
+## class 7:  0.0994 0.2403 0.6603
+## class 8:  0.6584 0.2937 0.0479
+## 
+## $steunleid_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.3886 0.5723 0.0391 0.0000
+## class 2:  0.1004 0.8523 0.0473 0.0000
+## class 3:  0.0176 0.0000 0.4883 0.4941
+## class 4:  0.0140 0.4974 0.4359 0.0527
+## class 5:  0.7955 0.1826 0.0193 0.0026
+## class 6:  0.0000 0.4820 0.4994 0.0186
+## class 7:  0.0350 0.1561 0.3178 0.4912
+## class 8:  0.0339 0.4480 0.4543 0.0638
+## 
+## $steuncol_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.3426 0.6379 0.0195 0.0000
+## class 2:  0.1950 0.7835 0.0215 0.0000
+## class 3:  0.2296 0.5128 0.1735 0.0841
+## class 4:  0.1801 0.6299 0.1814 0.0087
+## class 5:  0.8269 0.1697 0.0034 0.0000
+## class 6:  0.2449 0.6630 0.0912 0.0009
+## class 7:  0.1680 0.4751 0.2944 0.0625
+## class 8:  0.0377 0.4835 0.4262 0.0526
+## 
+## $psyveil_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:  0.1933 0.6652 0.1384 0.0000 0.0031
+## class 2:  0.0406 0.7495 0.2089 0.0010 0.0000
+## class 3:  0.0495 0.0698 0.3268 0.4426 0.1114
+## class 4:  0.0000 0.2806 0.5657 0.1480 0.0057
+## class 5:  0.5008 0.3988 0.0531 0.0108 0.0365
+## class 6:  0.0131 0.4424 0.4751 0.0691 0.0003
+## class 7:  0.0301 0.1385 0.2564 0.3227 0.2523
+## class 8:  0.0062 0.2147 0.4811 0.2528 0.0451
+## 
+## Estimated class population shares 
+##  0.0364 0.4633 0.0272 0.1454 0.2272 0.0685 0.0074 0.0247 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0226 0.5539 0.0239 0.0996 0.2046 0.0695 0.0065 0.0194 
+##  
+## ========================================================= 
+## Fit for 8 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 311 
+## residual degrees of freedom: 27951 
+## maximum log-likelihood: -113965.2 
+##  
+## AIC(8): 228552.4
+## BIC(8): 231117.9
+## G^2(8): 7587.12 (Likelihood ratio/deviance statistic) 
+## X^2(8): 45332112 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model9" class="section level2" number="1.9">
+<h2><span class="header-section-number">1.9</span> Model9</h2>
+<pre class="r"><code>model9_m &lt;- poLCA(items_m, data_m, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -113807.8 ... best llik = -113807.8
+## Model 2: llik = -113896.8 ... best llik = -113807.8
+## Model 3: llik = -113798.1 ... best llik = -113798.1
+## Model 4: llik = -113785.5 ... best llik = -113785.5
+## Model 5: llik = -113846.9 ... best llik = -113785.5
+## Model 6: llik = -113930.5 ... best llik = -113785.5
+## Model 7: llik = -113808.8 ... best llik = -113785.5
+## Model 8: llik = -113845.4 ... best llik = -113785.5
+## Model 9: llik = -113867.3 ... best llik = -113785.5
+## Model 10: llik = -113808.5 ... best llik = -113785.5
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9849 0.0151 0.0000 0.0000
+## class 2:  0.9346 0.0317 0.0130 0.0207
+## class 3:  0.7898 0.0778 0.0898 0.0425
+## class 4:  0.4230 0.3888 0.1563 0.0319
+## class 5:  0.9977 0.0022 0.0001 0.0000
+## class 6:  0.9985 0.0014 0.0001 0.0000
+## class 7:  0.8780 0.1063 0.0140 0.0017
+## class 8:  0.9847 0.0142 0.0006 0.0005
+## class 9:  0.9959 0.0041 0.0000 0.0000
+## 
+## $pesten_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9711 0.0252 0.0037 0.0000
+## class 2:  0.8623 0.0923 0.0379 0.0076
+## class 3:  0.2324 0.1561 0.4243 0.1873
+## class 4:  0.9245 0.0430 0.0247 0.0078
+## class 5:  0.9998 0.0002 0.0000 0.0000
+## class 6:  0.9994 0.0004 0.0003 0.0000
+## class 7:  0.9970 0.0023 0.0007 0.0000
+## class 8:  0.9999 0.0000 0.0001 0.0000
+## class 9:  0.8878 0.1122 0.0000 0.0000
+## 
+## $intimidation_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9934 0.0066 0.0000 0.0000
+## class 2:  0.9575 0.0216 0.0038 0.0171
+## class 3:  0.8927 0.0294 0.0516 0.0263
+## class 4:  0.7395 0.2071 0.0362 0.0171
+## class 5:  0.9994 0.0006 0.0000 0.0000
+## class 6:  0.9984 0.0013 0.0001 0.0001
+## class 7:  0.9025 0.0951 0.0024 0.0000
+## class 8:  0.9960 0.0040 0.0000 0.0000
+## class 9:  0.9913 0.0087 0.0000 0.0000
+## 
+## $intimidation_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9400 0.0576 0.0024 0.0000
+## class 2:  0.8177 0.1488 0.0234 0.0101
+## class 3:  0.3691 0.1036 0.3691 0.1582
+## class 4:  0.9575 0.0324 0.0101 0.0000
+## class 5:  0.9995 0.0005 0.0000 0.0000
+## class 6:  1.0000 0.0000 0.0000 0.0000
+## class 7:  0.9884 0.0116 0.0000 0.0000
+## class 8:  0.9972 0.0025 0.0003 0.0000
+## class 9:  0.8173 0.1581 0.0247 0.0000
+## 
+## $geweld_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  1.0000 0.0000 0.0000 0.0000
+## class 2:  1.0000 0.0000 0.0000 0.0000
+## class 3:  0.9767 0.0107 0.0000 0.0126
+## class 4:  0.9824 0.0101 0.0076 0.0000
+## class 5:  1.0000 0.0000 0.0000 0.0000
+## class 6:  1.0000 0.0000 0.0000 0.0000
+## class 7:  0.9948 0.0052 0.0000 0.0000
+## class 8:  0.9998 0.0002 0.0000 0.0000
+## class 9:  0.9972 0.0028 0.0000 0.0000
+## 
+## $geweld_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9990 0.0010 0.0000 0.0000
+## class 2:  0.9893 0.0073 0.0000 0.0035
+## class 3:  0.9845 0.0000 0.0155 0.0000
+## class 4:  0.9971 0.0000 0.0029 0.0000
+## class 5:  1.0000 0.0000 0.0000 0.0000
+## class 6:  1.0000 0.0000 0.0000 0.0000
+## class 7:  1.0000 0.0000 0.0000 0.0000
+## class 8:  1.0000 0.0000 0.0000 0.0000
+## class 9:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9901 0.0099 0.0000 0.0000
+## class 2:  0.9881 0.0000 0.0000 0.0119
+## class 3:  0.9060 0.0876 0.0064 0.0000
+## class 4:  0.9161 0.0654 0.0105 0.0080
+## class 5:  0.9965 0.0029 0.0006 0.0000
+## class 6:  0.9959 0.0038 0.0003 0.0000
+## class 7:  0.9601 0.0367 0.0023 0.0009
+## class 8:  0.9913 0.0061 0.0021 0.0005
+## class 9:  0.9818 0.0182 0.0000 0.0000
+## 
+## $seks_leid
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.9924 0.0076 0.0000 0.0000
+## class 2:  0.9951 0.0049 0.0000 0.0000
+## class 3:  0.8890 0.0805 0.0127 0.0179
+## class 4:  0.9792 0.0084 0.0078 0.0046
+## class 5:  0.9989 0.0010 0.0000 0.0001
+## class 6:  0.9996 0.0004 0.0000 0.0000
+## class 7:  0.9982 0.0012 0.0006 0.0000
+## class 8:  0.9984 0.0011 0.0005 0.0000
+## class 9:  0.9829 0.0142 0.0000 0.0029
+## 
+## $conflict_col
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.5409 0.4467 0.0125
+## class 2:  0.2946 0.1247 0.5807
+## class 3:  0.4310 0.3005 0.2685
+## class 4:  0.1118 0.5727 0.3155
+## class 5:  0.9250 0.0750 0.0000
+## class 6:  0.9212 0.0761 0.0027
+## class 7:  0.1150 0.7854 0.0996
+## class 8:  0.8286 0.1645 0.0069
+## class 9:  0.7029 0.2459 0.0512
+## 
+## $conflict_leid
+##            Pr(1)  Pr(2)  Pr(3)
+## class 1:  0.1393 0.8171 0.0436
+## class 2:  0.2011 0.1622 0.6367
+## class 3:  0.0796 0.2090 0.7114
+## class 4:  0.5742 0.3577 0.0680
+## class 5:  0.9806 0.0194 0.0000
+## class 6:  0.9828 0.0168 0.0004
+## class 7:  0.7905 0.2095 0.0000
+## class 8:  1.0000 0.0000 0.0000
+## class 9:  0.3449 0.4501 0.2050
+## 
+## $steunleid_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.0000 0.3951 0.5753 0.0296
+## class 2:  0.3524 0.5085 0.1326 0.0066
+## class 3:  0.0000 0.0816 0.3311 0.5872
+## class 4:  0.0353 0.3213 0.5344 0.1090
+## class 5:  0.0974 0.8512 0.0514 0.0000
+## class 6:  0.7978 0.1806 0.0190 0.0026
+## class 7:  0.2165 0.7331 0.0504 0.0000
+## class 8:  0.0112 0.4943 0.4408 0.0537
+## class 9:  0.0178 0.0000 0.3888 0.5933
+## 
+## $steuncol_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:  0.2474 0.6427 0.1088 0.0012
+## class 2:  0.4119 0.5649 0.0232 0.0000
+## class 3:  0.1670 0.4808 0.3005 0.0517
+## class 4:  0.0380 0.3869 0.4948 0.0803
+## class 5:  0.2011 0.7776 0.0212 0.0001
+## class 6:  0.8245 0.1722 0.0033 0.0000
+## class 7:  0.1869 0.7633 0.0498 0.0000
+## class 8:  0.1733 0.6291 0.1892 0.0084
+## class 9:  0.2291 0.5125 0.1525 0.1058
+## 
+## $psyveil_RR
+##            Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:  0.0113 0.3813 0.5062 0.1003 0.0009
+## class 2:  0.2080 0.5644 0.2090 0.0078 0.0109
+## class 3:  0.0168 0.0641 0.2468 0.3796 0.2928
+## class 4:  0.0000 0.1429 0.4441 0.3372 0.0759
+## class 5:  0.0406 0.7501 0.2079 0.0014 0.0000
+## class 6:  0.5005 0.3993 0.0531 0.0109 0.0362
+## class 7:  0.0890 0.6811 0.2299 0.0000 0.0000
+## class 8:  0.0000 0.2650 0.5748 0.1538 0.0064
+## class 9:  0.0586 0.0733 0.2797 0.4563 0.1321
+## 
+## Estimated class population shares 
+##  0.0652 0.0102 0.0056 0.0187 0.455 0.2296 0.052 0.1424 0.0212 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0591 0.0081 0.0049 0.0151 0.5517 0.2054 0.0387 0.0999 0.0171 
+##  
+## ========================================================= 
+## Fit for 9 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 350 
+## residual degrees of freedom: 27912 
+## maximum log-likelihood: -113785.5 
+##  
+## AIC(9): 228270.9
+## BIC(9): 231158.2
+## G^2(9): 7227.632 (Likelihood ratio/deviance statistic) 
+## X^2(9): 36457449 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model10" class="section level2" number="1.10">
+<h2><span class="header-section-number">1.10</span> Model10</h2>
+<pre class="r"><code>model10_m &lt;- poLCA(items_m, data_m, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -113727.6 ... best llik = -113727.6
+## Model 2: llik = -113648 ... best llik = -113648
+## Model 3: llik = -113701.4 ... best llik = -113648
+## Model 4: llik = -113727.5 ... best llik = -113648
+## Model 5: llik = -113758.5 ... best llik = -113648
+## Model 6: llik = -113700.2 ... best llik = -113648
+## Model 7: llik = -113678.5 ... best llik = -113648
+## Model 8: llik = -113699.5 ... best llik = -113648
+## Model 9: llik = -113711.7 ... best llik = -113648
+## Model 10: llik = -113760.2 ... best llik = -113648
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9521 0.0282 0.0000 0.0197
+## class 2:   0.6681 0.1147 0.1339 0.0833
+## class 3:   0.6602 0.2664 0.0609 0.0126
+## class 4:   0.9866 0.0119 0.0010 0.0005
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.9451 0.0310 0.0150 0.0090
+## class 7:   0.9883 0.0117 0.0000 0.0000
+## class 8:   0.9986 0.0014 0.0000 0.0000
+## class 9:   0.9971 0.0028 0.0000 0.0000
+## class 10:  0.6769 0.2459 0.0735 0.0037
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9927 0.0000 0.0000 0.0073
+## class 2:   0.3580 0.1127 0.3444 0.1849
+## class 3:   0.9991 0.0000 0.0009 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   0.8366 0.1428 0.0206 0.0000
+## class 6:   0.8533 0.0945 0.0438 0.0083
+## class 7:   0.9843 0.0157 0.0000 0.0000
+## class 8:   0.9993 0.0004 0.0003 0.0000
+## class 9:   0.9998 0.0002 0.0000 0.0000
+## class 10:  0.9393 0.0414 0.0193 0.0000
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   0.8104 0.0489 0.0867 0.0540
+## class 3:   0.7566 0.2235 0.0142 0.0057
+## class 4:   0.9969 0.0031 0.0000 0.0000
+## class 5:   0.9871 0.0129 0.0000 0.0000
+## class 6:   0.9582 0.0300 0.0000 0.0119
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   0.9980 0.0017 0.0001 0.0001
+## class 9:   0.9990 0.0010 0.0000 0.0000
+## class 10:  0.8728 0.1172 0.0091 0.0009
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   0.4736 0.0797 0.3044 0.1423
+## class 3:   0.9871 0.0129 0.0000 0.0000
+## class 4:   0.9962 0.0033 0.0005 0.0000
+## class 5:   0.7565 0.2019 0.0416 0.0000
+## class 6:   0.8139 0.1462 0.0302 0.0097
+## class 7:   0.9605 0.0395 0.0000 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   0.9997 0.0003 0.0000 0.0000
+## class 10:  0.9551 0.0425 0.0024 0.0000
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   0.9481 0.0177 0.0228 0.0114
+## class 3:   0.9871 0.0129 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   0.9996 0.0004 0.0000 0.0000
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   1.0000 0.0000 0.0000 0.0000
+## class 10:  0.9951 0.0049 0.0000 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   0.9772 0.0000 0.0228 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.9902 0.0066 0.0000 0.0032
+## class 7:   0.9990 0.0010 0.0000 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   1.0000 0.0000 0.0000 0.0000
+## class 10:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9809 0.0191 0.0000 0.0000
+## class 2:   0.8618 0.1147 0.0121 0.0113
+## class 3:   0.9179 0.0701 0.0060 0.0060
+## class 4:   0.9910 0.0062 0.0023 0.0006
+## class 5:   0.9853 0.0147 0.0000 0.0000
+## class 6:   0.9924 0.0000 0.0000 0.0076
+## class 7:   0.9907 0.0093 0.0000 0.0000
+## class 8:   0.9958 0.0038 0.0003 0.0000
+## class 9:   0.9961 0.0032 0.0007 0.0000
+## class 10:  0.9593 0.0370 0.0037 0.0000
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9832 0.0089 0.0000 0.0080
+## class 2:   0.8667 0.0704 0.0284 0.0345
+## class 3:   0.9897 0.0079 0.0024 0.0000
+## class 4:   0.9984 0.0010 0.0006 0.0000
+## class 5:   0.9796 0.0204 0.0000 0.0000
+## class 6:   0.9953 0.0047 0.0000 0.0000
+## class 7:   0.9944 0.0056 0.0000 0.0000
+## class 8:   0.9996 0.0004 0.0000 0.0000
+## class 9:   0.9991 0.0009 0.0000 0.0001
+## class 10:  0.9990 0.0010 0.0000 0.0000
+## 
+## $conflict_col
+##             Pr(1)  Pr(2)  Pr(3)
+## class 1:   0.7779 0.1737 0.0483
+## class 2:   0.3725 0.2832 0.3444
+## class 3:   0.1209 0.6935 0.1856
+## class 4:   0.8530 0.1446 0.0025
+## class 5:   0.7077 0.2704 0.0218
+## class 6:   0.3035 0.1437 0.5527
+## class 7:   0.5232 0.4616 0.0152
+## class 8:   0.9150 0.0819 0.0031
+## class 9:   0.8922 0.1049 0.0029
+## class 10:  0.1025 0.6929 0.2046
+## 
+## $conflict_leid
+##             Pr(1)  Pr(2)  Pr(3)
+## class 1:   0.8405 0.1296 0.0299
+## class 2:   0.1477 0.2681 0.5842
+## class 3:   0.8898 0.1082 0.0020
+## class 4:   0.9322 0.0678 0.0000
+## class 5:   0.1583 0.5925 0.2492
+## class 6:   0.1631 0.2032 0.6337
+## class 7:   0.2259 0.7567 0.0174
+## class 8:   0.9824 0.0171 0.0004
+## class 9:   1.0000 0.0000 0.0000
+## class 10:  0.4188 0.5049 0.0763
+## 
+## $steunleid_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.0000 0.1092 0.0000 0.8908
+## class 2:   0.0000 0.0946 0.3379 0.5675
+## class 3:   0.2139 0.6730 0.1015 0.0116
+## class 4:   0.0010 0.4214 0.5098 0.0678
+## class 5:   0.0059 0.0211 0.5467 0.4263
+## class 6:   0.3441 0.4977 0.1446 0.0135
+## class 7:   0.0317 0.5954 0.3658 0.0071
+## class 8:   0.7982 0.1832 0.0186 0.0000
+## class 9:   0.1006 0.8445 0.0549 0.0000
+## class 10:  0.0077 0.2223 0.6737 0.0964
+## 
+## $steuncol_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.3014 0.1243 0.1503 0.4240
+## class 2:   0.1298 0.4107 0.3477 0.1118
+## class 3:   0.1504 0.7025 0.1438 0.0034
+## class 4:   0.1786 0.6134 0.2009 0.0071
+## class 5:   0.2710 0.6201 0.0939 0.0150
+## class 6:   0.4024 0.5717 0.0259 0.0000
+## class 7:   0.2754 0.6801 0.0434 0.0011
+## class 8:   0.8231 0.1739 0.0029 0.0000
+## class 9:   0.1950 0.7788 0.0261 0.0001
+## class 10:  0.0130 0.4185 0.5094 0.0592
+## 
+## $psyveil_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:   0.2226 0.4769 0.0249 0.0724 0.2032
+## class 2:   0.0194 0.0671 0.2364 0.3589 0.3183
+## class 3:   0.0659 0.5653 0.3170 0.0466 0.0052
+## class 4:   0.0000 0.2194 0.5970 0.1752 0.0084
+## class 5:   0.0050 0.0499 0.4113 0.4672 0.0667
+## class 6:   0.2012 0.5653 0.2126 0.0096 0.0114
+## class 7:   0.0377 0.5784 0.3651 0.0188 0.0000
+## class 8:   0.5015 0.3998 0.0521 0.0106 0.0359
+## class 9:   0.0387 0.7338 0.2220 0.0055 0.0000
+## class 10:  0.0000 0.0621 0.5207 0.3572 0.0600
+## 
+## Estimated class population shares 
+##  0.0046 0.0062 0.0278 0.1234 0.0213 0.011 0.0692 0.2305 0.4839 0.0221 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0044 0.0054 0.0185 0.0932 0.0191 0.0092 0.0649 0.206 0.5606 0.0188 
+##  
+## ========================================================= 
+## Fit for 10 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 389 
+## residual degrees of freedom: 27873 
+## maximum log-likelihood: -113648 
+##  
+## AIC(10): 228073.9
+## BIC(10): 231282.9
+## G^2(10): 6952.615 (Likelihood ratio/deviance statistic) 
+## X^2(10): 39181320 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model11" class="section level2" number="1.11">
+<h2><span class="header-section-number">1.11</span> Model11</h2>
+<pre class="r"><code>model11_m &lt;- poLCA(items_m, data_m, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -113555.4 ... best llik = -113555.4
+## Model 2: llik = -113610.3 ... best llik = -113555.4
+## Model 3: llik = -113663.6 ... best llik = -113555.4
+## Model 4: llik = -113560.4 ... best llik = -113555.4
+## Model 5: llik = -113552.4 ... best llik = -113552.4
+## Model 6: llik = -113574.4 ... best llik = -113552.4
+## Model 7: llik = -113584.3 ... best llik = -113552.4
+## Model 8: llik = -113582.5 ... best llik = -113552.4
+## Model 9: llik = -113579.6 ... best llik = -113552.4
+## Model 10: llik = -113567.9 ... best llik = -113552.4
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.8505 0.0298 0.0767 0.0430
+## class 2:   0.9986 0.0014 0.0000 0.0000
+## class 3:   0.9815 0.0000 0.0000 0.0185
+## class 4:   0.9973 0.0026 0.0001 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.9637 0.0267 0.0057 0.0039
+## class 7:   0.9744 0.0244 0.0012 0.0000
+## class 8:   0.6594 0.2724 0.0564 0.0119
+## class 9:   0.9687 0.0313 0.0000 0.0000
+## class 10:  0.9890 0.0110 0.0000 0.0000
+## class 11:  0.3643 0.3862 0.1991 0.0505
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.1435 0.1495 0.4214 0.2856
+## class 2:   0.9994 0.0004 0.0003 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9997 0.0003 0.0000 0.0000
+## class 5:   0.9982 0.0010 0.0000 0.0009
+## class 6:   0.8807 0.0905 0.0288 0.0000
+## class 7:   0.9996 0.0004 0.0000 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   0.9776 0.0203 0.0021 0.0000
+## class 10:  0.8452 0.1245 0.0300 0.0004
+## class 11:  0.8495 0.0713 0.0638 0.0153
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9394 0.0000 0.0293 0.0312
+## class 2:   0.9982 0.0015 0.0001 0.0001
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9990 0.0010 0.0000 0.0000
+## class 5:   0.9964 0.0036 0.0000 0.0000
+## class 6:   0.9791 0.0209 0.0000 0.0000
+## class 7:   0.9976 0.0024 0.0000 0.0000
+## class 8:   0.7501 0.2331 0.0110 0.0058
+## class 9:   0.9869 0.0131 0.0000 0.0000
+## class 10:  0.9844 0.0156 0.0000 0.0000
+## class 11:  0.7233 0.1869 0.0594 0.0304
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.2076 0.0555 0.4686 0.2683
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9995 0.0005 0.0000 0.0000
+## class 5:   0.9922 0.0078 0.0000 0.0000
+## class 6:   0.8324 0.1545 0.0131 0.0000
+## class 7:   0.9968 0.0024 0.0007 0.0000
+## class 8:   0.9889 0.0098 0.0000 0.0014
+## class 9:   0.9504 0.0496 0.0000 0.0000
+## class 10:  0.7874 0.1796 0.0330 0.0000
+## class 11:  0.9032 0.0568 0.0400 0.0000
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9831 0.0089 0.0000 0.0080
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   0.9997 0.0003 0.0000 0.0000
+## class 8:   0.9869 0.0131 0.0000 0.0000
+## class 9:   1.0000 0.0000 0.0000 0.0000
+## class 10:  0.9990 0.0010 0.0000 0.0000
+## class 11:  0.9708 0.0144 0.0113 0.0034
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9722 0.0000 0.0278 0.0000
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.9941 0.0059 0.0000 0.0000
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   0.9986 0.0014 0.0000 0.0000
+## class 10:  1.0000 0.0000 0.0000 0.0000
+## class 11:  0.9938 0.0000 0.0034 0.0028
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9384 0.0616 0.0000 0.0000
+## class 2:   0.9959 0.0038 0.0003 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9961 0.0032 0.0007 0.0000
+## class 5:   0.9931 0.0069 0.0000 0.0000
+## class 6:   0.9975 0.0025 0.0000 0.0000
+## class 7:   0.9896 0.0067 0.0029 0.0008
+## class 8:   0.9163 0.0724 0.0053 0.0061
+## class 9:   0.9905 0.0095 0.0000 0.0000
+## class 10:  0.9751 0.0249 0.0000 0.0000
+## class 11:  0.8900 0.0813 0.0157 0.0129
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.8686 0.0903 0.0200 0.0212
+## class 2:   0.9996 0.0004 0.0000 0.0000
+## class 3:   0.9929 0.0071 0.0000 0.0000
+## class 4:   0.9990 0.0010 0.0000 0.0000
+## class 5:   0.9987 0.0000 0.0007 0.0006
+## class 6:   0.9942 0.0058 0.0000 0.0000
+## class 7:   0.9984 0.0016 0.0000 0.0000
+## class 8:   0.9917 0.0073 0.0010 0.0000
+## class 9:   0.9936 0.0064 0.0000 0.0000
+## class 10:  0.9763 0.0237 0.0000 0.0000
+## class 11:  0.9722 0.0000 0.0141 0.0138
+## 
+## $conflict_col
+##             Pr(1)  Pr(2)  Pr(3)
+## class 1:   0.5598 0.1890 0.2513
+## class 2:   0.9147 0.0823 0.0030
+## class 3:   0.7681 0.1717 0.0602
+## class 4:   0.8914 0.1057 0.0029
+## class 5:   0.9008 0.0992 0.0000
+## class 6:   0.3270 0.1761 0.4969
+## class 7:   0.7872 0.1998 0.0129
+## class 8:   0.1171 0.7034 0.1795
+## class 9:   0.3230 0.6574 0.0197
+## class 10:  0.5951 0.3523 0.0526
+## class 11:  0.1213 0.5187 0.3600
+## 
+## $conflict_leid
+##             Pr(1)  Pr(2)  Pr(3)
+## class 1:   0.0794 0.1266 0.7940
+## class 2:   0.9821 0.0177 0.0003
+## class 3:   0.8305 0.1202 0.0493
+## class 4:   0.9849 0.0151 0.0000
+## class 5:   0.7799 0.2082 0.0118
+## class 6:   0.1727 0.2661 0.5612
+## class 7:   0.9431 0.0569 0.0000
+## class 8:   0.9125 0.0850 0.0025
+## class 9:   0.1759 0.8129 0.0112
+## class 10:  0.1849 0.5777 0.2374
+## class 11:  0.4353 0.4301 0.1346
+## 
+## $steunleid_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.0177 0.1279 0.1915 0.6629
+## class 2:   0.7997 0.1862 0.0141 0.0000
+## class 3:   0.0000 0.0590 0.0000 0.9410
+## class 4:   0.1025 0.8644 0.0331 0.0000
+## class 5:   0.0000 0.2512 0.6734 0.0754
+## class 6:   0.3236 0.5135 0.1532 0.0097
+## class 7:   0.0000 0.4555 0.4894 0.0551
+## class 8:   0.2277 0.6448 0.1155 0.0121
+## class 9:   0.0239 0.5910 0.3834 0.0017
+## class 10:  0.0061 0.0190 0.5661 0.4088
+## class 11:  0.0165 0.2099 0.5993 0.1743
+## 
+## $steuncol_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.1816 0.5254 0.2706 0.0224
+## class 2:   0.8240 0.1730 0.0030 0.0000
+## class 3:   0.2140 0.0857 0.1761 0.5241
+## class 4:   0.1937 0.7805 0.0256 0.0003
+## class 5:   0.5284 0.4708 0.0009 0.0000
+## class 6:   0.4140 0.5641 0.0220 0.0000
+## class 7:   0.0000 0.6898 0.2996 0.0106
+## class 8:   0.1662 0.6998 0.1309 0.0030
+## class 9:   0.1816 0.7122 0.1042 0.0021
+## class 10:  0.2132 0.5893 0.1758 0.0217
+## class 11:  0.0271 0.3149 0.5217 0.1363
+## 
+## $psyveil_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:   0.0351 0.1195 0.1922 0.3125 0.3408
+## class 2:   0.5030 0.3961 0.0533 0.0112 0.0363
+## class 3:   0.2938 0.3884 0.0344 0.0539 0.2294
+## class 4:   0.0397 0.7288 0.2244 0.0071 0.0000
+## class 5:   0.0000 0.4871 0.4316 0.0813 0.0000
+## class 6:   0.2001 0.5694 0.2091 0.0088 0.0126
+## class 7:   0.0000 0.1894 0.6109 0.1884 0.0113
+## class 8:   0.0708 0.5731 0.3095 0.0449 0.0016
+## class 9:   0.0368 0.4838 0.4317 0.0477 0.0000
+## class 10:  0.0037 0.0252 0.4099 0.4761 0.0850
+## class 11:  0.0030 0.0812 0.3983 0.3911 0.1264
+## 
+## Estimated class population shares 
+##  0.0036 0.2297 0.0034 0.4845 0.0632 0.0126 0.0903 0.0261 0.0493 0.0249 0.0125 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0033 0.2064 0.0027 0.557 0.0432 0.01 0.0848 0.0173 0.0413 0.0232 0.0108 
+##  
+## ========================================================= 
+## Fit for 11 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 428 
+## residual degrees of freedom: 27834 
+## maximum log-likelihood: -113552.4 
+##  
+## AIC(11): 227960.7
+## BIC(11): 231491.4
+## G^2(11): 6761.411 (Likelihood ratio/deviance statistic) 
+## X^2(11): 42774416 (Chi-square goodness of fit) 
+##  
+## ALERT: iterations finished, MAXIMUM LIKELIHOOD NOT FOUND 
+## </code></pre>
+</div>
+<div id="model12" class="section level2" number="1.12">
+<h2><span class="header-section-number">1.12</span> Model12</h2>
+<pre class="r"><code>model12_m &lt;- poLCA(items_m, data_m, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -113457.8 ... best llik = -113457.8
+## Model 2: llik = -113511.5 ... best llik = -113457.8
+## Model 3: llik = -113561.1 ... best llik = -113457.8
+## Model 4: llik = -113478.8 ... best llik = -113457.8
+## Model 5: llik = -113473 ... best llik = -113457.8
+## Model 6: llik = -113462.1 ... best llik = -113457.8
+## Model 7: llik = -113497.4 ... best llik = -113457.8
+## Model 8: llik = -113477.9 ... best llik = -113457.8
+## Model 9: llik = -113504.6 ... best llik = -113457.8
+## Model 10: llik = -113489.1 ... best llik = -113457.8
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9266 0.0655 0.0079 0.0000
+## class 2:   0.9804 0.0179 0.0011 0.0006
+## class 3:   0.9811 0.0000 0.0000 0.0189
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   0.9992 0.0008 0.0000 0.0000
+## class 6:   0.9608 0.0392 0.0000 0.0000
+## class 7:   0.9970 0.0029 0.0001 0.0000
+## class 8:   0.9348 0.0307 0.0152 0.0194
+## class 9:   0.8706 0.0285 0.0588 0.0421
+## class 10:  0.5307 0.3643 0.0898 0.0152
+## class 11:  0.9940 0.0060 0.0000 0.0000
+## class 12:  0.4023 0.3516 0.2018 0.0443
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9978 0.0000 0.0022 0.0000
+## class 2:   0.9998 0.0002 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9997 0.0003 0.0000 0.0000
+## class 5:   0.9993 0.0004 0.0003 0.0000
+## class 6:   0.9696 0.0270 0.0034 0.0000
+## class 7:   0.9998 0.0002 0.0000 0.0000
+## class 8:   0.8702 0.1001 0.0297 0.0000
+## class 9:   0.1503 0.1219 0.4246 0.3031
+## class 10:  1.0000 0.0000 0.0000 0.0000
+## class 11:  0.8436 0.1298 0.0249 0.0017
+## class 12:  0.8006 0.0853 0.0945 0.0197
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9009 0.0991 0.0000 0.0000
+## class 2:   0.9986 0.0014 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9961 0.0039 0.0000 0.0000
+## class 5:   0.9997 0.0000 0.0002 0.0001
+## class 6:   0.9801 0.0199 0.0000 0.0000
+## class 7:   0.9990 0.0010 0.0000 0.0000
+## class 8:   0.9586 0.0208 0.0030 0.0176
+## class 9:   0.9447 0.0000 0.0230 0.0322
+## class 10:  0.7485 0.2308 0.0207 0.0000
+## class 11:  0.9872 0.0128 0.0000 0.0000
+## class 12:  0.7391 0.1636 0.0624 0.0349
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9840 0.0160 0.0000 0.0000
+## class 2:   0.9970 0.0022 0.0008 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9918 0.0082 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.9427 0.0573 0.0000 0.0000
+## class 7:   0.9996 0.0004 0.0000 0.0000
+## class 8:   0.8302 0.1488 0.0150 0.0060
+## class 9:   0.2344 0.0223 0.4728 0.2705
+## class 10:  0.9982 0.0018 0.0000 0.0000
+## class 11:  0.7828 0.1828 0.0344 0.0000
+## class 12:  0.8626 0.0782 0.0591 0.0000
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   0.9997 0.0003 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   0.9794 0.0000 0.0000 0.0206
+## class 10:  0.9839 0.0161 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  0.9591 0.0267 0.0143 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.9987 0.0013 0.0000 0.0000
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   0.9931 0.0069 0.0000 0.0000
+## class 9:   0.9698 0.0000 0.0302 0.0000
+## class 10:  1.0000 0.0000 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  0.9926 0.0000 0.0038 0.0036
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9468 0.0510 0.0000 0.0022
+## class 2:   0.9894 0.0069 0.0028 0.0008
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9934 0.0066 0.0000 0.0000
+## class 5:   0.9967 0.0030 0.0003 0.0000
+## class 6:   0.9907 0.0093 0.0000 0.0000
+## class 7:   0.9962 0.0031 0.0007 0.0000
+## class 8:   0.9930 0.0000 0.0000 0.0070
+## class 9:   0.9302 0.0594 0.0104 0.0000
+## class 10:  0.9287 0.0573 0.0123 0.0017
+## class 11:  0.9757 0.0243 0.0000 0.0000
+## class 12:  0.8841 0.0931 0.0072 0.0156
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9991 0.0009 0.0000 0.0000
+## class 2:   0.9981 0.0012 0.0008 0.0000
+## class 3:   0.9927 0.0073 0.0000 0.0000
+## class 4:   0.9994 0.0000 0.0000 0.0006
+## class 5:   0.9996 0.0004 0.0000 0.0000
+## class 6:   0.9924 0.0076 0.0000 0.0000
+## class 7:   0.9990 0.0010 0.0000 0.0000
+## class 8:   0.9951 0.0049 0.0000 0.0000
+## class 9:   0.8729 0.0849 0.0207 0.0215
+## class 10:  0.9885 0.0095 0.0019 0.0000
+## class 11:  0.9780 0.0220 0.0000 0.0000
+## class 12:  0.9613 0.0069 0.0142 0.0175
+## 
+## $conflict_col
+##             Pr(1)  Pr(2)  Pr(3)
+## class 1:   0.2033 0.7334 0.0634
+## class 2:   0.8116 0.1799 0.0085
+## class 3:   0.7695 0.1721 0.0584
+## class 4:   0.8925 0.1075 0.0000
+## class 5:   0.9398 0.0585 0.0018
+## class 6:   0.3415 0.6308 0.0277
+## class 7:   0.8943 0.1026 0.0030
+## class 8:   0.3037 0.1066 0.5897
+## class 9:   0.5787 0.1886 0.2328
+## class 10:  0.1194 0.6453 0.2353
+## class 11:  0.6315 0.3186 0.0498
+## class 12:  0.1034 0.5487 0.3480
+## 
+## $conflict_leid
+##             Pr(1)  Pr(2)  Pr(3)
+## class 1:   0.7551 0.2449 0.0000
+## class 2:   0.9585 0.0415 0.0000
+## class 3:   0.8402 0.1179 0.0420
+## class 4:   0.7739 0.2144 0.0116
+## class 5:   0.9879 0.0116 0.0005
+## class 6:   0.2115 0.7627 0.0258
+## class 7:   0.9836 0.0164 0.0000
+## class 8:   0.2091 0.1655 0.6254
+## class 9:   0.0965 0.1029 0.8006
+## class 10:  0.9337 0.0609 0.0054
+## class 11:  0.1914 0.5674 0.2412
+## class 12:  0.3132 0.5158 0.1710
+## 
+## $steunleid_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.5478 0.4436 0.0085 0.0000
+## class 2:   0.0049 0.4433 0.4933 0.0585
+## class 3:   0.0000 0.0625 0.0000 0.9375
+## class 4:   0.0000 0.2844 0.6448 0.0707
+## class 5:   0.8002 0.1859 0.0140 0.0000
+## class 6:   0.0000 0.5581 0.4386 0.0033
+## class 7:   0.0999 0.8658 0.0343 0.0000
+## class 8:   0.3241 0.5223 0.1440 0.0096
+## class 9:   0.0178 0.1245 0.2075 0.6502
+## class 10:  0.0964 0.6630 0.2132 0.0274
+## class 11:  0.0122 0.0000 0.5415 0.4463
+## class 12:  0.0125 0.1294 0.6293 0.2287
+## 
+## $steuncol_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.4698 0.5244 0.0057 0.0000
+## class 2:   0.0000 0.6978 0.2910 0.0112
+## class 3:   0.2028 0.0779 0.1751 0.5442
+## class 4:   0.5615 0.4385 0.0000 0.0000
+## class 5:   0.8301 0.1668 0.0031 0.0000
+## class 6:   0.1438 0.7297 0.1248 0.0016
+## class 7:   0.1892 0.7845 0.0260 0.0003
+## class 8:   0.3833 0.5802 0.0365 0.0000
+## class 9:   0.1982 0.5523 0.2321 0.0174
+## class 10:  0.0883 0.6348 0.2674 0.0095
+## class 11:  0.2360 0.5814 0.1611 0.0216
+## class 12:  0.0089 0.2939 0.5277 0.1695
+## 
+## $psyveil_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:   0.2733 0.6557 0.0572 0.0000 0.0138
+## class 2:   0.0003 0.1903 0.6062 0.1921 0.0112
+## class 3:   0.3061 0.3930 0.0323 0.0469 0.2216
+## class 4:   0.0000 0.5045 0.4178 0.0768 0.0009
+## class 5:   0.5048 0.3925 0.0549 0.0116 0.0362
+## class 6:   0.0230 0.4316 0.4798 0.0656 0.0000
+## class 7:   0.0390 0.7288 0.2257 0.0065 0.0000
+## class 8:   0.1899 0.5760 0.2148 0.0086 0.0107
+## class 9:   0.0222 0.1175 0.2105 0.3203 0.3295
+## class 10:  0.0171 0.4029 0.4578 0.1104 0.0118
+## class 11:  0.0081 0.0294 0.3893 0.4839 0.0894
+## class 12:  0.0050 0.0629 0.3336 0.4371 0.1614
+## 
+## Estimated class population shares 
+##  0.0243 0.0879 0.0032 0.0629 0.2219 0.0532 0.4801 0.0106 0.0034 0.0195 0.0229 0.0099 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0088 0.0824 0.0026 0.0431 0.2039 0.0501 0.5525 0.0087 0.0032 0.0149 0.0212 0.0085 
+##  
+## ========================================================= 
+## Fit for 12 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 467 
+## residual degrees of freedom: 27795 
+## maximum log-likelihood: -113457.8 
+##  
+## AIC(12): 227849.6
+## BIC(12): 231702.1
+## G^2(12): 6572.349 (Likelihood ratio/deviance statistic) 
+## X^2(12): 59402336 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model13" class="section level2" number="1.13">
+<h2><span class="header-section-number">1.13</span> Model13</h2>
+<pre class="r"><code>model13_m &lt;- poLCA(items_m, data_m, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -113442.9 ... best llik = -113442.9
+## Model 2: llik = -113373.4 ... best llik = -113373.4
+## Model 3: llik = -113415.1 ... best llik = -113373.4
+## Model 4: llik = -113428.8 ... best llik = -113373.4
+## Model 5: llik = -113416.9 ... best llik = -113373.4
+## Model 6: llik = -113399.7 ... best llik = -113373.4
+## Model 7: llik = -113378.2 ... best llik = -113373.4
+## Model 8: llik = -113424.7 ... best llik = -113373.4
+## Model 9: llik = -113404.2 ... best llik = -113373.4
+## Model 10: llik = -113362 ... best llik = -113362
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9843 0.0157 0.0000 0.0000
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   0.9659 0.0184 0.0000 0.0157
+## class 4:   0.6816 0.2774 0.0379 0.0032
+## class 5:   0.8408 0.0325 0.0859 0.0408
+## class 6:   0.6725 0.2599 0.0676 0.0000
+## class 7:   0.9976 0.0023 0.0001 0.0000
+## class 8:   0.8820 0.0850 0.0330 0.0000
+## class 9:   0.9429 0.0361 0.0126 0.0084
+## class 10:  0.2498 0.1740 0.3663 0.2099
+## class 11:  0.9989 0.0011 0.0000 0.0000
+## class 12:  1.0000 0.0000 0.0000 0.0000
+## class 13:  0.9761 0.0209 0.0017 0.0012
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9744 0.0256 0.0000 0.0000
+## class 2:   0.9987 0.0000 0.0000 0.0013
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9975 0.0014 0.0011 0.0000
+## class 5:   0.9918 0.0082 0.0000 0.0000
+## class 6:   0.9333 0.0392 0.0275 0.0000
+## class 7:   0.9999 0.0001 0.0000 0.0000
+## class 8:   0.1656 0.2239 0.4469 0.1637
+## class 9:   0.9440 0.0349 0.0211 0.0000
+## class 10:  0.6156 0.1318 0.1013 0.1513
+## class 11:  0.9995 0.0003 0.0002 0.0000
+## class 12:  0.8490 0.1348 0.0161 0.0000
+## class 13:  0.9996 0.0004 0.0001 0.0000
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9961 0.0039 0.0000 0.0000
+## class 2:   0.9934 0.0066 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.7716 0.2213 0.0055 0.0016
+## class 5:   0.9003 0.0393 0.0366 0.0238
+## class 6:   0.8683 0.1262 0.0055 0.0000
+## class 7:   0.9991 0.0009 0.0000 0.0000
+## class 8:   0.9909 0.0091 0.0000 0.0000
+## class 9:   0.9416 0.0584 0.0000 0.0000
+## class 10:  0.4779 0.1499 0.2203 0.1518
+## class 11:  0.9993 0.0004 0.0002 0.0002
+## class 12:  0.9885 0.0115 0.0000 0.0000
+## class 13:  1.0000 0.0000 0.0000 0.0000
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9423 0.0577 0.0000 0.0000
+## class 2:   0.9962 0.0030 0.0008 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9852 0.0148 0.0000 0.0000
+## class 5:   0.9731 0.0076 0.0098 0.0094
+## class 6:   0.9593 0.0379 0.0028 0.0000
+## class 7:   0.9996 0.0004 0.0000 0.0000
+## class 8:   0.3037 0.1537 0.3797 0.1629
+## class 9:   0.9209 0.0748 0.0043 0.0000
+## class 10:  0.6684 0.1200 0.1602 0.0515
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  0.7615 0.2029 0.0356 0.0000
+## class 13:  0.9963 0.0032 0.0005 0.0000
+## 
+## $geweld_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9868 0.0132 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.9940 0.0060 0.0000 0.0000
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   0.9925 0.0075 0.0000 0.0000
+## class 9:   1.0000 0.0000 0.0000 0.0000
+## class 10:  0.8936 0.0303 0.0507 0.0254
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  1.0000 0.0000 0.0000 0.0000
+## class 13:  0.9998 0.0002 0.0000 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9988 0.0012 0.0000 0.0000
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   1.0000 0.0000 0.0000 0.0000
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   0.9775 0.0000 0.0225 0.0000
+## class 9:   0.9924 0.0076 0.0000 0.0000
+## class 10:  0.9751 0.0000 0.0122 0.0127
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  1.0000 0.0000 0.0000 0.0000
+## class 13:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9927 0.0073 0.0000 0.0000
+## class 2:   0.9933 0.0067 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9152 0.0754 0.0057 0.0037
+## class 5:   0.9858 0.0000 0.0046 0.0097
+## class 6:   0.9572 0.0393 0.0035 0.0000
+## class 7:   0.9962 0.0031 0.0006 0.0000
+## class 8:   0.9729 0.0271 0.0000 0.0000
+## class 9:   0.9855 0.0145 0.0000 0.0000
+## class 10:  0.7083 0.2075 0.0302 0.0540
+## class 11:  0.9961 0.0035 0.0003 0.0000
+## class 12:  0.9768 0.0232 0.0000 0.0000
+## class 13:  0.9893 0.0066 0.0033 0.0009
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9937 0.0063 0.0000 0.0000
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   0.9922 0.0078 0.0000 0.0000
+## class 4:   0.9906 0.0080 0.0014 0.0000
+## class 5:   0.9979 0.0021 0.0000 0.0000
+## class 6:   0.9966 0.0034 0.0000 0.0000
+## class 7:   0.9991 0.0009 0.0000 0.0001
+## class 8:   0.9184 0.0516 0.0148 0.0152
+## class 9:   0.9952 0.0048 0.0000 0.0000
+## class 10:  0.8424 0.0447 0.0503 0.0627
+## class 11:  0.9996 0.0004 0.0000 0.0000
+## class 12:  0.9758 0.0242 0.0000 0.0000
+## class 13:  0.9977 0.0015 0.0009 0.0000
+## 
+## $conflict_col
+##             Pr(1)  Pr(2)  Pr(3)
+## class 1:   0.4627 0.5135 0.0237
+## class 2:   0.8863 0.1137 0.0000
+## class 3:   0.7682 0.1656 0.0662
+## class 4:   0.1610 0.7322 0.1067
+## class 5:   0.0000 0.0000 1.0000
+## class 6:   0.1015 0.7087 0.1898
+## class 7:   0.8943 0.1044 0.0013
+## class 8:   0.5711 0.2498 0.1792
+## class 9:   0.2668 0.3998 0.3333
+## class 10:  0.1176 0.3445 0.5379
+## class 11:  0.9271 0.0729 0.0000
+## class 12:  0.6842 0.2935 0.0223
+## class 13:  0.8206 0.1794 0.0000
+## 
+## $conflict_leid
+##             Pr(1)  Pr(2)  Pr(3)
+## class 1:   0.2030 0.7563 0.0407
+## class 2:   0.7935 0.1923 0.0142
+## class 3:   0.8252 0.1206 0.0542
+## class 4:   0.9045 0.0941 0.0015
+## class 5:   0.4918 0.0784 0.4298
+## class 6:   0.4040 0.5268 0.0692
+## class 7:   0.9926 0.0073 0.0001
+## class 8:   0.0816 0.1139 0.8045
+## class 9:   0.4445 0.3221 0.2334
+## class 10:  0.2748 0.4725 0.2528
+## class 11:  0.9886 0.0114 0.0000
+## class 12:  0.1871 0.5910 0.2219
+## class 13:  0.9430 0.0570 0.0000
+## 
+## $steunleid_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.0184 0.6579 0.3225 0.0013
+## class 2:   0.0000 0.1134 0.7922 0.0944
+## class 3:   0.0000 0.0607 0.0000 0.9393
+## class 4:   0.2146 0.6744 0.0958 0.0152
+## class 5:   0.0474 0.7076 0.2138 0.0312
+## class 6:   0.0103 0.1913 0.7038 0.0946
+## class 7:   0.1019 0.8603 0.0378 0.0000
+## class 8:   0.0158 0.1847 0.2708 0.5287
+## class 9:   0.8736 0.1207 0.0057 0.0000
+## class 10:  0.0292 0.1747 0.3478 0.4482
+## class 11:  0.8003 0.1860 0.0137 0.0000
+## class 12:  0.0086 0.0063 0.5303 0.4549
+## class 13:  0.0000 0.4734 0.4723 0.0544
+## 
+## $steuncol_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.2405 0.7105 0.0479 0.0011
+## class 2:   0.5056 0.4535 0.0410 0.0000
+## class 3:   0.2035 0.1073 0.1791 0.5101
+## class 4:   0.1459 0.7195 0.1315 0.0031
+## class 5:   0.1865 0.6787 0.1286 0.0062
+## class 6:   0.0201 0.4073 0.5155 0.0571
+## class 7:   0.1997 0.7740 0.0261 0.0003
+## class 8:   0.2022 0.5949 0.2029 0.0000
+## class 9:   0.6950 0.3050 0.0000 0.0000
+## class 10:  0.0000 0.2495 0.4736 0.2768
+## class 11:  0.8252 0.1718 0.0030 0.0000
+## class 12:  0.2464 0.6181 0.1142 0.0214
+## class 13:  0.0000 0.7069 0.2824 0.0107
+## 
+## $psyveil_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:   0.0433 0.5538 0.3760 0.0269 0.0000
+## class 2:   0.0000 0.4556 0.4486 0.0929 0.0029
+## class 3:   0.2781 0.3685 0.0324 0.0830 0.2380
+## class 4:   0.0604 0.5777 0.3221 0.0349 0.0049
+## class 5:   0.0217 0.5594 0.3338 0.0792 0.0059
+## class 6:   0.0000 0.0684 0.5221 0.3500 0.0595
+## class 7:   0.0393 0.7264 0.2259 0.0084 0.0000
+## class 8:   0.0309 0.1579 0.2718 0.3010 0.2385
+## class 9:   0.4841 0.4415 0.0375 0.0000 0.0369
+## class 10:  0.0000 0.0886 0.2073 0.4105 0.2937
+## class 11:  0.5039 0.3951 0.0537 0.0115 0.0359
+## class 12:  0.0058 0.0333 0.3879 0.4912 0.0817
+## class 13:  0.0000 0.1678 0.6314 0.1896 0.0111
+## 
+## Estimated class population shares 
+##  0.0588 0.053 0.0036 0.0262 0.0072 0.0199 0.4881 0.0048 0.0095 0.0028 0.2242 0.0197 0.0823 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0615 0.0334 0.0028 0.0152 0.0086 0.0176 0.5477 0.0044 0.0068 0.0023 0.2037 0.0179 0.0781 
+##  
+## ========================================================= 
+## Fit for 13 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 506 
+## residual degrees of freedom: 27756 
+## maximum log-likelihood: -113362 
+##  
+## AIC(13): 227735.9
+## BIC(13): 231910
+## G^2(13): 6380.619 (Likelihood ratio/deviance statistic) 
+## X^2(13): 8096278 (Chi-square goodness of fit) 
+## </code></pre>
+</div>
+<div id="model14" class="section level2" number="1.14">
+<h2><span class="header-section-number">1.14</span> Model14</h2>
+<pre class="r"><code>model14_m &lt;- poLCA(items_m, data_m, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)</code></pre>
+<pre><code>## Model 1: llik = -113320.3 ... best llik = -113320.3
+## Model 2: llik = -113379.8 ... best llik = -113320.3
+## Model 3: llik = -113428.5 ... best llik = -113320.3
+## Model 4: llik = -113342.4 ... best llik = -113320.3
+## Model 5: llik = -113297.2 ... best llik = -113297.2
+## Model 6: llik = -113311.4 ... best llik = -113297.2
+## Model 7: llik = -113319 ... best llik = -113297.2
+## Model 8: llik = -113315.8 ... best llik = -113297.2
+## Model 9: llik = -113284.6 ... best llik = -113284.6
+## Model 10: llik = -113354.2 ... best llik = -113284.6
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $pesten_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9416 0.0547 0.0000 0.0036
+## class 2:   0.9999 0.0000 0.0000 0.0001
+## class 3:   0.3813 0.4113 0.1654 0.0421
+## class 4:   0.2193 0.1786 0.3475 0.2546
+## class 5:   0.9388 0.0317 0.0167 0.0127
+## class 6:   0.8942 0.0580 0.0477 0.0000
+## class 7:   0.9985 0.0015 0.0000 0.0000
+## class 8:   0.9863 0.0137 0.0000 0.0000
+## class 9:   1.0000 0.0000 0.0000 0.0000
+## class 10:  0.7382 0.2133 0.0485 0.0000
+## class 11:  0.8360 0.1501 0.0139 0.0000
+## class 12:  0.9802 0.0198 0.0000 0.0000
+## class 13:  0.9953 0.0046 0.0001 0.0000
+## class 14:  0.9937 0.0063 0.0001 0.0000
+## 
+## $pesten_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9843 0.0037 0.0000 0.0120
+## class 2:   0.8399 0.1483 0.0118 0.0000
+## class 3:   0.9943 0.0000 0.0057 0.0000
+## class 4:   0.6187 0.1468 0.0643 0.1702
+## class 5:   0.9345 0.0447 0.0208 0.0000
+## class 6:   0.1391 0.1322 0.5044 0.2243
+## class 7:   0.9992 0.0005 0.0004 0.0000
+## class 8:   0.9794 0.0206 0.0000 0.0000
+## class 9:   1.0000 0.0000 0.0000 0.0000
+## class 10:  0.8922 0.0575 0.0503 0.0000
+## class 11:  0.9957 0.0034 0.0010 0.0000
+## class 12:  0.8756 0.0885 0.0358 0.0000
+## class 13:  0.9998 0.0002 0.0000 0.0000
+## class 14:  0.9987 0.0007 0.0001 0.0005
+## 
+## $intimidation_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   0.9883 0.0117 0.0000 0.0000
+## class 3:   0.7940 0.1647 0.0321 0.0091
+## class 4:   0.3261 0.1589 0.2823 0.2327
+## class 5:   0.9738 0.0262 0.0000 0.0000
+## class 6:   1.0000 0.0000 0.0000 0.0000
+## class 7:   0.9989 0.0007 0.0002 0.0002
+## class 8:   1.0000 0.0000 0.0000 0.0000
+## class 9:   0.9997 0.0003 0.0000 0.0000
+## class 10:  0.8809 0.1137 0.0054 0.0000
+## class 11:  0.8339 0.1661 0.0000 0.0000
+## class 12:  0.9791 0.0209 0.0000 0.0000
+## class 13:  0.9993 0.0007 0.0000 0.0000
+## class 14:  0.9960 0.0040 0.0000 0.0000
+## 
+## $intimidation_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9759 0.0039 0.0202 0.0000
+## class 2:   0.7467 0.2138 0.0394 0.0000
+## class 3:   0.9973 0.0000 0.0000 0.0027
+## class 4:   0.6567 0.1258 0.1529 0.0647
+## class 5:   0.9094 0.0906 0.0000 0.0000
+## class 6:   0.2721 0.0355 0.4729 0.2195
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   0.9547 0.0453 0.0000 0.0000
+## class 9:   0.9993 0.0007 0.0000 0.0000
+## class 10:  0.9201 0.0675 0.0124 0.0000
+## class 11:  0.9797 0.0203 0.0000 0.0000
+## class 12:  0.8442 0.1288 0.0207 0.0063
+## class 13:  1.0000 0.0000 0.0000 0.0000
+## class 14:  0.9949 0.0045 0.0006 0.0000
+## 
+## $geweld_col
+##             Pr(1)  Pr(2) Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.000 0.0000
+## class 2:   1.0000 0.0000 0.000 0.0000
+## class 3:   1.0000 0.0000 0.000 0.0000
+## class 4:   0.8476 0.0580 0.063 0.0315
+## class 5:   1.0000 0.0000 0.000 0.0000
+## class 6:   0.9908 0.0092 0.000 0.0000
+## class 7:   1.0000 0.0000 0.000 0.0000
+## class 8:   1.0000 0.0000 0.000 0.0000
+## class 9:   1.0000 0.0000 0.000 0.0000
+## class 10:  0.9931 0.0069 0.000 0.0000
+## class 11:  0.9905 0.0095 0.000 0.0000
+## class 12:  1.0000 0.0000 0.000 0.0000
+## class 13:  0.9999 0.0001 0.000 0.0000
+## class 14:  1.0000 0.0000 0.000 0.0000
+## 
+## $geweld_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   1.0000 0.0000 0.0000 0.0000
+## class 2:   1.0000 0.0000 0.0000 0.0000
+## class 3:   1.0000 0.0000 0.0000 0.0000
+## class 4:   0.9687 0.0000 0.0156 0.0157
+## class 5:   0.9948 0.0052 0.0000 0.0000
+## class 6:   0.9597 0.0101 0.0303 0.0000
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   0.9988 0.0012 0.0000 0.0000
+## class 9:   1.0000 0.0000 0.0000 0.0000
+## class 10:  1.0000 0.0000 0.0000 0.0000
+## class 11:  1.0000 0.0000 0.0000 0.0000
+## class 12:  1.0000 0.0000 0.0000 0.0000
+## class 13:  1.0000 0.0000 0.0000 0.0000
+## class 14:  1.0000 0.0000 0.0000 0.0000
+## 
+## $seks_col
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9689 0.0311 0.0000 0.0000
+## class 2:   0.9834 0.0166 0.0000 0.0000
+## class 3:   0.9328 0.0396 0.0179 0.0096
+## class 4:   0.7515 0.1497 0.0332 0.0656
+## class 5:   1.0000 0.0000 0.0000 0.0000
+## class 6:   0.9549 0.0451 0.0000 0.0000
+## class 7:   0.9972 0.0027 0.0002 0.0000
+## class 8:   0.9935 0.0065 0.0000 0.0000
+## class 9:   0.9928 0.0064 0.0007 0.0000
+## class 10:  0.9522 0.0460 0.0018 0.0000
+## class 11:  0.9356 0.0624 0.0000 0.0020
+## class 12:  0.9953 0.0047 0.0000 0.0000
+## class 13:  0.9984 0.0009 0.0008 0.0000
+## class 14:  0.9900 0.0077 0.0018 0.0005
+## 
+## $seks_leid
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.9766 0.0136 0.0000 0.0098
+## class 2:   0.9776 0.0224 0.0000 0.0000
+## class 3:   0.9848 0.0152 0.0000 0.0000
+## class 4:   0.8234 0.0509 0.0629 0.0628
+## class 5:   0.9936 0.0064 0.0000 0.0000
+## class 6:   0.8954 0.0646 0.0202 0.0199
+## class 7:   1.0000 0.0000 0.0000 0.0000
+## class 8:   0.9934 0.0066 0.0000 0.0000
+## class 9:   0.9976 0.0022 0.0000 0.0002
+## class 10:  0.9939 0.0061 0.0000 0.0000
+## class 11:  0.9990 0.0000 0.0010 0.0000
+## class 12:  1.0000 0.0000 0.0000 0.0000
+## class 13:  1.0000 0.0000 0.0000 0.0000
+## class 14:  0.9980 0.0014 0.0006 0.0000
+## 
+## $conflict_col
+##             Pr(1)  Pr(2)  Pr(3)
+## class 1:   0.7345 0.1929 0.0725
+## class 2:   0.7439 0.2375 0.0186
+## class 3:   0.1950 0.4540 0.3510
+## class 4:   0.0525 0.3295 0.6180
+## class 5:   0.2581 0.3450 0.3968
+## class 6:   0.6165 0.2107 0.1727
+## class 7:   0.9275 0.0718 0.0007
+## class 8:   0.5216 0.4521 0.0262
+## class 9:   0.9166 0.0801 0.0033
+## class 10:  0.0927 0.7707 0.1366
+## class 11:  0.1596 0.7631 0.0772
+## class 12:  0.3315 0.1536 0.5149
+## class 13:  0.8927 0.1036 0.0037
+## class 14:  0.8251 0.1699 0.0050
+## 
+## $conflict_leid
+##             Pr(1)  Pr(2)  Pr(3)
+## class 1:   0.8210 0.1181 0.0609
+## class 2:   0.1680 0.5874 0.2445
+## class 3:   0.9899 0.0101 0.0000
+## class 4:   0.1169 0.5824 0.3008
+## class 5:   0.2780 0.3910 0.3310
+## class 6:   0.1111 0.1042 0.7846
+## class 7:   0.9895 0.0105 0.0000
+## class 8:   0.2004 0.7950 0.0046
+## class 9:   0.9849 0.0150 0.0001
+## class 10:  0.1911 0.6948 0.1141
+## class 11:  0.8516 0.1474 0.0010
+## class 12:  0.0000 0.0000 1.0000
+## class 13:  1.0000 0.0000 0.0000
+## class 14:  0.9152 0.0848 0.0000
+## 
+## $steunleid_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.0000 0.0334 0.0000 0.9666
+## class 2:   0.0081 0.0000 0.5228 0.4692
+## class 3:   0.0534 0.5853 0.3085 0.0528
+## class 4:   0.0394 0.1909 0.3532 0.4165
+## class 5:   0.8457 0.1362 0.0181 0.0000
+## class 6:   0.0319 0.1032 0.2386 0.6263
+## class 7:   0.8237 0.1702 0.0062 0.0000
+## class 8:   0.0000 0.6065 0.3826 0.0108
+## class 9:   0.3318 0.5688 0.0938 0.0057
+## class 10:  0.0096 0.1712 0.7100 0.1092
+## class 11:  0.3058 0.6239 0.0703 0.0000
+## class 12:  0.0249 0.6242 0.2981 0.0529
+## class 13:  0.0321 0.9352 0.0327 0.0000
+## class 14:  0.0116 0.3894 0.5326 0.0664
+## 
+## $steuncol_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)
+## class 1:   0.1676 0.1085 0.2264 0.4976
+## class 2:   0.3035 0.5883 0.0882 0.0200
+## class 3:   0.0734 0.4501 0.4336 0.0430
+## class 4:   0.0188 0.3066 0.4090 0.2656
+## class 5:   0.6987 0.3013 0.0000 0.0000
+## class 6:   0.2280 0.5476 0.2243 0.0000
+## class 7:   0.8339 0.1634 0.0027 0.0000
+## class 8:   0.2656 0.6861 0.0472 0.0011
+## class 9:   0.5375 0.4501 0.0124 0.0000
+## class 10:  0.0108 0.4911 0.4484 0.0496
+## class 11:  0.2030 0.7486 0.0484 0.0000
+## class 12:  0.2361 0.6905 0.0734 0.0000
+## class 13:  0.0610 0.9038 0.0345 0.0006
+## class 14:  0.1625 0.6232 0.2069 0.0073
+## 
+## $psyveil_RR
+##             Pr(1)  Pr(2)  Pr(3)  Pr(4)  Pr(5)
+## class 1:   0.2442 0.3364 0.0389 0.0989 0.2816
+## class 2:   0.0094 0.0448 0.3846 0.4822 0.0789
+## class 3:   0.0107 0.2731 0.4487 0.2250 0.0425
+## class 4:   0.0179 0.1320 0.2183 0.3810 0.2509
+## class 5:   0.5160 0.4085 0.0323 0.0000 0.0432
+## class 6:   0.0433 0.1084 0.2029 0.3423 0.3031
+## class 7:   0.6272 0.2745 0.0399 0.0111 0.0472
+## class 8:   0.0368 0.5658 0.3775 0.0199 0.0000
+## class 9:   0.0649 0.7890 0.1395 0.0066 0.0000
+## class 10:  0.0000 0.0616 0.5216 0.3585 0.0583
+## class 11:  0.0938 0.6775 0.2287 0.0000 0.0000
+## class 12:  0.0000 0.5502 0.4006 0.0409 0.0083
+## class 13:  0.0342 0.6982 0.2616 0.0060 0.0000
+## class 14:  0.0000 0.1870 0.6144 0.1886 0.0101
+## 
+## Estimated class population shares 
+##  0.0038 0.0181 0.0125 0.0022 0.007 0.0035 0.1694 0.0604 0.2331 0.0177 0.0308 0.0063 0.3148 0.1204 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.0033 0.0171 0.0107 0.0019 0.0059 0.0032 0.1252 0.0631 0.2628 0.0141 0.0161 0.0065 0.3715 0.0988 
+##  
+## ========================================================= 
+## Fit for 14 latent classes: 
+## ========================================================= 
+## number of observations: 28262 
+## number of estimated parameters: 545 
+## residual degrees of freedom: 27717 
+## maximum log-likelihood: -113284.6 
+##  
+## AIC(14): 227659.3
+## BIC(14): 232155.2
+## G^2(14): 6225.999 (Likelihood ratio/deviance statistic) 
+## X^2(14): 13071489 (Chi-square goodness of fit) 
+##  
+## ALERT: iterations finished, MAXIMUM LIKELIHOOD NOT FOUND 
+## </code></pre>
+</div>
+</div>
+<div id="saving-the-models" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Saving the models</h1>
+<pre class="r"><code>model3_mpred &lt;- model3_m$predclass
+model3_mpost &lt;- model3_m$posterior
+
+lposteriorsmodel3_m &lt;- as.list(as.data.frame(model3_mpost))
+
+pmodel3_mv1 &lt;- lposteriorsmodel3_m[[1]]
+pmodel3_mv2 &lt;- lposteriorsmodel3_m[[2]]
+pmodel3_mv3 &lt;- lposteriorsmodel3_m[[3]]
+
+model4_mpred &lt;- model4_m$predclass
+model4_mpost &lt;- model4_m$posterior
+
+lposteriorsmodel4_m &lt;- as.list(as.data.frame(model4_mpost))
+
+pmodel4_mv1 &lt;- lposteriorsmodel4_m[[1]]
+pmodel4_mv2 &lt;- lposteriorsmodel4_m[[2]]
+pmodel4_mv3 &lt;- lposteriorsmodel4_m[[3]]
+pmodel4_mv4 &lt;- lposteriorsmodel4_m[[4]]
+
+
+model5_mpred &lt;- model5_m$predclass
+model5_mpost &lt;- model5_m$posterior
+
+lposteriorsmodel5_m &lt;- as.list(as.data.frame(model5_mpost))
+
+pmodel5_mv1 &lt;- lposteriorsmodel5_m[[1]]
+pmodel5_mv2 &lt;- lposteriorsmodel5_m[[2]]
+pmodel5_mv3 &lt;- lposteriorsmodel5_m[[3]]
+pmodel5_mv4 &lt;- lposteriorsmodel5_m[[4]]
+pmodel5_mv5 &lt;- lposteriorsmodel5_m[[5]]
+
+model6_mpred &lt;- model6_m$predclass
+model6_mpost &lt;- model6_m$posterior
+
+lposteriorsmodel6_m &lt;- as.list(as.data.frame(model6_mpost))
+
+pmodel6_mv1 &lt;- lposteriorsmodel6_m[[1]]
+pmodel6_mv2 &lt;- lposteriorsmodel6_m[[2]]
+pmodel6_mv3 &lt;- lposteriorsmodel6_m[[3]]
+pmodel6_mv4 &lt;- lposteriorsmodel6_m[[4]]
+pmodel6_mv5 &lt;- lposteriorsmodel6_m[[5]]
+pmodel6_mv6 &lt;- lposteriorsmodel6_m[[6]]
+
+model7_mpred &lt;- model7_m$predclass
+model7_mpost &lt;- model7_m$posterior
+
+lposteriorsmodel7_m &lt;- as.list(as.data.frame(model7_mpost))
+
+pmodel7_mv1 &lt;- lposteriorsmodel7_m[[1]]
+pmodel7_mv2 &lt;- lposteriorsmodel7_m[[2]]
+pmodel7_mv3 &lt;- lposteriorsmodel7_m[[3]]
+pmodel7_mv4 &lt;- lposteriorsmodel7_m[[4]]
+pmodel7_mv5 &lt;- lposteriorsmodel7_m[[5]]
+pmodel7_mv6 &lt;- lposteriorsmodel7_m[[6]]
+pmodel7_mv7 &lt;- lposteriorsmodel7_m[[7]]
+
+model8_mpred &lt;- model8_m$predclass
+model8_mpost &lt;- model8_m$posterior
+
+lposteriorsmodel8_m &lt;- as.list(as.data.frame(model8_mpost))
+
+pmodel8_mv1 &lt;- lposteriorsmodel8_m[[1]]
+pmodel8_mv2 &lt;- lposteriorsmodel8_m[[2]]
+pmodel8_mv3 &lt;- lposteriorsmodel8_m[[3]]
+pmodel8_mv4 &lt;- lposteriorsmodel8_m[[4]]
+pmodel8_mv5 &lt;- lposteriorsmodel8_m[[5]]
+pmodel8_mv6 &lt;- lposteriorsmodel8_m[[6]]
+pmodel8_mv7 &lt;- lposteriorsmodel8_m[[7]]
+pmodel8_mv8 &lt;- lposteriorsmodel8_m[[8]]
+
+model9_mpred &lt;- model9_m$predclass
+model9_mpost &lt;- model9_m$posterior
+
+lposteriorsmodel9_m &lt;- as.list(as.data.frame(model9_mpost))
+
+pmodel9_mv1 &lt;- lposteriorsmodel9_m[[1]]
+pmodel9_mv2 &lt;- lposteriorsmodel9_m[[2]]
+pmodel9_mv3 &lt;- lposteriorsmodel9_m[[3]]
+pmodel9_mv4 &lt;- lposteriorsmodel9_m[[4]]
+pmodel9_mv5 &lt;- lposteriorsmodel9_m[[5]]
+pmodel9_mv6 &lt;- lposteriorsmodel9_m[[6]]
+pmodel9_mv7 &lt;- lposteriorsmodel9_m[[7]]
+pmodel9_mv8 &lt;- lposteriorsmodel9_m[[8]]
+pmodel9_mv9 &lt;- lposteriorsmodel9_m[[9]]
+
+model10_mpred &lt;- model10_m$predclass
+model10_mpost &lt;- model10_m$posterior
+
+lposteriorsmodel10_m &lt;- as.list(as.data.frame(model10_mpost))
+
+pmodel10_mv1 &lt;- lposteriorsmodel10_m[[1]]
+pmodel10_mv2 &lt;- lposteriorsmodel10_m[[2]]
+pmodel10_mv3 &lt;- lposteriorsmodel10_m[[3]]
+pmodel10_mv4 &lt;- lposteriorsmodel10_m[[4]]
+pmodel10_mv5 &lt;- lposteriorsmodel10_m[[5]]
+pmodel10_mv6 &lt;- lposteriorsmodel10_m[[6]]
+pmodel10_mv7 &lt;- lposteriorsmodel10_m[[7]]
+pmodel10_mv8 &lt;- lposteriorsmodel10_m[[8]]
+pmodel10_mv9 &lt;- lposteriorsmodel10_m[[9]]
+pmodel10_mv10 &lt;- lposteriorsmodel10_m[[10]]
+
+model11_mpred &lt;- model11_m$predclass
+model11_mpost &lt;- model11_m$posterior
+
+lposteriorsmodel11_m &lt;- as.list(as.data.frame(model11_mpost))
+
+pmodel11_mv1 &lt;- lposteriorsmodel11_m[[1]]
+pmodel11_mv2 &lt;- lposteriorsmodel11_m[[2]]
+pmodel11_mv3 &lt;- lposteriorsmodel11_m[[3]]
+pmodel11_mv4 &lt;- lposteriorsmodel11_m[[4]]
+pmodel11_mv5 &lt;- lposteriorsmodel11_m[[5]]
+pmodel11_mv6 &lt;- lposteriorsmodel11_m[[6]]
+pmodel11_mv7 &lt;- lposteriorsmodel11_m[[7]]
+pmodel11_mv8 &lt;- lposteriorsmodel11_m[[8]]
+pmodel11_mv9 &lt;- lposteriorsmodel11_m[[9]]
+pmodel11_mv10 &lt;- lposteriorsmodel11_m[[10]]
+pmodel11_mv11 &lt;- lposteriorsmodel11_m[[11]]
+
+model12_mpred &lt;- model12_m$predclass
+model12_mpost &lt;- model12_m$posterior
+
+lposteriorsmodel12_m &lt;- as.list(as.data.frame(model12_mpost))
+
+pmodel12_mv1 &lt;- lposteriorsmodel12_m[[1]]
+pmodel12_mv2 &lt;- lposteriorsmodel12_m[[2]]
+pmodel12_mv3 &lt;- lposteriorsmodel12_m[[3]]
+pmodel12_mv4 &lt;- lposteriorsmodel12_m[[4]]
+pmodel12_mv5 &lt;- lposteriorsmodel12_m[[5]]
+pmodel12_mv6 &lt;- lposteriorsmodel12_m[[6]]
+pmodel12_mv7 &lt;- lposteriorsmodel12_m[[7]]
+pmodel12_mv8 &lt;- lposteriorsmodel12_m[[8]]
+pmodel12_mv9 &lt;- lposteriorsmodel12_m[[9]]
+pmodel12_mv10 &lt;- lposteriorsmodel12_m[[10]]
+pmodel12_mv11 &lt;- lposteriorsmodel12_m[[11]]
+pmodel12_mv12 &lt;- lposteriorsmodel12_m[[12]]</code></pre>
+<pre class="r"><code>Models_m &lt;- cbind (volgnumm, model3_mpred   ,
+                 pmodel3_mv1    ,
+                 pmodel3_mv2    ,
+                 pmodel3_mv3    ,
+                 model4_mpred   ,
+                 pmodel4_mv1    ,
+                 pmodel4_mv2    ,
+                 pmodel4_mv3    ,
+                 pmodel4_mv4    ,
+                 model5_mpred   ,
+                 pmodel5_mv1    ,
+                 pmodel5_mv2    ,
+                 pmodel5_mv3    ,
+                 pmodel5_mv4    ,
+                 pmodel5_mv5    ,
+                 model6_mpred   ,
+                 pmodel6_mv1    ,
+                 pmodel6_mv2    ,
+                 pmodel6_mv3    ,
+                 pmodel6_mv4    ,
+                 pmodel6_mv5    ,
+                 pmodel6_mv6    ,
+                 model7_mpred   ,
+                 pmodel7_mv1    ,
+                 pmodel7_mv2    ,
+                 pmodel7_mv3    ,
+                 pmodel7_mv4    ,
+                 pmodel7_mv5    ,
+                 pmodel7_mv6    ,
+                 pmodel7_mv7    ,
+                 model8_mpred   ,
+                 pmodel8_mv1    ,
+                 pmodel8_mv2    ,
+                 pmodel8_mv3    ,
+                 pmodel8_mv4    ,
+                 pmodel8_mv5    ,
+                 pmodel8_mv6    ,
+                 pmodel8_mv7    ,
+                 pmodel8_mv8 ,
+                 model9_mpred   ,
+                 pmodel9_mv1    ,
+                 pmodel9_mv2    ,
+                 pmodel9_mv3    ,
+                 pmodel9_mv4    ,
+                 pmodel9_mv5    ,
+                 pmodel9_mv6    ,
+                 pmodel9_mv7    ,
+                 pmodel9_mv8    ,
+                 pmodel9_mv9 ,
+                 model10_mpred  ,
+                 pmodel10_mv1 ,
+                 pmodel10_mv2 ,
+                 pmodel10_mv3 ,
+                 pmodel10_mv4 ,
+                 pmodel10_mv5 ,
+                 pmodel10_mv6 ,
+                 pmodel10_mv7 ,
+                 pmodel10_mv8 ,
+                 pmodel10_mv9 ,
+                 pmodel10_mv10 ,
+                 model11_mpred  ,
+                 pmodel11_mv1 ,
+                 pmodel11_mv2 ,
+                 pmodel11_mv3 ,
+                 pmodel11_mv4 ,
+                 pmodel11_mv5 ,
+                 pmodel11_mv6 ,
+                 pmodel11_mv7 ,
+                 pmodel11_mv8 ,
+                 pmodel11_mv9 ,
+                 pmodel11_mv10 ,
+                 pmodel11_mv11 ,
+                 model12_mpred  ,
+                 pmodel12_mv1 ,
+                 pmodel12_mv2 ,
+                 pmodel12_mv3 ,
+                 pmodel12_mv4 ,
+                 pmodel12_mv5 ,
+                 pmodel12_mv6 ,
+                 pmodel12_mv7 ,
+                 pmodel12_mv8 ,
+                 pmodel12_mv9 ,
+                 pmodel12_mv10 ,
+                 pmodel12_mv11 ,
+                 pmodel12_mv12  )</code></pre>
+<pre><code>## Warning in cbind(volgnumm, model3_mpred, pmodel3_mv1, pmodel3_mv2, pmodel3_mv3,
+## : number of rows of result is not a multiple of vector length (arg 2)</code></pre>
+</div>
+<div id="class-separation" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Class separation</h1>
+<pre class="r"><code>max_probs &lt;- apply(model7_mpost, 1, max)
+
+mean(max_probs)</code></pre>
+<pre><code>## [1] 0.8237896</code></pre>
+<pre class="r"><code>median(max_probs)</code></pre>
+<pre><code>## [1] 0.8429193</code></pre>
+<pre class="r"><code>min(max_probs)</code></pre>
+<pre><code>## [1] 0.2882771</code></pre>
+<pre class="r"><code>max(max_probs)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>K &lt;- 7
+
+mean_posteriors &lt;- numeric(K)
+
+for (k in 1:K) {
+  idx &lt;- which(model7_mpred == k)
+  mean_posteriors[k] &lt;- mean(model7_mpost[idx, k])
+}
+
+names(mean_posteriors) &lt;- paste0(&quot;Class&quot;, 1:K)
+
+mean_posteriors</code></pre>
+<pre><code>##    Class1    Class2    Class3    Class4    Class5    Class6    Class7 
+## 0.8083254 0.7998796 0.9152607 0.8138384 0.7877604 0.8144351 0.8187517</code></pre>
+<pre class="r"><code>ggplot(data.frame(max_probs = max_probs), aes(x = max_probs)) +
+  geom_histogram(binwidth = 0.05, fill = &quot;steelblue&quot;, color = &quot;white&quot;) +
+  geom_vline(aes(xintercept = mean(max_probs)), 
+             color = &quot;red&quot;, linetype = &quot;dashed&quot;, linewidth = 1) +
+  labs(title = &quot;Distribution of maximum posterior probabilities&quot;,
+       x = &quot;Maximum posterior probability&quot;,
+       y = &quot;Number of respondents&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="LCA_listwise_files/figure-html/post%20prob-1.png" width="672" /></p>
+<pre class="r"><code>poLCA.entropy &lt;- function(model) {
+  P &lt;- model$posterior
+  entropy &lt;- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model2_m)</code></pre>
+<pre><code>## [1] 0.6799373</code></pre>
+<pre class="r"><code>poLCA.entropy &lt;- function(model) {
+  P &lt;- model$posterior
+  entropy &lt;- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model3_m)</code></pre>
+<pre><code>## [1] 0.7230177</code></pre>
+<pre class="r"><code>poLCA.entropy &lt;- function(model) {
+  P &lt;- model$posterior
+  entropy &lt;- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model4_m)</code></pre>
+<pre><code>## [1] 0.7054322</code></pre>
+<pre class="r"><code>poLCA.entropy &lt;- function(model) {
+  P &lt;- model$posterior
+  entropy &lt;- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model5_m)</code></pre>
+<pre><code>## [1] 0.7353524</code></pre>
+<pre class="r"><code>poLCA.entropy &lt;- function(model) {
+  P &lt;- model$posterior
+  entropy &lt;- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model6_m)</code></pre>
+<pre><code>## [1] 0.7454318</code></pre>
+<pre class="r"><code>poLCA.entropy &lt;- function(model) {
+  P &lt;- model$posterior
+  entropy &lt;- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model7_m)</code></pre>
+<pre><code>## [1] 0.7451801</code></pre>
+<pre class="r"><code>poLCA.entropy &lt;- function(model) {
+  P &lt;- model$posterior
+  entropy &lt;- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model8_m)</code></pre>
+<pre><code>## [1] 0.740343</code></pre>
+<pre class="r"><code>poLCA.entropy &lt;- function(model) {
+  P &lt;- model$posterior
+  entropy &lt;- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model9_m)</code></pre>
+<pre><code>## [1] 0.7505714</code></pre>
+<pre class="r"><code>poLCA.entropy &lt;- function(model) {
+  P &lt;- model$posterior
+  entropy &lt;- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model10_m)</code></pre>
+<pre><code>## [1] 0.774101</code></pre>
+<pre class="r"><code>poLCA.entropy &lt;- function(model) {
+  P &lt;- model$posterior
+  entropy &lt;- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model11_m)</code></pre>
+<pre><code>## [1] 0.7704223</code></pre>
+<pre class="r"><code>poLCA.entropy &lt;- function(model) {
+  P &lt;- model$posterior
+  entropy &lt;- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
+  return(1 - entropy)
+}
+poLCA.entropy(model12_m)</code></pre>
+<pre><code>## [1] 0.7658312</code></pre>
+</div>
+<div id="plots" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Plots</h1>
+<pre class="r"><code>#Recoding variables on scale from 0 to 1
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(pesten_col_plot = recode(pesten_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(pesten_leid_plot = recode(pesten_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(int_col_plot = recode(intimidation_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(int_leid_plot = recode(intimidation_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(gew_col_plot = recode(geweld_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(gew_leid_plot = recode(geweld_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(seks_col_plot = recode(seks_col, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(seks_leid_plot = recode(seks_leid, `1` = 0, `2` = 0.33, `3` = 0.67, `4` = 1))
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(conflict_col_plot = recode(conflict_col, `1` = 0, `2` = 0.50, `3` = 1))
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(conflict_leid_plot = recode(conflict_leid, `1` = 0, `2` = 0.50, `3` = 1))
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steunleid_plot = (steunleid_RR - 1) / 3)
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steuncol_plot = (steuncol_RR - 1) / 3)
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(psyveil_plot = (psyveil_RR - 1) / 4)</code></pre>
+<div id="model4-1" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Model4</h2>
+<pre class="r"><code>vars &lt;- c(&quot;pesten_col_plot&quot;, &quot;pesten_leid_plot&quot;, &quot;int_col_plot&quot;, &quot;int_leid_plot&quot;,
+          &quot;gew_col_plot&quot;, &quot;gew_leid_plot&quot;, &quot;seks_col_plot&quot;, &quot;seks_leid_plot&quot;,
+          &quot;conflict_col_plot&quot;, &quot;conflict_leid_plot&quot;, 
+          &quot;steuncol_plot&quot;, &quot;steunleid_plot&quot;, &quot;psyveil_plot&quot;)
+
+used_cases &lt;- complete.cases(NEA2022[, vars])
+
+NEA2022$model4_mpred &lt;- NA_integer_
+NEA2022$model4_mpred[used_cases] &lt;- model4_m$predclass
+
+table(NEA2022$model4_mpred, useNA = &quot;ifany&quot;)</code></pre>
+<pre><code>## 
+##     1     2     3     4  &lt;NA&gt; 
+##  1293  4877 16246  5846  1661</code></pre>
+<pre class="r"><code>plot_data4 &lt;- NEA2022 %&gt;%
+  filter(!is.na(model4_mpred)) %&gt;%
+  pivot_longer(cols = all_of(vars), names_to = &quot;indicator&quot;, values_to = &quot;value&quot;) %&gt;%
+  group_by(model4_mpred, indicator) %&gt;%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = &quot;drop&quot;) %&gt;%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model4_mpred), 
+                         &quot;1&quot; = &quot;1 (4.58%)&quot;, 
+                         &quot;2&quot; = &quot;2 (17.26%)&quot;, 
+                         &quot;3&quot; = &quot;3 (57.48%)&quot;, 
+                         &quot;4&quot; = &quot;4 (20.69%)&quot;)
+  ) %&gt;%
+  mutate(class_label = factor(class_label,
+                      levels = c(&quot;1 (4.58%)&quot;, &quot;2 (17.26%)&quot;, &quot;3 (57.48%)&quot;, &quot;4 (20.69%)&quot;)))
+
+
+indicator_labels &lt;- c(
+  &quot;pesten_col_plot&quot;    = &quot;Bullying C&quot;,
+  &quot;pesten_leid_plot&quot;   = &quot;Bullying S&quot;,
+  &quot;int_col_plot&quot;       = &quot;Intimidation C&quot;,
+  &quot;int_leid_plot&quot;      = &quot;Intimidation S&quot;,
+  &quot;seks_col_plot&quot;      = &quot;Unwanted sexual attention C&quot;,
+  &quot;seks_leid_plot&quot;     = &quot;Unwanted sexual attention S&quot;,
+  &quot;gew_col_plot&quot;       = &quot;Violence C&quot;,
+  &quot;gew_leid_plot&quot;      = &quot;Violence S&quot;,
+  &quot;conflict_col_plot&quot;  = &quot;Conflict C&quot;,
+  &quot;conflict_leid_plot&quot; = &quot;Conflict S&quot;,
+  &quot;steuncol_plot&quot;      = &quot;Incivility C&quot;,
+  &quot;steunleid_plot&quot;     = &quot;Incivility S&quot;,
+  &quot;psyveil_plot&quot;       = &quot;Psychological unsafety&quot;
+)
+
+ggplot(plot_data4, aes(x = indicator, y = mean_value,
+                      color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      &quot;1 (4.58%)&quot;   = &quot;#CC79A7&quot;,
+      &quot;2 (17.26%)&quot;          = &quot;#D55E00&quot;,
+      &quot;3 (57.48%)&quot;   = &quot;#0072B2&quot;,
+      &quot;4 (20.69%)&quot; = &quot;#56B4E9&quot;
+    )
+  ) +
+  labs(x = NULL, y = &quot;Mean score&quot;, color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = &quot;bottom&quot;,
+    legend.text = element_text(size = 11)
+  )</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="LCA_listwise_files/figure-html/plot4-1.png" width="672" /></p>
+<pre class="r"><code>table(NEA2022$model4_mpred, useNA = &quot;ifany&quot;)</code></pre>
+<pre><code>## 
+##     1     2     3     4  &lt;NA&gt; 
+##  1293  4877 16246  5846  1661</code></pre>
+</div>
+<div id="model5-1" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Model5</h2>
+<pre class="r"><code>used_cases &lt;- complete.cases(NEA2022[, vars])
+
+NEA2022$model5_mpred &lt;- NA_integer_
+NEA2022$model5_mpred[used_cases] &lt;- model5_m$predclass
+
+table(NEA2022$model5_mpred, useNA = &quot;ifany&quot;)</code></pre>
+<pre><code>## 
+##     1     2     3     4     5  &lt;NA&gt; 
+##  3866   727 16378  1483  5808  1661</code></pre>
+<pre class="r"><code>plot_data5 &lt;- NEA2022 %&gt;%
+  pivot_longer(cols = all_of(vars), names_to = &quot;indicator&quot;, values_to = &quot;value&quot;) %&gt;%
+  group_by(model5_mpred, indicator) %&gt;%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = &quot;drop&quot;) %&gt;%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model5_mpred), 
+                         &quot;1&quot; = &quot;1 (13.68%)&quot;, 
+                         &quot;2&quot; = &quot;2 (2.57%)&quot;, 
+                         &quot;3&quot; = &quot;3 (57.95%)&quot;, 
+                         &quot;4&quot; = &quot;4 (5.25%)&quot;,
+                         &quot;5&quot; = &quot;5 (20.55%)&quot;)
+  )%&gt;% 
+  mutate(class_label = factor(class_label,
+                      levels = c(&quot;1 (13.68%)&quot;, &quot;2 (2.57%)&quot;, &quot;3 (57.95%)&quot;, &quot;4 (5.25%)&quot;, &quot;5 (20.55%)&quot;)))
+
+
+indicator_labels &lt;- c(
+  &quot;pesten_col_plot&quot;    = &quot;Bullying C&quot;,
+  &quot;pesten_leid_plot&quot;   = &quot;Bullying S&quot;,
+  &quot;int_col_plot&quot;       = &quot;Intimidation C&quot;,
+  &quot;int_leid_plot&quot;      = &quot;Intimidation S&quot;,
+  &quot;seks_col_plot&quot;      = &quot;Unwanted sexual attention C&quot;,
+  &quot;seks_leid_plot&quot;     = &quot;Unwanted sexual attention S&quot;,
+  &quot;gew_col_plot&quot;       = &quot;Violence C&quot;,
+  &quot;gew_leid_plot&quot;      = &quot;Violence S&quot;,
+  &quot;conflict_col_plot&quot;  = &quot;Conflict C&quot;,
+  &quot;conflict_leid_plot&quot; = &quot;Conflict S&quot;,
+  &quot;steuncol_plot&quot;      = &quot;Incivility C&quot;,
+  &quot;steunleid_plot&quot;     = &quot;Incivility S&quot;,
+  &quot;psyveil_plot&quot;       = &quot;Psychological unsafety&quot;
+)
+
+ggplot(plot_data5, aes(x = indicator, y = mean_value,
+                      color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      &quot;1 (13.68%)&quot;   = &quot;#CC79A7&quot;,
+      &quot;2 (2.57%)&quot;          = &quot;#D55E00&quot;,
+      &quot;3 (57.95%)&quot;   = &quot;#56B4E9&quot;,
+      &quot;4 (5.25%)&quot; = &quot;#E69F00&quot;,
+      &quot;5 (20.55%)&quot; = &quot;#0072B2&quot;
+    )
+  ) +
+  labs(x = NULL, y = &quot;Mean score&quot;, color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = &quot;bottom&quot;,
+    legend.text = element_text(size = 11)
+  )</code></pre>
+<p><img src="LCA_listwise_files/figure-html/plot5-1.png" width="672" /></p>
+</div>
+<div id="model6-1" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Model6</h2>
+<pre class="r"><code>used_cases &lt;- complete.cases(NEA2022[, vars])
+
+NEA2022$model6_mpred &lt;- NA_integer_
+NEA2022$model6_mpred[used_cases] &lt;- model6_m$predclass
+
+table(NEA2022$model6_mpred, useNA = &quot;ifany&quot;)</code></pre>
+<pre><code>## 
+##     1     2     3     4     5     6  &lt;NA&gt; 
+##  1356  3912 16258   430   522  5784  1661</code></pre>
+<pre class="r"><code>plot_data6 &lt;- NEA2022 %&gt;%
+  pivot_longer(cols = all_of(vars), names_to = &quot;indicator&quot;, values_to = &quot;value&quot;) %&gt;%
+  group_by(model6_mpred, indicator) %&gt;%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = &quot;drop&quot;) %&gt;%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model6_mpred), 
+                         &quot;1&quot; = &quot;1 (4.80%)&quot;, 
+                         &quot;2&quot; = &quot;2 (13.84%)&quot;, 
+                         &quot;3&quot; = &quot;3 (57.53%)&quot;, 
+                         &quot;4&quot; = &quot;4 (1.52%)&quot;,
+                         &quot;5&quot; = &quot;5 (1.85%)&quot;,
+                         &quot;6&quot; = &quot;6 (20.47%)&quot;)
+  )%&gt;% 
+  mutate(class_label = factor(class_label,
+                      levels = c(&quot;1 (4.80%)&quot;, &quot;2 (13.84%)&quot;, &quot;3 (57.53%)&quot;, &quot;4 (1.52%)&quot;, &quot;5 (1.85%)&quot;, &quot;6 (20.47%)&quot;)))
+
+
+indicator_labels &lt;- c(
+  &quot;pesten_col_plot&quot;    = &quot;Bullying C&quot;,
+  &quot;pesten_leid_plot&quot;   = &quot;Bullying S&quot;,
+  &quot;int_col_plot&quot;       = &quot;Intimidation C&quot;,
+  &quot;int_leid_plot&quot;      = &quot;Intimidation S&quot;,
+  &quot;seks_col_plot&quot;      = &quot;Unwanted sexual attention C&quot;,
+  &quot;seks_leid_plot&quot;     = &quot;Unwanted sexual attention S&quot;,
+  &quot;gew_col_plot&quot;       = &quot;Violence C&quot;,
+  &quot;gew_leid_plot&quot;      = &quot;Violence S&quot;,
+  &quot;conflict_col_plot&quot;  = &quot;Conflict C&quot;,
+  &quot;conflict_leid_plot&quot; = &quot;Conflict S&quot;,
+  &quot;steuncol_plot&quot;      = &quot;Incivility C&quot;,
+  &quot;steunleid_plot&quot;     = &quot;Incivility S&quot;,
+  &quot;psyveil_plot&quot;       = &quot;Psychological unsafety&quot;
+)
+
+ggplot(plot_data6, aes(x = indicator, y = mean_value,
+                      color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      &quot;1 (4.80%)&quot;   = &quot;#E69F00&quot;,
+      &quot;2 (13.84%)&quot;          = &quot;#CC79A7&quot;,
+      &quot;3 (57.53%)&quot;   = &quot;#56B4E9&quot;,
+      &quot;4 (1.52%)&quot; = &quot;#000000&quot;,
+      &quot;5 (1.85%)&quot; = &quot;#D55E00&quot;,
+      &quot;6 (20.47%)&quot; = &quot;#0072B2&quot;
+    )
+  ) +
+  labs(x = NULL, y = &quot;Mean score&quot;, color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = &quot;bottom&quot;,
+    legend.text = element_text(size = 11)
+  )</code></pre>
+<p><img src="LCA_listwise_files/figure-html/plot6-1.png" width="672" /></p>
+</div>
+<div id="model7-1" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Model7</h2>
+<pre class="r"><code>used_cases &lt;- complete.cases(NEA2022[, vars])
+
+NEA2022$model7_mpred &lt;- NA_integer_
+NEA2022$model7_mpred[used_cases] &lt;- model7_m$predclass
+
+table(NEA2022$model7_mpred, useNA = &quot;ifany&quot;)</code></pre>
+<pre><code>## 
+##     1     2     3     4     5     6     7  &lt;NA&gt; 
+##  1916 15924  5781   523  2925   422   771  1661</code></pre>
+<pre class="r"><code>plot_data7 &lt;- NEA2022 %&gt;%
+  pivot_longer(cols = all_of(vars), names_to = &quot;indicator&quot;, values_to = &quot;value&quot;) %&gt;%
+  group_by(model7_mpred, indicator) %&gt;%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = &quot;drop&quot;) %&gt;%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model7_mpred),
+                         &quot;1&quot; = &quot;Short-term conflict (6.78%)&quot;,
+                         &quot;2&quot; = &quot;Overall safe (56.34%)&quot;,
+                         &quot;3&quot; = &quot;Overall highly safe (20.46%)&quot;,
+                         &quot;4&quot; = &quot;Supervisor unsafety (1.85%)&quot;,
+                         &quot;5&quot; = &quot;Unsafe social climate (10.35%)&quot;,
+                         &quot;6&quot; = &quot;Overall unsafe (1.49%)&quot;,
+                         &quot;7&quot; = &quot;Coworker unsafety (2.73%)&quot;)
+  ) %&gt;%
+  mutate(class_label = factor(class_label,
+                              levels = c(&quot;Overall highly safe (20.46%)&quot;, 
+                                         &quot;Overall safe (56.34%)&quot;,
+                                         &quot;Short-term conflict (6.78%)&quot;, 
+                                         &quot;Unsafe social climate (10.35%)&quot;, 
+                                         &quot;Coworker unsafety (2.73%)&quot;, 
+                                         &quot;Supervisor unsafety (1.85%)&quot;, 
+                                         &quot;Overall unsafe (1.49%)&quot;)))
+
+indicator_labels &lt;- c(
+  &quot;pesten_col_plot&quot;    = &quot;Bullying C&quot;,
+  &quot;pesten_leid_plot&quot;   = &quot;Bullying S&quot;,
+  &quot;int_col_plot&quot;       = &quot;Intimidation C&quot;,
+  &quot;int_leid_plot&quot;      = &quot;Intimidation S&quot;,
+  &quot;seks_col_plot&quot;      = &quot;Unwanted sexual attention C&quot;,
+  &quot;seks_leid_plot&quot;     = &quot;Unwanted sexual attention S&quot;,
+  &quot;gew_col_plot&quot;       = &quot;Violence C&quot;,
+  &quot;gew_leid_plot&quot;      = &quot;Violence S&quot;,
+  &quot;conflict_col_plot&quot;  = &quot;Conflict C&quot;,
+  &quot;conflict_leid_plot&quot; = &quot;Conflict S&quot;,
+  &quot;steuncol_plot&quot;      = &quot;Incivility C&quot;,
+  &quot;steunleid_plot&quot;     = &quot;Incivility S&quot;,
+  &quot;psyveil_plot&quot;       = &quot;Psychological unsafety&quot;
+)
+
+ggplot(plot_data7, aes(x = indicator, y = mean_value,
+                      color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      &quot;Overall highly safe (20.46%)&quot;   = &quot;#0072B2&quot;,
+      &quot;Overall safe (56.34%)&quot;          = &quot;#56B4E9&quot;,
+      &quot;Short-term conflict (6.78%)&quot;   = &quot;#009E73&quot;,
+      &quot;Unsafe social climate (10.35%)&quot; = &quot;#CC79A7&quot;,
+      &quot;Coworker unsafety (2.73%)&quot;     = &quot;#E69F00&quot;,
+      &quot;Supervisor unsafety (1.85%)&quot;   = &quot;#D55E00&quot;,
+      &quot;Overall unsafe (1.49%)&quot;        = &quot;#000000&quot; 
+    )
+  ) +
+  labs(x = NULL, y = &quot;Mean score&quot;, color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = &quot;bottom&quot;,
+    legend.text = element_text(size = 11)
+  )</code></pre>
+<p><img src="LCA_listwise_files/figure-html/plot7-1.png" width="672" /></p>
+</div>
+<div id="model8-1" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Model8</h2>
+<pre class="r"><code>used_cases &lt;- complete.cases(NEA2022[, vars])
+
+NEA2022$model8_mpred &lt;- NA_integer_
+NEA2022$model8_mpred[used_cases] &lt;- model8_m$predclass
+
+table(NEA2022$model8_mpred, useNA = &quot;ifany&quot;)</code></pre>
+<pre><code>## 
+##     1     2     3     4     5     6     7     8  &lt;NA&gt; 
+##   640 15653   676  2816  5783  1963   184   547  1661</code></pre>
+<pre class="r"><code># Data voor plot
+plot_data8 &lt;- NEA2022 %&gt;%
+  pivot_longer(cols = all_of(vars), names_to = &quot;indicator&quot;, values_to = &quot;value&quot;) %&gt;%
+  group_by(model8_mpred, indicator) %&gt;%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = &quot;drop&quot;) %&gt;%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model8_mpred), 
+                         &quot;1&quot; = &quot;1 (2.26%)&quot;, 
+                         &quot;2&quot; = &quot;2 (55.39%)&quot;, 
+                         &quot;3&quot; = &quot;3 (2.39%)&quot;, 
+                         &quot;4&quot; = &quot;4 (9.96%)&quot;,
+                         &quot;5&quot; = &quot;5 (20.46%)&quot;,
+                         &quot;6&quot; = &quot;6 (6.95%)&quot;,
+                         &quot;7&quot; = &quot;7 (0.65%)&quot;,
+                         &quot;8&quot; = &quot;8 (1.94%)&quot;)
+  ) %&gt;% 
+  mutate(class_label = factor(class_label,
+                      levels = c(&quot;1 (2.26%)&quot;, &quot;2 (55.39%)&quot;, &quot;3 (2.39%)&quot;, &quot;4 (9.96%)&quot;,
+                                 &quot;5 (20.46%)&quot;, &quot;6 (6.95%)&quot;, &quot;7 (0.65%)&quot;, &quot;8 (1.94%)&quot;)))
+
+# Labels voor indicatoren
+indicator_labels &lt;- c(
+  &quot;pesten_col_plot&quot;    = &quot;Bullying C&quot;,
+  &quot;pesten_leid_plot&quot;   = &quot;Bullying S&quot;,
+  &quot;int_col_plot&quot;       = &quot;Intimidation C&quot;,
+  &quot;int_leid_plot&quot;      = &quot;Intimidation S&quot;,
+  &quot;seks_col_plot&quot;      = &quot;Unwanted sexual attention C&quot;,
+  &quot;seks_leid_plot&quot;     = &quot;Unwanted sexual attention S&quot;,
+  &quot;gew_col_plot&quot;       = &quot;Violence C&quot;,
+  &quot;gew_leid_plot&quot;      = &quot;Violence S&quot;,
+  &quot;conflict_col_plot&quot;  = &quot;Conflict C&quot;,
+  &quot;conflict_leid_plot&quot; = &quot;Conflict S&quot;,
+  &quot;steuncol_plot&quot;      = &quot;Incivility C&quot;,
+  &quot;steunleid_plot&quot;     = &quot;Incivility S&quot;,
+  &quot;psyveil_plot&quot;       = &quot;Psychological unsafety&quot;
+)
+
+# Plotten
+ggplot(plot_data8, aes(x = indicator, y = mean_value,
+                       color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      &quot;1 (2.26%)&quot;   = &quot;#E69F00&quot;,
+      &quot;2 (55.39%)&quot;  = &quot;#56B4E9&quot;,
+      &quot;3 (2.39%)&quot;   = &quot;#F0E442&quot;,
+      &quot;4 (9.96%)&quot;  = &quot;#CC79A7&quot;,
+      &quot;5 (20.46%)&quot;  = &quot;#0072B2&quot;,
+      &quot;6 (6.95%)&quot;   = &quot;#009E73&quot;,
+      &quot;7 (0.65%)&quot;   = &quot;#D55E00&quot;,
+      &quot;8 (1.94%)&quot;   = &quot;#000000&quot; 
+    )
+  ) +
+  labs(x = NULL, y = &quot;Mean score&quot;, color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = &quot;bottom&quot;,
+    legend.text = element_text(size = 11)
+  )</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="LCA_listwise_files/figure-html/plot8-1.png" width="672" /></p>
+</div>
+<div id="model9-1" class="section level2" number="4.6">
+<h2><span class="header-section-number">4.6</span> Model9</h2>
+<pre class="r"><code>used_cases &lt;- complete.cases(NEA2022[, vars])
+
+NEA2022$model9_mpred &lt;- NA_integer_
+NEA2022$model9_mpred[used_cases] &lt;- model9_m$predclass
+
+table(NEA2022$model9_mpred, useNA = &quot;ifany&quot;)</code></pre>
+<pre><code>## 
+##     1     2     3     4     5     6     7     8     9  &lt;NA&gt; 
+##  1671   229   138   426 15592  5806  1095  2822   483  1661</code></pre>
+<pre class="r"><code>plot_data9 &lt;- NEA2022 %&gt;%
+  pivot_longer(cols = all_of(vars), names_to = &quot;indicator&quot;, values_to = &quot;value&quot;) %&gt;%
+  group_by(model9_mpred, indicator) %&gt;%
+  summarise(mean_value = mean(value, na.rm = TRUE), .groups = &quot;drop&quot;) %&gt;%
+  mutate(
+    indicator   = factor(indicator, levels = vars),
+    class_label = recode(as.character(model9_mpred), 
+                         &quot;1&quot; = &quot;1 (5.91%)&quot;, 
+                         &quot;2&quot; = &quot;2 (0.81%)&quot;, 
+                         &quot;3&quot; = &quot;3 (0.49%)&quot;, 
+                         &quot;4&quot; = &quot;4 (1.51%)&quot;,
+                         &quot;5&quot; = &quot;5 (55.17%)&quot;,
+                         &quot;6&quot; = &quot;6 (20.54%)&quot;,
+                         &quot;7&quot; = &quot;7 (3.87%)&quot;,
+                         &quot;8&quot; = &quot;8 (9.99%)&quot;,
+                         &quot;9&quot; = &quot;9 (1.71%)&quot;)
+  ) %&gt;% 
+  mutate(class_label = factor(class_label,
+                      levels = c(&quot;1 (5.91%)&quot;, &quot;2 (0.81%)&quot;, &quot;3 (0.49%)&quot;, &quot;4 (1.51%)&quot;,
+                                 &quot;5 (55.17%)&quot;, &quot;6 (20.54%)&quot;, &quot;7 (3.87%)&quot;, &quot;8 (9.99%)&quot;, &quot;9 (1.71%)&quot;)))
+
+# Labels voor indicatoren
+indicator_labels &lt;- c(
+  &quot;pesten_col_plot&quot;    = &quot;Bullying C&quot;,
+  &quot;pesten_leid_plot&quot;   = &quot;Bullying S&quot;,
+  &quot;int_col_plot&quot;       = &quot;Intimidation C&quot;,
+  &quot;int_leid_plot&quot;      = &quot;Intimidation S&quot;,
+  &quot;seks_col_plot&quot;      = &quot;Unwanted sexual attention C&quot;,
+  &quot;seks_leid_plot&quot;     = &quot;Unwanted sexual attention S&quot;,
+  &quot;gew_col_plot&quot;       = &quot;Violence C&quot;,
+  &quot;gew_leid_plot&quot;      = &quot;Violence S&quot;,
+  &quot;conflict_col_plot&quot;  = &quot;Conflict C&quot;,
+  &quot;conflict_leid_plot&quot; = &quot;Conflict S&quot;,
+  &quot;steuncol_plot&quot;      = &quot;Incivility C&quot;,
+  &quot;steunleid_plot&quot;     = &quot;Incivility S&quot;,
+  &quot;psyveil_plot&quot;       = &quot;Psychological unsafety&quot;
+)
+
+ggplot(plot_data9, aes(x = indicator, y = mean_value,
+                       color = class_label, group = class_label)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_x_discrete(labels = indicator_labels) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1),
+                     limits = c(0, 1),
+                     expand = c(0,0)) +
+  scale_color_manual(
+    values = c(
+      &quot;1 (5.91%)&quot;   = &quot;#000000&quot;,
+      &quot;2 (0.81%)&quot;   = &quot;#E69F00&quot;,
+      &quot;3 (0.49%)&quot;   = &quot;#D55E00&quot;,
+      &quot;4 (1.51%)&quot;   = &quot;#F0E442&quot;,
+      &quot;5 (55.17%)&quot;  = &quot;#56B4E9&quot;,
+      &quot;6 (20.54%)&quot;   = &quot;#CC79A7&quot;,
+      &quot;7 (3.87%)&quot;   = &quot;#999999&quot;,
+      &quot;8 (9.99%)&quot;  = &quot;#0072B2&quot;,
+      &quot;9 (1.71%)&quot;   = &quot;#009E73&quot;
+    )
+  ) +
+  labs(x = NULL, y = &quot;Mean score&quot;, color = NULL) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = &quot;bottom&quot;,
+    legend.text = element_text(size = 11)
+  )</code></pre>
+<p><img src="LCA_listwise_files/figure-html/plot9-1.png" width="672" /></p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkxDQV9zY2hhYWwzXzI5OTIzIg0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wMy0xMiINCi0tLQ0KDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGNhY2hlPVRSVUUsIGVjaG8gPSBUUlVFKQ0KYGBgDQoNCg0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCg0KYGBgDQoNCg0KDQpgYGB7ciBrbGlwcHkyMCwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFfQ0Ka2xpcHB5OjprbGlwcHkocG9zaXRpb24gPSBjKCd0b3AnLCAncmlnaHQnKSkNCiNrbGlwcHk6OmtsaXBweShjb2xvciA9ICdkYXJrcmVkJykNCiNrbGlwcHk6OmtsaXBweSh0b29sdGlwX21lc3NhZ2UgPSAnQ2xpY2sgdG8gY29weScsIHRvb2x0aXBfc3VjY2VzcyA9ICdEb25lJykNCmBgYA0KDQoNCmBgYHtyIGxvYWRpbmcgcGFja2FnZXN9DQpsaWJyYXJ5KCJmb3JtYXRSIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ2dwbG90MiIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoInBvTENBIikNCmxpYnJhcnkoInJlcHJleCIpDQpsaWJyYXJ5KCJ0aWR5ciIpDQpsaWJyYXJ5KCJrbGlwcHkiKQ0KbGlicmFyeSgiZHBseXIiKQ0KbGlicmFyeSgiaGF2ZW4iKQ0KbGlicmFyeSgicHN5Y2giKQ0KYGBgDQoNCg0KPGJyPjxicj4gKipMb2FkaW5nIHRoZSBkYXRhKioNCg0KYGBge3IgbG9hZGluZyBkYXRhLCBjYWNoZT1UUlVFLCBlY2hvPUZBTFNFLCBpbmNsdWRlPVRSVUUsIHJlc3VsdHM9J2hpZGUnLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KTkVBMjAyMiA8LSByZWFkUkRTKCJkYXRhL3Byb2Nlc3NlZC9ORUExMDA5LnJkcyIpDQphdHRhY2goTkVBMjAyMikNCnNldC5zZWVkKDEyMykNCmBgYA0KDQojIExhdGVudCBjbGFzcyBhbmFseXNpcw0KDQoNCmBgYHtyIGRhdGEgaXRlbXMsIGNhY2hlPVRSVUUsIHdhcm5pbmc9RkFMU0V9DQpkYXRhX20gPC0gZGF0YS5mcmFtZShwZXN0ZW5fY29sLCBwZXN0ZW5fbGVpZCwgaW50aW1pZGF0aW9uX2NvbCwgaW50aW1pZGF0aW9uX2xlaWQsIGdld2VsZF9jb2wsIGdld2VsZF9sZWlkLCBzZWtzX2NvbCwgc2Vrc19sZWlkLCBjb25mbGljdF9jb2wsIGNvbmZsaWN0X2xlaWQsIHN0ZXVubGVpZF9SUiwgc3RldW5jb2xfUlIsIHBzeXZlaWxfUlIpDQoNCml0ZW1zX20gPC0gY2JpbmQocGVzdGVuX2NvbCwgcGVzdGVuX2xlaWQsIGludGltaWRhdGlvbl9jb2wsIGludGltaWRhdGlvbl9sZWlkLCBnZXdlbGRfY29sLCBnZXdlbGRfbGVpZCwgc2Vrc19jb2wsIHNla3NfbGVpZCwgY29uZmxpY3RfY29sLCBjb25mbGljdF9sZWlkLCBzdGV1bmxlaWRfUlIsIHN0ZXVuY29sX1JSLCBwc3l2ZWlsX1JSKSB+IDENCmBgYA0KPGJyPjxicj4gVmFyaWFiZWxlbjoNCg0KPGJyPjxicj4gUGVzdGVuX2NvbDogKipCdWxseWluZyBjb3dvcmtlcnMuKiogKDEpIG5vLCBuZXZlciAoMikgYSBmZXcgdGltZXMgKDMpIG9mdGVuICg0KSB2ZXJ5IG9mdGVuDQo8YnI+PGJyPiBQZXN0ZW5fbGVpZDogKipCdWxseWluZyBzdXBlcnZpc29ycy4qKiAoMSkgbm8sIG5ldmVyICgyKSBhIGZldyB0aW1lcyAoMykgb2Z0ZW4gKDQpIHZlcnkgb2Z0ZW4NCjxicj48YnI+IEludGltaWRhdGlvbl9jb2w6ICoqSW50aW1pZGF0aW9uIGNvd29ya2Vycy4qKiAoMSkgbm8sIG5ldmVyICgyKSBhIGZldyB0aW1lcyAoMykgb2Z0ZW4gKDQpIHZlcnkgb2Z0ZW4NCjxicj48YnI+IEludGltaWRhdGlvbl9sZWlkOiAqSW50aW1pZGF0aW9uIHN1cGVydmlzb3JzLiogKDEpIG5vLCBuZXZlciAoMikgYSBmZXcgdGltZXMgKDMpIG9mdGVuICg0KSB2ZXJ5IG9mdGVuDQo8YnI+PGJyPiBHZXdlbGRfY29sOiAqKlBoeXNpY2FsIHZpb2xlbmNlIGNvd29ya2Vycy4qKiAoMSkgbm8sIG5ldmVyICgyKSBhIGZldyB0aW1lcyAoMykgb2Z0ZW4gKDQpIHZlcnkgb2Z0ZW4NCjxicj48YnI+IEdld2VsZF9sZWlkOiAqKlBoeXNpY2FsIHZpb2xlbmNlIHN1cGVydmlzb3JzLioqICgxKSBubywgbmV2ZXIgKDIpIGEgZmV3IHRpbWVzICgzKSBvZnRlbiAoNCkgdmVyeSBvZnRlbg0KPGJyPjxicj4gU2Vrc19jb2w6ICoqVW53YW50ZWQgc2V4dWFsIGF0dGVudGlvbiBjb3dvcmtlcnMuKiogKDEpIG5vLCBuZXZlciAoMikgYSBmZXcgdGltZXMgKDMpIG9mdGVuICg0KSB2ZXJ5IG9mdGVuDQo8YnI+PGJyPiBTZWtzX2xlaWQ6ICoqVW53YW50ZWQgc2V4dWFsIGF0dGVudGlvbiBzdXBlcnZpc29ycy4qKiAoMSkgbm8sIG5ldmVyICgyKSBhIGZldyB0aW1lcyAoMykgb2Z0ZW4gKDQpIHZlcnkgb2Z0ZW4NCjxicj48YnI+IENvbmZsaWN0X2NvbDogKipDb25mbGljdCBjb3dvcmtlcnMuKiogKDEpIG5vICgyKSB5ZXMsIHNob3J0LXRlcm0gKDMpIHllcywgbG9uZy10ZXJtDQo8YnI+PGJyPiBDb25mbGljdF9sZWlkOiAqKkNvbmZsaWN0IHN1cGVydmlzb3JzLioqICgxKSBubyAoMikgeWVzLCBzaG9ydC10ZXJtICgzKSB5ZXMsIGxvbmctdGVybQ0KPGJyPjxicj4gU3RldW5sZWlkX1JSOiAqKk15IHN1cGVydmlzb3IgcGF5cyBhdHRlbnRpb24gdG8gd2hhdCBJIHNheS4qKiAqKk15IHN1cGVydmlzb3IgcGF5cyBhdHRlbnRpb24gdG8gdGhlIHdlbGwtYmVpbmcgb2YgdGhlIHN0YWZmLioqIE1lYW4gc2NvcmUgb2YgdGhlIHR3byBpdGVtcywgcm91bmRlZC4gKDEpIGZ1bGx5IGFncmVlICgyKSBhZ3JlZSAoMykgZGlzYWdyZWUgKDQpIGZ1bGx5IGRpc2FncmVlDQo8YnI+PGJyPiBTdGV1bmNvbF9SUjogKipNeSBjby13b3JrZXJzIHRha2UgcGVyc29uYWwgaW50ZXJlc3QgaW4gbWUuKiogKipNeSBjby13b3JrZXJzIGFyZSBmcmllbmRseS4qKiBNZWFuIHNjb3JlIG9mIHRoZSB0d28gaXRlbXMsIHJvdW5kZWQuICgxKSBmdWxseSBhZ3JlZSAoMikgYWdyZWUgKDMpIGRpc2FncmVlICg0KSBmdWxseSBkaXNhZ3JlZQ0KPGJyPjxicj4gUHN5dmVpbF9SUjogKipBdCBteSB3b3JrcGxhY2UgaXQgaXMgcG9zc2libGUgdG8gcmFpc2UgZGlmZmljdWx0IHF1ZXN0aW9ucy4qKiAqKkF0IG15IHdvcmtwbGFjZSBpdCBpcyBlYXN5IHRvIGFzayBmb3IgaGVscC4qKiAqKkF0IG15IHdvcmtwbGFjZSBpdCBpcyBva2F5IHRvIG1ha2UgYSBtaXN0YWtlLioqIE1lYW4gc2NvcmUgb2YgdGhlIHRocmVlIGl0ZW1zLCByb3VuZGVkLiAoMSkgZnVsbHkgYWdyZWUgKDIpIGFncmVlICgzKSBkb24ndCBhZ3JlZSwgZG9uJ3QgZGlzYWdyZWUgKDQpIGRpc2FncmVlICg1KSBmdWxseSBkaXNhZ3JlZQ0KDQojIyBNb2RlbDENCg0KYGBge3IgbW9kZWwxLCBjYWNoZT1UUlVFfQ0KbW9kZWwxX20gPC0gcG9MQ0EoaXRlbXNfbSwgZGF0YV9tLCBuY2xhc3MgPSAxLCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gVFJVRSkNCmBgYA0KDQojIyBNb2RlbDINCg0KYGBge3IgbW9kZWwyLCBjYWNoZT1UUlVFfQ0KbW9kZWwyX20gPC0gcG9MQ0EoaXRlbXNfbSwgZGF0YV9tLCBuY2xhc3MgPSAyLCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gVFJVRSkNCmBgYA0KDQojIyBNb2RlbDMNCg0KYGBge3IgbW9kZWwzLCBjYWNoZT1UUlVFfQ0KbW9kZWwzX20gPC0gcG9MQ0EoaXRlbXNfbSwgZGF0YV9tLCBuY2xhc3MgPSAzLCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gVFJVRSkNCmBgYA0KDQojIyBNb2RlbDQNCg0KYGBge3IgbW9kZWw0LCBjYWNoZT1UUlVFfQ0KbW9kZWw0X20gPC0gcG9MQ0EoaXRlbXNfbSwgZGF0YV9tLCBuY2xhc3MgPSA0LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gVFJVRSkNCmBgYA0KDQojIyBNb2RlbDUNCg0KYGBge3IgbW9kZWw1LCBjYWNoZT1UUlVFfQ0KbW9kZWw1X20gPC0gcG9MQ0EoaXRlbXNfbSwgZGF0YV9tLCBuY2xhc3MgPSA1LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gVFJVRSkNCmBgYA0KDQojIyBNb2RlbDYNCg0KYGBge3IgbW9kZWw2LCBjYWNoZT1UUlVFfQ0KbW9kZWw2X20gPC0gcG9MQ0EoaXRlbXNfbSwgZGF0YV9tLCBuY2xhc3MgPSA2LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gVFJVRSkNCmBgYA0KDQojIyBNb2RlbDcNCg0KYGBge3IgbW9kZWw3LCBjYWNoZT1UUlVFfQ0KbW9kZWw3X20gPC0gcG9MQ0EoaXRlbXNfbSwgZGF0YV9tLCBuY2xhc3MgPSA3LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gVFJVRSkNCmBgYA0KDQojIyBNb2RlbDgNCg0KYGBge3IgbW9kZWw4LCBjYWNoZT1UUlVFfQ0KbW9kZWw4X20gPC0gcG9MQ0EoaXRlbXNfbSwgZGF0YV9tLCBuY2xhc3MgPSA4LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gVFJVRSkNCmBgYA0KDQojIyBNb2RlbDkNCg0KYGBge3IgbW9kZWw5LCBjYWNoZT1UUlVFfQ0KbW9kZWw5X20gPC0gcG9MQ0EoaXRlbXNfbSwgZGF0YV9tLCBuY2xhc3MgPSA5LCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gVFJVRSkNCmBgYA0KDQojIyBNb2RlbDEwDQoNCmBgYHtyIG1vZGVsMTAsIGNhY2hlPVRSVUV9DQptb2RlbDEwX20gPC0gcG9MQ0EoaXRlbXNfbSwgZGF0YV9tLCBuY2xhc3MgPSAxMCwgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IFRSVUUpDQpgYGANCg0KIyMgTW9kZWwxMQ0KDQpgYGB7ciBtb2RlbDExLCBjYWNoZT1UUlVFfQ0KbW9kZWwxMV9tIDwtIHBvTENBKGl0ZW1zX20sIGRhdGFfbSwgbmNsYXNzID0gMTEsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBUUlVFKQ0KYGBgDQoNCiMjIE1vZGVsMTINCg0KYGBge3IgbW9kZWwxMiwgY2FjaGU9VFJVRX0NCm1vZGVsMTJfbSA8LSBwb0xDQShpdGVtc19tLCBkYXRhX20sIG5jbGFzcyA9IDEyLCBtYXhpdGVyID0gNTAwMCwgbnJlcCA9IDEwLCBncmFwaHM9RkFMU0UsIG5hLnJtID0gVFJVRSkNCmBgYA0KDQojIyBNb2RlbDEzDQoNCmBgYHtyIG1vZGVsMTMsIGNhY2hlPVRSVUV9DQptb2RlbDEzX20gPC0gcG9MQ0EoaXRlbXNfbSwgZGF0YV9tLCBuY2xhc3MgPSAxMywgbWF4aXRlciA9IDUwMDAsIG5yZXAgPSAxMCwgZ3JhcGhzPUZBTFNFLCBuYS5ybSA9IFRSVUUpDQpgYGANCg0KIyMgTW9kZWwxNA0KDQpgYGB7ciBtb2RlbDE0LCBjYWNoZT1UUlVFfQ0KbW9kZWwxNF9tIDwtIHBvTENBKGl0ZW1zX20sIGRhdGFfbSwgbmNsYXNzID0gMTQsIG1heGl0ZXIgPSA1MDAwLCBucmVwID0gMTAsIGdyYXBocz1GQUxTRSwgbmEucm0gPSBUUlVFKQ0KYGBgDQoNCiMgU2F2aW5nIHRoZSBtb2RlbHMNCg0KYGBge3Igc2F2aW5nIG1vZGVsc30NCm1vZGVsM19tcHJlZCA8LSBtb2RlbDNfbSRwcmVkY2xhc3MNCm1vZGVsM19tcG9zdCA8LSBtb2RlbDNfbSRwb3N0ZXJpb3INCg0KbHBvc3RlcmlvcnNtb2RlbDNfbSA8LSBhcy5saXN0KGFzLmRhdGEuZnJhbWUobW9kZWwzX21wb3N0KSkNCg0KcG1vZGVsM19tdjEgPC0gbHBvc3RlcmlvcnNtb2RlbDNfbVtbMV1dDQpwbW9kZWwzX212MiA8LSBscG9zdGVyaW9yc21vZGVsM19tW1syXV0NCnBtb2RlbDNfbXYzIDwtIGxwb3N0ZXJpb3JzbW9kZWwzX21bWzNdXQ0KDQptb2RlbDRfbXByZWQgPC0gbW9kZWw0X20kcHJlZGNsYXNzDQptb2RlbDRfbXBvc3QgPC0gbW9kZWw0X20kcG9zdGVyaW9yDQoNCmxwb3N0ZXJpb3JzbW9kZWw0X20gPC0gYXMubGlzdChhcy5kYXRhLmZyYW1lKG1vZGVsNF9tcG9zdCkpDQoNCnBtb2RlbDRfbXYxIDwtIGxwb3N0ZXJpb3JzbW9kZWw0X21bWzFdXQ0KcG1vZGVsNF9tdjIgPC0gbHBvc3RlcmlvcnNtb2RlbDRfbVtbMl1dDQpwbW9kZWw0X212MyA8LSBscG9zdGVyaW9yc21vZGVsNF9tW1szXV0NCnBtb2RlbDRfbXY0IDwtIGxwb3N0ZXJpb3JzbW9kZWw0X21bWzRdXQ0KDQoNCm1vZGVsNV9tcHJlZCA8LSBtb2RlbDVfbSRwcmVkY2xhc3MNCm1vZGVsNV9tcG9zdCA8LSBtb2RlbDVfbSRwb3N0ZXJpb3INCg0KbHBvc3RlcmlvcnNtb2RlbDVfbSA8LSBhcy5saXN0KGFzLmRhdGEuZnJhbWUobW9kZWw1X21wb3N0KSkNCg0KcG1vZGVsNV9tdjEgPC0gbHBvc3RlcmlvcnNtb2RlbDVfbVtbMV1dDQpwbW9kZWw1X212MiA8LSBscG9zdGVyaW9yc21vZGVsNV9tW1syXV0NCnBtb2RlbDVfbXYzIDwtIGxwb3N0ZXJpb3JzbW9kZWw1X21bWzNdXQ0KcG1vZGVsNV9tdjQgPC0gbHBvc3RlcmlvcnNtb2RlbDVfbVtbNF1dDQpwbW9kZWw1X212NSA8LSBscG9zdGVyaW9yc21vZGVsNV9tW1s1XV0NCg0KbW9kZWw2X21wcmVkIDwtIG1vZGVsNl9tJHByZWRjbGFzcw0KbW9kZWw2X21wb3N0IDwtIG1vZGVsNl9tJHBvc3Rlcmlvcg0KDQpscG9zdGVyaW9yc21vZGVsNl9tIDwtIGFzLmxpc3QoYXMuZGF0YS5mcmFtZShtb2RlbDZfbXBvc3QpKQ0KDQpwbW9kZWw2X212MSA8LSBscG9zdGVyaW9yc21vZGVsNl9tW1sxXV0NCnBtb2RlbDZfbXYyIDwtIGxwb3N0ZXJpb3JzbW9kZWw2X21bWzJdXQ0KcG1vZGVsNl9tdjMgPC0gbHBvc3RlcmlvcnNtb2RlbDZfbVtbM11dDQpwbW9kZWw2X212NCA8LSBscG9zdGVyaW9yc21vZGVsNl9tW1s0XV0NCnBtb2RlbDZfbXY1IDwtIGxwb3N0ZXJpb3JzbW9kZWw2X21bWzVdXQ0KcG1vZGVsNl9tdjYgPC0gbHBvc3RlcmlvcnNtb2RlbDZfbVtbNl1dDQoNCm1vZGVsN19tcHJlZCA8LSBtb2RlbDdfbSRwcmVkY2xhc3MNCm1vZGVsN19tcG9zdCA8LSBtb2RlbDdfbSRwb3N0ZXJpb3INCg0KbHBvc3RlcmlvcnNtb2RlbDdfbSA8LSBhcy5saXN0KGFzLmRhdGEuZnJhbWUobW9kZWw3X21wb3N0KSkNCg0KcG1vZGVsN19tdjEgPC0gbHBvc3RlcmlvcnNtb2RlbDdfbVtbMV1dDQpwbW9kZWw3X212MiA8LSBscG9zdGVyaW9yc21vZGVsN19tW1syXV0NCnBtb2RlbDdfbXYzIDwtIGxwb3N0ZXJpb3JzbW9kZWw3X21bWzNdXQ0KcG1vZGVsN19tdjQgPC0gbHBvc3RlcmlvcnNtb2RlbDdfbVtbNF1dDQpwbW9kZWw3X212NSA8LSBscG9zdGVyaW9yc21vZGVsN19tW1s1XV0NCnBtb2RlbDdfbXY2IDwtIGxwb3N0ZXJpb3JzbW9kZWw3X21bWzZdXQ0KcG1vZGVsN19tdjcgPC0gbHBvc3RlcmlvcnNtb2RlbDdfbVtbN11dDQoNCm1vZGVsOF9tcHJlZCA8LSBtb2RlbDhfbSRwcmVkY2xhc3MNCm1vZGVsOF9tcG9zdCA8LSBtb2RlbDhfbSRwb3N0ZXJpb3INCg0KbHBvc3RlcmlvcnNtb2RlbDhfbSA8LSBhcy5saXN0KGFzLmRhdGEuZnJhbWUobW9kZWw4X21wb3N0KSkNCg0KcG1vZGVsOF9tdjEgPC0gbHBvc3RlcmlvcnNtb2RlbDhfbVtbMV1dDQpwbW9kZWw4X212MiA8LSBscG9zdGVyaW9yc21vZGVsOF9tW1syXV0NCnBtb2RlbDhfbXYzIDwtIGxwb3N0ZXJpb3JzbW9kZWw4X21bWzNdXQ0KcG1vZGVsOF9tdjQgPC0gbHBvc3RlcmlvcnNtb2RlbDhfbVtbNF1dDQpwbW9kZWw4X212NSA8LSBscG9zdGVyaW9yc21vZGVsOF9tW1s1XV0NCnBtb2RlbDhfbXY2IDwtIGxwb3N0ZXJpb3JzbW9kZWw4X21bWzZdXQ0KcG1vZGVsOF9tdjcgPC0gbHBvc3RlcmlvcnNtb2RlbDhfbVtbN11dDQpwbW9kZWw4X212OCA8LSBscG9zdGVyaW9yc21vZGVsOF9tW1s4XV0NCg0KbW9kZWw5X21wcmVkIDwtIG1vZGVsOV9tJHByZWRjbGFzcw0KbW9kZWw5X21wb3N0IDwtIG1vZGVsOV9tJHBvc3Rlcmlvcg0KDQpscG9zdGVyaW9yc21vZGVsOV9tIDwtIGFzLmxpc3QoYXMuZGF0YS5mcmFtZShtb2RlbDlfbXBvc3QpKQ0KDQpwbW9kZWw5X212MSA8LSBscG9zdGVyaW9yc21vZGVsOV9tW1sxXV0NCnBtb2RlbDlfbXYyIDwtIGxwb3N0ZXJpb3JzbW9kZWw5X21bWzJdXQ0KcG1vZGVsOV9tdjMgPC0gbHBvc3RlcmlvcnNtb2RlbDlfbVtbM11dDQpwbW9kZWw5X212NCA8LSBscG9zdGVyaW9yc21vZGVsOV9tW1s0XV0NCnBtb2RlbDlfbXY1IDwtIGxwb3N0ZXJpb3JzbW9kZWw5X21bWzVdXQ0KcG1vZGVsOV9tdjYgPC0gbHBvc3RlcmlvcnNtb2RlbDlfbVtbNl1dDQpwbW9kZWw5X212NyA8LSBscG9zdGVyaW9yc21vZGVsOV9tW1s3XV0NCnBtb2RlbDlfbXY4IDwtIGxwb3N0ZXJpb3JzbW9kZWw5X21bWzhdXQ0KcG1vZGVsOV9tdjkgPC0gbHBvc3RlcmlvcnNtb2RlbDlfbVtbOV1dDQoNCm1vZGVsMTBfbXByZWQgPC0gbW9kZWwxMF9tJHByZWRjbGFzcw0KbW9kZWwxMF9tcG9zdCA8LSBtb2RlbDEwX20kcG9zdGVyaW9yDQoNCmxwb3N0ZXJpb3JzbW9kZWwxMF9tIDwtIGFzLmxpc3QoYXMuZGF0YS5mcmFtZShtb2RlbDEwX21wb3N0KSkNCg0KcG1vZGVsMTBfbXYxIDwtIGxwb3N0ZXJpb3JzbW9kZWwxMF9tW1sxXV0NCnBtb2RlbDEwX212MiA8LSBscG9zdGVyaW9yc21vZGVsMTBfbVtbMl1dDQpwbW9kZWwxMF9tdjMgPC0gbHBvc3RlcmlvcnNtb2RlbDEwX21bWzNdXQ0KcG1vZGVsMTBfbXY0IDwtIGxwb3N0ZXJpb3JzbW9kZWwxMF9tW1s0XV0NCnBtb2RlbDEwX212NSA8LSBscG9zdGVyaW9yc21vZGVsMTBfbVtbNV1dDQpwbW9kZWwxMF9tdjYgPC0gbHBvc3RlcmlvcnNtb2RlbDEwX21bWzZdXQ0KcG1vZGVsMTBfbXY3IDwtIGxwb3N0ZXJpb3JzbW9kZWwxMF9tW1s3XV0NCnBtb2RlbDEwX212OCA8LSBscG9zdGVyaW9yc21vZGVsMTBfbVtbOF1dDQpwbW9kZWwxMF9tdjkgPC0gbHBvc3RlcmlvcnNtb2RlbDEwX21bWzldXQ0KcG1vZGVsMTBfbXYxMCA8LSBscG9zdGVyaW9yc21vZGVsMTBfbVtbMTBdXQ0KDQptb2RlbDExX21wcmVkIDwtIG1vZGVsMTFfbSRwcmVkY2xhc3MNCm1vZGVsMTFfbXBvc3QgPC0gbW9kZWwxMV9tJHBvc3Rlcmlvcg0KDQpscG9zdGVyaW9yc21vZGVsMTFfbSA8LSBhcy5saXN0KGFzLmRhdGEuZnJhbWUobW9kZWwxMV9tcG9zdCkpDQoNCnBtb2RlbDExX212MSA8LSBscG9zdGVyaW9yc21vZGVsMTFfbVtbMV1dDQpwbW9kZWwxMV9tdjIgPC0gbHBvc3RlcmlvcnNtb2RlbDExX21bWzJdXQ0KcG1vZGVsMTFfbXYzIDwtIGxwb3N0ZXJpb3JzbW9kZWwxMV9tW1szXV0NCnBtb2RlbDExX212NCA8LSBscG9zdGVyaW9yc21vZGVsMTFfbVtbNF1dDQpwbW9kZWwxMV9tdjUgPC0gbHBvc3RlcmlvcnNtb2RlbDExX21bWzVdXQ0KcG1vZGVsMTFfbXY2IDwtIGxwb3N0ZXJpb3JzbW9kZWwxMV9tW1s2XV0NCnBtb2RlbDExX212NyA8LSBscG9zdGVyaW9yc21vZGVsMTFfbVtbN11dDQpwbW9kZWwxMV9tdjggPC0gbHBvc3RlcmlvcnNtb2RlbDExX21bWzhdXQ0KcG1vZGVsMTFfbXY5IDwtIGxwb3N0ZXJpb3JzbW9kZWwxMV9tW1s5XV0NCnBtb2RlbDExX212MTAgPC0gbHBvc3RlcmlvcnNtb2RlbDExX21bWzEwXV0NCnBtb2RlbDExX212MTEgPC0gbHBvc3RlcmlvcnNtb2RlbDExX21bWzExXV0NCg0KbW9kZWwxMl9tcHJlZCA8LSBtb2RlbDEyX20kcHJlZGNsYXNzDQptb2RlbDEyX21wb3N0IDwtIG1vZGVsMTJfbSRwb3N0ZXJpb3INCg0KbHBvc3RlcmlvcnNtb2RlbDEyX20gPC0gYXMubGlzdChhcy5kYXRhLmZyYW1lKG1vZGVsMTJfbXBvc3QpKQ0KDQpwbW9kZWwxMl9tdjEgPC0gbHBvc3RlcmlvcnNtb2RlbDEyX21bWzFdXQ0KcG1vZGVsMTJfbXYyIDwtIGxwb3N0ZXJpb3JzbW9kZWwxMl9tW1syXV0NCnBtb2RlbDEyX212MyA8LSBscG9zdGVyaW9yc21vZGVsMTJfbVtbM11dDQpwbW9kZWwxMl9tdjQgPC0gbHBvc3RlcmlvcnNtb2RlbDEyX21bWzRdXQ0KcG1vZGVsMTJfbXY1IDwtIGxwb3N0ZXJpb3JzbW9kZWwxMl9tW1s1XV0NCnBtb2RlbDEyX212NiA8LSBscG9zdGVyaW9yc21vZGVsMTJfbVtbNl1dDQpwbW9kZWwxMl9tdjcgPC0gbHBvc3RlcmlvcnNtb2RlbDEyX21bWzddXQ0KcG1vZGVsMTJfbXY4IDwtIGxwb3N0ZXJpb3JzbW9kZWwxMl9tW1s4XV0NCnBtb2RlbDEyX212OSA8LSBscG9zdGVyaW9yc21vZGVsMTJfbVtbOV1dDQpwbW9kZWwxMl9tdjEwIDwtIGxwb3N0ZXJpb3JzbW9kZWwxMl9tW1sxMF1dDQpwbW9kZWwxMl9tdjExIDwtIGxwb3N0ZXJpb3JzbW9kZWwxMl9tW1sxMV1dDQpwbW9kZWwxMl9tdjEyIDwtIGxwb3N0ZXJpb3JzbW9kZWwxMl9tW1sxMl1dDQpgYGANCg0KYGBge3Igc2F2aW5nIG1vZGVsczJ9DQpNb2RlbHNfbSA8LSBjYmluZCAodm9sZ251bW0sIG1vZGVsM19tcHJlZAksDQogICAgICAgICAgICAgICAgIHBtb2RlbDNfbXYxCSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsM19tdjIJLA0KICAgICAgICAgICAgICAgICBwbW9kZWwzX212MwksDQogICAgICAgICAgICAgICAgIG1vZGVsNF9tcHJlZAksDQogICAgICAgICAgICAgICAgIHBtb2RlbDRfbXYxCSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsNF9tdjIJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw0X212MwksDQogICAgICAgICAgICAgICAgIHBtb2RlbDRfbXY0CSwNCiAgICAgICAgICAgICAgICAgbW9kZWw1X21wcmVkCSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsNV9tdjEJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw1X212MgksDQogICAgICAgICAgICAgICAgIHBtb2RlbDVfbXYzCSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsNV9tdjQJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw1X212NQksDQogICAgICAgICAgICAgICAgIG1vZGVsNl9tcHJlZAksDQogICAgICAgICAgICAgICAgIHBtb2RlbDZfbXYxCSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsNl9tdjIJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw2X212MwksDQogICAgICAgICAgICAgICAgIHBtb2RlbDZfbXY0CSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsNl9tdjUJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw2X212NgksDQogICAgICAgICAgICAgICAgIG1vZGVsN19tcHJlZAksDQogICAgICAgICAgICAgICAgIHBtb2RlbDdfbXYxCSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsN19tdjIJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw3X212MwksDQogICAgICAgICAgICAgICAgIHBtb2RlbDdfbXY0CSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsN19tdjUJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw3X212NgksDQogICAgICAgICAgICAgICAgIHBtb2RlbDdfbXY3CSwNCiAgICAgICAgICAgICAgICAgbW9kZWw4X21wcmVkCSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsOF9tdjEJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw4X212MgksDQogICAgICAgICAgICAgICAgIHBtb2RlbDhfbXYzCSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsOF9tdjQJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw4X212NQksDQogICAgICAgICAgICAgICAgIHBtb2RlbDhfbXY2CSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsOF9tdjcJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw4X212OCAsDQogICAgICAgICAgICAgICAgIG1vZGVsOV9tcHJlZAksDQogICAgICAgICAgICAgICAgIHBtb2RlbDlfbXYxCSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsOV9tdjIJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw5X212MwksDQogICAgICAgICAgICAgICAgIHBtb2RlbDlfbXY0CSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsOV9tdjUJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw5X212NgksDQogICAgICAgICAgICAgICAgIHBtb2RlbDlfbXY3CSwNCiAgICAgICAgICAgICAgICAgcG1vZGVsOV9tdjgJLA0KICAgICAgICAgICAgICAgICBwbW9kZWw5X212OSAsDQogICAgICAgICAgICAgICAgIG1vZGVsMTBfbXByZWQJLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMF9tdjEgLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMF9tdjIgLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMF9tdjMgLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMF9tdjQgLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMF9tdjUgLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMF9tdjYgLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMF9tdjcgLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMF9tdjggLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMF9tdjkgLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMF9tdjEwICwNCiAgICAgICAgICAgICAgICAgbW9kZWwxMV9tcHJlZAksDQogICAgICAgICAgICAgICAgIHBtb2RlbDExX212MSAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDExX212MiAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDExX212MyAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDExX212NCAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDExX212NSAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDExX212NiAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDExX212NyAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDExX212OCAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDExX212OSAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDExX212MTAgLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMV9tdjExICwNCiAgICAgICAgICAgICAgICAgbW9kZWwxMl9tcHJlZAksDQogICAgICAgICAgICAgICAgIHBtb2RlbDEyX212MSAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDEyX212MiAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDEyX212MyAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDEyX212NCAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDEyX212NSAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDEyX212NiAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDEyX212NyAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDEyX212OCAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDEyX212OSAsDQogICAgICAgICAgICAgICAgIHBtb2RlbDEyX212MTAgLA0KICAgICAgICAgICAgICAgICBwbW9kZWwxMl9tdjExICwNCiAgICAgICAgICAgICAgICAgcG1vZGVsMTJfbXYxMiAgKQ0KYGBgDQoNCg0KIyBDbGFzcyBzZXBhcmF0aW9uDQoNCmBgYHtyIHBvc3QgcHJvYn0NCm1heF9wcm9icyA8LSBhcHBseShtb2RlbDdfbXBvc3QsIDEsIG1heCkNCg0KbWVhbihtYXhfcHJvYnMpDQptZWRpYW4obWF4X3Byb2JzKQ0KbWluKG1heF9wcm9icykNCm1heChtYXhfcHJvYnMpDQoNCksgPC0gNw0KDQptZWFuX3Bvc3RlcmlvcnMgPC0gbnVtZXJpYyhLKQ0KDQpmb3IgKGsgaW4gMTpLKSB7DQogIGlkeCA8LSB3aGljaChtb2RlbDdfbXByZWQgPT0gaykNCiAgbWVhbl9wb3N0ZXJpb3JzW2tdIDwtIG1lYW4obW9kZWw3X21wb3N0W2lkeCwga10pDQp9DQoNCm5hbWVzKG1lYW5fcG9zdGVyaW9ycykgPC0gcGFzdGUwKCJDbGFzcyIsIDE6SykNCg0KbWVhbl9wb3N0ZXJpb3JzDQoNCmdncGxvdChkYXRhLmZyYW1lKG1heF9wcm9icyA9IG1heF9wcm9icyksIGFlcyh4ID0gbWF4X3Byb2JzKSkgKw0KICBnZW9tX2hpc3RvZ3JhbShiaW53aWR0aCA9IDAuMDUsIGZpbGwgPSAic3RlZWxibHVlIiwgY29sb3IgPSAid2hpdGUiKSArDQogIGdlb21fdmxpbmUoYWVzKHhpbnRlcmNlcHQgPSBtZWFuKG1heF9wcm9icykpLCANCiAgICAgICAgICAgICBjb2xvciA9ICJyZWQiLCBsaW5ldHlwZSA9ICJkYXNoZWQiLCBsaW5ld2lkdGggPSAxKSArDQogIGxhYnModGl0bGUgPSAiRGlzdHJpYnV0aW9uIG9mIG1heGltdW0gcG9zdGVyaW9yIHByb2JhYmlsaXRpZXMiLA0KICAgICAgIHggPSAiTWF4aW11bSBwb3N0ZXJpb3IgcHJvYmFiaWxpdHkiLA0KICAgICAgIHkgPSAiTnVtYmVyIG9mIHJlc3BvbmRlbnRzIikgKw0KICB0aGVtZV9taW5pbWFsKCkNCmBgYA0KDQoNCg0KYGBge3IgZW50cm9weX0NCnBvTENBLmVudHJvcHkgPC0gZnVuY3Rpb24obW9kZWwpIHsNCiAgUCA8LSBtb2RlbCRwb3N0ZXJpb3INCiAgZW50cm9weSA8LSBzdW0oLVAgKiBsb2coUCksIG5hLnJtPVRSVUUpIC8gKG5yb3coUCkgKiBsb2cobmNvbChQKSkpDQogIHJldHVybigxIC0gZW50cm9weSkNCn0NCnBvTENBLmVudHJvcHkobW9kZWwyX20pDQoNCnBvTENBLmVudHJvcHkgPC0gZnVuY3Rpb24obW9kZWwpIHsNCiAgUCA8LSBtb2RlbCRwb3N0ZXJpb3INCiAgZW50cm9weSA8LSBzdW0oLVAgKiBsb2coUCksIG5hLnJtPVRSVUUpIC8gKG5yb3coUCkgKiBsb2cobmNvbChQKSkpDQogIHJldHVybigxIC0gZW50cm9weSkNCn0NCnBvTENBLmVudHJvcHkobW9kZWwzX20pDQoNCnBvTENBLmVudHJvcHkgPC0gZnVuY3Rpb24obW9kZWwpIHsNCiAgUCA8LSBtb2RlbCRwb3N0ZXJpb3INCiAgZW50cm9weSA8LSBzdW0oLVAgKiBsb2coUCksIG5hLnJtPVRSVUUpIC8gKG5yb3coUCkgKiBsb2cobmNvbChQKSkpDQogIHJldHVybigxIC0gZW50cm9weSkNCn0NCnBvTENBLmVudHJvcHkobW9kZWw0X20pDQoNCnBvTENBLmVudHJvcHkgPC0gZnVuY3Rpb24obW9kZWwpIHsNCiAgUCA8LSBtb2RlbCRwb3N0ZXJpb3INCiAgZW50cm9weSA8LSBzdW0oLVAgKiBsb2coUCksIG5hLnJtPVRSVUUpIC8gKG5yb3coUCkgKiBsb2cobmNvbChQKSkpDQogIHJldHVybigxIC0gZW50cm9weSkNCn0NCnBvTENBLmVudHJvcHkobW9kZWw1X20pDQoNCnBvTENBLmVudHJvcHkgPC0gZnVuY3Rpb24obW9kZWwpIHsNCiAgUCA8LSBtb2RlbCRwb3N0ZXJpb3INCiAgZW50cm9weSA8LSBzdW0oLVAgKiBsb2coUCksIG5hLnJtPVRSVUUpIC8gKG5yb3coUCkgKiBsb2cobmNvbChQKSkpDQogIHJldHVybigxIC0gZW50cm9weSkNCn0NCnBvTENBLmVudHJvcHkobW9kZWw2X20pDQoNCnBvTENBLmVudHJvcHkgPC0gZnVuY3Rpb24obW9kZWwpIHsNCiAgUCA8LSBtb2RlbCRwb3N0ZXJpb3INCiAgZW50cm9weSA8LSBzdW0oLVAgKiBsb2coUCksIG5hLnJtPVRSVUUpIC8gKG5yb3coUCkgKiBsb2cobmNvbChQKSkpDQogIHJldHVybigxIC0gZW50cm9weSkNCn0NCnBvTENBLmVudHJvcHkobW9kZWw3X20pDQoNCnBvTENBLmVudHJvcHkgPC0gZnVuY3Rpb24obW9kZWwpIHsNCiAgUCA8LSBtb2RlbCRwb3N0ZXJpb3INCiAgZW50cm9weSA8LSBzdW0oLVAgKiBsb2coUCksIG5hLnJtPVRSVUUpIC8gKG5yb3coUCkgKiBsb2cobmNvbChQKSkpDQogIHJldHVybigxIC0gZW50cm9weSkNCn0NCnBvTENBLmVudHJvcHkobW9kZWw4X20pDQoNCnBvTENBLmVudHJvcHkgPC0gZnVuY3Rpb24obW9kZWwpIHsNCiAgUCA8LSBtb2RlbCRwb3N0ZXJpb3INCiAgZW50cm9weSA8LSBzdW0oLVAgKiBsb2coUCksIG5hLnJtPVRSVUUpIC8gKG5yb3coUCkgKiBsb2cobmNvbChQKSkpDQogIHJldHVybigxIC0gZW50cm9weSkNCn0NCnBvTENBLmVudHJvcHkobW9kZWw5X20pDQoNCnBvTENBLmVudHJvcHkgPC0gZnVuY3Rpb24obW9kZWwpIHsNCiAgUCA8LSBtb2RlbCRwb3N0ZXJpb3INCiAgZW50cm9weSA8LSBzdW0oLVAgKiBsb2coUCksIG5hLnJtPVRSVUUpIC8gKG5yb3coUCkgKiBsb2cobmNvbChQKSkpDQogIHJldHVybigxIC0gZW50cm9weSkNCn0NCnBvTENBLmVudHJvcHkobW9kZWwxMF9tKQ0KDQpwb0xDQS5lbnRyb3B5IDwtIGZ1bmN0aW9uKG1vZGVsKSB7DQogIFAgPC0gbW9kZWwkcG9zdGVyaW9yDQogIGVudHJvcHkgPC0gc3VtKC1QICogbG9nKFApLCBuYS5ybT1UUlVFKSAvIChucm93KFApICogbG9nKG5jb2woUCkpKQ0KICByZXR1cm4oMSAtIGVudHJvcHkpDQp9DQpwb0xDQS5lbnRyb3B5KG1vZGVsMTFfbSkNCg0KcG9MQ0EuZW50cm9weSA8LSBmdW5jdGlvbihtb2RlbCkgew0KICBQIDwtIG1vZGVsJHBvc3Rlcmlvcg0KICBlbnRyb3B5IDwtIHN1bSgtUCAqIGxvZyhQKSwgbmEucm09VFJVRSkgLyAobnJvdyhQKSAqIGxvZyhuY29sKFApKSkNCiAgcmV0dXJuKDEgLSBlbnRyb3B5KQ0KfQ0KcG9MQ0EuZW50cm9weShtb2RlbDEyX20pDQpgYGANCg0KDQojIFBsb3RzDQoNCg0KDQpgYGB7ciBwbG90amVzfQ0KI1JlY29kaW5nIHZhcmlhYmxlcyBvbiBzY2FsZSBmcm9tIDAgdG8gMQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShwZXN0ZW5fY29sX3Bsb3QgPSByZWNvZGUocGVzdGVuX2NvbCwgYDFgID0gMCwgYDJgID0gMC4zMywgYDNgID0gMC42NywgYDRgID0gMSkpDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHBlc3Rlbl9sZWlkX3Bsb3QgPSByZWNvZGUocGVzdGVuX2xlaWQsIGAxYCA9IDAsIGAyYCA9IDAuMzMsIGAzYCA9IDAuNjcsIGA0YCA9IDEpKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShpbnRfY29sX3Bsb3QgPSByZWNvZGUoaW50aW1pZGF0aW9uX2NvbCwgYDFgID0gMCwgYDJgID0gMC4zMywgYDNgID0gMC42NywgYDRgID0gMSkpDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGludF9sZWlkX3Bsb3QgPSByZWNvZGUoaW50aW1pZGF0aW9uX2xlaWQsIGAxYCA9IDAsIGAyYCA9IDAuMzMsIGAzYCA9IDAuNjcsIGA0YCA9IDEpKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShnZXdfY29sX3Bsb3QgPSByZWNvZGUoZ2V3ZWxkX2NvbCwgYDFgID0gMCwgYDJgID0gMC4zMywgYDNgID0gMC42NywgYDRgID0gMSkpDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGdld19sZWlkX3Bsb3QgPSByZWNvZGUoZ2V3ZWxkX2xlaWQsIGAxYCA9IDAsIGAyYCA9IDAuMzMsIGAzYCA9IDAuNjcsIGA0YCA9IDEpKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzZWtzX2NvbF9wbG90ID0gcmVjb2RlKHNla3NfY29sLCBgMWAgPSAwLCBgMmAgPSAwLjMzLCBgM2AgPSAwLjY3LCBgNGAgPSAxKSkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc2Vrc19sZWlkX3Bsb3QgPSByZWNvZGUoc2Vrc19sZWlkLCBgMWAgPSAwLCBgMmAgPSAwLjMzLCBgM2AgPSAwLjY3LCBgNGAgPSAxKSkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoY29uZmxpY3RfY29sX3Bsb3QgPSByZWNvZGUoY29uZmxpY3RfY29sLCBgMWAgPSAwLCBgMmAgPSAwLjUwLCBgM2AgPSAxKSkNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoY29uZmxpY3RfbGVpZF9wbG90ID0gcmVjb2RlKGNvbmZsaWN0X2xlaWQsIGAxYCA9IDAsIGAyYCA9IDAuNTAsIGAzYCA9IDEpKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzdGV1bmxlaWRfcGxvdCA9IChzdGV1bmxlaWRfUlIgLSAxKSAvIDMpDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHN0ZXVuY29sX3Bsb3QgPSAoc3RldW5jb2xfUlIgLSAxKSAvIDMpDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHBzeXZlaWxfcGxvdCA9IChwc3l2ZWlsX1JSIC0gMSkgLyA0KQ0KDQpgYGANCg0KDQojIyBNb2RlbDQNCg0KDQpgYGB7ciBwbG90NH0NCg0KdmFycyA8LSBjKCJwZXN0ZW5fY29sX3Bsb3QiLCAicGVzdGVuX2xlaWRfcGxvdCIsICJpbnRfY29sX3Bsb3QiLCAiaW50X2xlaWRfcGxvdCIsDQogICAgICAgICAgImdld19jb2xfcGxvdCIsICJnZXdfbGVpZF9wbG90IiwgInNla3NfY29sX3Bsb3QiLCAic2Vrc19sZWlkX3Bsb3QiLA0KICAgICAgICAgICJjb25mbGljdF9jb2xfcGxvdCIsICJjb25mbGljdF9sZWlkX3Bsb3QiLCANCiAgICAgICAgICAic3RldW5jb2xfcGxvdCIsICJzdGV1bmxlaWRfcGxvdCIsICJwc3l2ZWlsX3Bsb3QiKQ0KDQp1c2VkX2Nhc2VzIDwtIGNvbXBsZXRlLmNhc2VzKE5FQTIwMjJbLCB2YXJzXSkNCg0KTkVBMjAyMiRtb2RlbDRfbXByZWQgPC0gTkFfaW50ZWdlcl8NCk5FQTIwMjIkbW9kZWw0X21wcmVkW3VzZWRfY2FzZXNdIDwtIG1vZGVsNF9tJHByZWRjbGFzcw0KDQp0YWJsZShORUEyMDIyJG1vZGVsNF9tcHJlZCwgdXNlTkEgPSAiaWZhbnkiKQ0KDQpwbG90X2RhdGE0IDwtIE5FQTIwMjIgJT4lDQogIGZpbHRlcighaXMubmEobW9kZWw0X21wcmVkKSkgJT4lDQogIHBpdm90X2xvbmdlcihjb2xzID0gYWxsX29mKHZhcnMpLCBuYW1lc190byA9ICJpbmRpY2F0b3IiLCB2YWx1ZXNfdG8gPSAidmFsdWUiKSAlPiUNCiAgZ3JvdXBfYnkobW9kZWw0X21wcmVkLCBpbmRpY2F0b3IpICU+JQ0KICBzdW1tYXJpc2UobWVhbl92YWx1ZSA9IG1lYW4odmFsdWUsIG5hLnJtID0gVFJVRSksIC5ncm91cHMgPSAiZHJvcCIpICU+JQ0KICBtdXRhdGUoDQogICAgaW5kaWNhdG9yICAgPSBmYWN0b3IoaW5kaWNhdG9yLCBsZXZlbHMgPSB2YXJzKSwNCiAgICBjbGFzc19sYWJlbCA9IHJlY29kZShhcy5jaGFyYWN0ZXIobW9kZWw0X21wcmVkKSwgDQogICAgICAgICAgICAgICAgICAgICAgICAgIjEiID0gIjEgKDQuNTglKSIsIA0KICAgICAgICAgICAgICAgICAgICAgICAgICIyIiA9ICIyICgxNy4yNiUpIiwgDQogICAgICAgICAgICAgICAgICAgICAgICAgIjMiID0gIjMgKDU3LjQ4JSkiLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAiNCIgPSAiNCAoMjAuNjklKSIpDQogICkgJT4lDQogIG11dGF0ZShjbGFzc19sYWJlbCA9IGZhY3RvcihjbGFzc19sYWJlbCwNCiAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKCIxICg0LjU4JSkiLCAiMiAoMTcuMjYlKSIsICIzICg1Ny40OCUpIiwgIjQgKDIwLjY5JSkiKSkpDQoNCg0KaW5kaWNhdG9yX2xhYmVscyA8LSBjKA0KICAicGVzdGVuX2NvbF9wbG90IiAgICA9ICJCdWxseWluZyBDIiwNCiAgInBlc3Rlbl9sZWlkX3Bsb3QiICAgPSAiQnVsbHlpbmcgUyIsDQogICJpbnRfY29sX3Bsb3QiICAgICAgID0gIkludGltaWRhdGlvbiBDIiwNCiAgImludF9sZWlkX3Bsb3QiICAgICAgPSAiSW50aW1pZGF0aW9uIFMiLA0KICAic2Vrc19jb2xfcGxvdCIgICAgICA9ICJVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIEMiLA0KICAic2Vrc19sZWlkX3Bsb3QiICAgICA9ICJVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIFMiLA0KICAiZ2V3X2NvbF9wbG90IiAgICAgICA9ICJWaW9sZW5jZSBDIiwNCiAgImdld19sZWlkX3Bsb3QiICAgICAgPSAiVmlvbGVuY2UgUyIsDQogICJjb25mbGljdF9jb2xfcGxvdCIgID0gIkNvbmZsaWN0IEMiLA0KICAiY29uZmxpY3RfbGVpZF9wbG90IiA9ICJDb25mbGljdCBTIiwNCiAgInN0ZXVuY29sX3Bsb3QiICAgICAgPSAiSW5jaXZpbGl0eSBDIiwNCiAgInN0ZXVubGVpZF9wbG90IiAgICAgPSAiSW5jaXZpbGl0eSBTIiwNCiAgInBzeXZlaWxfcGxvdCIgICAgICAgPSAiUHN5Y2hvbG9naWNhbCB1bnNhZmV0eSINCikNCg0KZ2dwbG90KHBsb3RfZGF0YTQsIGFlcyh4ID0gaW5kaWNhdG9yLCB5ID0gbWVhbl92YWx1ZSwNCiAgICAgICAgICAgICAgICAgICAgICBjb2xvciA9IGNsYXNzX2xhYmVsLCBncm91cCA9IGNsYXNzX2xhYmVsKSkgKw0KICBnZW9tX2xpbmUoc2l6ZSA9IDEpICsNCiAgZ2VvbV9wb2ludChzaXplID0gMikgKw0KICBzY2FsZV94X2Rpc2NyZXRlKGxhYmVscyA9IGluZGljYXRvcl9sYWJlbHMpICsNCiAgc2NhbGVfeV9jb250aW51b3VzKGJyZWFrcyA9IHNlcSgwLCAxLCAwLjEpLA0KICAgICAgICAgICAgICAgICAgICAgbGltaXRzID0gYygwLCAxKSwNCiAgICAgICAgICAgICAgICAgICAgIGV4cGFuZCA9IGMoMCwwKSkgKw0KICBzY2FsZV9jb2xvcl9tYW51YWwoDQogICAgdmFsdWVzID0gYygNCiAgICAgICIxICg0LjU4JSkiICAgPSAiI0NDNzlBNyIsDQogICAgICAiMiAoMTcuMjYlKSIgICAgICAgICAgPSAiI0Q1NUUwMCIsDQogICAgICAiMyAoNTcuNDglKSIgICA9ICIjMDA3MkIyIiwNCiAgICAgICI0ICgyMC42OSUpIiA9ICIjNTZCNEU5Ig0KICAgICkNCiAgKSArDQogIGxhYnMoeCA9IE5VTEwsIHkgPSAiTWVhbiBzY29yZSIsIGNvbG9yID0gTlVMTCkgKw0KICB0aGVtZV9taW5pbWFsKCkgKw0KICB0aGVtZSgNCiAgICBheGlzLnRleHQueCA9IGVsZW1lbnRfdGV4dChhbmdsZSA9IDQ1LCBoanVzdCA9IDEpLA0KICAgIGxlZ2VuZC5wb3NpdGlvbiA9ICJib3R0b20iLA0KICAgIGxlZ2VuZC50ZXh0ID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMSkNCiAgKQ0KDQp0YWJsZShORUEyMDIyJG1vZGVsNF9tcHJlZCwgdXNlTkEgPSAiaWZhbnkiKQ0KDQoNCmBgYA0KDQojIyBNb2RlbDUNCg0KDQpgYGB7ciBwbG90NX0NCnVzZWRfY2FzZXMgPC0gY29tcGxldGUuY2FzZXMoTkVBMjAyMlssIHZhcnNdKQ0KDQpORUEyMDIyJG1vZGVsNV9tcHJlZCA8LSBOQV9pbnRlZ2VyXw0KTkVBMjAyMiRtb2RlbDVfbXByZWRbdXNlZF9jYXNlc10gPC0gbW9kZWw1X20kcHJlZGNsYXNzDQoNCnRhYmxlKE5FQTIwMjIkbW9kZWw1X21wcmVkLCB1c2VOQSA9ICJpZmFueSIpDQoNCnBsb3RfZGF0YTUgPC0gTkVBMjAyMiAlPiUNCiAgcGl2b3RfbG9uZ2VyKGNvbHMgPSBhbGxfb2YodmFycyksIG5hbWVzX3RvID0gImluZGljYXRvciIsIHZhbHVlc190byA9ICJ2YWx1ZSIpICU+JQ0KICBncm91cF9ieShtb2RlbDVfbXByZWQsIGluZGljYXRvcikgJT4lDQogIHN1bW1hcmlzZShtZWFuX3ZhbHVlID0gbWVhbih2YWx1ZSwgbmEucm0gPSBUUlVFKSwgLmdyb3VwcyA9ICJkcm9wIikgJT4lDQogIG11dGF0ZSgNCiAgICBpbmRpY2F0b3IgICA9IGZhY3RvcihpbmRpY2F0b3IsIGxldmVscyA9IHZhcnMpLA0KICAgIGNsYXNzX2xhYmVsID0gcmVjb2RlKGFzLmNoYXJhY3Rlcihtb2RlbDVfbXByZWQpLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAiMSIgPSAiMSAoMTMuNjglKSIsIA0KICAgICAgICAgICAgICAgICAgICAgICAgICIyIiA9ICIyICgyLjU3JSkiLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAiMyIgPSAiMyAoNTcuOTUlKSIsIA0KICAgICAgICAgICAgICAgICAgICAgICAgICI0IiA9ICI0ICg1LjI1JSkiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICI1IiA9ICI1ICgyMC41NSUpIikNCiAgKSU+JSANCiAgbXV0YXRlKGNsYXNzX2xhYmVsID0gZmFjdG9yKGNsYXNzX2xhYmVsLA0KICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIjEgKDEzLjY4JSkiLCAiMiAoMi41NyUpIiwgIjMgKDU3Ljk1JSkiLCAiNCAoNS4yNSUpIiwgIjUgKDIwLjU1JSkiKSkpDQoNCg0KaW5kaWNhdG9yX2xhYmVscyA8LSBjKA0KICAicGVzdGVuX2NvbF9wbG90IiAgICA9ICJCdWxseWluZyBDIiwNCiAgInBlc3Rlbl9sZWlkX3Bsb3QiICAgPSAiQnVsbHlpbmcgUyIsDQogICJpbnRfY29sX3Bsb3QiICAgICAgID0gIkludGltaWRhdGlvbiBDIiwNCiAgImludF9sZWlkX3Bsb3QiICAgICAgPSAiSW50aW1pZGF0aW9uIFMiLA0KICAic2Vrc19jb2xfcGxvdCIgICAgICA9ICJVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIEMiLA0KICAic2Vrc19sZWlkX3Bsb3QiICAgICA9ICJVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIFMiLA0KICAiZ2V3X2NvbF9wbG90IiAgICAgICA9ICJWaW9sZW5jZSBDIiwNCiAgImdld19sZWlkX3Bsb3QiICAgICAgPSAiVmlvbGVuY2UgUyIsDQogICJjb25mbGljdF9jb2xfcGxvdCIgID0gIkNvbmZsaWN0IEMiLA0KICAiY29uZmxpY3RfbGVpZF9wbG90IiA9ICJDb25mbGljdCBTIiwNCiAgInN0ZXVuY29sX3Bsb3QiICAgICAgPSAiSW5jaXZpbGl0eSBDIiwNCiAgInN0ZXVubGVpZF9wbG90IiAgICAgPSAiSW5jaXZpbGl0eSBTIiwNCiAgInBzeXZlaWxfcGxvdCIgICAgICAgPSAiUHN5Y2hvbG9naWNhbCB1bnNhZmV0eSINCikNCg0KZ2dwbG90KHBsb3RfZGF0YTUsIGFlcyh4ID0gaW5kaWNhdG9yLCB5ID0gbWVhbl92YWx1ZSwNCiAgICAgICAgICAgICAgICAgICAgICBjb2xvciA9IGNsYXNzX2xhYmVsLCBncm91cCA9IGNsYXNzX2xhYmVsKSkgKw0KICBnZW9tX2xpbmUoc2l6ZSA9IDEpICsNCiAgZ2VvbV9wb2ludChzaXplID0gMikgKw0KICBzY2FsZV94X2Rpc2NyZXRlKGxhYmVscyA9IGluZGljYXRvcl9sYWJlbHMpICsNCiAgc2NhbGVfeV9jb250aW51b3VzKGJyZWFrcyA9IHNlcSgwLCAxLCAwLjEpLA0KICAgICAgICAgICAgICAgICAgICAgbGltaXRzID0gYygwLCAxKSwNCiAgICAgICAgICAgICAgICAgICAgIGV4cGFuZCA9IGMoMCwwKSkgKw0KICBzY2FsZV9jb2xvcl9tYW51YWwoDQogICAgdmFsdWVzID0gYygNCiAgICAgICIxICgxMy42OCUpIiAgID0gIiNDQzc5QTciLA0KICAgICAgIjIgKDIuNTclKSIgICAgICAgICAgPSAiI0Q1NUUwMCIsDQogICAgICAiMyAoNTcuOTUlKSIgICA9ICIjNTZCNEU5IiwNCiAgICAgICI0ICg1LjI1JSkiID0gIiNFNjlGMDAiLA0KICAgICAgIjUgKDIwLjU1JSkiID0gIiMwMDcyQjIiDQogICAgKQ0KICApICsNCiAgbGFicyh4ID0gTlVMTCwgeSA9ICJNZWFuIHNjb3JlIiwgY29sb3IgPSBOVUxMKSArDQogIHRoZW1lX21pbmltYWwoKSArDQogIHRoZW1lKA0KICAgIGF4aXMudGV4dC54ID0gZWxlbWVudF90ZXh0KGFuZ2xlID0gNDUsIGhqdXN0ID0gMSksDQogICAgbGVnZW5kLnBvc2l0aW9uID0gImJvdHRvbSIsDQogICAgbGVnZW5kLnRleHQgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDExKQ0KICApDQoNCmBgYA0KDQoNCiMjIE1vZGVsNg0KDQoNCmBgYHtyIHBsb3Q2fQ0KdXNlZF9jYXNlcyA8LSBjb21wbGV0ZS5jYXNlcyhORUEyMDIyWywgdmFyc10pDQoNCk5FQTIwMjIkbW9kZWw2X21wcmVkIDwtIE5BX2ludGVnZXJfDQpORUEyMDIyJG1vZGVsNl9tcHJlZFt1c2VkX2Nhc2VzXSA8LSBtb2RlbDZfbSRwcmVkY2xhc3MNCg0KdGFibGUoTkVBMjAyMiRtb2RlbDZfbXByZWQsIHVzZU5BID0gImlmYW55IikNCg0KcGxvdF9kYXRhNiA8LSBORUEyMDIyICU+JQ0KICBwaXZvdF9sb25nZXIoY29scyA9IGFsbF9vZih2YXJzKSwgbmFtZXNfdG8gPSAiaW5kaWNhdG9yIiwgdmFsdWVzX3RvID0gInZhbHVlIikgJT4lDQogIGdyb3VwX2J5KG1vZGVsNl9tcHJlZCwgaW5kaWNhdG9yKSAlPiUNCiAgc3VtbWFyaXNlKG1lYW5fdmFsdWUgPSBtZWFuKHZhbHVlLCBuYS5ybSA9IFRSVUUpLCAuZ3JvdXBzID0gImRyb3AiKSAlPiUNCiAgbXV0YXRlKA0KICAgIGluZGljYXRvciAgID0gZmFjdG9yKGluZGljYXRvciwgbGV2ZWxzID0gdmFycyksDQogICAgY2xhc3NfbGFiZWwgPSByZWNvZGUoYXMuY2hhcmFjdGVyKG1vZGVsNl9tcHJlZCksIA0KICAgICAgICAgICAgICAgICAgICAgICAgICIxIiA9ICIxICg0LjgwJSkiLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAiMiIgPSAiMiAoMTMuODQlKSIsIA0KICAgICAgICAgICAgICAgICAgICAgICAgICIzIiA9ICIzICg1Ny41MyUpIiwgDQogICAgICAgICAgICAgICAgICAgICAgICAgIjQiID0gIjQgKDEuNTIlKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIjUiID0gIjUgKDEuODUlKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIjYiID0gIjYgKDIwLjQ3JSkiKQ0KICApJT4lIA0KICBtdXRhdGUoY2xhc3NfbGFiZWwgPSBmYWN0b3IoY2xhc3NfbGFiZWwsDQogICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSAoNC44MCUpIiwgIjIgKDEzLjg0JSkiLCAiMyAoNTcuNTMlKSIsICI0ICgxLjUyJSkiLCAiNSAoMS44NSUpIiwgIjYgKDIwLjQ3JSkiKSkpDQoNCg0KaW5kaWNhdG9yX2xhYmVscyA8LSBjKA0KICAicGVzdGVuX2NvbF9wbG90IiAgICA9ICJCdWxseWluZyBDIiwNCiAgInBlc3Rlbl9sZWlkX3Bsb3QiICAgPSAiQnVsbHlpbmcgUyIsDQogICJpbnRfY29sX3Bsb3QiICAgICAgID0gIkludGltaWRhdGlvbiBDIiwNCiAgImludF9sZWlkX3Bsb3QiICAgICAgPSAiSW50aW1pZGF0aW9uIFMiLA0KICAic2Vrc19jb2xfcGxvdCIgICAgICA9ICJVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIEMiLA0KICAic2Vrc19sZWlkX3Bsb3QiICAgICA9ICJVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIFMiLA0KICAiZ2V3X2NvbF9wbG90IiAgICAgICA9ICJWaW9sZW5jZSBDIiwNCiAgImdld19sZWlkX3Bsb3QiICAgICAgPSAiVmlvbGVuY2UgUyIsDQogICJjb25mbGljdF9jb2xfcGxvdCIgID0gIkNvbmZsaWN0IEMiLA0KICAiY29uZmxpY3RfbGVpZF9wbG90IiA9ICJDb25mbGljdCBTIiwNCiAgInN0ZXVuY29sX3Bsb3QiICAgICAgPSAiSW5jaXZpbGl0eSBDIiwNCiAgInN0ZXVubGVpZF9wbG90IiAgICAgPSAiSW5jaXZpbGl0eSBTIiwNCiAgInBzeXZlaWxfcGxvdCIgICAgICAgPSAiUHN5Y2hvbG9naWNhbCB1bnNhZmV0eSINCikNCg0KZ2dwbG90KHBsb3RfZGF0YTYsIGFlcyh4ID0gaW5kaWNhdG9yLCB5ID0gbWVhbl92YWx1ZSwNCiAgICAgICAgICAgICAgICAgICAgICBjb2xvciA9IGNsYXNzX2xhYmVsLCBncm91cCA9IGNsYXNzX2xhYmVsKSkgKw0KICBnZW9tX2xpbmUoc2l6ZSA9IDEpICsNCiAgZ2VvbV9wb2ludChzaXplID0gMikgKw0KICBzY2FsZV94X2Rpc2NyZXRlKGxhYmVscyA9IGluZGljYXRvcl9sYWJlbHMpICsNCiAgc2NhbGVfeV9jb250aW51b3VzKGJyZWFrcyA9IHNlcSgwLCAxLCAwLjEpLA0KICAgICAgICAgICAgICAgICAgICAgbGltaXRzID0gYygwLCAxKSwNCiAgICAgICAgICAgICAgICAgICAgIGV4cGFuZCA9IGMoMCwwKSkgKw0KICBzY2FsZV9jb2xvcl9tYW51YWwoDQogICAgdmFsdWVzID0gYygNCiAgICAgICIxICg0LjgwJSkiICAgPSAiI0U2OUYwMCIsDQogICAgICAiMiAoMTMuODQlKSIgICAgICAgICAgPSAiI0NDNzlBNyIsDQogICAgICAiMyAoNTcuNTMlKSIgICA9ICIjNTZCNEU5IiwNCiAgICAgICI0ICgxLjUyJSkiID0gIiMwMDAwMDAiLA0KICAgICAgIjUgKDEuODUlKSIgPSAiI0Q1NUUwMCIsDQogICAgICAiNiAoMjAuNDclKSIgPSAiIzAwNzJCMiINCiAgICApDQogICkgKw0KICBsYWJzKHggPSBOVUxMLCB5ID0gIk1lYW4gc2NvcmUiLCBjb2xvciA9IE5VTEwpICsNCiAgdGhlbWVfbWluaW1hbCgpICsNCiAgdGhlbWUoDQogICAgYXhpcy50ZXh0LnggPSBlbGVtZW50X3RleHQoYW5nbGUgPSA0NSwgaGp1c3QgPSAxKSwNCiAgICBsZWdlbmQucG9zaXRpb24gPSAiYm90dG9tIiwNCiAgICBsZWdlbmQudGV4dCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTEpDQogICkNCg0KYGBgDQoNCg0KIyMgTW9kZWw3DQoNCmBgYHtyIHBsb3Q3fQ0KdXNlZF9jYXNlcyA8LSBjb21wbGV0ZS5jYXNlcyhORUEyMDIyWywgdmFyc10pDQoNCk5FQTIwMjIkbW9kZWw3X21wcmVkIDwtIE5BX2ludGVnZXJfDQpORUEyMDIyJG1vZGVsN19tcHJlZFt1c2VkX2Nhc2VzXSA8LSBtb2RlbDdfbSRwcmVkY2xhc3MNCg0KdGFibGUoTkVBMjAyMiRtb2RlbDdfbXByZWQsIHVzZU5BID0gImlmYW55IikNCg0KcGxvdF9kYXRhNyA8LSBORUEyMDIyICU+JQ0KICBwaXZvdF9sb25nZXIoY29scyA9IGFsbF9vZih2YXJzKSwgbmFtZXNfdG8gPSAiaW5kaWNhdG9yIiwgdmFsdWVzX3RvID0gInZhbHVlIikgJT4lDQogIGdyb3VwX2J5KG1vZGVsN19tcHJlZCwgaW5kaWNhdG9yKSAlPiUNCiAgc3VtbWFyaXNlKG1lYW5fdmFsdWUgPSBtZWFuKHZhbHVlLCBuYS5ybSA9IFRSVUUpLCAuZ3JvdXBzID0gImRyb3AiKSAlPiUNCiAgbXV0YXRlKA0KICAgIGluZGljYXRvciAgID0gZmFjdG9yKGluZGljYXRvciwgbGV2ZWxzID0gdmFycyksDQogICAgY2xhc3NfbGFiZWwgPSByZWNvZGUoYXMuY2hhcmFjdGVyKG1vZGVsN19tcHJlZCksDQogICAgICAgICAgICAgICAgICAgICAgICAgIjEiID0gIlNob3J0LXRlcm0gY29uZmxpY3QgKDYuNzglKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIjIiID0gIk92ZXJhbGwgc2FmZSAoNTYuMzQlKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIjMiID0gIk92ZXJhbGwgaGlnaGx5IHNhZmUgKDIwLjQ2JSkiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICI0IiA9ICJTdXBlcnZpc29yIHVuc2FmZXR5ICgxLjg1JSkiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICI1IiA9ICJVbnNhZmUgc29jaWFsIGNsaW1hdGUgKDEwLjM1JSkiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICI2IiA9ICJPdmVyYWxsIHVuc2FmZSAoMS40OSUpIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAiNyIgPSAiQ293b3JrZXIgdW5zYWZldHkgKDIuNzMlKSIpDQogICkgJT4lDQogIG11dGF0ZShjbGFzc19sYWJlbCA9IGZhY3RvcihjbGFzc19sYWJlbCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoIk92ZXJhbGwgaGlnaGx5IHNhZmUgKDIwLjQ2JSkiLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIk92ZXJhbGwgc2FmZSAoNTYuMzQlKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJTaG9ydC10ZXJtIGNvbmZsaWN0ICg2Ljc4JSkiLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIlVuc2FmZSBzb2NpYWwgY2xpbWF0ZSAoMTAuMzUlKSIsIA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiQ293b3JrZXIgdW5zYWZldHkgKDIuNzMlKSIsIA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiU3VwZXJ2aXNvciB1bnNhZmV0eSAoMS44NSUpIiwgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJPdmVyYWxsIHVuc2FmZSAoMS40OSUpIikpKQ0KDQppbmRpY2F0b3JfbGFiZWxzIDwtIGMoDQogICJwZXN0ZW5fY29sX3Bsb3QiICAgID0gIkJ1bGx5aW5nIEMiLA0KICAicGVzdGVuX2xlaWRfcGxvdCIgICA9ICJCdWxseWluZyBTIiwNCiAgImludF9jb2xfcGxvdCIgICAgICAgPSAiSW50aW1pZGF0aW9uIEMiLA0KICAiaW50X2xlaWRfcGxvdCIgICAgICA9ICJJbnRpbWlkYXRpb24gUyIsDQogICJzZWtzX2NvbF9wbG90IiAgICAgID0gIlVud2FudGVkIHNleHVhbCBhdHRlbnRpb24gQyIsDQogICJzZWtzX2xlaWRfcGxvdCIgICAgID0gIlVud2FudGVkIHNleHVhbCBhdHRlbnRpb24gUyIsDQogICJnZXdfY29sX3Bsb3QiICAgICAgID0gIlZpb2xlbmNlIEMiLA0KICAiZ2V3X2xlaWRfcGxvdCIgICAgICA9ICJWaW9sZW5jZSBTIiwNCiAgImNvbmZsaWN0X2NvbF9wbG90IiAgPSAiQ29uZmxpY3QgQyIsDQogICJjb25mbGljdF9sZWlkX3Bsb3QiID0gIkNvbmZsaWN0IFMiLA0KICAic3RldW5jb2xfcGxvdCIgICAgICA9ICJJbmNpdmlsaXR5IEMiLA0KICAic3RldW5sZWlkX3Bsb3QiICAgICA9ICJJbmNpdmlsaXR5IFMiLA0KICAicHN5dmVpbF9wbG90IiAgICAgICA9ICJQc3ljaG9sb2dpY2FsIHVuc2FmZXR5Ig0KKQ0KDQpnZ3Bsb3QocGxvdF9kYXRhNywgYWVzKHggPSBpbmRpY2F0b3IsIHkgPSBtZWFuX3ZhbHVlLA0KICAgICAgICAgICAgICAgICAgICAgIGNvbG9yID0gY2xhc3NfbGFiZWwsIGdyb3VwID0gY2xhc3NfbGFiZWwpKSArDQogIGdlb21fbGluZShzaXplID0gMSkgKw0KICBnZW9tX3BvaW50KHNpemUgPSAyKSArDQogIHNjYWxlX3hfZGlzY3JldGUobGFiZWxzID0gaW5kaWNhdG9yX2xhYmVscykgKw0KICBzY2FsZV95X2NvbnRpbnVvdXMoYnJlYWtzID0gc2VxKDAsIDEsIDAuMSksDQogICAgICAgICAgICAgICAgICAgICBsaW1pdHMgPSBjKDAsIDEpLA0KICAgICAgICAgICAgICAgICAgICAgZXhwYW5kID0gYygwLDApKSArDQogIHNjYWxlX2NvbG9yX21hbnVhbCgNCiAgICB2YWx1ZXMgPSBjKA0KICAgICAgIk92ZXJhbGwgaGlnaGx5IHNhZmUgKDIwLjQ2JSkiICAgPSAiIzAwNzJCMiIsDQogICAgICAiT3ZlcmFsbCBzYWZlICg1Ni4zNCUpIiAgICAgICAgICA9ICIjNTZCNEU5IiwNCiAgICAgICJTaG9ydC10ZXJtIGNvbmZsaWN0ICg2Ljc4JSkiICAgPSAiIzAwOUU3MyIsDQogICAgICAiVW5zYWZlIHNvY2lhbCBjbGltYXRlICgxMC4zNSUpIiA9ICIjQ0M3OUE3IiwNCiAgICAgICJDb3dvcmtlciB1bnNhZmV0eSAoMi43MyUpIiAgICAgPSAiI0U2OUYwMCIsDQogICAgICAiU3VwZXJ2aXNvciB1bnNhZmV0eSAoMS44NSUpIiAgID0gIiNENTVFMDAiLA0KICAgICAgIk92ZXJhbGwgdW5zYWZlICgxLjQ5JSkiICAgICAgICA9ICIjMDAwMDAwIiANCiAgICApDQogICkgKw0KICBsYWJzKHggPSBOVUxMLCB5ID0gIk1lYW4gc2NvcmUiLCBjb2xvciA9IE5VTEwpICsNCiAgdGhlbWVfbWluaW1hbCgpICsNCiAgdGhlbWUoDQogICAgYXhpcy50ZXh0LnggPSBlbGVtZW50X3RleHQoYW5nbGUgPSA0NSwgaGp1c3QgPSAxKSwNCiAgICBsZWdlbmQucG9zaXRpb24gPSAiYm90dG9tIiwNCiAgICBsZWdlbmQudGV4dCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTEpDQogICkNCmBgYA0KDQojIyBNb2RlbDgNCg0KDQpgYGB7ciBwbG90OH0NCnVzZWRfY2FzZXMgPC0gY29tcGxldGUuY2FzZXMoTkVBMjAyMlssIHZhcnNdKQ0KDQpORUEyMDIyJG1vZGVsOF9tcHJlZCA8LSBOQV9pbnRlZ2VyXw0KTkVBMjAyMiRtb2RlbDhfbXByZWRbdXNlZF9jYXNlc10gPC0gbW9kZWw4X20kcHJlZGNsYXNzDQoNCnRhYmxlKE5FQTIwMjIkbW9kZWw4X21wcmVkLCB1c2VOQSA9ICJpZmFueSIpDQoNCg0KIyBEYXRhIHZvb3IgcGxvdA0KcGxvdF9kYXRhOCA8LSBORUEyMDIyICU+JQ0KICBwaXZvdF9sb25nZXIoY29scyA9IGFsbF9vZih2YXJzKSwgbmFtZXNfdG8gPSAiaW5kaWNhdG9yIiwgdmFsdWVzX3RvID0gInZhbHVlIikgJT4lDQogIGdyb3VwX2J5KG1vZGVsOF9tcHJlZCwgaW5kaWNhdG9yKSAlPiUNCiAgc3VtbWFyaXNlKG1lYW5fdmFsdWUgPSBtZWFuKHZhbHVlLCBuYS5ybSA9IFRSVUUpLCAuZ3JvdXBzID0gImRyb3AiKSAlPiUNCiAgbXV0YXRlKA0KICAgIGluZGljYXRvciAgID0gZmFjdG9yKGluZGljYXRvciwgbGV2ZWxzID0gdmFycyksDQogICAgY2xhc3NfbGFiZWwgPSByZWNvZGUoYXMuY2hhcmFjdGVyKG1vZGVsOF9tcHJlZCksIA0KICAgICAgICAgICAgICAgICAgICAgICAgICIxIiA9ICIxICgyLjI2JSkiLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAiMiIgPSAiMiAoNTUuMzklKSIsIA0KICAgICAgICAgICAgICAgICAgICAgICAgICIzIiA9ICIzICgyLjM5JSkiLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAiNCIgPSAiNCAoOS45NiUpIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAiNSIgPSAiNSAoMjAuNDYlKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIjYiID0gIjYgKDYuOTUlKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIjciID0gIjcgKDAuNjUlKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIjgiID0gIjggKDEuOTQlKSIpDQogICkgJT4lIA0KICBtdXRhdGUoY2xhc3NfbGFiZWwgPSBmYWN0b3IoY2xhc3NfbGFiZWwsDQogICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSAoMi4yNiUpIiwgIjIgKDU1LjM5JSkiLCAiMyAoMi4zOSUpIiwgIjQgKDkuOTYlKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiNSAoMjAuNDYlKSIsICI2ICg2Ljk1JSkiLCAiNyAoMC42NSUpIiwgIjggKDEuOTQlKSIpKSkNCg0KIyBMYWJlbHMgdm9vciBpbmRpY2F0b3Jlbg0KaW5kaWNhdG9yX2xhYmVscyA8LSBjKA0KICAicGVzdGVuX2NvbF9wbG90IiAgICA9ICJCdWxseWluZyBDIiwNCiAgInBlc3Rlbl9sZWlkX3Bsb3QiICAgPSAiQnVsbHlpbmcgUyIsDQogICJpbnRfY29sX3Bsb3QiICAgICAgID0gIkludGltaWRhdGlvbiBDIiwNCiAgImludF9sZWlkX3Bsb3QiICAgICAgPSAiSW50aW1pZGF0aW9uIFMiLA0KICAic2Vrc19jb2xfcGxvdCIgICAgICA9ICJVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIEMiLA0KICAic2Vrc19sZWlkX3Bsb3QiICAgICA9ICJVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIFMiLA0KICAiZ2V3X2NvbF9wbG90IiAgICAgICA9ICJWaW9sZW5jZSBDIiwNCiAgImdld19sZWlkX3Bsb3QiICAgICAgPSAiVmlvbGVuY2UgUyIsDQogICJjb25mbGljdF9jb2xfcGxvdCIgID0gIkNvbmZsaWN0IEMiLA0KICAiY29uZmxpY3RfbGVpZF9wbG90IiA9ICJDb25mbGljdCBTIiwNCiAgInN0ZXVuY29sX3Bsb3QiICAgICAgPSAiSW5jaXZpbGl0eSBDIiwNCiAgInN0ZXVubGVpZF9wbG90IiAgICAgPSAiSW5jaXZpbGl0eSBTIiwNCiAgInBzeXZlaWxfcGxvdCIgICAgICAgPSAiUHN5Y2hvbG9naWNhbCB1bnNhZmV0eSINCikNCg0KIyBQbG90dGVuDQpnZ3Bsb3QocGxvdF9kYXRhOCwgYWVzKHggPSBpbmRpY2F0b3IsIHkgPSBtZWFuX3ZhbHVlLA0KICAgICAgICAgICAgICAgICAgICAgICBjb2xvciA9IGNsYXNzX2xhYmVsLCBncm91cCA9IGNsYXNzX2xhYmVsKSkgKw0KICBnZW9tX2xpbmUoc2l6ZSA9IDEpICsNCiAgZ2VvbV9wb2ludChzaXplID0gMikgKw0KICBzY2FsZV94X2Rpc2NyZXRlKGxhYmVscyA9IGluZGljYXRvcl9sYWJlbHMpICsNCiAgc2NhbGVfeV9jb250aW51b3VzKGJyZWFrcyA9IHNlcSgwLCAxLCAwLjEpLA0KICAgICAgICAgICAgICAgICAgICAgbGltaXRzID0gYygwLCAxKSwNCiAgICAgICAgICAgICAgICAgICAgIGV4cGFuZCA9IGMoMCwwKSkgKw0KICBzY2FsZV9jb2xvcl9tYW51YWwoDQogICAgdmFsdWVzID0gYygNCiAgICAgICIxICgyLjI2JSkiICAgPSAiI0U2OUYwMCIsDQogICAgICAiMiAoNTUuMzklKSIgID0gIiM1NkI0RTkiLA0KICAgICAgIjMgKDIuMzklKSIgICA9ICIjRjBFNDQyIiwNCiAgICAgICI0ICg5Ljk2JSkiICA9ICIjQ0M3OUE3IiwNCiAgICAgICI1ICgyMC40NiUpIiAgPSAiIzAwNzJCMiIsDQogICAgICAiNiAoNi45NSUpIiAgID0gIiMwMDlFNzMiLA0KICAgICAgIjcgKDAuNjUlKSIgICA9ICIjRDU1RTAwIiwNCiAgICAgICI4ICgxLjk0JSkiICAgPSAiIzAwMDAwMCIgDQogICAgKQ0KICApICsNCiAgbGFicyh4ID0gTlVMTCwgeSA9ICJNZWFuIHNjb3JlIiwgY29sb3IgPSBOVUxMKSArDQogIHRoZW1lX21pbmltYWwoKSArDQogIHRoZW1lKA0KICAgIGF4aXMudGV4dC54ID0gZWxlbWVudF90ZXh0KGFuZ2xlID0gNDUsIGhqdXN0ID0gMSksDQogICAgbGVnZW5kLnBvc2l0aW9uID0gImJvdHRvbSIsDQogICAgbGVnZW5kLnRleHQgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDExKQ0KICApDQoNCmBgYA0KDQoNCiMjIE1vZGVsOQ0KDQoNCmBgYHtyIHBsb3Q5fQ0KdXNlZF9jYXNlcyA8LSBjb21wbGV0ZS5jYXNlcyhORUEyMDIyWywgdmFyc10pDQoNCk5FQTIwMjIkbW9kZWw5X21wcmVkIDwtIE5BX2ludGVnZXJfDQpORUEyMDIyJG1vZGVsOV9tcHJlZFt1c2VkX2Nhc2VzXSA8LSBtb2RlbDlfbSRwcmVkY2xhc3MNCg0KdGFibGUoTkVBMjAyMiRtb2RlbDlfbXByZWQsIHVzZU5BID0gImlmYW55IikNCg0KcGxvdF9kYXRhOSA8LSBORUEyMDIyICU+JQ0KICBwaXZvdF9sb25nZXIoY29scyA9IGFsbF9vZih2YXJzKSwgbmFtZXNfdG8gPSAiaW5kaWNhdG9yIiwgdmFsdWVzX3RvID0gInZhbHVlIikgJT4lDQogIGdyb3VwX2J5KG1vZGVsOV9tcHJlZCwgaW5kaWNhdG9yKSAlPiUNCiAgc3VtbWFyaXNlKG1lYW5fdmFsdWUgPSBtZWFuKHZhbHVlLCBuYS5ybSA9IFRSVUUpLCAuZ3JvdXBzID0gImRyb3AiKSAlPiUNCiAgbXV0YXRlKA0KICAgIGluZGljYXRvciAgID0gZmFjdG9yKGluZGljYXRvciwgbGV2ZWxzID0gdmFycyksDQogICAgY2xhc3NfbGFiZWwgPSByZWNvZGUoYXMuY2hhcmFjdGVyKG1vZGVsOV9tcHJlZCksIA0KICAgICAgICAgICAgICAgICAgICAgICAgICIxIiA9ICIxICg1LjkxJSkiLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAiMiIgPSAiMiAoMC44MSUpIiwgDQogICAgICAgICAgICAgICAgICAgICAgICAgIjMiID0gIjMgKDAuNDklKSIsIA0KICAgICAgICAgICAgICAgICAgICAgICAgICI0IiA9ICI0ICgxLjUxJSkiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICI1IiA9ICI1ICg1NS4xNyUpIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAiNiIgPSAiNiAoMjAuNTQlKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIjciID0gIjcgKDMuODclKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIjgiID0gIjggKDkuOTklKSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIjkiID0gIjkgKDEuNzElKSIpDQogICkgJT4lIA0KICBtdXRhdGUoY2xhc3NfbGFiZWwgPSBmYWN0b3IoY2xhc3NfbGFiZWwsDQogICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gYygiMSAoNS45MSUpIiwgIjIgKDAuODElKSIsICIzICgwLjQ5JSkiLCAiNCAoMS41MSUpIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI1ICg1NS4xNyUpIiwgIjYgKDIwLjU0JSkiLCAiNyAoMy44NyUpIiwgIjggKDkuOTklKSIsICI5ICgxLjcxJSkiKSkpDQoNCiMgTGFiZWxzIHZvb3IgaW5kaWNhdG9yZW4NCmluZGljYXRvcl9sYWJlbHMgPC0gYygNCiAgInBlc3Rlbl9jb2xfcGxvdCIgICAgPSAiQnVsbHlpbmcgQyIsDQogICJwZXN0ZW5fbGVpZF9wbG90IiAgID0gIkJ1bGx5aW5nIFMiLA0KICAiaW50X2NvbF9wbG90IiAgICAgICA9ICJJbnRpbWlkYXRpb24gQyIsDQogICJpbnRfbGVpZF9wbG90IiAgICAgID0gIkludGltaWRhdGlvbiBTIiwNCiAgInNla3NfY29sX3Bsb3QiICAgICAgPSAiVW53YW50ZWQgc2V4dWFsIGF0dGVudGlvbiBDIiwNCiAgInNla3NfbGVpZF9wbG90IiAgICAgPSAiVW53YW50ZWQgc2V4dWFsIGF0dGVudGlvbiBTIiwNCiAgImdld19jb2xfcGxvdCIgICAgICAgPSAiVmlvbGVuY2UgQyIsDQogICJnZXdfbGVpZF9wbG90IiAgICAgID0gIlZpb2xlbmNlIFMiLA0KICAiY29uZmxpY3RfY29sX3Bsb3QiICA9ICJDb25mbGljdCBDIiwNCiAgImNvbmZsaWN0X2xlaWRfcGxvdCIgPSAiQ29uZmxpY3QgUyIsDQogICJzdGV1bmNvbF9wbG90IiAgICAgID0gIkluY2l2aWxpdHkgQyIsDQogICJzdGV1bmxlaWRfcGxvdCIgICAgID0gIkluY2l2aWxpdHkgUyIsDQogICJwc3l2ZWlsX3Bsb3QiICAgICAgID0gIlBzeWNob2xvZ2ljYWwgdW5zYWZldHkiDQopDQoNCmdncGxvdChwbG90X2RhdGE5LCBhZXMoeCA9IGluZGljYXRvciwgeSA9IG1lYW5fdmFsdWUsDQogICAgICAgICAgICAgICAgICAgICAgIGNvbG9yID0gY2xhc3NfbGFiZWwsIGdyb3VwID0gY2xhc3NfbGFiZWwpKSArDQogIGdlb21fbGluZShzaXplID0gMSkgKw0KICBnZW9tX3BvaW50KHNpemUgPSAyKSArDQogIHNjYWxlX3hfZGlzY3JldGUobGFiZWxzID0gaW5kaWNhdG9yX2xhYmVscykgKw0KICBzY2FsZV95X2NvbnRpbnVvdXMoYnJlYWtzID0gc2VxKDAsIDEsIDAuMSksDQogICAgICAgICAgICAgICAgICAgICBsaW1pdHMgPSBjKDAsIDEpLA0KICAgICAgICAgICAgICAgICAgICAgZXhwYW5kID0gYygwLDApKSArDQogIHNjYWxlX2NvbG9yX21hbnVhbCgNCiAgICB2YWx1ZXMgPSBjKA0KICAgICAgIjEgKDUuOTElKSIgICA9ICIjMDAwMDAwIiwNCiAgICAgICIyICgwLjgxJSkiICAgPSAiI0U2OUYwMCIsDQogICAgICAiMyAoMC40OSUpIiAgID0gIiNENTVFMDAiLA0KICAgICAgIjQgKDEuNTElKSIgICA9ICIjRjBFNDQyIiwNCiAgICAgICI1ICg1NS4xNyUpIiAgPSAiIzU2QjRFOSIsDQogICAgICAiNiAoMjAuNTQlKSIgICA9ICIjQ0M3OUE3IiwNCiAgICAgICI3ICgzLjg3JSkiICAgPSAiIzk5OTk5OSIsDQogICAgICAiOCAoOS45OSUpIiAgPSAiIzAwNzJCMiIsDQogICAgICAiOSAoMS43MSUpIiAgID0gIiMwMDlFNzMiDQogICAgKQ0KICApICsNCiAgbGFicyh4ID0gTlVMTCwgeSA9ICJNZWFuIHNjb3JlIiwgY29sb3IgPSBOVUxMKSArDQogIHRoZW1lX21pbmltYWwoKSArDQogIHRoZW1lKA0KICAgIGF4aXMudGV4dC54ID0gZWxlbWVudF90ZXh0KGFuZ2xlID0gNDUsIGhqdXN0ID0gMSksDQogICAgbGVnZW5kLnBvc2l0aW9uID0gImJvdHRvbSIsDQogICAgbGVnZW5kLnRleHQgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDExKQ0KICApDQoNCmBgYA==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("LCA_listwise.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

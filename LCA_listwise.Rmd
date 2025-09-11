@@ -55,9 +55,7 @@ attach(NEA2022)
 set.seed(123)
 ```
 
-```{r}
-table(NEA2022$afl_on_3)
-```
+# Latent class analysis
 
 
 ```{r data items, cache=TRUE, warning=FALSE}
@@ -81,65 +79,91 @@ items_m <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, g
 <br><br> Steuncol_RR: **My co-workers take personal interest in me.** **My co-workers are friendly.** Mean score of the two items, rounded. (1) fully agree (2) agree (3) disagree (4) fully disagree
 <br><br> Psyveil_RR: **At my workplace it is possible to raise difficult questions.** **At my workplace it is easy to ask for help.** **At my workplace it is okay to make a mistake.** Mean score of the three items, rounded. (1) fully agree (2) agree (3) don't agree, don't disagree (4) disagree (5) fully disagree
 
-<br><br> **Latent class analysis**
+## Model1
 
 ```{r model1, cache=TRUE}
 model1_m <- poLCA(items_m, data_m, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+## Model2
+
 ```{r model2, cache=TRUE}
 model2_m <- poLCA(items_m, data_m, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+## Model3
 
 ```{r model3, cache=TRUE}
 model3_m <- poLCA(items_m, data_m, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+## Model4
+
 ```{r model4, cache=TRUE}
 model4_m <- poLCA(items_m, data_m, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+## Model5
 
 ```{r model5, cache=TRUE}
 model5_m <- poLCA(items_m, data_m, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+## Model6
+
 ```{r model6, cache=TRUE}
 model6_m <- poLCA(items_m, data_m, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+## Model7
 
 ```{r model7, cache=TRUE}
 model7_m <- poLCA(items_m, data_m, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+## Model8
+
 ```{r model8, cache=TRUE}
 model8_m <- poLCA(items_m, data_m, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+## Model9
 
 ```{r model9, cache=TRUE}
 model9_m <- poLCA(items_m, data_m, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+## Model10
+
 ```{r model10, cache=TRUE}
 model10_m <- poLCA(items_m, data_m, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+## Model11
 
 ```{r model11, cache=TRUE}
 model11_m <- poLCA(items_m, data_m, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+## Model12
+
 ```{r model12, cache=TRUE}
 model12_m <- poLCA(items_m, data_m, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+## Model13
 
 ```{r model13, cache=TRUE}
 model13_m <- poLCA(items_m, data_m, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+## Model14
+
 ```{r model14, cache=TRUE}
 model14_m <- poLCA(items_m, data_m, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
-<br><br> **Saving the models**
+# Saving the models
 
 ```{r saving models}
 model3_mpred <- model3_m$predclass
@@ -368,7 +392,7 @@ Models_m <- cbind (volgnumm, model3_mpred	,
 ```
 
 
-<br><br> **Testing the seperation between classes**
+# Class separation
 
 ```{r post prob}
 max_probs <- apply(model7_mpost, 1, max)
@@ -483,7 +507,7 @@ poLCA.entropy(model12_m)
 ```
 
 
-<br><br> **Plotjes**
+# Plots
 
 
 
@@ -531,39 +555,40 @@ NEA2022 <- NEA2022 %>%
 
 ```
 
-```{r}
-NEAm <- NEA2022[!is.na(NEA2022$model4_mpred), ]
-```
 
-
-<br><br> **4 class model**
+## Model4
 
 
 ```{r plot4}
-
-NEA2022$model4_mpred <- model4_m$predclass
-model4_mpred <- model4_m$predclass
-table(model4_m$predclass)
 
 vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
           "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
           "conflict_col_plot", "conflict_leid_plot", 
           "steuncol_plot", "steunleid_plot", "psyveil_plot")
 
+used_cases <- complete.cases(NEA2022[, vars])
+
+NEA2022$model4_mpred <- NA_integer_
+NEA2022$model4_mpred[used_cases] <- model4_m$predclass
+
+table(NEA2022$model4_mpred, useNA = "ifany")
+
 plot_data4 <- NEA2022 %>%
+  filter(!is.na(model4_mpred)) %>%
   pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
   group_by(model4_mpred, indicator) %>%
   summarise(mean_value = mean(value, na.rm = TRUE), .groups = "drop") %>%
   mutate(
     indicator   = factor(indicator, levels = vars),
     class_label = recode(as.character(model4_mpred), 
-                         "1" = "1 (17.51%)", 
-                         "2" = "2 (4.67%)", 
-                         "3" = "3 (20.59%)", 
-                         "4" = "4 (57.23%)")
-  )%>% 
+                         "1" = "1 (4.58%)", 
+                         "2" = "2 (17.26%)", 
+                         "3" = "3 (57.48%)", 
+                         "4" = "4 (20.69%)")
+  ) %>%
   mutate(class_label = factor(class_label,
-                      levels = c("1 (17.51%)", "2 (4.67%)", "3 (20.59%)", "4 (57.23%)")))
+                      levels = c("1 (4.58%)", "2 (17.26%)", "3 (57.48%)", "4 (20.69%)")))
+
 
 indicator_labels <- c(
   "pesten_col_plot"    = "Bullying C",
@@ -591,10 +616,10 @@ ggplot(plot_data4, aes(x = indicator, y = mean_value,
                      expand = c(0,0)) +
   scale_color_manual(
     values = c(
-      "1 (17.51%)"   = "#CC79A7",
-      "2 (4.67%)"          = "#D55E00",
-      "3 (20.59%)"   = "#0072B2",
-      "4 (57.23%)" = "#56B4E9"
+      "1 (4.58%)"   = "#CC79A7",
+      "2 (17.26%)"          = "#D55E00",
+      "3 (57.48%)"   = "#0072B2",
+      "4 (20.69%)" = "#56B4E9"
     )
   ) +
   labs(x = NULL, y = "Mean score", color = NULL) +
@@ -605,26 +630,21 @@ ggplot(plot_data4, aes(x = indicator, y = mean_value,
     legend.text = element_text(size = 11)
   )
 
+table(NEA2022$model4_mpred, useNA = "ifany")
+
+
 ```
 
-
-
-
-<br><br> **5 class model**
+## Model5
 
 
 ```{r plot5}
-model5_mpred <- model5_m$predclass
-NEA2022$model5_mpred <- model5_m$predclass
-table(model5_m$predclass)
-prop.table(table(model5_m$predclass)) * 100
+used_cases <- complete.cases(NEA2022[, vars])
 
-table(model4_mpred, model5_mpred)
+NEA2022$model5_mpred <- NA_integer_
+NEA2022$model5_mpred[used_cases] <- model5_m$predclass
 
-vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
-          "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
-          "conflict_col_plot", "conflict_leid_plot", "steuncol_plot", 
-          "steunleid_plot", "psyveil_plot")
+table(NEA2022$model5_mpred, useNA = "ifany")
 
 plot_data5 <- NEA2022 %>%
   pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
@@ -633,14 +653,14 @@ plot_data5 <- NEA2022 %>%
   mutate(
     indicator   = factor(indicator, levels = vars),
     class_label = recode(as.character(model5_mpred), 
-                         "1" = "1 (13.73%)", 
-                         "2" = "2 (2.74%)", 
-                         "3" = "3 (57.64%)", 
-                         "4" = "4 (5.40%)",
-                         "5" = "5 (20.50%)")
+                         "1" = "1 (13.68%)", 
+                         "2" = "2 (2.57%)", 
+                         "3" = "3 (57.95%)", 
+                         "4" = "4 (5.25%)",
+                         "5" = "5 (20.55%)")
   )%>% 
   mutate(class_label = factor(class_label,
-                      levels = c("1 (13.73%)", "2 (2.74%)", "3 (57.64%)", "4 (5.40%)", "5 (20.50%)")))
+                      levels = c("1 (13.68%)", "2 (2.57%)", "3 (57.95%)", "4 (5.25%)", "5 (20.55%)")))
 
 
 indicator_labels <- c(
@@ -669,11 +689,11 @@ ggplot(plot_data5, aes(x = indicator, y = mean_value,
                      expand = c(0,0)) +
   scale_color_manual(
     values = c(
-      "1 (13.73%)"   = "#CC79A7",
-      "2 (2.74%)"          = "#D55E00",
-      "3 (57.64%)"   = "#56B4E9",
-      "4 (5.40%)" = "#E69F00",
-      "5 (20.50%)" = "#0072B2"
+      "1 (13.68%)"   = "#CC79A7",
+      "2 (2.57%)"          = "#D55E00",
+      "3 (57.95%)"   = "#56B4E9",
+      "4 (5.25%)" = "#E69F00",
+      "5 (20.55%)" = "#0072B2"
     )
   ) +
   labs(x = NULL, y = "Mean score", color = NULL) +
@@ -687,22 +707,16 @@ ggplot(plot_data5, aes(x = indicator, y = mean_value,
 ```
 
 
-
-<br><br> **6 class model**
+## Model6
 
 
 ```{r plot6}
-model6_mpred <- model6_m$predclass
-NEA2022$model6_mpred <- model6_m$predclass
-table(model6_m$predclass)
-prop.table(table(model6_m$predclass)) * 100
+used_cases <- complete.cases(NEA2022[, vars])
 
-table(model5_mpred, model6_mpred)
+NEA2022$model6_mpred <- NA_integer_
+NEA2022$model6_mpred[used_cases] <- model6_m$predclass
 
-vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
-          "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
-          "conflict_col_plot", "conflict_leid_plot", "steuncol_plot", 
-          "steunleid_plot", "psyveil_plot")
+table(NEA2022$model6_mpred, useNA = "ifany")
 
 plot_data6 <- NEA2022 %>%
   pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
@@ -711,15 +725,15 @@ plot_data6 <- NEA2022 %>%
   mutate(
     indicator   = factor(indicator, levels = vars),
     class_label = recode(as.character(model6_mpred), 
-                         "1" = "1 (4.75%)", 
-                         "2" = "2 (13.96%)", 
-                         "3" = "3 (57.46%)", 
-                         "4" = "4 (1.59%)",
-                         "5" = "5 (1.84%)",
-                         "6" = "6 (20.41%)")
+                         "1" = "1 (4.80%)", 
+                         "2" = "2 (13.84%)", 
+                         "3" = "3 (57.53%)", 
+                         "4" = "4 (1.52%)",
+                         "5" = "5 (1.85%)",
+                         "6" = "6 (20.47%)")
   )%>% 
   mutate(class_label = factor(class_label,
-                      levels = c("1 (4.75%)", "2 (13.96%)", "3 (57.46%)", "4 (1.59%)", "5 (1.84%)", "6 (20.41%)")))
+                      levels = c("1 (4.80%)", "2 (13.84%)", "3 (57.53%)", "4 (1.52%)", "5 (1.85%)", "6 (20.47%)")))
 
 
 indicator_labels <- c(
@@ -748,12 +762,12 @@ ggplot(plot_data6, aes(x = indicator, y = mean_value,
                      expand = c(0,0)) +
   scale_color_manual(
     values = c(
-      "1 (4.75%)"   = "#E69F00",
-      "2 (13.96%)"          = "#CC79A7",
-      "3 (57.46%)"   = "#56B4E9",
-      "4 (1.59%)" = "#000000",
-      "5 (1.84%)" = "#D55E00",
-      "6 (20.41%)" = "#0072B2"
+      "1 (4.80%)"   = "#E69F00",
+      "2 (13.84%)"          = "#CC79A7",
+      "3 (57.53%)"   = "#56B4E9",
+      "4 (1.52%)" = "#000000",
+      "5 (1.85%)" = "#D55E00",
+      "6 (20.47%)" = "#0072B2"
     )
   ) +
   labs(x = NULL, y = "Mean score", color = NULL) +
@@ -767,20 +781,15 @@ ggplot(plot_data6, aes(x = indicator, y = mean_value,
 ```
 
 
-<br><br> **7 class model**
+## Model7
 
 ```{r plot7}
-model7_mpred <- model7_m$predclass
-NEA2022$model7_mpred <- model7_m$predclass
-table(model7_m$predclass)
-prop.table(table(model7_m$predclass)) * 100
+used_cases <- complete.cases(NEA2022[, vars])
 
-table(model6_mpred, model7_mpred)
+NEA2022$model7_mpred <- NA_integer_
+NEA2022$model7_mpred[used_cases] <- model7_m$predclass
 
-vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
-          "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
-          "conflict_col_plot", "conflict_leid_plot", "steuncol_plot", 
-          "steunleid_plot", "psyveil_plot")
+table(NEA2022$model7_mpred, useNA = "ifany")
 
 plot_data7 <- NEA2022 %>%
   pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
@@ -789,22 +798,22 @@ plot_data7 <- NEA2022 %>%
   mutate(
     indicator   = factor(indicator, levels = vars),
     class_label = recode(as.character(model7_mpred),
-                         "1" = "Short-term conflict (6.84%)",
-                         "2" = "Overall safe (56.37%)",
-                         "3" = "Overall highly safe (20.36%)",
-                         "4" = "Supervisor unsafety (1.83%)",
-                         "5" = "Unsafe social climate (10.20%)",
-                         "6" = "Overall unsafe (1.55%)",
-                         "7" = "Coworker unsafety (2.86%)")
+                         "1" = "Short-term conflict (6.78%)",
+                         "2" = "Overall safe (56.34%)",
+                         "3" = "Overall highly safe (20.46%)",
+                         "4" = "Supervisor unsafety (1.85%)",
+                         "5" = "Unsafe social climate (10.35%)",
+                         "6" = "Overall unsafe (1.49%)",
+                         "7" = "Coworker unsafety (2.73%)")
   ) %>%
   mutate(class_label = factor(class_label,
-                              levels = c("Overall highly safe (20.36%)", 
-                                         "Overall safe (56.37%)",
-                                         "Short-term conflict (6.84%)", 
-                                         "Unsafe social climate (10.20%)", 
-                                         "Coworker unsafety (2.86%)", 
-                                         "Supervisor unsafety (1.83%)", 
-                                         "Overall unsafe (1.55%)")))
+                              levels = c("Overall highly safe (20.46%)", 
+                                         "Overall safe (56.34%)",
+                                         "Short-term conflict (6.78%)", 
+                                         "Unsafe social climate (10.35%)", 
+                                         "Coworker unsafety (2.73%)", 
+                                         "Supervisor unsafety (1.85%)", 
+                                         "Overall unsafe (1.49%)")))
 
 indicator_labels <- c(
   "pesten_col_plot"    = "Bullying C",
@@ -832,13 +841,13 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
                      expand = c(0,0)) +
   scale_color_manual(
     values = c(
-      "Overall highly safe (20.36%)"   = "#0072B2",
-      "Overall safe (56.37%)"          = "#56B4E9",
-      "Short-term conflict (6.84%)"   = "#009E73",
-      "Unsafe social climate (10.20%)" = "#CC79A7",
-      "Coworker unsafety (2.86%)"     = "#E69F00",
-      "Supervisor unsafety (1.83%)"   = "#D55E00",
-      "Overall unsafe (1.55%)"        = "#000000" 
+      "Overall highly safe (20.46%)"   = "#0072B2",
+      "Overall safe (56.34%)"          = "#56B4E9",
+      "Short-term conflict (6.78%)"   = "#009E73",
+      "Unsafe social climate (10.35%)" = "#CC79A7",
+      "Coworker unsafety (2.73%)"     = "#E69F00",
+      "Supervisor unsafety (1.85%)"   = "#D55E00",
+      "Overall unsafe (1.49%)"        = "#000000" 
     )
   ) +
   labs(x = NULL, y = "Mean score", color = NULL) +
@@ -850,30 +859,17 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
   )
 ```
 
-<br><br> **8 class model**
+## Model8
 
 
 ```{r plot8}
-model8_mpred <- model8_m$predclass
-NEA2022$model8_mpred <- model8_m$predclass
-table(model8_m$predclass)
-prop.table(table(model8_m$predclass)) * 100
+used_cases <- complete.cases(NEA2022[, vars])
 
-table(model7_mpred, model8_mpred)
+NEA2022$model8_mpred <- NA_integer_
+NEA2022$model8_mpred[used_cases] <- model8_m$predclass
 
-# Predicted classes toevoegen
-model8_mpred <- model8_m$predclass
-NEA2022$model8_mpred <- model8_mpred
+table(NEA2022$model8_mpred, useNA = "ifany")
 
-# Tabel en percentages
-table(model8_mpred)
-prop.table(table(model8_mpred)) * 100
-
-# Variabelen voor plotting
-vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
-          "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
-          "conflict_col_plot", "conflict_leid_plot", "steuncol_plot", 
-          "steunleid_plot", "psyveil_plot")
 
 # Data voor plot
 plot_data8 <- NEA2022 %>%
@@ -883,18 +879,18 @@ plot_data8 <- NEA2022 %>%
   mutate(
     indicator   = factor(indicator, levels = vars),
     class_label = recode(as.character(model8_mpred), 
-                         "1" = "1 (2.69%)", 
-                         "2" = "2 (55.04%)", 
-                         "3" = "3 (2.52%)", 
-                         "4" = "4 (10.19%)",
-                         "5" = "5 (20.36%)",
-                         "6" = "6 (6.91%)",
-                         "7" = "7 (0.62%)",
-                         "8" = "8 (1.67%)")
+                         "1" = "1 (2.26%)", 
+                         "2" = "2 (55.39%)", 
+                         "3" = "3 (2.39%)", 
+                         "4" = "4 (9.96%)",
+                         "5" = "5 (20.46%)",
+                         "6" = "6 (6.95%)",
+                         "7" = "7 (0.65%)",
+                         "8" = "8 (1.94%)")
   ) %>% 
   mutate(class_label = factor(class_label,
-                      levels = c("1 (2.69%)", "2 (55.04%)", "3 (2.52%)", "4 (10.19%)",
-                                 "5 (20.36%)", "6 (6.91%)", "7 (0.62%)", "8 (1.67%)")))
+                      levels = c("1 (2.26%)", "2 (55.39%)", "3 (2.39%)", "4 (9.96%)",
+                                 "5 (20.46%)", "6 (6.95%)", "7 (0.65%)", "8 (1.94%)")))
 
 # Labels voor indicatoren
 indicator_labels <- c(
@@ -924,14 +920,14 @@ ggplot(plot_data8, aes(x = indicator, y = mean_value,
                      expand = c(0,0)) +
   scale_color_manual(
     values = c(
-      "1 (2.69%)"   = "#E69F00",
-      "2 (55.04%)"  = "#56B4E9",
-      "3 (2.52%)"   = "#F0E442",
-      "4 (10.19%)"  = "#CC79A7",
-      "5 (20.36%)"  = "#0072B2",
-      "6 (6.91%)"   = "#009E73",
-      "7 (0.62%)"   = "#D55E00",
-      "8 (1.67%)"   = "#000000" 
+      "1 (2.26%)"   = "#E69F00",
+      "2 (55.39%)"  = "#56B4E9",
+      "3 (2.39%)"   = "#F0E442",
+      "4 (9.96%)"  = "#CC79A7",
+      "5 (20.46%)"  = "#0072B2",
+      "6 (6.95%)"   = "#009E73",
+      "7 (0.65%)"   = "#D55E00",
+      "8 (1.94%)"   = "#000000" 
     )
   ) +
   labs(x = NULL, y = "Mean score", color = NULL) +
@@ -945,34 +941,17 @@ ggplot(plot_data8, aes(x = indicator, y = mean_value,
 ```
 
 
-
-
-<br><br> **9 class model**
+## Model9
 
 
 ```{r plot9}
-model9_mpred <- model9_m$predclass
-NEA2022$model9_mpred <- model9_m$predclass
-table(model9_m$predclass)
-prop.table(table(model9_m$predclass)) * 100
+used_cases <- complete.cases(NEA2022[, vars])
 
-table(model8_mpred, model9_mpred)
+NEA2022$model9_mpred <- NA_integer_
+NEA2022$model9_mpred[used_cases] <- model9_m$predclass
 
-# Predicted classes toevoegen
-model9_mpred <- model9_m$predclass
-NEA2022$model9_mpred <- model9_mpred
+table(NEA2022$model9_mpred, useNA = "ifany")
 
-# Tabel en percentages
-table(model9_mpred)
-prop.table(table(model9_mpred)) * 100
-
-# Variabelen voor plotting
-vars <- c("pesten_col_plot", "pesten_leid_plot", "int_col_plot", "int_leid_plot",
-          "gew_col_plot", "gew_leid_plot", "seks_col_plot", "seks_leid_plot",
-          "conflict_col_plot", "conflict_leid_plot", "steuncol_plot", 
-          "steunleid_plot", "psyveil_plot")
-
-# Data voor plot
 plot_data9 <- NEA2022 %>%
   pivot_longer(cols = all_of(vars), names_to = "indicator", values_to = "value") %>%
   group_by(model9_mpred, indicator) %>%
@@ -980,19 +959,19 @@ plot_data9 <- NEA2022 %>%
   mutate(
     indicator   = factor(indicator, levels = vars),
     class_label = recode(as.character(model9_mpred), 
-                         "1" = "1 (1.51%)", 
-                         "2" = "2 (2.11%)", 
-                         "3" = "3 (0.38%)", 
-                         "4" = "4 (2.33%)",
-                         "5" = "5 (55.46%)",
-                         "6" = "6 (9.79%)",
-                         "7" = "7 (0.98%)",
-                         "8" = "8 (20.52%)",
-                         "9" = "9 (6.92%)")
+                         "1" = "1 (5.91%)", 
+                         "2" = "2 (0.81%)", 
+                         "3" = "3 (0.49%)", 
+                         "4" = "4 (1.51%)",
+                         "5" = "5 (55.17%)",
+                         "6" = "6 (20.54%)",
+                         "7" = "7 (3.87%)",
+                         "8" = "8 (9.99%)",
+                         "9" = "9 (1.71%)")
   ) %>% 
   mutate(class_label = factor(class_label,
-                      levels = c("1 (1.51%)", "2 (2.11%)", "3 (0.38%)", "4 (2.33%)",
-                                 "5 (55.46%)", "6 (9.79%)", "7 (0.98%)", "8 (20.52%)", "9 (6.92%)")))
+                      levels = c("1 (5.91%)", "2 (0.81%)", "3 (0.49%)", "4 (1.51%)",
+                                 "5 (55.17%)", "6 (20.54%)", "7 (3.87%)", "8 (9.99%)", "9 (1.71%)")))
 
 # Labels voor indicatoren
 indicator_labels <- c(
@@ -1011,7 +990,6 @@ indicator_labels <- c(
   "psyveil_plot"       = "Psychological unsafety"
 )
 
-# Plotten
 ggplot(plot_data9, aes(x = indicator, y = mean_value,
                        color = class_label, group = class_label)) +
   geom_line(size = 1) +
@@ -1022,15 +1000,15 @@ ggplot(plot_data9, aes(x = indicator, y = mean_value,
                      expand = c(0,0)) +
   scale_color_manual(
     values = c(
-      "1 (1.51%)"   = "#000000",
-      "2 (2.11%)"   = "#E69F00",
-      "3 (0.38%)"   = "#D55E00",
-      "4 (2.33%)"   = "#F0E442",
-      "5 (55.46%)"  = "#56B4E9",
-      "6 (9.79%)"   = "#CC79A7",
-      "7 (0.98%)"   = "#999999",
-      "8 (20.52%)"  = "#0072B2",
-      "9 (6.92%)"   = "#009E73"  # extra kleur voor klasse 9
+      "1 (5.91%)"   = "#000000",
+      "2 (0.81%)"   = "#E69F00",
+      "3 (0.49%)"   = "#D55E00",
+      "4 (1.51%)"   = "#F0E442",
+      "5 (55.17%)"  = "#56B4E9",
+      "6 (20.54%)"   = "#CC79A7",
+      "7 (3.87%)"   = "#999999",
+      "8 (9.99%)"  = "#0072B2",
+      "9 (1.71%)"   = "#009E73"
     )
   ) +
   labs(x = NULL, y = "Mean score", color = NULL) +
