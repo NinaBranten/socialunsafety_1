@@ -125,6 +125,7 @@ NEA2022 <- NEA2022 %>%
 table(NEA2022$vio_s)
 ```
 
+# Latent class analysis
 
 ```{r data items, cache=TRUE, warning=FALSE}
 attach(NEA2022)
@@ -133,56 +134,79 @@ data_b <- data.frame(bul_c, bul_s, int_c, int_s, vio_c, vio_s, sex_c, sex_s, con
 items_b <- cbind(bul_c, bul_s, int_c, int_s, vio_c, vio_s, sex_c, sex_s, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR) ~ 1
 ```
 
-
+## Model1
 ```{r model 1, cache=TRUE}
 model1_b <- poLCA(items_b, data_b, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model2
+
 ```{r model 2, cache=TRUE}
 model2_b <- poLCA(items_b, data_b, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model3
 
 ```{r model 3, cache=TRUE}
 model3_b <- poLCA(items_b, data_b, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+## Model4
+
 ```{r model 4, cache=TRUE}
 model4_b <- poLCA(items_b, data_b, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model5
 
 ```{r model 5, cache=TRUE}
 model5_b <- poLCA(items_b, data_b, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+## Model6
+
 ```{r model 6, cache=TRUE}
 model6_b <- poLCA(items_b, data_b, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model7
 
 ```{r model 7, cache=TRUE}
 model7_b <- poLCA(items_b, data_b, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+## Model8
+
 ```{r model 8, cache=TRUE}
 model8_b <- poLCA(items_b, data_b, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model9
 
 ```{r model 9, cache=TRUE}
 model9_b <- poLCA(items_b, data_b, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+## Model10
+
 ```{r model 10, cache=TRUE}
 model10_b <- poLCA(items_b, data_b, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+## Model11
+
 ```{r model 11, cache=TRUE}
 model11_b <- poLCA(items_b, data_b, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model12
 
 ```{r model 12, cache=TRUE}
 model12_b <- poLCA(items_b, data_b, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
 
-<br><br> **Saving the models**
+# Saving the models
 
 ```{r saving models, cache=TRUE}
 model3_bpred <- model3_b$predclass
@@ -441,7 +465,7 @@ NEA2022 <- merge(NEA2022, Models_b, by = "volgnumm", all.x = TRUE)
 ```
 
 
-<br><br> **Testing the seperation between classes**
+# Class separation
 
 
 ```{r post prob, cache=TRUE}
@@ -557,7 +581,7 @@ poLCA.entropy(model12_b)
 
 
 
-<br><br> **Plotjes**
+# Plots
 
 ```{r rocoding plot, echo=TRUE}
 #Recoding variables on scale from 0 to 1
@@ -605,7 +629,7 @@ NEA2022 <- NEA2022 %>%
 
 
 
-<br><br> **4 class model**
+## Model4
 
 ```{r plot 4, echo=TRUE}
 model4_bpred <- model4_b$predclass
@@ -675,9 +699,7 @@ ggplot(plot_data4, aes(x = indicator, y = mean_value,
 
 ```
 
-<br><br> **5 class model**
-
-
+## Model 5
 
 ```{r plot 5, echo=TRUE}
 model5_bpred <- model5_b$predclass
@@ -751,7 +773,7 @@ ggplot(plot_data5, aes(x = indicator, y = mean_value,
 ```
 
 
-<br><br> **6 class model**
+## Model6
 
 
 ```{r plot 6, echo=TRUE}
@@ -828,7 +850,7 @@ ggplot(plot_data6, aes(x = indicator, y = mean_value,
 ```
 
 
-<br><br> **7 class model**
+## Model7
 
 ```{r plot 7, echo=TRUE}
 model7_bpred <- model7_b$predclass
@@ -909,7 +931,7 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
   )
 ```
 
-<br><br> **8 class model**
+## Model8
 
 
 ```{r plot 8, echo=TRUE}
@@ -990,7 +1012,7 @@ ggplot(plot_data8, aes(x = indicator, y = mean_value,
 ```
 
 
-<br><br> **9 class model**
+## Model9
 
 
 ```{r plot 9, echo=TRUE}

@@ -62,7 +62,7 @@ NEA2022$leeftijd <- factor(NEA2022$leeftijd,
 ```
 
 
-<br><br> **Overall unsafety (class 7)**
+# Overall unsafety (class 7)
 
 
 ```{r regression overall unsafety, cache=TRUE}
@@ -296,7 +296,7 @@ df7 %>%
 
 
 
-<br><br> **Supervisor unsafety (class 2)**
+# Supervisor unsafety (class 2)
 
 
 
@@ -531,7 +531,7 @@ df2 %>%
 
 
 
-<br><br> **Coworker unsafety (class 3)**
+# Coworker unsafety (class 3)
 
 
 ```{r regression coworker unsafety, cache=TRUE}
@@ -764,9 +764,7 @@ df3 %>%
 
 
 
-
-
-<br><br> **Unsafe social climate (class 4)**
+# Unsafe social climate (class 4)
 
 
 ```{r regression unsafe social climate, cache=TRUE}
@@ -999,8 +997,7 @@ df4 %>%
 
 
 
-
-<br><br> **Short-term conflict (class 1)**
+# Short-term conflict (class 1)
 
 
 ```{r regression short-term conflict, cache=TRUE}
@@ -1232,9 +1229,7 @@ df1 %>%
 ```
 
 
-
-
-<br><br> **Overall safe (class 5)**
+# Overall safe (class 5)
 
 
 ```{r regression overall safe, cache=TRUE}
@@ -1466,10 +1461,7 @@ df5 %>%
 ```
 
 
-
-
-
-<br><br> **Overall highly safe (class 6)**
+# Overall highly safe (class 6)
 
 
 ```{r regression overall highly safe, cache=TRUE}

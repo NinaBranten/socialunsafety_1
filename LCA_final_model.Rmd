@@ -76,66 +76,94 @@ items_emp <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 <br><br> Steuncol_RR: **My co-workers take personal interest in me.** **My co-workers are friendly.** Mean score of the two items, rounded. (1) fully agree (2) agree (3) disagree (4) fully disagree
 <br><br> Psyveil_RR: **At my workplace it is possible to raise difficult questions.** **At my workplace it is easy to ask for help.** **At my workplace it is okay to make a mistake.** Mean score of the three items, rounded. (1) fully agree (2) agree (3) don't agree, don't disagree (4) disagree (5) fully disagree
 
-<br><br> **Latent class analysis**
+# **Latent class analysis**
+
+## Model1
 
 ```{r model1, cache=TRUE}
 model1_emp <- poLCA(items_emp, data_emp, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+## Model2
+
 ```{r model2, cache=TRUE}
 model2_emp <- poLCA(items_emp, data_emp, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model3
 
 ```{r model3, cache=TRUE}
 model3_emp <- poLCA(items_emp, data_emp, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+## Model4
+
 ```{r model4, cache=TRUE}
 model4_emp <- poLCA(items_emp, data_emp, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model5
 
 ```{r model5, cache=TRUE}
 model5_emp <- poLCA(items_emp, data_emp, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+## Model6
+
 ```{r model6, cache=TRUE}
 model6_emp <- poLCA(items_emp, data_emp, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model7
 
 ```{r model7, cache=TRUE}
 model7_emp <- poLCA(items_emp, data_emp, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 model7_emp
 ```
 
+## Model8
+
 ```{r model8, cache=TRUE}
 model8_emp <- poLCA(items_emp, data_emp, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model9
 
 ```{r model9, cache=TRUE}
 model9_emp <- poLCA(items_emp, data_emp, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+## Model10
+
 ```{r model10, cache=TRUE}
 model10_emp <- poLCA(items_emp, data_emp, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model11
 
 ```{r model11, cache=TRUE}
 model11_emp <- poLCA(items_emp, data_emp, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+## Model12
+
 ```{r model12, cache=TRUE}
 model12_emp <- poLCA(items_emp, data_emp, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+## Model13
 
 ```{r model13, cache=TRUE}
 model13_emp <- poLCA(items_emp, data_emp, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+## Model14
+
 ```{r model14, cache=TRUE}
 model14_emp <- poLCA(items_emp, data_emp, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
-<br><br> **Saving the models**
+# Saving the models
 
 ```{r saving models}
 model3_emppred <- model3_emp$predclass
@@ -456,8 +484,7 @@ for (i in seq_along(models)) {
 ```
 
 
-
-<br><br> **Testing the seperation between classes**
+# Class separation
 
 ```{r post prob}
 max_probs <- apply(model7_emppost, 1, max)
@@ -586,7 +613,7 @@ poLCA.entropy(model14_emp)
 ```
 
 
-<br><br> **Plotjes**
+# Plots
 
 ```{r plotjes}
 #Recoding variables on scale from 0 to 1
@@ -633,8 +660,7 @@ NEA2022 <- NEA2022 %>%
 ```
 
 
-
-<br><br> **4 class model**
+## Model 4
 
 
 ```{r plot4}
@@ -703,13 +729,9 @@ ggplot(plot_data4, aes(x = indicator, y = mean_value,
   )
 
 ```
-```{r}
-table(model4_emppred, model5_emppred)
-```
 
 
-
-<br><br> **5 class model**
+## Model5
 
 
 ```{r plot5}
@@ -785,12 +807,7 @@ ggplot(plot_data5, aes(x = indicator, y = mean_value,
 
 ```
 
-```{r}
-table(model5_emppred, model6_emppred)
-```
-
-
-<br><br> **6 class model**
+## Model6
 
 
 ```{r plot6}
@@ -868,8 +885,7 @@ ggplot(plot_data6, aes(x = indicator, y = mean_value,
 
 ```
 
-
-<br><br> **7 class model**
+## Model7
 
 ```{r plot7}
 model7_emppred <- model7_emp$predclass
@@ -952,7 +968,7 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
   )
 ```
 
-<br><br> **8 class model**
+## Model8
 
 
 ```{r plot8}
@@ -1046,11 +1062,7 @@ ggplot(plot_data8, aes(x = indicator, y = mean_value,
 
 ```
 
-
-
-
-<br><br> **9 class model**
-
+## Model9
 
 ```{r plot9}
 model9_emppred <- model9_emp$predclass

@@ -8,12 +8,6 @@ date: "2025-09-09"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
 
 ```{r loading packages, warning=FALSE, results='hide', message=FALSE}
 library("formatR")
@@ -37,9 +31,6 @@ library("gt")
 library("tibble")
 library("dplyr")
 ```
-
-
-<br><br> **Loading the data**
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEA2022 <- readRDS("data/processed/NEA1009.rds")
@@ -68,10 +59,8 @@ NEA2022$leeftijd <- factor(NEA2022$leeftijd,
 ```
 
 
-<br><br> **Overall unsafety (class 6)**
+# Overall unsafety (class 4)
 
-
-## Regression overall unsafety
 
 ```{r regression overall unsafety, cache=TRUE}
 #Regression
@@ -330,9 +319,7 @@ df6 %>%
 ```
 
 
-
-
-<br><br> **Supervisor unsafety (class 6)**
+# Supervisor unsafety (class 6)
 
 
 ```{r regression supervisor unsafety, cache=TRUE}
@@ -575,8 +562,8 @@ df4 %>%
 
 ```
 
-<br><br> **Coworker unsafety (class 7)**
 
+# Coworker unsafety (class 7)
 
 
 ```{r regression coworker unsafety, cache=TRUE}
@@ -596,8 +583,6 @@ tab_model(L_7_0, L_7_1, p.style="stars")
 #PCV
 (0.474-0.07071)/0.474
 ```
-
-
 
 
 ```{r estimated probability coworker unsafety, cache=TRUE}
@@ -822,7 +807,7 @@ df7 %>%
 ```
 
 
-<br><br> **Unsafe social climate (class 5)**
+# Unsafe social climate (class 5)
 
 
 ```{r regression unsafe social climate, cache=TRUE}
@@ -899,9 +884,6 @@ ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
     sec.axis = dup_axis(name = "Predicted Probability")
   )
 ```
-
-
-
 
 
 ```{r estimated intersectional effects unsafe social climate, cache=TRUE}
@@ -1071,7 +1053,7 @@ df5 %>%
 
 
 
-<br><br> **Short-term conflict (class 1)**
+# Short-term conflict (class 1)
 
 
 ```{r regression short-term conflict, cache=TRUE}
@@ -1316,10 +1298,7 @@ df1 %>%
 ```
 
 
-
-
-
-<br><br> **safe (class 2)**
+# safe (class 2)
 
 
 ```{r regression safe, cache=TRUE}
@@ -1565,9 +1544,7 @@ df2 %>%
 ```
 
 
-
-
-<br><br> **highly safe (class 3)**
+# Highly safe (class 3)
 
 
 ```{r regression highly safe, cache=TRUE}

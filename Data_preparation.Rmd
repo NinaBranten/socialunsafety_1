@@ -22,7 +22,8 @@ library("dplyr")
 library("haven")
 library("psych")
 ```
-<br><br> **Loading the data**
+
+# Preparing dataset
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEAraw <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
@@ -45,11 +46,12 @@ NEA2022 <- NEA2022 %>%
   filter(!is.na(afl_soi3))
 ```
 
-<br><br> **Recoding variables**
+# Recoding variables
+
+## Bullying
 
 ```{r bul cow, cache=TRUE}
-#Bullying coworkers
-
+# Bullying coworkers
 NEA2022$pesten_col <- as.numeric(NEA2022$afl_pe_1)
 
 # (1) no, never, (2) a few times, (3) often, and (4) very often 
@@ -63,7 +65,7 @@ summarytools::freq(NEA2022$pesten_col)
 ```
 
 ```{r bul sup, cache=TRUE}
-#Bullying supervisors
+# Bullying supervisors
 NEA2022$pesten_leid <- as.numeric(NEA2022$afl_pe_2)
 
 # (1) no, never, (2) a few times, (3) often, and (4) very often 
@@ -74,6 +76,8 @@ NEA2022 <- NEA2022 %>%
 summarytools::freq(NEA2022$afl_pe_2)
 summarytools::freq(NEA2022$pesten_leid)
 ```
+
+## Intimidation
 
 ```{r int cow, cache=TRUE}
 #Intimidation coworkers
@@ -105,6 +109,8 @@ summarytools::freq(NEA2022$intimidation_leid)
 
 ```
 
+### Physical violence
+
 ```{r vio cow, cache=TRUE}
 #Physical violence coworkers
 
@@ -134,6 +140,8 @@ summarytools::freq(NEA2022$afl_ge_4)
 summarytools::freq(NEA2022$geweld_leid)
 ```
 
+## Unwanted sexual attention
+
 ```{r sex cow, cache=TRUE}
 #Unwanted sexual attention coworkers
 
@@ -162,6 +170,8 @@ summarytools::freq(NEA2022$seks_leid)
 
 ```
 
+## Conflict
+
 ```{r con cow, cache=TRUE}
 #Conflict coworker
 
@@ -189,6 +199,8 @@ summarytools::freq(NEA2022$confli_2)
 summarytools::freq(NEA2022$conflict_emp)
 ```
 
+
+## Incivility
 
 ```{r inc sup, cache=TRUE}
 #Social support supervisor: my supervisor pays attention to the well-being of the staff 
@@ -321,6 +333,7 @@ summarytools::freq(NEA2022$steuncol_RR)
 cor(NEA2022$steuncol_scale, NEA2022$steuncol_RR, use = "complete.obs")
 ```
 
+## Psychological unsafety
 
 ```{r psych, cache=TRUE}
 #Psychological unsafety: at my workplace it is possible to raise difficult questions
@@ -381,6 +394,8 @@ cor(NEA2022$psyveil_scale, NEA2022$psyveil_RR, use = "complete.obs")
 ```
 
 
+## Age
+
 <br><br> **Recoden low (15-35), middle (35-55), old (55-75)**
 
 ```{r age, cache=TRUE}
@@ -403,6 +418,8 @@ summarytools::freq(NEA2022$afl_lftc)
 summarytools::freq(NEA2022$leeftijd_)
 
 ```
+
+## Intersections
 
 <br><br> **Preparing variables for intersections**
 
