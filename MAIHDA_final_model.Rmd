@@ -59,7 +59,7 @@ NEA2022$leeftijd <- factor(NEA2022$leeftijd,
 ```
 
 
-# Overall unsafety (class 4)
+# Overall unsafety (class 6)
 
 
 ```{r regression overall unsafety, cache=TRUE}
@@ -319,7 +319,7 @@ df6 %>%
 ```
 
 
-# Supervisor unsafety (class 6)
+# Supervisor unsafety (class 4)
 
 
 ```{r regression supervisor unsafety, cache=TRUE}
