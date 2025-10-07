@@ -49,8 +49,8 @@ library("psych")
 
 <br><br> **Loading the data**
 
-```{r loading data, cache=TRUE, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022 <- readRDS("data/processed/NEA1009.rds")
+```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022 <- readRDS("data/processed/lcabinary.rds")
 attach(NEA2022)
 set.seed(123)
 ```
@@ -1019,4 +1019,8 @@ ggplot(plot_data9, aes(x = indicator, y = mean_value,
     legend.text = element_text(size = 11)
   )
 
+```
+
+```{r}
+saveRDS(NEA2022, "data/processed/lcalist.rds")
 ```

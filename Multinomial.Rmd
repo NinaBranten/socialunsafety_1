@@ -8,6 +8,41 @@ date: "2025-05-19"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+```{r loading packages, warning=FALSE, results='hide', message=FALSE}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+library("dplyr")
+library("haven")
+library("psych")
+library("Matrix")
+library("lme4")
+library("merTools")
+library("sjPlot")
+library("glmmTMB")
+library("foreign")
+library("gt")
+library("tibble")
+library("dplyr")
+```
+
+
+<br><br> **Loading the data**
+
+```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022 <- readRDS("data/processed/NEA1009.rds")
+
+attach(NEA2022)
+set.seed(123)
+```
+
+
 MULTINOMIAL WITH SEVEN-CLASS MODEL AS DEPENDENT
 ```{r}
 library("brms")
@@ -29,22 +64,22 @@ pmodel7_empv7 <- lposteriorsmodel7_emp[[7]]
 ```
 
 ```{r}
-NEA05$class_emp_7 <- model7_emp$predclass
-table(NEA05$class_emp_7)
+NEA2022$class_emp_7 <- model7_emp$predclass
+table(NEA2022$class_emp_7)
 ```
 
 
 ```{r}
-NEA05$class_emp_7_f <- as.factor(NEA05$class_emp_7)
-table(NEA05$class_emp_7_f)
-NEA05$class_emp_7_f <- relevel(NEA05$class_emp_7_f, ref = "4")
-table(NEA05$class_emp_7_f)
+NEA2022$class_emp_7_f <- as.factor(NEA2022$class_emp_7)
+table(NEA2022$class_emp_7_f)
+NEA2022$class_emp_7_f <- relevel(NEA2022$class_emp_7_f, ref = "4")
+table(NEA2022$class_emp_7_f)
 ```
 
 ```{r}
 brm_emp7_0 <- brm(
   formula = class_emp_7_f ~ 1 + (1 | intersections),
-  data = NEA05,
+  data = NEA2022,
   family = categorical(),
   chains = 4, cores = 2, iter = 2000
 )
@@ -57,7 +92,7 @@ brm_emp7_1 <- brm(
   formula = class_emp_7_f ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
     (1 | intersections),
-  data = NEA05,
+  data = NEA2022,
   family = categorical(),
   chains = 4, cores = 2, iter = 2000
 )

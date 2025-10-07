@@ -35,7 +35,7 @@ library("dplyr")
 <br><br> **Loading the data**
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022 <- readRDS("data/processed/NEA1009.rds")
+NEA2022 <- readRDS("data/processed/LCAlist.rds")
 
 attach(NEA2022)
 set.seed(123)
@@ -1691,8 +1691,6 @@ df6 %>%
     rank           = md("**Rank**")
   )
 ```
-
-
 
 
 

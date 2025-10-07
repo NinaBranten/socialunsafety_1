@@ -6864,4 +6864,344 @@ tab_model(L_psyveil_s, p.style="stars")
 ```
 
 
+```{r}
 
+NEA2022$pmodel7_empv6_T <- (NEA2022$pmodel7_empv6 * (29923 - 1) + 0.5) / 29923
+
+summary(NEA2022$pmodel7_empv6_T)
+summary(NEA2022$pmodel7_empv6)
+```
+
+
+```{r}
+flb_5_g <- glmmTMB(pmodel7_empv5_T ~ gender_v + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA2022)
+summary(flb_5_g)
+```
+```{r}
+flb_5_m <- glmmTMB(pmodel7_empv5_T ~ migration_eu + migration_noeu + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA2022)
+summary(flb_5_m)
+```
+```{r}
+flb_5_e <- glmmTMB(pmodel7_empv5_T ~ education_laag + education_middel + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA2022)
+summary(flb_5_e)
+```
+```{r}
+flb_5_l <- glmmTMB(pmodel7_empv5_T ~ leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
+                  family = beta_family(link = "logit"),
+                  data = NEA2022)
+summary(flb_5_l)
+```
+
+
+
+
+
+
+```{r}
+ggplot(NEA2022, aes(x = model7_6)) +
+  geom_histogram(aes(y = ..density..), bins = 30,
+                 fill = "lightblue", color = "white") +
+  stat_function(fun = dnorm,
+                args = list(mean = mean(NEA2022$model7_6, na.rm = TRUE),
+                            sd   = sd(NEA2022$model7_6, na.rm = TRUE)),
+                color = "red", size = 1) +
+  theme_minimal() +
+  labs(title = "Verdeling van NEA2022$model7_6",
+       x = "Waarde", y = "Dichtheid")
+
+
+```
+
+```{r}
+ggplot(NEA2022, aes(x = model7_7)) +
+  geom_histogram(aes(y = ..density..), bins = 30,
+                 fill = "lightblue", color = "white") +
+  stat_function(fun = dnorm,
+                args = list(mean = mean(NEA2022$model7_7, na.rm = TRUE),
+                            sd   = sd(NEA2022$model7_7, na.rm = TRUE)),
+                color = "red", size = 1) +
+  theme_minimal() +
+  labs(title = "Verdeling van NEA2022$model7_7",
+       x = "Waarde", y = "Dichtheid")
+
+
+```
+
+
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, pesten_col, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+tab
+
+tab <- tabyl(NEA2022, model7_emppred, pesten_col, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+tab
+```
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, pesten_leid, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, pesten_leid, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, intimidation_col, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, intimidation_col, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```
+
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, intimidation_leid, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, intimidation_leid, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```
+
+
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, seks_col, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, seks_col, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```
+
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, seks_leid, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, seks_leid, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```
+
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, geweld_col, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, geweld_col, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```
+
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, geweld_leid, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, geweld_leid, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```
+
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, conflict_col, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, conflict_col, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```
+
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, conflict_leid, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, conflict_leid, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```
+
+
+
+
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, steuncol_RR, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, steuncol_RR, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```
+
+
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, steunleid_RR, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, steunleid_RR, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```
+
+
+```{r}
+tab <- tabyl(NEA2022, model7_bpred, psyveil_RR, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+tab <- tabyl(NEA2022, model7_emppred, psyveil_RR, show_na = FALSE) %>%
+  adorn_percentages("row") %>%          
+  adorn_pct_formatting(digits = 2) %>%  
+  adorn_ns(position = "front")          
+
+library(knitr)
+kable(tab, format = "pipe")   # maakt een nette tabel
+
+
+```

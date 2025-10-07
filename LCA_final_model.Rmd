@@ -49,7 +49,7 @@ library("psych")
 <br><br> **Loading the data**
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022 <-read.spss("data/processed/NEAfinal.sav", use.value.labels = T, to.data.frame = T)
+NEA2022 <- readRDS("data/processed/dataprep.rds")
 attach(NEA2022)
 set.seed(123)
 ```
@@ -912,7 +912,7 @@ plot_data7 <- NEA2022 %>%
                          "3" = "Highly safe (20.36%)",
                          "4" = "Supervisor unsafety (1.83%)",
                          "5" = "Unsafe social climate (10.20%)",
-                         "6" = "Overall unsafe (1.55%)",
+                         "6" = "Overall unsafety (1.55%)",
                          "7" = "Coworker unsafety (2.86%)")
   ) %>%
   mutate(class_label = factor(class_label,
@@ -922,7 +922,7 @@ plot_data7 <- NEA2022 %>%
                                          "Unsafe social climate (10.20%)", 
                                          "Coworker unsafety (2.86%)", 
                                          "Supervisor unsafety (1.83%)", 
-                                         "Overall unsafe (1.55%)")))
+                                         "Overall unsafety (1.55%)")))
 
 indicator_labels <- c(
   "pesten_col_plot"    = "Bullying C",
@@ -956,15 +956,15 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
       "Unsafe social climate (10.20%)" = "#CC79A7",
       "Coworker unsafety (2.86%)"     = "#E69F00",
       "Supervisor unsafety (1.83%)"   = "#D55E00",
-      "Overall unsafe (1.55%)"        = "#000000" 
+      "Overall unsafety (1.55%)"        = "#000000" 
     )
   ) +
   labs(x = NULL, y = "Mean score", color = NULL) +
   theme_minimal() +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
     legend.position = "bottom",
-    legend.text = element_text(size = 11)
+    legend.text = element_text(size = 13)
   )
 ```
 
@@ -1157,6 +1157,9 @@ ggplot(plot_data9, aes(x = indicator, y = mean_value,
 
 ```
 
+```{r}
+saveRDS(NEA2022, "data/processed/lcafinal.rds")
+```
 
 
 

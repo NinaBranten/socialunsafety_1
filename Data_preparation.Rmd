@@ -8,19 +8,12 @@ date: "2025-05-04"
 knitr::opts_chunk$set(cache = TRUE)
 ```
 
-
 ```{r, message=FALSE, warning=FALSE}
-library("formatR")
-library("foreign")
-library("ggplot2")
-library("lme4")
-library("poLCA")
-library("reprex")
-library("tidyr")
-library("klippy")
-library("dplyr")
-library("haven")
-library("psych")
+library(summarytools)
+library(foreign)
+library(dplyr)
+library(psych)
+library(fastDummies)
 ```
 
 # Preparing dataset
@@ -241,6 +234,10 @@ steunleid <- data.frame(
 alpha_result1 <- alpha(steunleid, use="pairwise.complete.obs")
 print(alpha_result1$total$raw_alpha)
 
+cor(NEA2022$steunleid_aandacht, NEA2022$steunleid_welzijn, use = "complete.obs", method = "spearman")
+cor(NEA2022$steunleid_aandacht, NEA2022$steunleid_welzijn, use = "complete.obs", method = "pearson")
+
+
 
 #Making a mean scale
 
@@ -307,6 +304,9 @@ steuncol <- data.frame(
 
 alpha_result2 <- alpha(steuncol, use="pairwise.complete.obs")
 print(alpha_result2$total$raw_alpha)
+
+cor(NEA2022$steuncol_belang, NEA2022$steuncol_vriendelijk, use = "complete.obs", method = "spearman")
+cor(NEA2022$steuncol_belang, NEA2022$steuncol_vriendelijk, use = "complete.obs", method = "pearson")
 
 
 #Making a mean scale
@@ -463,7 +463,6 @@ summarytools::freq(NEA2022$intersections)
 <br><br> **Creating dummy variables**
 
 ```{r dummies, cache=TRUE}
-library(fastDummies)
 NEA2022 <- dummy_cols(NEA2022, select_columns = "gender", remove_first_dummy = FALSE)
 NEA2022 <- dummy_cols(NEA2022, select_columns = "migration", remove_first_dummy = FALSE)
 NEA2022 <- dummy_cols(NEA2022, select_columns = "education", remove_first_dummy = FALSE)
@@ -472,5 +471,8 @@ NEA2022 <- dummy_cols(NEA2022, select_columns = "intersections", remove_first_du
 
 dummy_columns <- grep("^intersections_", colnames(NEA2022), value = TRUE)
 colnames(NEA2022)[colnames(NEA2022) %in% dummy_columns] <- gsub("^intersections_", "", dummy_columns)
+```
+```{r}
+saveRDS(NEA2022, "data/processed/dataprep.rds")
 ```
 

@@ -1,5 +1,5 @@
 ---
-title: "MAIHDA"
+title: "BETA MODELS GLMM BETA_FAMILY LINK = LOGIT"
 output: html_document
 date: "2025-05-08"
 ---
@@ -16,32 +16,47 @@ library(sjPlot)
 library(glmmTMB)
 ```
 
+<br><br> **Loading the data**
 
+```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
+NEA2022 <- readRDS("data/processed/NEA1009.rds")
 
-BETA MODELS GLMM BETA_FAMILY LINK = LOGIT
-
-
-Overall unsafe (5)
-
-
-```{r}
-NEA05$pmodel7_empv5 <- pmodel7_empv5
-
-NEA05$pmodel7_empv5_T <- (NEA05$pmodel7_empv5 * (29923 - 1) + 0.5) / 29923
-
-summary(NEA05$pmodel7_empv5_T)
-summary(NEA05$pmodel7_empv5)
+attach(NEA2022)
+set.seed(123)
 ```
 
+```{r transform in factor, cache=TRUE}
+#Transform in factor
+NEA2022 <- NEA2022 %>%
+  mutate(
+    migration = trimws(migration),
+    education = trimws(education),
+    gender = trimws(gender),
+    leeftijd = trimws(leeftijd)
+  )
+
+NEA2022$gender <- factor(NEA2022$gender, levels = c("m", "v"))
+NEA2022$migration <- factor(NEA2022$migration,
+                            levels = c("nl", "eu", "noeu"))
+NEA2022$education <- factor(NEA2022$education,
+                            levels = c("laag", "middel", "hoog"))
+NEA2022$leeftijd <- factor(NEA2022$leeftijd,
+                            levels = c("15.35", "35.55", "55.75"))
+```
+
+Overall unsafe (6)
+
 
 ```{r}
-flb_5_0 <- glmmTMB(pmodel7_empv5_T ~ 1 + (1 | intersections),
+NEA2022$pmodel7_empv6 <- pmodel7_empv6
+NEA2022$pmodel7_empv6_T <- (NEA2022$pmodel7_empv6 * (29923 - 1) + 0.5) / 29923
+
+flb_6_0 <- glmmTMB(pmodel7_empv6_T ~ 1 + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
-summary(flb_5_0)
-```
-```{r}
-mu <- fitted(flb_5_0)
+                  data = NEA2022)
+summary(flb_6_0)
+
+mu <- fitted(flb_6_0)
 var_y <- mu * (1 - mu) / (1 + 2.64)
 mean_var_within <- mean(var_y)
 mean(var_y)
@@ -50,41 +65,17 @@ vpc
 ```{r}
 0.0008918/(0.0008918+0.01254191)
 ```
+
 ```{r}
-flb_5_g <- glmmTMB(pmodel7_empv5_T ~ gender_v + (1 | intersections),
+flb_6_1 <- glmmTMB(pmodel7_empv6_T ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
-summary(flb_5_g)
-```
-```{r}
-flb_5_m <- glmmTMB(pmodel7_empv5_T ~ migration_eu + migration_noeu + (1 | intersections),
-                  family = beta_family(link = "logit"),
-                  data = NEA05)
-summary(flb_5_m)
-```
-```{r}
-flb_5_e <- glmmTMB(pmodel7_empv5_T ~ education_laag + education_middel + (1 | intersections),
-                  family = beta_family(link = "logit"),
-                  data = NEA05)
-summary(flb_5_e)
-```
-```{r}
-flb_5_l <- glmmTMB(pmodel7_empv5_T ~ leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
-                  family = beta_family(link = "logit"),
-                  data = NEA05)
-summary(flb_5_l)
+                  data = NEA2022)
+summary(flb_6_1)
 ```
 
 ```{r}
-flb_5_1 <- glmmTMB(pmodel7_empv5_T ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
-                  family = beta_family(link = "logit"),
-                  data = NEA05)
-summary(flb_5_1)
-```
-
-```{r}
-mu <- fitted(flb_5_1)
+mu <- fitted(flb_6_1)
 var_y <- mu * (1 - mu) / (1 + 2.65)
 mean_var_within <- mean(var_y)
 mean(var_y)
@@ -94,12 +85,13 @@ vpc
 2.532e-09/(2.532e-09+0.01250966)
 ```
 
+
 ```{r}
-NEA05$predicted_5 <- predict(flb_5_1, type = "response")
+NEA2022$predicted_5 <- predict(flb_5_1, type = "response")
 ```
 
 ```{r}
-summary_preds_5 <- NEA05 %>%
+summary_preds_5 <- NEA2022 %>%
   group_by(gender, migration, education, leeftijd_) %>%
   summarise(mean_pred_5 = mean(predicted_5, na.rm = TRUE),
             se_pred_5 = sd(predicted_5, na.rm = TRUE)/sqrt(n()),
@@ -242,7 +234,7 @@ ggplot(re_df, aes(x = rank, y = estimate)) +
 
 
 ```{r}
-pred_df_5 <- NEA05 %>%
+pred_df_5 <- NEA2022 %>%
   mutate(
     pred_5 = predict(flb_5_0, type = "response", se.fit = TRUE)$fit,
     se_pred_5 = predict(flb_5_0, type = "response", se.fit = TRUE)$se.fit
@@ -293,7 +285,7 @@ print(list_5)
 
 
 ```{r}
-pred_df_5 <- NEA05 %>%
+pred_df_5 <- NEA2022 %>%
   mutate(
     pred_5 = predict(flb_5_1, type = "response", se.fit = TRUE)$fit,
     se_pred_5 = predict(flb_5_1, type = "response", se.fit = TRUE)$se.fit
@@ -377,17 +369,17 @@ Supervisor unsafety (7)
 
 
 ```{r}
-NEA05$pmodel7_empv7 <- pmodel7_empv7
+NEA2022$pmodel7_empv7 <- pmodel7_empv7
 
-NEA05$pmodel7_empv7_T <- (NEA05$pmodel7_empv7 * (29923 - 1) + 0.5) / 29923
+NEA2022$pmodel7_empv7_T <- (NEA2022$pmodel7_empv7 * (29923 - 1) + 0.5) / 29923
 
-summary(NEA05$pmodel7_empv7_T)
-summary(NEA05$pmodel7_empv7)
+summary(NEA2022$pmodel7_empv7_T)
+summary(NEA2022$pmodel7_empv7)
 
 
 flb_7_0 <- glmmTMB(pmodel7_empv7_T ~ 1 + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_7_0)
 
 ```
@@ -408,7 +400,7 @@ vpc
 flb_7_1 <- glmmTMB(pmodel7_empv7_T ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_7_1)
 ```
 ```{r}
@@ -424,11 +416,11 @@ vpc
 
 
 ```{r}
-NEA05$predicted_7 <- predict(flb_7_1, type = "response", re.form = NA)
+NEA2022$predicted_7 <- predict(flb_7_1, type = "response", re.form = NA)
 ```
 
 ```{r}
-summary_preds_7 <- NEA05 %>%
+summary_preds_7 <- NEA2022 %>%
   group_by(gender, migration, education, leeftijd_) %>%
   summarise(mean_pred_7 = mean(predicted_7, na.rm = TRUE),
             se_pred_7 = sd(predicted_7, na.rm = TRUE)/sqrt(n()),  # standaardfout
@@ -463,7 +455,7 @@ ggplot(summary_preds_7, aes(x = leeftijd_, y = mean_pred_7, color = gender)) +
 ```
 
 ```{r}
-pred_df_7 <- NEA05 %>%
+pred_df_7 <- NEA2022 %>%
   mutate(
     pred_7 = predict(flb_7_1, type = "response", se.fit = TRUE)$fit,
     se_pred_7 = predict(flb_7_1, type = "response", se.fit = TRUE)$se.fit
@@ -535,17 +527,17 @@ Coworker unsafety (1)
 
 
 ```{r}
-NEA05$pmodel7_empv1 <- pmodel7_empv1
+NEA2022$pmodel7_empv1 <- pmodel7_empv1
 
-NEA05$pmodel7_empv1_T <- (NEA05$pmodel7_empv1 * (29923 - 1) + 0.5) / 29923
+NEA2022$pmodel7_empv1_T <- (NEA2022$pmodel7_empv1 * (29923 - 1) + 0.5) / 29923
 
-summary(NEA05$pmodel7_empv1_T)
-summary(NEA05$pmodel7_empv1)
+summary(NEA2022$pmodel7_empv1_T)
+summary(NEA2022$pmodel7_empv1)
 
 
 flb_1_0 <- glmmTMB(pmodel7_empv1_T ~ 1 + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_1_0)
 
 ```
@@ -566,7 +558,7 @@ vpc
 flb_1_1 <- glmmTMB(pmodel7_empv1_T ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_1_1)
 ```
 ```{r}
@@ -580,11 +572,11 @@ mean(var_y)
 ```
 
 ```{r}
-NEA05$predicted_1 <- predict(flb_1_1, type = "response", re.form = NA)
+NEA2022$predicted_1 <- predict(flb_1_1, type = "response", re.form = NA)
 ```
 
 ```{r}
-summary_preds_1 <- NEA05 %>%
+summary_preds_1 <- NEA2022 %>%
   group_by(gender, migration, education, leeftijd_) %>%
   summarise(mean_pred_1 = mean(predicted_1, na.rm = TRUE),
             se_pred_1 = sd(predicted_1, na.rm = TRUE)/sqrt(n()),
@@ -608,7 +600,7 @@ ggplot(summary_preds_1, aes(x = leeftijd_, y = mean_pred_1, color = gender)) +
 
 
 ```{r}
-pred_df_1 <- NEA05 %>%
+pred_df_1 <- NEA2022 %>%
   mutate(
     pred_1 = predict(flb_1_1, type = "response", se.fit = TRUE)$fit, 
     se_pred_1 = predict(flb_1_1, type = "response", se.fit = TRUE)$se.fit 
@@ -679,17 +671,17 @@ Safe interpersonal behaviors, unsafe social climate (2)
 
 
 ```{r}
-NEA05$pmodel7_empv2 <- pmodel7_empv2
+NEA2022$pmodel7_empv2 <- pmodel7_empv2
 
-NEA05$pmodel7_empv2_T <- (NEA05$pmodel7_empv2 * (29923 - 1) + 0.5) / 29923
+NEA2022$pmodel7_empv2_T <- (NEA2022$pmodel7_empv2 * (29923 - 1) + 0.5) / 29923
 
-summary(NEA05$pmodel7_empv2_T)
-summary(NEA05$pmodel7_empv2)
+summary(NEA2022$pmodel7_empv2_T)
+summary(NEA2022$pmodel7_empv2)
 
 
 flb_2_0 <- glmmTMB(pmodel7_empv2_T ~ 1 + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_2_0)
 
 ```
@@ -709,7 +701,7 @@ vpc
 flb_2_1 <- glmmTMB(pmodel7_empv2_T ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_2_1)
 ```
 
@@ -726,11 +718,11 @@ vpc
 
 
 ```{r}
-NEA05$predicted_2 <- predict(flb_2_1, type = "response", re.form = NA)
+NEA2022$predicted_2 <- predict(flb_2_1, type = "response", re.form = NA)
 ```
 
 ```{r}
-summary_preds_2 <- NEA05 %>%
+summary_preds_2 <- NEA2022 %>%
   group_by(gender, migration, education, leeftijd_) %>%
   summarise(mean_pred_2 = mean(predicted_2, na.rm = TRUE),
             se_pred_2 = sd(predicted_2, na.rm = TRUE)/sqrt(n()),
@@ -752,7 +744,7 @@ ggplot(summary_preds_2, aes(x = leeftijd_, y = mean_pred_2, color = gender)) +
 ```
 
 ```{r}
-pred_df_2 <- NEA05 %>%
+pred_df_2 <- NEA2022 %>%
   mutate(
     pred_2 = predict(flb_2_1, type = "response", se.fit = TRUE)$fit,
     se_pred_2 = predict(flb_2_1, type = "response", se.fit = TRUE)$se.fit
@@ -821,17 +813,17 @@ Short-term conflict
 
 
 ```{r}
-NEA05$pmodel7_empv3 <- pmodel7_empv3
+NEA2022$pmodel7_empv3 <- pmodel7_empv3
 
-NEA05$pmodel7_empv3_T <- (NEA05$pmodel7_empv3 * (29923 - 1) + 0.5) / 29923
+NEA2022$pmodel7_empv3_T <- (NEA2022$pmodel7_empv3 * (29923 - 1) + 0.5) / 29923
 
-summary(NEA05$pmodel7_empv3_T)
-summary(NEA05$pmodel7_empv3)
+summary(NEA2022$pmodel7_empv3_T)
+summary(NEA2022$pmodel7_empv3)
 
 
 flb_3_0 <- glmmTMB(pmodel7_empv3_T ~ 1 + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_3_0)
 
 ```
@@ -851,7 +843,7 @@ vpc
 flb_3_1 <- glmmTMB(pmodel7_empv3_T ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_3_1)
 ```
 ```{r}
@@ -866,11 +858,11 @@ vpc
 ```
 
 ```{r}
-NEA05$predicted_3 <- predict(flb_3_1, type = "response", re.form = NA)
+NEA2022$predicted_3 <- predict(flb_3_1, type = "response", re.form = NA)
 ```
 
 ```{r}
-summary_preds_3 <- NEA05 %>%
+summary_preds_3 <- NEA2022 %>%
   group_by(gender, migration, education, leeftijd_) %>%
   summarise(mean_pred_3 = mean(predicted_3, na.rm = TRUE),
             se_pred_3 = sd(predicted_3, na.rm = TRUE)/sqrt(n()),
@@ -893,7 +885,7 @@ ggplot(summary_preds_3, aes(x = leeftijd_, y = mean_pred_3, color = gender)) +
 
 
 ```{r}
-pred_df_3 <- NEA05 %>%
+pred_df_3 <- NEA2022 %>%
   mutate(
     pred_3 = predict(flb_3_1, type = "response", se.fit = TRUE)$fit,
     se_pred_3 = predict(flb_3_1, type = "response", se.fit = TRUE)$se.fit
@@ -963,17 +955,17 @@ Overall highly safe (4)
 
 
 ```{r}
-NEA05$pmodel7_empv4 <- pmodel7_empv4
+NEA2022$pmodel7_empv4 <- pmodel7_empv4
 
-NEA05$pmodel7_empv4_T <- (NEA05$pmodel7_empv4 * (29923 - 1) + 0.5) / 29923
+NEA2022$pmodel7_empv4_T <- (NEA2022$pmodel7_empv4 * (29923 - 1) + 0.5) / 29923
 
-summary(NEA05$pmodel7_empv4_T)
-summary(NEA05$pmodel7_empv4)
+summary(NEA2022$pmodel7_empv4_T)
+summary(NEA2022$pmodel7_empv4)
 
 
 flb_4_0 <- glmmTMB(pmodel7_empv4_T ~ 1 + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_4_0)
 
 ```
@@ -994,7 +986,7 @@ vpc
 flb_4_1 <- glmmTMB(pmodel7_empv4_T ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_4_1)
 ```
 
@@ -1011,11 +1003,11 @@ vpc
 ```
 
 ```{r}
-NEA05$predicted_4 <- predict(flb_4_1, type = "response", re.form = NA)
+NEA2022$predicted_4 <- predict(flb_4_1, type = "response", re.form = NA)
 ```
 
 ```{r}
-summary_preds_4 <- NEA05 %>%
+summary_preds_4 <- NEA2022 %>%
   group_by(gender, migration, education, leeftijd_) %>%
   summarise(mean_pred_4 = mean(predicted_4, na.rm = TRUE),
             se_pred_4 = sd(predicted_4, na.rm = TRUE)/sqrt(n()),
@@ -1038,7 +1030,7 @@ ggplot(summary_preds_4, aes(x = leeftijd_, y = mean_pred_4, color = gender)) +
 
 
 ```{r}
-pred_df_4 <- NEA05 %>%
+pred_df_4 <- NEA2022 %>%
   mutate(
     pred_4 = predict(flb_4_1, type = "response", se.fit = TRUE)$fit,
     se_pred_4 = predict(flb_4_1, type = "response", se.fit = TRUE)$se.fit
@@ -1109,17 +1101,17 @@ Overall safe (6)
 
 
 ```{r}
-NEA05$pmodel7_empv6 <- pmodel7_empv6
+NEA2022$pmodel7_empv6 <- pmodel7_empv6
 
-NEA05$pmodel7_empv6_T <- (NEA05$pmodel7_empv6 * (29923 - 1) + 0.5) / 29923
+NEA2022$pmodel7_empv6_T <- (NEA2022$pmodel7_empv6 * (29923 - 1) + 0.5) / 29923
 
-summary(NEA05$pmodel7_empv6_T)
-summary(NEA05$pmodel7_empv6)
+summary(NEA2022$pmodel7_empv6_T)
+summary(NEA2022$pmodel7_empv6)
 
 
 flb_6_0 <- glmmTMB(pmodel7_empv6_T ~ 1 + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_6_0)
 
 ```
@@ -1140,7 +1132,7 @@ mean(var_y)
 flb_6_1 <- glmmTMB(pmodel7_empv6_T ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
-                  data = NEA05)
+                  data = NEA2022)
 summary(flb_6_1)
 ```
 
@@ -1156,11 +1148,11 @@ mean(var_y)
 ```
 
 ```{r}
-NEA05$predicted_6 <- predict(flb_6_1, type = "response", re.form = NA)
+NEA2022$predicted_6 <- predict(flb_6_1, type = "response", re.form = NA)
 ```
 
 ```{r}
-summary_preds_6 <- NEA05 %>%
+summary_preds_6 <- NEA2022 %>%
   group_by(gender, migration, education, leeftijd_) %>%
   summarise(mean_pred_6 = mean(predicted_6, na.rm = TRUE),
             se_pred_6 = sd(predicted_6, na.rm = TRUE)/sqrt(n()),  # standaardfout
@@ -1183,7 +1175,7 @@ ggplot(summary_preds_6, aes(x = leeftijd_, y = mean_pred_6, color = gender)) +
 
 
 ```{r}
-pred_df_6 <- NEA05 %>%
+pred_df_6 <- NEA2022 %>%
   mutate(
     pred_6 = predict(flb_6_1, type = "response", se.fit = TRUE)$fit,
     se_pred_6 = predict(flb_6_1, type = "response", se.fit = TRUE)$se.fit

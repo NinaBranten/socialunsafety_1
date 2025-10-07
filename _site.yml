@@ -24,8 +24,6 @@ navbar:
           href: MAIHDA_final_model.html
         - text: "binary"
           href: MAIHDA_binary.html
-        - text: "items separate"
-          href: Items_seperate.html
 
       
         # here, other .Rmds can be added
