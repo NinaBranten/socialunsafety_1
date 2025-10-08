@@ -59,7 +59,9 @@ NEA2022$leeftijd <- factor(NEA2022$leeftijd,
                             levels = c("15.35", "35.55", "55.75"))
 ```
 
+
 <br><br>
+
 
 # Overall unsafety (class 6)
 
@@ -376,6 +378,7 @@ df6 %>%
   )
 ```
 
+
 <br><br>
 
 # Supervisor unsafety (class 4)
@@ -659,6 +662,7 @@ df4 %>%
 
 ```
 
+
 <br><br>
 
 # Coworker unsafety (class 7)
@@ -941,6 +945,7 @@ df7 %>%
   )
 
 ```
+
 
 <br><br>
 
@@ -1226,6 +1231,8 @@ df5 %>%
 
 ```
 
+
+
 <br><br>
 
 # Short-term conflict (class 1)
@@ -1507,6 +1514,7 @@ df1 %>%
   )
 
 ```
+
 
 <br><br>
 
@@ -1792,6 +1800,7 @@ df2 %>%
   )
 
 ```
+
 
 <br><br>
 

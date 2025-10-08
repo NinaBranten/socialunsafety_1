@@ -61,6 +61,7 @@ NEA2022$leeftijd <- factor(NEA2022$leeftijd,
                             levels = c("15.35", "35.55", "55.75"))
 ```
 
+
 <br><br>
 
 # Overall unsafety (class 7)
@@ -301,6 +302,7 @@ df7 %>%
     rank           = md("**Rank**")
   )
 ```
+
 
 <br><br>
 
@@ -544,6 +546,7 @@ df2 %>%
   )
 ```
 
+
 <br><br>
 
 # Coworker unsafety (class 3)
@@ -782,6 +785,7 @@ df3 %>%
     rank           = md("**Rank**")
   )
 ```
+
 
 <br><br>
 
@@ -1022,6 +1026,7 @@ df4 %>%
     rank           = md("**Rank**")
   )
 ```
+
 
 <br><br>
 
@@ -1264,6 +1269,7 @@ df1 %>%
   )
 ```
 
+
 <br><br>
 
 # Safe (class 5)
@@ -1504,6 +1510,7 @@ df5 %>%
     rank           = md("**Rank**")
   )
 ```
+
 
 <br><br>
 
