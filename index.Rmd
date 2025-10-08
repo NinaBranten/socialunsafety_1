@@ -4,7 +4,6 @@ output:
   html_document:
     toc: false
     number_sections: false
-author: "by: Nina Branten"
 bibliography: references.bib
 
 ---
@@ -42,29 +41,37 @@ klippy::klippy(position = c('top', 'right'))
 :::::::::::::: {.columns}
 ::: {.column width="50%"}
 
-# My Lab Journal
+# Experiences with social unsafety among employees in the Netherlands: a holistic, intersectional exploration 
 Last compiled on `r format(Sys.time(), '%B, %Y')`  
-
-*First paper of the social unsafety project.*
 
 <br>
 
 ----
 
+# Overview
+<br><br>
 
-Everyone can fork this repository. 
+**Data preperation**
+<br><br>
 
-Use this example to journal your lab work and assignments. 
+**Latent Class Analysis**
+<br><br>
+- Final model
+<br>
+- Model with transgressive behaviors as binary (no/yes)
+<br>
+- Model with missings deleted listwise
+<br><br>
 
+**Multilevel Analysis of Individual Heterogeneity and Discriminatory Accuracy (MAIHDA)**
+<br><br>
+- Final model
+<br>
+- Model with transgressive behaviors as binary (no/yes)
 
 :::
 ::: {.column width="50%"}
 
-
-
-
-
-![](images/sciencedog.jpg)
 
 
 :::

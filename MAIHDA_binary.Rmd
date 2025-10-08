@@ -61,6 +61,7 @@ NEA2022$leeftijd <- factor(NEA2022$leeftijd,
                             levels = c("15.35", "35.55", "55.75"))
 ```
 
+<br><br>
 
 # Overall unsafety (class 7)
 
@@ -72,15 +73,21 @@ NEA2022 <- NEA2022 %>%
 
 Lb_7_0 <- lmer(modelb7_7 ~ 1 + (1|intersections), data=NEA2022) 
 
+Lb_7_g <- lmer(modelb7_7 ~ gender_v + (1 | intersections), data=NEA2022)
+
+Lb_7_m <- lmer(modelb7_7 ~ migration_eu + migration_noeu  + (1 | intersections), data=NEA2022)
+
+Lb_7_e <- lmer(modelb7_7 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
+
+Lb_7_a <- lmer(modelb7_7 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
 Lb_7_1 <- lmer(modelb7_7 ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
 
-tab_model(Lb_7_0, Lb_7_1, p.style="stars")
+tab_model(Lb_7_0, Lb_7_g, Lb_7_m, Lb_7_e, Lb_7_a, Lb_7_1, p.style="stars")
 
-#ICC
-0.1802/(0.1802+129.4920)
-#PCV
-(0.9627-0.1802)/0.9627
+cat("ICC final: ", 0.1802/(0.1802+129.4920), "\n",
+    "PCV: ", (0.9627-0.1802)/0.9627, "\n")
 ```
 
 ```{r estimated overall unsafety, cache=TRUE}
@@ -117,7 +124,7 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_7, aes(x = leeftijd, y = mean_pred_7, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_7 - se_pred_7,
                     ymax = mean_pred_7 + se_pred_7),
                 width = 0,
@@ -132,6 +139,7 @@ ggplot(summary_preds_7, aes(x = leeftijd, y = mean_pred_7, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability overall unsafety",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -294,7 +302,7 @@ df7 %>%
   )
 ```
 
-
+<br><br>
 
 # Supervisor unsafety (class 2)
 
@@ -307,15 +315,22 @@ NEA2022 <- NEA2022 %>%
 
 Lb_2_0 <- lmer(modelb7_2 ~ 1 + (1|intersections), data=NEA2022) 
 
+Lb_2_g <- lmer(modelb7_2 ~ gender_v + (1 | intersections), data=NEA2022)
+
+Lb_2_m <- lmer(modelb7_2 ~ migration_eu + migration_noeu  + (1 | intersections), data=NEA2022)
+
+Lb_2_e <- lmer(modelb7_2 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
+
+Lb_2_a <- lmer(modelb7_2 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
 Lb_2_1 <- lmer(modelb7_2 ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
 
-tab_model(Lb_2_0, Lb_2_1, p.style="stars")
+tab_model(Lb_2_0, Lb_2_g, Lb_2_m, Lb_2_e, Lb_2_a, Lb_2_1, p.style="stars")
 
-#ICC
-0.1316/(0.1316+147.0932)
-#PCV
-(0.233-0.1316)/0.233
+cat("ICC final: ", 0.1316/(0.1316+147.0932), "\n",
+    "PCV: ", (0.233-0.1316)/0.233, "\n")
+
 ```
 
 ```{r estimated supervisor unsafety, cache=TRUE}
@@ -352,7 +367,7 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_2 - se_pred_2,
                     ymax = mean_pred_2 + se_pred_2),
                 width = 0,
@@ -367,6 +382,7 @@ ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability supervisor unsafety",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -528,11 +544,9 @@ df2 %>%
   )
 ```
 
-
-
+<br><br>
 
 # Coworker unsafety (class 3)
-
 
 ```{r regression coworker unsafety, cache=TRUE}
 #Regression
@@ -541,15 +555,21 @@ NEA2022 <- NEA2022 %>%
 
 Lb_3_0 <- lmer(modelb7_3 ~ 1 + (1|intersections), data=NEA2022) 
 
+Lb_3_g <- lmer(modelb7_3 ~ gender_v + (1 | intersections), data=NEA2022)
+
+Lb_3_m <- lmer(modelb7_3 ~ migration_eu + migration_noeu  + (1 | intersections), data=NEA2022)
+
+Lb_3_e <- lmer(modelb7_3 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
+
+Lb_3_a <- lmer(modelb7_3 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
 Lb_3_1 <- lmer(modelb7_3 ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
 
-tab_model(Lb_3_0, Lb_3_1, p.style="stars")
+tab_model(Lb_3_0, Lb_3_g, Lb_3_m, Lb_3_e, Lb_3_a, Lb_3_1, p.style="stars")
 
-#ICC
-0.08042/(0.08042+214.96827)
-#PCV
-(0.4709-0.08042)/0.4709
+cat("ICC final: ", 0.08042/(0.08042+214.96827), "\n",
+    "PCV: ", (0.4709-0.08042)/0.4709, "\n")
 ```
 
 ```{r estimated coworker unsafety, cache=TRUE}
@@ -586,7 +606,7 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_3 - se_pred_3,
                     ymax = mean_pred_3 + se_pred_3),
                 width = 0,
@@ -601,6 +621,7 @@ ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability coworker unsafety",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -762,7 +783,7 @@ df3 %>%
   )
 ```
 
-
+<br><br>
 
 # Unsafe social climate (class 4)
 
@@ -774,15 +795,21 @@ NEA2022 <- NEA2022 %>%
 
 Lb_4_0 <- lmer(modelb7_4 ~ 1 + (1|intersections), data=NEA2022) 
 
+Lb_4_g <- lmer(modelb7_4 ~ gender_v + (1 | intersections), data=NEA2022)
+
+Lb_4_m <- lmer(modelb7_4 ~ migration_eu + migration_noeu  + (1 | intersections), data=NEA2022)
+
+Lb_4_e <- lmer(modelb7_4 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
+
+Lb_4_a <- lmer(modelb7_4 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
 Lb_4_1 <- lmer(modelb7_4 ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
 
-tab_model(Lb_4_0, Lb_4_1, p.style="stars")
+tab_model(Lb_4_0, Lb_4_g, Lb_4_m, Lb_4_e, Lb_4_a, Lb_4_1, p.style="stars")
 
-#ICC
-0.21/(0.21+633.04)
-#PCV
-(3.939-0.21)/3.939
+cat("ICC final: ", 0.21/(0.21+633.04), "\n",
+    "PCV: ", (3.939-0.21)/3.939, "\n")
 ```
 
 ```{r estimated unsafe social climate, cache=TRUE}
@@ -819,7 +846,7 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_4 - se_pred_4,
                     ymax = mean_pred_4 + se_pred_4),
                 width = 0,
@@ -834,6 +861,7 @@ ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability unsafe social climate",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -995,7 +1023,7 @@ df4 %>%
   )
 ```
 
-
+<br><br>
 
 # Short-term conflict (class 1)
 
@@ -1007,15 +1035,22 @@ NEA2022 <- NEA2022 %>%
 
 Lb_1_0 <- lmer(modelb7_1 ~ 1 + (1|intersections), data=NEA2022) 
 
+Lb_1_g <- lmer(modelb7_1 ~ gender_v + (1 | intersections), data=NEA2022)
+
+Lb_1_m <- lmer(modelb7_1 ~ migration_eu + migration_noeu  + (1 | intersections), data=NEA2022)
+
+Lb_1_e <- lmer(modelb7_1 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
+
+Lb_1_a <- lmer(modelb7_1 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
 Lb_1_1 <- lmer(modelb7_1 ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
 
-tab_model(Lb_1_0, Lb_1_1, p.style="stars")
+tab_model(Lb_1_0, Lb_1_g, Lb_1_m, Lb_1_e, Lb_1_a, Lb_1_1, p.style="stars")
 
-#ICC
-0.7291/(0.7291+424.4979)
-#PCV
-(1.551-0.7291)/1.551
+cat("ICC final: ", 0.7291/(0.7291+424.4979), "\n",
+    "PCV: ", (1.551-0.7291)/1.551, "\n")
+
 ```
 
 ```{r estimated short-term conflict, cache=TRUE}
@@ -1052,7 +1087,7 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
                     ymax = mean_pred_1 + se_pred_1),
                 width = 0,
@@ -1067,6 +1102,7 @@ ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability short-term conflict",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -1228,29 +1264,37 @@ df1 %>%
   )
 ```
 
+<br><br>
 
-# Overall safe (class 5)
+# Safe (class 5)
 
 
-```{r regression overall safe, cache=TRUE}
+```{r regression safe, cache=TRUE}
 #Regression
 NEA2022 <- NEA2022 %>%
   mutate(modelb7_5 = pmodel7_bv5 * 100)
 
 Lb_5_0 <- lmer(modelb7_5 ~ 1 + (1|intersections), data=NEA2022) 
 
+Lb_5_g <- lmer(modelb7_5 ~ gender_v + (1 | intersections), data=NEA2022)
+
+Lb_5_m <- lmer(modelb7_5 ~ migration_eu + migration_noeu  + (1 | intersections), data=NEA2022)
+
+Lb_5_e <- lmer(modelb7_5 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
+
+Lb_5_a <- lmer(modelb7_5 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
 Lb_5_1 <- lmer(modelb7_5 ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
 
-tab_model(Lb_5_0, Lb_5_1, p.style="stars")
+tab_model(Lb_5_0, Lb_5_g, Lb_5_m, Lb_5_e, Lb_5_a, Lb_5_1, p.style="stars")
 
-#ICC
-2.152/(2.152+1436.346)
-#PCV
-(3.643-2.152)/3.643
+cat("ICC final: ", 2.152/(2.152+1436.346), "\n",
+    "PCV: ", (3.643-2.152)/3.643, "\n")
+
 ```
 
-```{r estimated overall safe, cache=TRUE}
+```{r estimated safe, cache=TRUE}
 #Predicted probability belonging to overall unsafety class
 
 NEA2022$predicted_5 <- predict(Lb_5_1, re.form = NULL, type = "response")
@@ -1284,7 +1328,7 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_5 - se_pred_5,
                     ymax = mean_pred_5 + se_pred_5),
                 width = 0,
@@ -1299,6 +1343,7 @@ ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability safe",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -1324,7 +1369,7 @@ ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
 
 
 
-```{r estimated intersectional effects overall safe, cache=TRUE}
+```{r estimated intersectional effects safe, cache=TRUE}
 #Estimated intersectional effects
 
 re <- ranef(Lb_5_1, condVar = TRUE)$intersections
@@ -1410,7 +1455,7 @@ ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
 ```
 
 
-```{r top/bottom 10 overall safe model1, cache=TRUE}
+```{r top/bottom 10 safe model1, cache=TRUE}
 #Top/bottom 10 based on model1
 pred_df_5 <- NEA2022 %>%
   mutate(
@@ -1443,7 +1488,7 @@ df5 %>%
   select(rank, intersections, pred_mean_5) %>%  # Rank eerst, Type weggelaten
   gt() %>%
   tab_header(
-    title = md("**Highest and lowest intersections probability overall safe**")
+    title = md("**Highest and lowest intersections probability safe**")
   ) %>%
   fmt_number(
     columns = "pred_mean_5",
@@ -1460,29 +1505,35 @@ df5 %>%
   )
 ```
 
+<br><br>
 
-# Overall highly safe (class 6)
+# Highly safe (class 6)
 
-
-```{r regression overall highly safe, cache=TRUE}
+```{r regression highly safe, cache=TRUE}
 #Regression
 NEA2022 <- NEA2022 %>%
   mutate(modelb7_6 = pmodel7_bv6 * 100)
 
 Lb_6_0 <- lmer(modelb7_6 ~ 1 + (1|intersections), data=NEA2022) 
 
+Lb_6_g <- lmer(modelb7_6 ~ gender_v + (1 | intersections), data=NEA2022)
+
+Lb_6_m <- lmer(modelb7_6 ~ migration_eu + migration_noeu  + (1 | intersections), data=NEA2022)
+
+Lb_6_e <- lmer(modelb7_6 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
+
+Lb_6_a <- lmer(modelb7_6 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+
 Lb_6_1 <- lmer(modelb7_6 ~ gender_v + migration_eu + migration_noeu + 
     education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
 
-tab_model(Lb_6_0, Lb_6_1, p.style="stars")
+tab_model(Lb_6_0, Lb_6_g, Lb_6_m, Lb_6_e, Lb_6_a, Lb_6_1, p.style="stars")
 
-#ICC
-2.243/(2.243+1254.959)
-#PCV
-(15.09-2.243)/15.09
+cat("ICC final: ", 2.243/(2.243+1254.959), "\n",
+    "PCV: ", (15.09-2.243)/15.09, "\n")
 ```
 
-```{r estimated overall highly safe, cache=TRUE}
+```{r estimated highly safe, cache=TRUE}
 #Predicted probability belonging to overall unsafety class
 
 NEA2022$predicted_6 <- predict(Lb_6_1, re.form = NULL, type = "response")
@@ -1516,7 +1567,7 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_6 - se_pred_6,
                     ymax = mean_pred_6 + se_pred_6),
                 width = 0,
@@ -1531,6 +1582,7 @@ ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability highly safe",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -1556,7 +1608,7 @@ ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
 
 
 
-```{r estimated intersectional effects overall highly safe, cache=TRUE}
+```{r estimated intersectional effects highly safe, cache=TRUE}
 #Estimated intersectional effects
 
 re <- ranef(Lb_6_1, condVar = TRUE)$intersections
@@ -1642,7 +1694,7 @@ ggplot(re_df, aes(x = rank, y = estimate, color = color)) +
 ```
 
 
-```{r top/bottom 10 overall highly safe model1, cache=TRUE}
+```{r top/bottom 10 highly safe model1, cache=TRUE}
 #Top/bottom 10 based on model1
 pred_df_6 <- NEA2022 %>%
   mutate(
@@ -1675,7 +1727,7 @@ df6 %>%
   select(rank, intersections, pred_mean_6) %>%  # Rank eerst, Type weggelaten
   gt() %>%
   tab_header(
-    title = md("**Highest and lowest intersections probability overall highly safe**")
+    title = md("**Highest and lowest intersections probability highly safe**")
   ) %>%
   fmt_number(
     columns = "pred_mean_6",

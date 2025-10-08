@@ -125,6 +125,8 @@ NEA2022 <- NEA2022 %>%
 table(NEA2022$vio_s)
 ```
 
+<br><br>
+
 # Latent class analysis
 
 ```{r data items, cache=TRUE, warning=FALSE}
@@ -134,10 +136,14 @@ data_b <- data.frame(bul_c, bul_s, int_c, int_s, vio_c, vio_s, sex_c, sex_s, con
 items_b <- cbind(bul_c, bul_s, int_c, int_s, vio_c, vio_s, sex_c, sex_s, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR) ~ 1
 ```
 
+<br><br>
+
 ## Model1
 ```{r model 1, cache=TRUE}
 model1_b <- poLCA(items_b, data_b, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+<br><br>
 
 ## Model2
 
@@ -145,11 +151,15 @@ model1_b <- poLCA(items_b, data_b, nclass = 1, maxiter = 5000, nrep = 10, graphs
 model2_b <- poLCA(items_b, data_b, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model3
 
 ```{r model 3, cache=TRUE}
 model3_b <- poLCA(items_b, data_b, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+<br><br>
 
 ## Model4
 
@@ -157,11 +167,15 @@ model3_b <- poLCA(items_b, data_b, nclass = 3, maxiter = 5000, nrep = 10, graphs
 model4_b <- poLCA(items_b, data_b, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model5
 
 ```{r model 5, cache=TRUE}
 model5_b <- poLCA(items_b, data_b, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+<br><br>
 
 ## Model6
 
@@ -169,11 +183,15 @@ model5_b <- poLCA(items_b, data_b, nclass = 5, maxiter = 5000, nrep = 10, graphs
 model6_b <- poLCA(items_b, data_b, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model7
 
 ```{r model 7, cache=TRUE}
 model7_b <- poLCA(items_b, data_b, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+<br><br>
 
 ## Model8
 
@@ -181,11 +199,15 @@ model7_b <- poLCA(items_b, data_b, nclass = 7, maxiter = 5000, nrep = 10, graphs
 model8_b <- poLCA(items_b, data_b, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model9
 
 ```{r model 9, cache=TRUE}
 model9_b <- poLCA(items_b, data_b, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+<br><br>
 
 ## Model10
 
@@ -193,11 +215,15 @@ model9_b <- poLCA(items_b, data_b, nclass = 9, maxiter = 5000, nrep = 10, graphs
 model10_b <- poLCA(items_b, data_b, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model11
 
 ```{r model 11, cache=TRUE}
 model11_b <- poLCA(items_b, data_b, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+<br><br>
 
 ## Model12
 
@@ -205,6 +231,7 @@ model11_b <- poLCA(items_b, data_b, nclass = 11, maxiter = 5000, nrep = 10, grap
 model12_b <- poLCA(items_b, data_b, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
 
 # Saving the models
 
@@ -464,17 +491,19 @@ for (i in seq_along(models_b)) {
 NEA2022 <- merge(NEA2022, Models_b, by = "volgnumm", all.x = TRUE)
 ```
 
+<br><br>
 
 # Class separation
-
 
 ```{r post prob, cache=TRUE}
 max_probs <- apply(model7_bpost, 1, max)
 
-mean(max_probs)
-median(max_probs)
-min(max_probs)
-max(max_probs)
+cat(
+  "Mean:   ", round(mean(max_probs, na.rm = TRUE), 4), "\n",
+  "Median: ", round(median(max_probs, na.rm = TRUE), 4), "\n",
+  "Min:    ", round(min(max_probs, na.rm = TRUE), 4), "\n",
+  "Max:    ", round(max(max_probs, na.rm = TRUE), 4), "\n"
+)
 
 K <- 7
 
@@ -488,7 +517,6 @@ for (k in 1:K) {
 names(mean_posteriors) <- paste0("Class", 1:K)
 
 mean_posteriors
-
 
 ggplot(data.frame(max_probs = max_probs), aes(x = max_probs)) +
   geom_histogram(binwidth = 0.05, fill = "steelblue", color = "white") +
@@ -506,80 +534,24 @@ poLCA.entropy <- function(model) {
   entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
   return(1 - entropy)
 }
-poLCA.entropy(model2_b)
 
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model3_b)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model4_b)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model5_b)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model6_b)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model7_b)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model8_b)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model9_b)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model10_b)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model11_b)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model12_b)
+cat(
+  "Entropy values for LCA models:\n",
+  "Model 2: ", round(poLCA.entropy(model2_b), 4), "\n",
+  "Model 3: ", round(poLCA.entropy(model3_b), 4), "\n",
+  "Model 4: ", round(poLCA.entropy(model4_b), 4), "\n",
+  "Model 5: ", round(poLCA.entropy(model5_b), 4), "\n",
+  "Model 6: ", round(poLCA.entropy(model6_b), 4), "\n",
+  "Model 7: ", round(poLCA.entropy(model7_b), 4), "\n",
+  "Model 8: ", round(poLCA.entropy(model8_b), 4), "\n",
+  "Model 9: ", round(poLCA.entropy(model9_b), 4), "\n",
+  "Model 10: ", round(poLCA.entropy(model10_b), 4), "\n",
+  "Model 11: ", round(poLCA.entropy(model11_b), 4), "\n",
+  "Model 12: ", round(poLCA.entropy(model12_b), 4), "\n"
+)
 ```
 
-
+<br><br>
 
 # Plots
 
@@ -627,7 +599,7 @@ NEA2022 <- NEA2022 %>%
 
 ```
 
-
+<br><br>
 
 ## Model4
 
@@ -698,6 +670,8 @@ ggplot(plot_data4, aes(x = indicator, y = mean_value,
   )
 
 ```
+
+<br><br>
 
 ## Model 5
 
@@ -772,9 +746,9 @@ ggplot(plot_data5, aes(x = indicator, y = mean_value,
 
 ```
 
+<br><br>
 
 ## Model6
-
 
 ```{r plot 6, echo=TRUE}
 model6_bpred <- model6_b$predclass
@@ -849,6 +823,7 @@ ggplot(plot_data6, aes(x = indicator, y = mean_value,
 
 ```
 
+<br><br>
 
 ## Model7
 
@@ -930,9 +905,9 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
     legend.text = element_text(size = 11)
   )
 ```
+<br><br>
 
 ## Model8
-
 
 ```{r plot 8, echo=TRUE}
 model8_bpred <- model8_b$predclass
@@ -1011,9 +986,9 @@ ggplot(plot_data8, aes(x = indicator, y = mean_value,
   )
 ```
 
+<br><br>
 
 ## Model9
-
 
 ```{r plot 9, echo=TRUE}
 model9_bpred <- model9_b$predclass

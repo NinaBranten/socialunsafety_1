@@ -8,6 +8,8 @@ date: "2025-05-04"
 knitr::opts_chunk$set(cache = TRUE)
 ```
 
+
+# Preparing dataset
 ```{r, message=FALSE, warning=FALSE}
 library(summarytools)
 library(foreign)
@@ -16,256 +18,291 @@ library(psych)
 library(fastDummies)
 ```
 
-# Preparing dataset
-
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
 NEAraw <-read.spss("data/raw/Data 2014-2022.sav", use.value.labels = T, to.data.frame = T)
 ```
 
-<br><br> **Selecting year 2022 and cluster 1**
 
 ```{r selecting year cluster, cache=TRUE}
+# Selecting year 2022 and cluster 1
 NEA2022 <- NEAraw[NEAraw$jaar == "2022", ]
 
 NEA2022 <- NEA2022[NEA2022$se_clust == 1, ]
 ```
 
-<br><br> **Deleting missing cases on educational level**
 
 ```{r missings, cache=TRUE}
+# Deleting missing cases on educational level
 NEA2022$afl_soi3[NEA2022$afl_soi3 == "onbekend"] <- NA
 
 NEA2022 <- NEA2022 %>%
   filter(!is.na(afl_soi3))
 ```
 
+<br><br>
+
+
 # Recoding variables
+
+<br><br>
 
 ## Bullying
 
-```{r bul cow, cache=TRUE}
-# Bullying coworkers
+<br><br>
+
+### Coworkers
+
+```{r bul cow, results='asis', cache=TRUE}
+
 NEA2022$pesten_col <- as.numeric(NEA2022$afl_pe_1)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 <- NEA2022 %>%
   mutate(pesten_col = recode(pesten_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_pe_1)
-summarytools::freq(NEA2022$pesten_col)
+f1 <- summarytools::freq(NEA2022$afl_pe_1)
+
+f2 <- summarytools::freq(NEA2022$pesten_col)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 
 ```
 
-```{r bul sup, cache=TRUE}
-# Bullying supervisors
+<br><br>
+
+### Supervisors
+
+```{r bul sup, results='asis', cache=TRUE}
 NEA2022$pesten_leid <- as.numeric(NEA2022$afl_pe_2)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 <- NEA2022 %>%
   mutate(pesten_leid = recode(pesten_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_pe_2)
-summarytools::freq(NEA2022$pesten_leid)
+f1 <- summarytools::freq(NEA2022$afl_pe_2)
+
+f2 <- summarytools::freq(NEA2022$pesten_leid)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 ```
+
+<br><br>
 
 ## Intimidation
 
-```{r int cow, cache=TRUE}
-#Intimidation coworkers
+<br><br>
+
+### Coworkers
+
+```{r int cow, results='asis', cache=TRUE}
 
 NEA2022$intimidation_col <- as.numeric(NEA2022$afl_be_1)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 <- NEA2022 %>%
   mutate(intimidation_col = recode(intimidation_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_be_1)
-summarytools::freq(NEA2022$intimidation_col)
+f1 <- summarytools::freq(NEA2022$afl_be_1)
+
+f2 <- summarytools::freq(NEA2022$intimidation_col)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 
 ```
 
-```{r int sup, cache=TRUE}
-#Intimidation supervisors
+<br><br>
+
+### Supervisors
+
+```{r int sup, results='asis', cache=TRUE}
 
 NEA2022$intimidation_leid <- as.numeric(NEA2022$afl_be_2)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 <- NEA2022 %>%
   mutate(intimidation_leid = recode(intimidation_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_be_2)
-summarytools::freq(NEA2022$intimidation_leid)
+f1 <- summarytools::freq(NEA2022$afl_be_2)
+
+f2 <- summarytools::freq(NEA2022$intimidation_leid)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 
 ```
+<br><br>
 
-### Physical violence
+## Physical violence
 
-```{r vio cow, cache=TRUE}
-#Physical violence coworkers
+<br><br>
+
+### Coworkers
+
+```{r vio cow, results='asis', cache=TRUE}
 
 NEA2022$geweld_col <- as.numeric(NEA2022$afl_ge_3)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 <- NEA2022 %>%
   mutate(geweld_col = recode(geweld_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_ge_3)
-summarytools::freq(NEA2022$geweld_col)
+f1 <- summarytools::freq(NEA2022$afl_ge_3)
+
+f2 <- summarytools::freq(NEA2022$geweld_col)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 
 ```
 
-```{r vio sup, cache=TRUE}
-#Physical violence supervisors
+
+<br><br>
+
+### Supervisors
+
+```{r vio sup, results='asis', cache=TRUE}
 
 NEA2022$geweld_leid <- as.numeric(NEA2022$afl_ge_4)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 <- NEA2022 %>%
   mutate(geweld_leid = recode(geweld_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_ge_4)
-summarytools::freq(NEA2022$geweld_leid)
+f1 <- summarytools::freq(NEA2022$afl_ge_4)
+
+f2 <- summarytools::freq(NEA2022$geweld_leid)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 ```
+<br><br>
 
 ## Unwanted sexual attention
 
-```{r sex cow, cache=TRUE}
-#Unwanted sexual attention coworkers
+<br><br>
+
+### Coworkers
+
+```{r sex cow, results='asis', cache=TRUE}
 
 NEA2022$seks_col <- as.numeric(NEA2022$afl_se_1)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 <- NEA2022 %>%
   mutate(seks_col = recode(seks_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_se_1)
-summarytools::freq(NEA2022$seks_col)
+f1 <- summarytools::freq(NEA2022$afl_se_1)
+
+f2 <- summarytools::freq(NEA2022$seks_col)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 ```
 
-```{r sex sup, cache=TRUE}
-#Unwanted sexual attention supervisors
+<br><br>
+
+### Supervisors
+
+```{r sex sup, results='asis', cache=TRUE}
 NEA2022$seks_leid <- as.numeric(NEA2022$afl_se_2)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 <- NEA2022 %>%
   mutate(seks_leid = recode(seks_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_se_2)
-summarytools::freq(NEA2022$seks_leid)
+f1 <- summarytools::freq(NEA2022$afl_se_2)
+
+f2 <- summarytools::freq(NEA2022$seks_leid)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 
 ```
+
+<br><br>
 
 ## Conflict
 
-```{r con cow, cache=TRUE}
-#Conflict coworker
+<br><br>
+
+### Coworkers
+
+```{r con cow, results='asis', cache=TRUE}
 
 NEA2022$conflict_col <- as.numeric(NEA2022$conflict)
 
-summarytools::freq(NEA2022$conflict)
-summarytools::freq(NEA2022$conflict_col)
+f1 <- summarytools::freq(NEA2022$conflict)
+
+f2 <- summarytools::freq(NEA2022$conflict_col)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 ```
 
-```{r con sup, cache=TRUE}
-#Conflict supervisor
+<br><br>
 
+### Supervisors
+
+```{r con sup, results='asis', cache=TRUE}
 NEA2022$conflict_leid <- as.numeric(NEA2022$confli_1)
 
-summarytools::freq(NEA2022$confli_1)
-summarytools::freq(NEA2022$conflict_leid)
+f1 <- summarytools::freq(NEA2022$confli_1)
+
+f2 <- summarytools::freq(NEA2022$conflict_leid)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 ```
-
-```{r con emp, cache=TRUE}
-#Conflict employer
-
-NEA2022$conflict_emp <- as.numeric(NEA2022$confli_2)
-
-summarytools::freq(NEA2022$confli_2)
-summarytools::freq(NEA2022$conflict_emp)
-```
-
+<br><br>
 
 ## Incivility
 
-```{r inc sup, cache=TRUE}
-#Social support supervisor: my supervisor pays attention to the well-being of the staff 
+<br><br>
 
-NEA2022$leiding_[NEA2022$leiding_ == "nvt"] <- NA
+### Coworkers
 
-NEA2022$steunleid_welzijn <- as.numeric(NEA2022$leiding_)
-
-#Reverse coding
-
-NEA2022 <- NEA2022 %>%
-  mutate(steunleid_welzijn = recode(steunleid_welzijn, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
-
-summarytools::freq(NEA2022$leiding_)
-summarytools::freq(NEA2022$steunleid_welzijn)
-
-#Social support supervisor:  my supervisor pays attention to what I say
-
-NEA2022$leidin_1[NEA2022$leidin_1 == "nvt"] <- NA
-
-NEA2022$steunleid_aandacht <- as.numeric(NEA2022$leidin_1)
-
-#Reverse coding
-
-NEA2022 <- NEA2022 %>%
-  mutate(steunleid_aandacht = recode(steunleid_aandacht, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
-
-summarytools::freq(NEA2022$leidin_)
-summarytools::freq(NEA2022$steunleid_aandacht)
-
-#Cronbach's alpha
-
-steunleid <- data.frame(
-  steunleid_aandacht = NEA2022$steunleid_aandacht,
-  steunleid_welzijn = NEA2022$steunleid_welzijn
-)
-
-alpha_result1 <- alpha(steunleid, use="pairwise.complete.obs")
-print(alpha_result1$total$raw_alpha)
-
-cor(NEA2022$steunleid_aandacht, NEA2022$steunleid_welzijn, use = "complete.obs", method = "spearman")
-cor(NEA2022$steunleid_aandacht, NEA2022$steunleid_welzijn, use = "complete.obs", method = "pearson")
-
-
-
-#Making a mean scale
-
-NEA2022$steunleid_scale <- rowMeans(NEA2022[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
-summarytools::freq(NEA2022$steunleid_scale)
-
-
-NEA2022$steunleid_R <- as.numeric(factor(NEA2022$steunleid_scale))
-NEA2022$steunleid_R[NEA2022$steunleid_R == "8"] <- NA
-summarytools::freq(NEA2022$steunleid_R)
-
-#Rounding to a four-point scale
-NEA2022 <- NEA2022 %>%
-  mutate(steunleid_RR = case_when(
-    steunleid_scale %in% c(1) ~ 1,
-    steunleid_scale %in% c(1.5, 2) ~ 2,
-    steunleid_scale %in% c(2.5, 3) ~ 3,
-    steunleid_scale %in% c(3.5, 4) ~ 4,
-    TRUE ~ NA_real_
-  ))
-summarytools::freq(NEA2022$steunleid_RR)
-
-#correlation original and rounded scale
-cor(NEA2022$steunleid_scale, NEA2022$steunleid_RR, use = "complete.obs")
-```
-
-
-```{r inc cow, cache=TRUE}
+```{r inc cow, results='asis', cache=TRUE}
 #Social support coworkers: my co-workers take personal interest in me
 
 NEA2022$collega_[NEA2022$collega_ == "nvt"] <- NA
@@ -278,8 +315,15 @@ NEA2022$steuncol_belang <- as.numeric(NEA2022$collega_)
 NEA2022 <- NEA2022 %>%
   mutate(steuncol_belang = recode(steuncol_belang, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
 
-summarytools::freq(NEA2022$collega_)
-summarytools::freq(NEA2022$steuncol_belang)
+f1 <- summarytools::freq(NEA2022$collega_)
+
+f2 <- summarytools::freq(NEA2022$steuncol_belang)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 
 #Social support coworkers: my coworkers are friendly
 
@@ -292,8 +336,15 @@ NEA2022$steuncol_vriendelijk <- as.numeric(NEA2022$colleg_1)
 NEA2022 <- NEA2022 %>%
   mutate(steuncol_vriendelijk = recode(steuncol_vriendelijk, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
 
-summarytools::freq(NEA2022$colleg_1)
-summarytools::freq(NEA2022$steuncol_vriendelijk)
+f1 <- summarytools::freq(NEA2022$colleg_1)
+
+f2 <- summarytools::freq(NEA2022$steuncol_vriendelijk)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 
 #Cronbach's alpha
 
@@ -302,21 +353,25 @@ steuncol <- data.frame(
   steuncol_vriendelijk = NEA2022$steuncol_vriendelijk
 )
 
-alpha_result2 <- alpha(steuncol, use="pairwise.complete.obs")
-print(alpha_result2$total$raw_alpha)
+alpha_result2 <- alpha(steuncol, use = "pairwise.complete.obs")
 
-cor(NEA2022$steuncol_belang, NEA2022$steuncol_vriendelijk, use = "complete.obs", method = "spearman")
-cor(NEA2022$steuncol_belang, NEA2022$steuncol_vriendelijk, use = "complete.obs", method = "pearson")
+cor_spearman <- cor(NEA2022$steuncol_belang, NEA2022$steuncol_vriendelijk,
+                    use = "complete.obs", method = "spearman")
+cor_pearson  <- cor(NEA2022$steuncol_belang, NEA2022$steuncol_vriendelijk,
+                    use = "complete.obs", method = "pearson")
+
+cat(
+  "Cronbach's alpha (raw): ", round(alpha_result2$total$raw_alpha, 3), "\n",
+  "Spearman correlation: ", round(cor_spearman, 3), "\n",
+  "Pearson correlation: ", round(cor_pearson, 3), "\n"
+)
 
 
 #Making a mean scale
 NEA2022$steuncol_scale <- rowMeans(NEA2022[c("steuncol_belang", "steuncol_vriendelijk")], na.rm = TRUE)
 
-summarytools::freq(NEA2022$steuncol_scale)
-
 NEA2022$steuncol_R <- as.numeric(factor(NEA2022$steuncol_scale))
 NEA2022$steuncol_R[NEA2022$steuncol_R == "8"] <- NA
-summarytools::freq(NEA2022$steuncol_R)
 
 #Rounding to a four-point scale
 NEA2022 <- NEA2022 %>%
@@ -327,32 +382,150 @@ NEA2022 <- NEA2022 %>%
     steuncol_scale %in% c(3.5, 4) ~ 4,
     TRUE ~ NA_real_
   ))
-summarytools::freq(NEA2022$steuncol_RR)
+f1 <- summarytools::freq(NEA2022$steuncol_scale)
+
+f2 <- summarytools::freq(NEA2022$steuncol_RR)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 
 # Correlation original and rounded scale
 cor(NEA2022$steuncol_scale, NEA2022$steuncol_RR, use = "complete.obs")
 ```
 
+
+<br><br>
+
+### Supervisors
+
+```{r inc sup, results='asis', cache=TRUE}
+#Social support supervisor: my supervisor pays attention to the well-being of the staff 
+
+NEA2022$leiding_[NEA2022$leiding_ == "nvt"] <- NA
+
+NEA2022$steunleid_welzijn <- as.numeric(NEA2022$leiding_)
+
+#Reverse coding
+
+NEA2022 <- NEA2022 %>%
+  mutate(steunleid_welzijn = recode(steunleid_welzijn, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+f1 <- summarytools::freq(NEA2022$leiding_)
+
+f2 <- summarytools::freq(NEA2022$steunleid_welzijn)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
+
+#Social support supervisor:  my supervisor pays attention to what I say
+
+NEA2022$leidin_1[NEA2022$leidin_1 == "nvt"] <- NA
+
+NEA2022$steunleid_aandacht <- as.numeric(NEA2022$leidin_1)
+
+#Reverse coding
+
+NEA2022 <- NEA2022 %>%
+  mutate(steunleid_aandacht = recode(steunleid_aandacht, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+f1 <- summarytools::freq(NEA2022$leidin_1)
+
+f2 <- summarytools::freq(NEA2022$steunleid_aandacht)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
+
+#Cronbach's alpha
+
+steunleid <- data.frame(
+  steunleid_aandacht = NEA2022$steunleid_aandacht,
+  steunleid_welzijn = NEA2022$steunleid_welzijn
+)
+
+alpha_result1 <- alpha(steunleid, use = "pairwise.complete.obs")
+
+cor_spearman <- cor(NEA2022$steunleid_aandacht, NEA2022$steunleid_welzijn,
+                    use = "complete.obs", method = "spearman")
+cor_pearson  <- cor(NEA2022$steunleid_aandacht, NEA2022$steunleid_welzijn,
+                    use = "complete.obs", method = "pearson")
+
+cat(
+  "Cronbach's alpha (raw): ", round(alpha_result1$total$raw_alpha, 3), "\n",
+  "Spearman correlation: ", round(cor_spearman, 3), "\n",
+  "Pearson correlation: ", round(cor_pearson, 3), "\n"
+)
+
+
+#Making a mean scale
+
+NEA2022$steunleid_scale <- rowMeans(NEA2022[c("steunleid_aandacht", "steunleid_welzijn")], na.rm = TRUE)
+
+NEA2022$steunleid_R <- as.numeric(factor(NEA2022$steunleid_scale))
+NEA2022$steunleid_R[NEA2022$steunleid_R == "8"] <- NA
+
+#Rounding to a four-point scale
+NEA2022 <- NEA2022 %>%
+  mutate(steunleid_RR = case_when(
+    steunleid_scale %in% c(1) ~ 1,
+    steunleid_scale %in% c(1.5, 2) ~ 2,
+    steunleid_scale %in% c(2.5, 3) ~ 3,
+    steunleid_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+f1 <- summarytools::freq(NEA2022$steunleid_scale)
+
+f2 <- summarytools::freq(NEA2022$steunleid_RR)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
+
+#correlation original and rounded scale
+cor(NEA2022$steunleid_scale, NEA2022$steunleid_RR, use = "complete.obs")
+```
+
+<br><br>
+
 ## Psychological unsafety
 
-```{r psych, cache=TRUE}
+```{r psych, results='asis', cache=TRUE}
 #Psychological unsafety: at my workplace it is possible to raise difficult questions
 
 NEA2022$psyveil_last <- as.numeric(NEA2022$psyveil_)
-summarytools::freq(NEA2022$psyveil_)
-summarytools::freq(NEA2022$psyveil_last)
 
 #Psychological unsafety: at my workplace it is easy to ask for help
 
 NEA2022$psyveil_hulp <- as.numeric(NEA2022$psyvei_1)
-summarytools::freq(NEA2022$psyvei_1)
-summarytools::freq(NEA2022$psyveil_hulp)
 
 #Psychological unsafety: at my workplace it is okay to make a mistake
 
 NEA2022$psyveil_fout <- as.numeric(NEA2022$psyvei_2)
-summarytools::freq(NEA2022$psyvei_2)
-summarytools::freq(NEA2022$psyveil_fout)
+
+f1 <- summarytools::freq(NEA2022$psyveil_)
+
+f2 <- summarytools::freq(NEA2022$psyvei_1)
+
+f3 <- summarytools::freq(NEA2022$psyvei_2)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f3, headings = TRUE, plain.ascii = TRUE)
+)
 
 #Cronbach's alpha
 
@@ -369,12 +542,9 @@ print(alpha_result3$total$raw_alpha)
 
 NEA2022$psyveil_scale <- rowMeans(NEA2022[c("psyveil_last", "psyveil_hulp", "psyveil_fout")], na.rm = TRUE)
 
-summarytools::freq(NEA2022$psyveil_scale)
-
 NEA2022$psyveil_R <- as.numeric(factor(NEA2022$psyveil_scale))
 
 NEA2022$psyveil_R[NEA2022$psyveil_R == "18"] <- NA
-summarytools::freq(NEA2022$psyveil_R)
 
 # Rounding to a five-point scale
 
@@ -387,18 +557,28 @@ NEA2022 <- NEA2022 %>%
     psyveil_R %in% c(15, 16, 17) ~ 5,
     TRUE ~ NA_real_
   ))
-summarytools::freq(NEA2022$psyveil_RR)
+
+f1 <- summarytools::freq(NEA2022$psyveil_scale)
+
+f2 <- summarytools::freq(NEA2022$psyveil_RR)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 
 # Correlation original and rounded scale
 cor(NEA2022$psyveil_scale, NEA2022$psyveil_RR, use = "complete.obs")
 ```
 
+<br><br>
 
 ## Age
 
 <br><br> **Recoden low (15-35), middle (35-55), old (55-75)**
 
-```{r age, cache=TRUE}
+```{r age, results='asis', cache=TRUE}
 
 NEA2022$lft_num <- as.numeric(NEA2022$afl_lftc)
 
@@ -414,16 +594,25 @@ NEA2022$leeftijd_ <- factor(NEA2022$leeftijd,
                                  levels = c(1, 2, 3),
                                  labels = c("15.35", "35.55", "55.75"))
 
-summarytools::freq(NEA2022$afl_lftc)
-summarytools::freq(NEA2022$leeftijd_)
+f1 <- summarytools::freq(NEA2022$afl_lftc)
+
+f2 <- summarytools::freq(NEA2022$leeftijd_)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  "\n\n",
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)
 
 ```
+
+<br><br>
 
 ## Intersections
 
 <br><br> **Preparing variables for intersections**
 
-```{r intersections, cache=TRUE}
+```{r intersections, results='asis', cache=TRUE}
 # Easier labels
 NEA2022 <- NEA2022 %>%
   mutate(gender = recode(m_v,
@@ -447,18 +636,15 @@ NEA2022$education[NEA2022$education == "onbekend"] <- NA
 NEA2022$education[NEA2022$migration == "Onbekend"] <- NA
 
 # Drop unused levels
-levels(NEA2022$migration)
 NEA2022$migration <- droplevels(NEA2022$migration)
-levels(NEA2022$migration)
 
-levels(NEA2022$education)
 NEA2022$education <- droplevels(NEA2022$education)
-levels(NEA2022$education)
 
 NEA2022$intersections <- interaction(NEA2022$gender, NEA2022$migration, NEA2022$education, NEA2022$leeftijd_)
 
 summarytools::freq(NEA2022$intersections)
 ```
+
 
 <br><br> **Creating dummy variables**
 

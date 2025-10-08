@@ -55,6 +55,8 @@ attach(NEA2022)
 set.seed(123)
 ```
 
+<br><br>
+
 # Latent class analysis
 
 
@@ -79,11 +81,15 @@ items_m <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid, g
 <br><br> Steuncol_RR: **My co-workers take personal interest in me.** **My co-workers are friendly.** Mean score of the two items, rounded. (1) fully agree (2) agree (3) disagree (4) fully disagree
 <br><br> Psyveil_RR: **At my workplace it is possible to raise difficult questions.** **At my workplace it is easy to ask for help.** **At my workplace it is okay to make a mistake.** Mean score of the three items, rounded. (1) fully agree (2) agree (3) don't agree, don't disagree (4) disagree (5) fully disagree
 
+<br><br>
+
 ## Model1
 
 ```{r model1, cache=TRUE}
 model1_m <- poLCA(items_m, data_m, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+<br><br>
 
 ## Model2
 
@@ -91,11 +97,15 @@ model1_m <- poLCA(items_m, data_m, nclass = 1, maxiter = 5000, nrep = 10, graphs
 model2_m <- poLCA(items_m, data_m, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+<br><br>
+
 ## Model3
 
 ```{r model3, cache=TRUE}
 model3_m <- poLCA(items_m, data_m, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+<br><br>
 
 ## Model4
 
@@ -103,11 +113,15 @@ model3_m <- poLCA(items_m, data_m, nclass = 3, maxiter = 5000, nrep = 10, graphs
 model4_m <- poLCA(items_m, data_m, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+<br><br>
+
 ## Model5
 
 ```{r model5, cache=TRUE}
 model5_m <- poLCA(items_m, data_m, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+<br><br>
 
 ## Model6
 
@@ -115,11 +129,15 @@ model5_m <- poLCA(items_m, data_m, nclass = 5, maxiter = 5000, nrep = 10, graphs
 model6_m <- poLCA(items_m, data_m, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+<br><br>
+
 ## Model7
 
 ```{r model7, cache=TRUE}
 model7_m <- poLCA(items_m, data_m, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+<br><br>
 
 ## Model8
 
@@ -127,11 +145,15 @@ model7_m <- poLCA(items_m, data_m, nclass = 7, maxiter = 5000, nrep = 10, graphs
 model8_m <- poLCA(items_m, data_m, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+<br><br>
+
 ## Model9
 
 ```{r model9, cache=TRUE}
 model9_m <- poLCA(items_m, data_m, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+<br><br>
 
 ## Model10
 
@@ -139,11 +161,15 @@ model9_m <- poLCA(items_m, data_m, nclass = 9, maxiter = 5000, nrep = 10, graphs
 model10_m <- poLCA(items_m, data_m, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+<br><br>
+
 ## Model11
 
 ```{r model11, cache=TRUE}
 model11_m <- poLCA(items_m, data_m, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+<br><br>
 
 ## Model12
 
@@ -151,17 +177,23 @@ model11_m <- poLCA(items_m, data_m, nclass = 11, maxiter = 5000, nrep = 10, grap
 model12_m <- poLCA(items_m, data_m, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+<br><br>
+
 ## Model13
 
 ```{r model13, cache=TRUE}
 model13_m <- poLCA(items_m, data_m, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
 
+<br><br>
+
 ## Model14
 
 ```{r model14, cache=TRUE}
 model14_m <- poLCA(items_m, data_m, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = TRUE)
 ```
+
+<br><br>
 
 # Saving the models
 
@@ -390,17 +422,19 @@ Models_m <- cbind (volgnumm, model3_mpred	,
                  pmodel12_mv11 ,
                  pmodel12_mv12  )
 ```
-
+<br><br>
 
 # Class separation
 
 ```{r post prob}
 max_probs <- apply(model7_mpost, 1, max)
 
-mean(max_probs)
-median(max_probs)
-min(max_probs)
-max(max_probs)
+cat(
+  "Mean:   ", round(mean(max_probs, na.rm = TRUE), 4), "\n",
+  "Median: ", round(median(max_probs, na.rm = TRUE), 4), "\n",
+  "Min:    ", round(min(max_probs, na.rm = TRUE), 4), "\n",
+  "Max:    ", round(max(max_probs, na.rm = TRUE), 4), "\n"
+)
 
 K <- 7
 
@@ -428,88 +462,32 @@ ggplot(data.frame(max_probs = max_probs), aes(x = max_probs)) +
 
 
 ```{r entropy}
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model2_m)
 
 poLCA.entropy <- function(model) {
   P <- model$posterior
   entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
   return(1 - entropy)
 }
-poLCA.entropy(model3_m)
 
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model4_m)
+cat(
+  "Entropy values for LCA models:\n",
+  "Model 2: ", round(poLCA.entropy(model2_m), 4), "\n",
+  "Model 3: ", round(poLCA.entropy(model3_m), 4), "\n",
+  "Model 4: ", round(poLCA.entropy(model4_m), 4), "\n",
+  "Model 5: ", round(poLCA.entropy(model5_m), 4), "\n",
+  "Model 6: ", round(poLCA.entropy(model6_m), 4), "\n",
+  "Model 7: ", round(poLCA.entropy(model7_m), 4), "\n",
+  "Model 8: ", round(poLCA.entropy(model8_m), 4), "\n",
+  "Model 9: ", round(poLCA.entropy(model9_m), 4), "\n",
+  "Model 10: ", round(poLCA.entropy(model10_m), 4), "\n",
+  "Model 11: ", round(poLCA.entropy(model11_m), 4), "\n",
+  "Model 12: ", round(poLCA.entropy(model12_m), 4), "\n"
+)
 
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model5_m)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model6_m)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model7_m)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model8_m)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model9_m)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model10_m)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model11_m)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model12_m)
 ```
-
+<br><br>
 
 # Plots
-
-
 
 ```{r plotjes}
 #Recoding variables on scale from 0 to 1
@@ -555,9 +533,9 @@ NEA2022 <- NEA2022 %>%
 
 ```
 
+<br><br>
 
 ## Model4
-
 
 ```{r plot4}
 
@@ -635,8 +613,9 @@ table(NEA2022$model4_mpred, useNA = "ifany")
 
 ```
 
-## Model5
+<br><br>
 
+## Model5
 
 ```{r plot5}
 used_cases <- complete.cases(NEA2022[, vars])
@@ -705,10 +684,9 @@ ggplot(plot_data5, aes(x = indicator, y = mean_value,
   )
 
 ```
-
+<br><br>
 
 ## Model6
-
 
 ```{r plot6}
 used_cases <- complete.cases(NEA2022[, vars])
@@ -780,6 +758,7 @@ ggplot(plot_data6, aes(x = indicator, y = mean_value,
 
 ```
 
+<br><br>
 
 ## Model7
 
@@ -799,16 +778,16 @@ plot_data7 <- NEA2022 %>%
     indicator   = factor(indicator, levels = vars),
     class_label = recode(as.character(model7_mpred),
                          "1" = "Short-term conflict (6.78%)",
-                         "2" = "Overall safe (56.34%)",
-                         "3" = "Overall highly safe (20.46%)",
+                         "2" = "Safe (56.34%)",
+                         "3" = "Highly safe (20.46%)",
                          "4" = "Supervisor unsafety (1.85%)",
                          "5" = "Unsafe social climate (10.35%)",
                          "6" = "Overall unsafe (1.49%)",
                          "7" = "Coworker unsafety (2.73%)")
   ) %>%
   mutate(class_label = factor(class_label,
-                              levels = c("Overall highly safe (20.46%)", 
-                                         "Overall safe (56.34%)",
+                              levels = c("Highly safe (20.46%)", 
+                                         "Safe (56.34%)",
                                          "Short-term conflict (6.78%)", 
                                          "Unsafe social climate (10.35%)", 
                                          "Coworker unsafety (2.73%)", 
@@ -841,8 +820,8 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
                      expand = c(0,0)) +
   scale_color_manual(
     values = c(
-      "Overall highly safe (20.46%)"   = "#0072B2",
-      "Overall safe (56.34%)"          = "#56B4E9",
+      "Highly safe (20.46%)"   = "#0072B2",
+      "Safe (56.34%)"          = "#56B4E9",
       "Short-term conflict (6.78%)"   = "#009E73",
       "Unsafe social climate (10.35%)" = "#CC79A7",
       "Coworker unsafety (2.73%)"     = "#E69F00",
@@ -859,8 +838,9 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
   )
 ```
 
-## Model8
+<br><br>
 
+## Model8
 
 ```{r plot8}
 used_cases <- complete.cases(NEA2022[, vars])
@@ -939,10 +919,9 @@ ggplot(plot_data8, aes(x = indicator, y = mean_value,
   )
 
 ```
-
+<br><br>
 
 ## Model9
-
 
 ```{r plot9}
 used_cases <- complete.cases(NEA2022[, vars])

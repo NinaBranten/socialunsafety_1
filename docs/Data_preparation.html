@@ -372,9 +372,6 @@ div.tocify {
     <li>
       <a href="MAIHDA_binary.html">binary</a>
     </li>
-    <li>
-      <a href="Items_seperate.html">items separate</a>
-    </li>
   </ul>
 </li>
       </ul>
@@ -410,515 +407,1623 @@ div.tocify {
 </div>
 
 
+<div id="preparing-dataset" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Preparing dataset</h1>
 <pre class="r"><code>library(summarytools)
 library(foreign)
 library(dplyr)
 library(psych)
 library(fastDummies)</code></pre>
-<div id="preparing-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Preparing dataset</h1>
 <pre class="r"><code>NEAraw &lt;-read.spss(&quot;data/raw/Data 2014-2022.sav&quot;, use.value.labels = T, to.data.frame = T)</code></pre>
-<p><br><br> <strong>Selecting year 2022 and cluster 1</strong></p>
-<pre class="r"><code>NEA2022 &lt;- NEAraw[NEAraw$jaar == &quot;2022&quot;, ]
+<pre class="r"><code># Selecting year 2022 and cluster 1
+NEA2022 &lt;- NEAraw[NEAraw$jaar == &quot;2022&quot;, ]
 
 NEA2022 &lt;- NEA2022[NEA2022$se_clust == 1, ]</code></pre>
-<p><br><br> <strong>Deleting missing cases on educational
-level</strong></p>
-<pre class="r"><code>NEA2022$afl_soi3[NEA2022$afl_soi3 == &quot;onbekend&quot;] &lt;- NA
+<pre class="r"><code># Deleting missing cases on educational level
+NEA2022$afl_soi3[NEA2022$afl_soi3 == &quot;onbekend&quot;] &lt;- NA
 
 NEA2022 &lt;- NEA2022 %&gt;%
   filter(!is.na(afl_soi3))</code></pre>
+<p><br><br></p>
 </div>
 <div id="recoding-variables" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Recoding variables</h1>
+<p><br><br></p>
 <div id="bullying" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Bullying</h2>
-<pre class="r"><code># Bullying coworkers
-NEA2022$pesten_col &lt;- as.numeric(NEA2022$afl_pe_1)
+<p><br><br></p>
+<div id="coworkers" class="section level3" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Coworkers</h3>
+<pre class="r"><code>NEA2022$pesten_col &lt;- as.numeric(NEA2022$afl_pe_1)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(pesten_col = recode(pesten_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_pe_1)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## --------------------- ------- --------- -------------- --------- --------------
-##       Een enkele keer     543      1.83           1.83      1.81           1.81
-##                  Vaak     139      0.47           2.30      0.46           2.28
-##             Zeer vaak      38      0.13           2.43      0.13           2.41
-##                  Niet   28924     97.57         100.00     96.66          99.07
-##               refusal       0      0.00         100.00      0.00          99.07
-##                  &lt;NA&gt;     279                               0.93         100.00
-##                 Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$pesten_col)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   28924     97.57          97.57     96.66          96.66
-##           2     543      1.83          99.40      1.81          98.48
-##           3     139      0.47          99.87      0.46          98.94
-##           4      38      0.13         100.00      0.13          99.07
-##        &lt;NA&gt;     279                               0.93         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code># Bullying supervisors
-NEA2022$pesten_leid &lt;- as.numeric(NEA2022$afl_pe_2)
+f1 &lt;- summarytools::freq(NEA2022$afl_pe_1)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+f2 &lt;- summarytools::freq(NEA2022$pesten_col)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Een enkele keer</td>
+<td align="right">543</td>
+<td align="right">1.83</td>
+<td align="right">1.83</td>
+<td align="right">1.81</td>
+<td align="right">1.81</td>
+</tr>
+<tr class="even">
+<td>Vaak</td>
+<td align="right">139</td>
+<td align="right">0.47</td>
+<td align="right">2.30</td>
+<td align="right">0.46</td>
+<td align="right">2.28</td>
+</tr>
+<tr class="odd">
+<td>Zeer vaak</td>
+<td align="right">38</td>
+<td align="right">0.13</td>
+<td align="right">2.43</td>
+<td align="right">0.13</td>
+<td align="right">2.41</td>
+</tr>
+<tr class="even">
+<td>Niet</td>
+<td align="right">28924</td>
+<td align="right">97.57</td>
+<td align="right">100.00</td>
+<td align="right">96.66</td>
+<td align="right">99.07</td>
+</tr>
+<tr class="odd">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">99.07</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">279</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.93</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">28924</td>
+<td align="right">97.57</td>
+<td align="right">97.57</td>
+<td align="right">96.66</td>
+<td align="right">96.66</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">543</td>
+<td align="right">1.83</td>
+<td align="right">99.40</td>
+<td align="right">1.81</td>
+<td align="right">98.48</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">139</td>
+<td align="right">0.47</td>
+<td align="right">99.87</td>
+<td align="right">0.46</td>
+<td align="right">98.94</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">38</td>
+<td align="right">0.13</td>
+<td align="right">100.00</td>
+<td align="right">0.13</td>
+<td align="right">99.07</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">279</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.93</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+</div>
+<div id="supervisors" class="section level3" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Supervisors</h3>
+<pre class="r"><code>NEA2022$pesten_leid &lt;- as.numeric(NEA2022$afl_pe_2)
+
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(pesten_leid = recode(pesten_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_pe_2)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## --------------------- ------- --------- -------------- --------- --------------
-##       Een enkele keer     207      0.70           0.70      0.69           0.69
-##                  Vaak     110      0.37           1.07      0.37           1.06
-##             Zeer vaak      40      0.13           1.20      0.13           1.19
-##                  Niet   29301     98.80         100.00     97.92          99.11
-##               refusal       0      0.00         100.00      0.00          99.11
-##                  &lt;NA&gt;     265                               0.89         100.00
-##                 Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$pesten_leid)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   29301     98.80          98.80     97.92          97.92
-##           2     207      0.70          99.49      0.69          98.61
-##           3     110      0.37          99.87      0.37          98.98
-##           4      40      0.13         100.00      0.13          99.11
-##        &lt;NA&gt;     265                               0.89         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+f1 &lt;- summarytools::freq(NEA2022$afl_pe_2)
+
+f2 &lt;- summarytools::freq(NEA2022$pesten_leid)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Een enkele keer</td>
+<td align="right">207</td>
+<td align="right">0.70</td>
+<td align="right">0.70</td>
+<td align="right">0.69</td>
+<td align="right">0.69</td>
+</tr>
+<tr class="even">
+<td>Vaak</td>
+<td align="right">110</td>
+<td align="right">0.37</td>
+<td align="right">1.07</td>
+<td align="right">0.37</td>
+<td align="right">1.06</td>
+</tr>
+<tr class="odd">
+<td>Zeer vaak</td>
+<td align="right">40</td>
+<td align="right">0.13</td>
+<td align="right">1.20</td>
+<td align="right">0.13</td>
+<td align="right">1.19</td>
+</tr>
+<tr class="even">
+<td>Niet</td>
+<td align="right">29301</td>
+<td align="right">98.80</td>
+<td align="right">100.00</td>
+<td align="right">97.92</td>
+<td align="right">99.11</td>
+</tr>
+<tr class="odd">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">99.11</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">265</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.89</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">29301</td>
+<td align="right">98.80</td>
+<td align="right">98.80</td>
+<td align="right">97.92</td>
+<td align="right">97.92</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">207</td>
+<td align="right">0.70</td>
+<td align="right">99.49</td>
+<td align="right">0.69</td>
+<td align="right">98.61</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">110</td>
+<td align="right">0.37</td>
+<td align="right">99.87</td>
+<td align="right">0.37</td>
+<td align="right">98.98</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">40</td>
+<td align="right">0.13</td>
+<td align="right">100.00</td>
+<td align="right">0.13</td>
+<td align="right">99.11</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">265</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.89</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+</div>
 </div>
 <div id="intimidation" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Intimidation</h2>
-<pre class="r"><code>#Intimidation coworkers
+<p><br><br></p>
+<div id="coworkers-1" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Coworkers</h3>
+<pre class="r"><code>NEA2022$intimidation_col &lt;- as.numeric(NEA2022$afl_be_1)
 
-NEA2022$intimidation_col &lt;- as.numeric(NEA2022$afl_be_1)
-
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(intimidation_col = recode(intimidation_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_be_1)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## --------------------- ------- --------- -------------- --------- --------------
-##       Een enkele keer     337     1.134          1.134     1.126          1.126
-##                  Vaak      35     0.118          1.251     0.117          1.243
-##             Zeer vaak      26     0.087          1.339     0.087          1.330
-##                  Niet   29330    98.661        100.000    98.018         99.348
-##               refusal       0     0.000        100.000     0.000         99.348
-##                  &lt;NA&gt;     195                              0.652        100.000
-##                 Total   29923   100.000        100.000   100.000        100.000</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$intimidation_col)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   29330    98.661         98.661    98.018         98.018
-##           2     337     1.134         99.795     1.126         99.144
-##           3      35     0.118         99.913     0.117         99.261
-##           4      26     0.087        100.000     0.087         99.348
-##        &lt;NA&gt;     195                              0.652        100.000
-##       Total   29923   100.000        100.000   100.000        100.000</code></pre>
-<pre class="r"><code>#Intimidation supervisors
+f1 &lt;- summarytools::freq(NEA2022$afl_be_1)
 
-NEA2022$intimidation_leid &lt;- as.numeric(NEA2022$afl_be_2)
+f2 &lt;- summarytools::freq(NEA2022$intimidation_col)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Een enkele keer</td>
+<td align="right">337</td>
+<td align="right">1.134</td>
+<td align="right">1.134</td>
+<td align="right">1.126</td>
+<td align="right">1.126</td>
+</tr>
+<tr class="even">
+<td>Vaak</td>
+<td align="right">35</td>
+<td align="right">0.118</td>
+<td align="right">1.251</td>
+<td align="right">0.117</td>
+<td align="right">1.243</td>
+</tr>
+<tr class="odd">
+<td>Zeer vaak</td>
+<td align="right">26</td>
+<td align="right">0.087</td>
+<td align="right">1.339</td>
+<td align="right">0.087</td>
+<td align="right">1.330</td>
+</tr>
+<tr class="even">
+<td>Niet</td>
+<td align="right">29330</td>
+<td align="right">98.661</td>
+<td align="right">100.000</td>
+<td align="right">98.018</td>
+<td align="right">99.348</td>
+</tr>
+<tr class="odd">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.000</td>
+<td align="right">100.000</td>
+<td align="right">0.000</td>
+<td align="right">99.348</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">195</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.652</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">29330</td>
+<td align="right">98.661</td>
+<td align="right">98.661</td>
+<td align="right">98.018</td>
+<td align="right">98.018</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">337</td>
+<td align="right">1.134</td>
+<td align="right">99.795</td>
+<td align="right">1.126</td>
+<td align="right">99.144</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">35</td>
+<td align="right">0.118</td>
+<td align="right">99.913</td>
+<td align="right">0.117</td>
+<td align="right">99.261</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">26</td>
+<td align="right">0.087</td>
+<td align="right">100.000</td>
+<td align="right">0.087</td>
+<td align="right">99.348</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">195</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.652</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+</div>
+<div id="supervisors-1" class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Supervisors</h3>
+<pre class="r"><code>NEA2022$intimidation_leid &lt;- as.numeric(NEA2022$afl_be_2)
+
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(intimidation_leid = recode(intimidation_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_be_2)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## --------------------- ------- --------- -------------- --------- --------------
-##       Een enkele keer     331      1.11           1.11      1.11           1.11
-##                  Vaak      97      0.33           1.44      0.32           1.43
-##             Zeer vaak      34      0.11           1.55      0.11           1.54
-##                  Niet   29262     98.45         100.00     97.79          99.33
-##               refusal       0      0.00         100.00      0.00          99.33
-##                  &lt;NA&gt;     199                               0.67         100.00
-##                 Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$intimidation_leid)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   29262     98.45          98.45     97.79          97.79
-##           2     331      1.11          99.56      1.11          98.90
-##           3      97      0.33          99.89      0.32          99.22
-##           4      34      0.11         100.00      0.11          99.33
-##        &lt;NA&gt;     199                               0.67         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<div id="physical-violence" class="section level3" number="2.2.1">
-<h3><span class="header-section-number">2.2.1</span> Physical
-violence</h3>
-<pre class="r"><code>#Physical violence coworkers
+f1 &lt;- summarytools::freq(NEA2022$afl_be_2)
 
-NEA2022$geweld_col &lt;- as.numeric(NEA2022$afl_ge_3)
+f2 &lt;- summarytools::freq(NEA2022$intimidation_leid)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Een enkele keer</td>
+<td align="right">331</td>
+<td align="right">1.11</td>
+<td align="right">1.11</td>
+<td align="right">1.11</td>
+<td align="right">1.11</td>
+</tr>
+<tr class="even">
+<td>Vaak</td>
+<td align="right">97</td>
+<td align="right">0.33</td>
+<td align="right">1.44</td>
+<td align="right">0.32</td>
+<td align="right">1.43</td>
+</tr>
+<tr class="odd">
+<td>Zeer vaak</td>
+<td align="right">34</td>
+<td align="right">0.11</td>
+<td align="right">1.55</td>
+<td align="right">0.11</td>
+<td align="right">1.54</td>
+</tr>
+<tr class="even">
+<td>Niet</td>
+<td align="right">29262</td>
+<td align="right">98.45</td>
+<td align="right">100.00</td>
+<td align="right">97.79</td>
+<td align="right">99.33</td>
+</tr>
+<tr class="odd">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">99.33</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">199</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.67</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">29262</td>
+<td align="right">98.45</td>
+<td align="right">98.45</td>
+<td align="right">97.79</td>
+<td align="right">97.79</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">331</td>
+<td align="right">1.11</td>
+<td align="right">99.56</td>
+<td align="right">1.11</td>
+<td align="right">98.90</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">97</td>
+<td align="right">0.33</td>
+<td align="right">99.89</td>
+<td align="right">0.32</td>
+<td align="right">99.22</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">34</td>
+<td align="right">0.11</td>
+<td align="right">100.00</td>
+<td align="right">0.11</td>
+<td align="right">99.33</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">199</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.67</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+</div>
+</div>
+<div id="physical-violence" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Physical
+violence</h2>
+<p><br><br></p>
+<div id="coworkers-2" class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Coworkers</h3>
+<pre class="r"><code>NEA2022$geweld_col &lt;- as.numeric(NEA2022$afl_ge_3)
+
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(geweld_col = recode(geweld_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_ge_3)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## --------------------- ------- --------- -------------- --------- --------------
-##       Een enkele keer      23     0.077          0.077     0.077          0.077
-##                  Vaak       5     0.017          0.094     0.017          0.094
-##             Zeer vaak       4     0.013          0.107     0.013          0.107
-##                  Niet   29761    99.893        100.000    99.459         99.566
-##               refusal       0     0.000        100.000     0.000         99.566
-##                  &lt;NA&gt;     130                              0.434        100.000
-##                 Total   29923   100.000        100.000   100.000        100.000</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$geweld_col)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   29761    99.893         99.893    99.459         99.459
-##           2      23     0.077         99.970     0.077         99.535
-##           3       5     0.017         99.987     0.017         99.552
-##           4       4     0.013        100.000     0.013         99.566
-##        &lt;NA&gt;     130                              0.434        100.000
-##       Total   29923   100.000        100.000   100.000        100.000</code></pre>
-<pre class="r"><code>#Physical violence supervisors
+f1 &lt;- summarytools::freq(NEA2022$afl_ge_3)
 
-NEA2022$geweld_leid &lt;- as.numeric(NEA2022$afl_ge_4)
+f2 &lt;- summarytools::freq(NEA2022$geweld_col)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Een enkele keer</td>
+<td align="right">23</td>
+<td align="right">0.077</td>
+<td align="right">0.077</td>
+<td align="right">0.077</td>
+<td align="right">0.077</td>
+</tr>
+<tr class="even">
+<td>Vaak</td>
+<td align="right">5</td>
+<td align="right">0.017</td>
+<td align="right">0.094</td>
+<td align="right">0.017</td>
+<td align="right">0.094</td>
+</tr>
+<tr class="odd">
+<td>Zeer vaak</td>
+<td align="right">4</td>
+<td align="right">0.013</td>
+<td align="right">0.107</td>
+<td align="right">0.013</td>
+<td align="right">0.107</td>
+</tr>
+<tr class="even">
+<td>Niet</td>
+<td align="right">29761</td>
+<td align="right">99.893</td>
+<td align="right">100.000</td>
+<td align="right">99.459</td>
+<td align="right">99.566</td>
+</tr>
+<tr class="odd">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.000</td>
+<td align="right">100.000</td>
+<td align="right">0.000</td>
+<td align="right">99.566</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">130</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.434</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">29761</td>
+<td align="right">99.893</td>
+<td align="right">99.893</td>
+<td align="right">99.459</td>
+<td align="right">99.459</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">23</td>
+<td align="right">0.077</td>
+<td align="right">99.970</td>
+<td align="right">0.077</td>
+<td align="right">99.535</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">5</td>
+<td align="right">0.017</td>
+<td align="right">99.987</td>
+<td align="right">0.017</td>
+<td align="right">99.552</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">4</td>
+<td align="right">0.013</td>
+<td align="right">100.000</td>
+<td align="right">0.013</td>
+<td align="right">99.566</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">130</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.434</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+</div>
+<div id="supervisors-2" class="section level3" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Supervisors</h3>
+<pre class="r"><code>NEA2022$geweld_leid &lt;- as.numeric(NEA2022$afl_ge_4)
+
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(geweld_leid = recode(geweld_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_ge_4)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## --------------------- ------- --------- -------------- --------- --------------
-##       Een enkele keer       5     0.017          0.017     0.017          0.017
-##                  Vaak       5     0.017          0.034     0.017          0.033
-##             Zeer vaak       3     0.010          0.044     0.010          0.043
-##                  Niet   29784    99.956        100.000    99.535         99.579
-##               refusal       0     0.000        100.000     0.000         99.579
-##                  &lt;NA&gt;     126                              0.421        100.000
-##                 Total   29923   100.000        100.000   100.000        100.000</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$geweld_leid)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   29784    99.956         99.956    99.535         99.535
-##           2       5     0.017         99.973     0.017         99.552
-##           3       5     0.017         99.990     0.017         99.569
-##           4       3     0.010        100.000     0.010         99.579
-##        &lt;NA&gt;     126                              0.421        100.000
-##       Total   29923   100.000        100.000   100.000        100.000</code></pre>
+f1 &lt;- summarytools::freq(NEA2022$afl_ge_4)
+
+f2 &lt;- summarytools::freq(NEA2022$geweld_leid)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Een enkele keer</td>
+<td align="right">5</td>
+<td align="right">0.017</td>
+<td align="right">0.017</td>
+<td align="right">0.017</td>
+<td align="right">0.017</td>
+</tr>
+<tr class="even">
+<td>Vaak</td>
+<td align="right">5</td>
+<td align="right">0.017</td>
+<td align="right">0.034</td>
+<td align="right">0.017</td>
+<td align="right">0.033</td>
+</tr>
+<tr class="odd">
+<td>Zeer vaak</td>
+<td align="right">3</td>
+<td align="right">0.010</td>
+<td align="right">0.044</td>
+<td align="right">0.010</td>
+<td align="right">0.043</td>
+</tr>
+<tr class="even">
+<td>Niet</td>
+<td align="right">29784</td>
+<td align="right">99.956</td>
+<td align="right">100.000</td>
+<td align="right">99.535</td>
+<td align="right">99.579</td>
+</tr>
+<tr class="odd">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.000</td>
+<td align="right">100.000</td>
+<td align="right">0.000</td>
+<td align="right">99.579</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">126</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.421</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">29784</td>
+<td align="right">99.956</td>
+<td align="right">99.956</td>
+<td align="right">99.535</td>
+<td align="right">99.535</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">5</td>
+<td align="right">0.017</td>
+<td align="right">99.973</td>
+<td align="right">0.017</td>
+<td align="right">99.552</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">5</td>
+<td align="right">0.017</td>
+<td align="right">99.990</td>
+<td align="right">0.017</td>
+<td align="right">99.569</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">3</td>
+<td align="right">0.010</td>
+<td align="right">100.000</td>
+<td align="right">0.010</td>
+<td align="right">99.579</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">126</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.421</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
 </div>
 </div>
-<div id="unwanted-sexual-attention" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> Unwanted sexual
+<div id="unwanted-sexual-attention" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Unwanted sexual
 attention</h2>
-<pre class="r"><code>#Unwanted sexual attention coworkers
+<p><br><br></p>
+<div id="coworkers-3" class="section level3" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Coworkers</h3>
+<pre class="r"><code>NEA2022$seks_col &lt;- as.numeric(NEA2022$afl_se_1)
 
-NEA2022$seks_col &lt;- as.numeric(NEA2022$afl_se_1)
-
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(seks_col = recode(seks_col, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_se_1)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## --------------------- ------- --------- -------------- --------- --------------
-##       Een enkele keer     233     0.783          0.783     0.779          0.779
-##                  Vaak      33     0.111          0.894     0.110          0.889
-##             Zeer vaak      13     0.044          0.938     0.043          0.932
-##                  Niet   29468    99.062        100.000    98.479         99.412
-##               refusal       0     0.000        100.000     0.000         99.412
-##                  &lt;NA&gt;     176                              0.588        100.000
-##                 Total   29923   100.000        100.000   100.000        100.000</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$seks_col)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   29468    99.062         99.062    98.479         98.479
-##           2     233     0.783         99.845     0.779         99.258
-##           3      33     0.111         99.956     0.110         99.368
-##           4      13     0.044        100.000     0.043         99.412
-##        &lt;NA&gt;     176                              0.588        100.000
-##       Total   29923   100.000        100.000   100.000        100.000</code></pre>
-<pre class="r"><code>#Unwanted sexual attention supervisors
-NEA2022$seks_leid &lt;- as.numeric(NEA2022$afl_se_2)
+f1 &lt;- summarytools::freq(NEA2022$afl_se_1)
 
-# (1) no, never, (2) a few times, (3) often, and (4) very often 
+f2 &lt;- summarytools::freq(NEA2022$seks_col)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Een enkele keer</td>
+<td align="right">233</td>
+<td align="right">0.783</td>
+<td align="right">0.783</td>
+<td align="right">0.779</td>
+<td align="right">0.779</td>
+</tr>
+<tr class="even">
+<td>Vaak</td>
+<td align="right">33</td>
+<td align="right">0.111</td>
+<td align="right">0.894</td>
+<td align="right">0.110</td>
+<td align="right">0.889</td>
+</tr>
+<tr class="odd">
+<td>Zeer vaak</td>
+<td align="right">13</td>
+<td align="right">0.044</td>
+<td align="right">0.938</td>
+<td align="right">0.043</td>
+<td align="right">0.932</td>
+</tr>
+<tr class="even">
+<td>Niet</td>
+<td align="right">29468</td>
+<td align="right">99.062</td>
+<td align="right">100.000</td>
+<td align="right">98.479</td>
+<td align="right">99.412</td>
+</tr>
+<tr class="odd">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.000</td>
+<td align="right">100.000</td>
+<td align="right">0.000</td>
+<td align="right">99.412</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">176</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.588</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">29468</td>
+<td align="right">99.062</td>
+<td align="right">99.062</td>
+<td align="right">98.479</td>
+<td align="right">98.479</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">233</td>
+<td align="right">0.783</td>
+<td align="right">99.845</td>
+<td align="right">0.779</td>
+<td align="right">99.258</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">33</td>
+<td align="right">0.111</td>
+<td align="right">99.956</td>
+<td align="right">0.110</td>
+<td align="right">99.368</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">13</td>
+<td align="right">0.044</td>
+<td align="right">100.000</td>
+<td align="right">0.043</td>
+<td align="right">99.412</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">176</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.588</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+</div>
+<div id="supervisors-3" class="section level3" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> Supervisors</h3>
+<pre class="r"><code>NEA2022$seks_leid &lt;- as.numeric(NEA2022$afl_se_2)
+
+# 1: no, never (niet), 2: a few times (een enkele keer), 3: often (vaak), and 4: very often (zeer vaak) 
 
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(seks_leid = recode(seks_leid, `1` = 2, `2` = 3, `3` = 4, `4` = 1))
 
-summarytools::freq(NEA2022$afl_se_2)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                          Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## --------------------- ------- --------- -------------- --------- --------------
-##       Een enkele keer      67     0.225          0.225     0.224          0.224
-##                  Vaak      10     0.034          0.259     0.033          0.257
-##             Zeer vaak      11     0.037          0.296     0.037          0.294
-##                  Niet   29667    99.704        100.000    99.144         99.439
-##               refusal       0     0.000        100.000     0.000         99.439
-##                  &lt;NA&gt;     168                              0.561        100.000
-##                 Total   29923   100.000        100.000   100.000        100.000</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$seks_leid)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   29667    99.704         99.704    99.144         99.144
-##           2      67     0.225         99.929     0.224         99.368
-##           3      10     0.034         99.963     0.033         99.402
-##           4      11     0.037        100.000     0.037         99.439
-##        &lt;NA&gt;     168                              0.561        100.000
-##       Total   29923   100.000        100.000   100.000        100.000</code></pre>
+f1 &lt;- summarytools::freq(NEA2022$afl_se_2)
+
+f2 &lt;- summarytools::freq(NEA2022$seks_leid)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Een enkele keer</td>
+<td align="right">67</td>
+<td align="right">0.225</td>
+<td align="right">0.225</td>
+<td align="right">0.224</td>
+<td align="right">0.224</td>
+</tr>
+<tr class="even">
+<td>Vaak</td>
+<td align="right">10</td>
+<td align="right">0.034</td>
+<td align="right">0.259</td>
+<td align="right">0.033</td>
+<td align="right">0.257</td>
+</tr>
+<tr class="odd">
+<td>Zeer vaak</td>
+<td align="right">11</td>
+<td align="right">0.037</td>
+<td align="right">0.296</td>
+<td align="right">0.037</td>
+<td align="right">0.294</td>
+</tr>
+<tr class="even">
+<td>Niet</td>
+<td align="right">29667</td>
+<td align="right">99.704</td>
+<td align="right">100.000</td>
+<td align="right">99.144</td>
+<td align="right">99.439</td>
+</tr>
+<tr class="odd">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.000</td>
+<td align="right">100.000</td>
+<td align="right">0.000</td>
+<td align="right">99.439</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">168</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.561</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">29667</td>
+<td align="right">99.704</td>
+<td align="right">99.704</td>
+<td align="right">99.144</td>
+<td align="right">99.144</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">67</td>
+<td align="right">0.225</td>
+<td align="right">99.929</td>
+<td align="right">0.224</td>
+<td align="right">99.368</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">10</td>
+<td align="right">0.034</td>
+<td align="right">99.963</td>
+<td align="right">0.033</td>
+<td align="right">99.402</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">11</td>
+<td align="right">0.037</td>
+<td align="right">100.000</td>
+<td align="right">0.037</td>
+<td align="right">99.439</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">168</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.561</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
 </div>
-<div id="conflict" class="section level2" number="2.4">
-<h2><span class="header-section-number">2.4</span> Conflict</h2>
-<pre class="r"><code>#Conflict coworker
-
-NEA2022$conflict_col &lt;- as.numeric(NEA2022$conflict)
-
-summarytools::freq(NEA2022$conflict)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                         Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## -------------------- ------- --------- -------------- --------- --------------
-##                  nee   24233     81.17          81.17     80.98          80.98
-##       ja, kortdurend    4935     16.53          97.70     16.49          97.48
-##        ja, langdurig     688      2.30         100.00      2.30          99.78
-##              refusal       0      0.00         100.00      0.00          99.78
-##                 &lt;NA&gt;      67                               0.22         100.00
-##                Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$conflict_col)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   24233     81.17          81.17     80.98          80.98
-##           2    4935     16.53          97.70     16.49          97.48
-##           3     688      2.30         100.00      2.30          99.78
-##        &lt;NA&gt;      67                               0.22         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>#Conflict supervisor
-
-NEA2022$conflict_leid &lt;- as.numeric(NEA2022$confli_1)
-
-summarytools::freq(NEA2022$confli_1)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                         Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## -------------------- ------- --------- -------------- --------- --------------
-##                  nee   26352     88.32          88.32     88.07          88.07
-##       ja, kortdurend    2890      9.69          98.01      9.66          97.72
-##        ja, langdurig     594      1.99         100.00      1.99          99.71
-##              refusal       0      0.00         100.00      0.00          99.71
-##                 &lt;NA&gt;      87                               0.29         100.00
-##                Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$conflict_leid)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   26352     88.32          88.32     88.07          88.07
-##           2    2890      9.69          98.01      9.66          97.72
-##           3     594      1.99         100.00      1.99          99.71
-##        &lt;NA&gt;      87                               0.29         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>#Conflict employer
-
-NEA2022$conflict_emp &lt;- as.numeric(NEA2022$confli_2)
-
-summarytools::freq(NEA2022$confli_2)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                         Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## -------------------- ------- --------- -------------- --------- --------------
-##                  nee   27752     93.12          93.12     92.74          92.74
-##       ja, kortdurend    1611      5.41          98.53      5.38          98.13
-##        ja, langdurig     438      1.47         100.00      1.46          99.59
-##              refusal       0      0.00         100.00      0.00          99.59
-##                 &lt;NA&gt;     122                               0.41         100.00
-##                Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$conflict_emp)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   27752     93.12          93.12     92.74          92.74
-##           2    1611      5.41          98.53      5.38          98.13
-##           3     438      1.47         100.00      1.46          99.59
-##        &lt;NA&gt;     122                               0.41         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
 </div>
-<div id="incivility" class="section level2" number="2.5">
-<h2><span class="header-section-number">2.5</span> Incivility</h2>
-<pre class="r"><code>#Social support supervisor: my supervisor pays attention to the well-being of the staff 
+<div id="conflict" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Conflict</h2>
+<p><br><br></p>
+<div id="coworkers-4" class="section level3" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Coworkers</h3>
+<pre class="r"><code>NEA2022$conflict_col &lt;- as.numeric(NEA2022$conflict)
 
-NEA2022$leiding_[NEA2022$leiding_ == &quot;nvt&quot;] &lt;- NA
+f1 &lt;- summarytools::freq(NEA2022$conflict)
 
-NEA2022$steunleid_welzijn &lt;- as.numeric(NEA2022$leiding_)
+f2 &lt;- summarytools::freq(NEA2022$conflict_col)
 
-#Reverse coding
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>nee</td>
+<td align="right">24233</td>
+<td align="right">81.17</td>
+<td align="right">81.17</td>
+<td align="right">80.98</td>
+<td align="right">80.98</td>
+</tr>
+<tr class="even">
+<td>ja, kortdurend</td>
+<td align="right">4935</td>
+<td align="right">16.53</td>
+<td align="right">97.70</td>
+<td align="right">16.49</td>
+<td align="right">97.48</td>
+</tr>
+<tr class="odd">
+<td>ja, langdurig</td>
+<td align="right">688</td>
+<td align="right">2.30</td>
+<td align="right">100.00</td>
+<td align="right">2.30</td>
+<td align="right">99.78</td>
+</tr>
+<tr class="even">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">99.78</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">67</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.22</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">24233</td>
+<td align="right">81.17</td>
+<td align="right">81.17</td>
+<td align="right">80.98</td>
+<td align="right">80.98</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">4935</td>
+<td align="right">16.53</td>
+<td align="right">97.70</td>
+<td align="right">16.49</td>
+<td align="right">97.48</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">688</td>
+<td align="right">2.30</td>
+<td align="right">100.00</td>
+<td align="right">2.30</td>
+<td align="right">99.78</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">67</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.22</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+</div>
+<div id="supervisors-4" class="section level3" number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> Supervisors</h3>
+<pre class="r"><code>NEA2022$conflict_leid &lt;- as.numeric(NEA2022$confli_1)
 
-NEA2022 &lt;- NEA2022 %&gt;%
-  mutate(steunleid_welzijn = recode(steunleid_welzijn, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+f1 &lt;- summarytools::freq(NEA2022$confli_1)
 
-summarytools::freq(NEA2022$leiding_)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ------------------------- ------- --------- -------------- --------- --------------
-##       helemaal mee oneens     765      2.65           2.65      2.56           2.56
-##                mee oneens    3655     12.64          15.29     12.21          14.77
-##                  mee eens   15592     53.94          69.23     52.11          66.88
-##         helemaal mee eens    8894     30.77         100.00     29.72          96.60
-##                       nvt       0      0.00         100.00      0.00          96.60
-##                   refusal       0      0.00         100.00      0.00          96.60
-##                      &lt;NA&gt;    1017                               3.40         100.00
-##                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$steunleid_welzijn)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    8894     30.77          30.77     29.72          29.72
-##           2   15592     53.94          84.71     52.11          81.83
-##           3    3655     12.64          97.35     12.21          94.04
-##           4     765      2.65         100.00      2.56          96.60
-##        &lt;NA&gt;    1017                               3.40         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>#Social support supervisor:  my supervisor pays attention to what I say
+f2 &lt;- summarytools::freq(NEA2022$conflict_leid)
 
-NEA2022$leidin_1[NEA2022$leidin_1 == &quot;nvt&quot;] &lt;- NA
-
-NEA2022$steunleid_aandacht &lt;- as.numeric(NEA2022$leidin_1)
-
-#Reverse coding
-
-NEA2022 &lt;- NEA2022 %&gt;%
-  mutate(steunleid_aandacht = recode(steunleid_aandacht, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
-
-summarytools::freq(NEA2022$leidin_)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ------------------------- ------- --------- -------------- --------- --------------
-##       helemaal mee oneens     652      2.26           2.26      2.18           2.18
-##                mee oneens    3401     11.79          14.05     11.37          13.54
-##                  mee eens   16316     56.55          70.60     54.53          68.07
-##         helemaal mee eens    8482     29.40         100.00     28.35          96.42
-##                       nvt       0      0.00         100.00      0.00          96.42
-##                   refusal       0      0.00         100.00      0.00          96.42
-##                      &lt;NA&gt;    1072                               3.58         100.00
-##                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$steunleid_aandacht)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    8482     29.40          29.40     28.35          28.35
-##           2   16316     56.55          85.95     54.53          82.87
-##           3    3401     11.79          97.74     11.37          94.24
-##           4     652      2.26         100.00      2.18          96.42
-##        &lt;NA&gt;    1072                               3.58         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>#Cronbach&#39;s alpha
-
-steunleid &lt;- data.frame(
-  steunleid_aandacht = NEA2022$steunleid_aandacht,
-  steunleid_welzijn = NEA2022$steunleid_welzijn
-)
-
-alpha_result1 &lt;- alpha(steunleid, use=&quot;pairwise.complete.obs&quot;)
-print(alpha_result1$total$raw_alpha)</code></pre>
-<pre><code>## [1] 0.8702826</code></pre>
-<pre class="r"><code>cor(NEA2022$steunleid_aandacht, NEA2022$steunleid_welzijn, use = &quot;complete.obs&quot;, method = &quot;spearman&quot;)</code></pre>
-<pre><code>## [1] 0.7615847</code></pre>
-<pre class="r"><code>cor(NEA2022$steunleid_aandacht, NEA2022$steunleid_welzijn, use = &quot;complete.obs&quot;, method = &quot;pearson&quot;)</code></pre>
-<pre><code>## [1] 0.7711046</code></pre>
-<pre class="r"><code>#Making a mean scale
-
-NEA2022$steunleid_scale &lt;- rowMeans(NEA2022[c(&quot;steunleid_aandacht&quot;, &quot;steunleid_welzijn&quot;)], na.rm = TRUE)
-summarytools::freq(NEA2022$steunleid_scale)</code></pre>
-<pre><code>## 829 NaN value(s) converted to NA</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    7051     24.24          24.24     23.56          23.56
-##         1.5    3207     11.02          35.26     10.72          34.28
-##           2   13459     46.26          81.52     44.98          79.26
-##         2.5    2199      7.56          89.08      7.35          86.61
-##           3    2313      7.95          97.03      7.73          94.34
-##         3.5     391      1.34          98.37      1.31          95.65
-##           4     474      1.63         100.00      1.58          97.23
-##        &lt;NA&gt;     829                               2.77         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>NEA2022$steunleid_R &lt;- as.numeric(factor(NEA2022$steunleid_scale))
-NEA2022$steunleid_R[NEA2022$steunleid_R == &quot;8&quot;] &lt;- NA
-summarytools::freq(NEA2022$steunleid_R)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    7051     24.24          24.24     23.56          23.56
-##           2    3207     11.02          35.26     10.72          34.28
-##           3   13459     46.26          81.52     44.98          79.26
-##           4    2199      7.56          89.08      7.35          86.61
-##           5    2313      7.95          97.03      7.73          94.34
-##           6     391      1.34          98.37      1.31          95.65
-##           7     474      1.63         100.00      1.58          97.23
-##        &lt;NA&gt;     829                               2.77         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>#Rounding to a four-point scale
-NEA2022 &lt;- NEA2022 %&gt;%
-  mutate(steunleid_RR = case_when(
-    steunleid_scale %in% c(1) ~ 1,
-    steunleid_scale %in% c(1.5, 2) ~ 2,
-    steunleid_scale %in% c(2.5, 3) ~ 3,
-    steunleid_scale %in% c(3.5, 4) ~ 4,
-    TRUE ~ NA_real_
-  ))
-summarytools::freq(NEA2022$steunleid_RR)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    7051     24.24          24.24     23.56          23.56
-##           2   16666     57.28          81.52     55.70          79.26
-##           3    4512     15.51          97.03     15.08          94.34
-##           4     865      2.97         100.00      2.89          97.23
-##        &lt;NA&gt;     829                               2.77         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>#correlation original and rounded scale
-cor(NEA2022$steunleid_scale, NEA2022$steunleid_RR, use = &quot;complete.obs&quot;)</code></pre>
-<pre><code>## [1] 0.9609892</code></pre>
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>nee</td>
+<td align="right">26352</td>
+<td align="right">88.32</td>
+<td align="right">88.32</td>
+<td align="right">88.07</td>
+<td align="right">88.07</td>
+</tr>
+<tr class="even">
+<td>ja, kortdurend</td>
+<td align="right">2890</td>
+<td align="right">9.69</td>
+<td align="right">98.01</td>
+<td align="right">9.66</td>
+<td align="right">97.72</td>
+</tr>
+<tr class="odd">
+<td>ja, langdurig</td>
+<td align="right">594</td>
+<td align="right">1.99</td>
+<td align="right">100.00</td>
+<td align="right">1.99</td>
+<td align="right">99.71</td>
+</tr>
+<tr class="even">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">99.71</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">87</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.29</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">26352</td>
+<td align="right">88.32</td>
+<td align="right">88.32</td>
+<td align="right">88.07</td>
+<td align="right">88.07</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">2890</td>
+<td align="right">9.69</td>
+<td align="right">98.01</td>
+<td align="right">9.66</td>
+<td align="right">97.72</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">594</td>
+<td align="right">1.99</td>
+<td align="right">100.00</td>
+<td align="right">1.99</td>
+<td align="right">99.71</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">87</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.29</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+</div>
+</div>
+<div id="incivility" class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Incivility</h2>
+<p><br><br></p>
+<div id="coworkers-5" class="section level3" number="2.6.1">
+<h3><span class="header-section-number">2.6.1</span> Coworkers</h3>
 <pre class="r"><code>#Social support coworkers: my co-workers take personal interest in me
 
 NEA2022$collega_[NEA2022$collega_ == &quot;nvt&quot;] &lt;- NA
@@ -931,30 +2036,164 @@ NEA2022$steuncol_belang &lt;- as.numeric(NEA2022$collega_)
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(steuncol_belang = recode(steuncol_belang, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
 
-summarytools::freq(NEA2022$collega_)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ------------------------- ------- --------- -------------- --------- --------------
-##       helemaal mee oneens     315      1.09           1.09      1.05           1.05
-##                mee oneens    1756      6.05           7.14      5.87           6.92
-##                  mee eens   16526     56.94          64.08     55.23          62.15
-##         helemaal mee eens   10426     35.92         100.00     34.84          96.99
-##                       nvt       0      0.00         100.00      0.00          96.99
-##                   refusal       0      0.00         100.00      0.00          96.99
-##                      &lt;NA&gt;     900                               3.01         100.00
-##                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$steuncol_belang)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   10426     35.92          35.92     34.84          34.84
-##           2   16526     56.94          92.86     55.23          90.07
-##           3    1756      6.05          98.91      5.87          95.94
-##           4     315      1.09         100.00      1.05          96.99
-##        &lt;NA&gt;     900                               3.01         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+f1 &lt;- summarytools::freq(NEA2022$collega_)
+
+f2 &lt;- summarytools::freq(NEA2022$steuncol_belang)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>helemaal mee oneens</td>
+<td align="right">315</td>
+<td align="right">1.09</td>
+<td align="right">1.09</td>
+<td align="right">1.05</td>
+<td align="right">1.05</td>
+</tr>
+<tr class="even">
+<td>mee oneens</td>
+<td align="right">1756</td>
+<td align="right">6.05</td>
+<td align="right">7.14</td>
+<td align="right">5.87</td>
+<td align="right">6.92</td>
+</tr>
+<tr class="odd">
+<td>mee eens</td>
+<td align="right">16526</td>
+<td align="right">56.94</td>
+<td align="right">64.08</td>
+<td align="right">55.23</td>
+<td align="right">62.15</td>
+</tr>
+<tr class="even">
+<td>helemaal mee eens</td>
+<td align="right">10426</td>
+<td align="right">35.92</td>
+<td align="right">100.00</td>
+<td align="right">34.84</td>
+<td align="right">96.99</td>
+</tr>
+<tr class="odd">
+<td>nvt</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">96.99</td>
+</tr>
+<tr class="even">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">96.99</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">900</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">3.01</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">10426</td>
+<td align="right">35.92</td>
+<td align="right">35.92</td>
+<td align="right">34.84</td>
+<td align="right">34.84</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">16526</td>
+<td align="right">56.94</td>
+<td align="right">92.86</td>
+<td align="right">55.23</td>
+<td align="right">90.07</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">1756</td>
+<td align="right">6.05</td>
+<td align="right">98.91</td>
+<td align="right">5.87</td>
+<td align="right">95.94</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">315</td>
+<td align="right">1.09</td>
+<td align="right">100.00</td>
+<td align="right">1.05</td>
+<td align="right">96.99</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">900</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">3.01</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>#Social support coworkers: my coworkers are friendly
 
 NEA2022$colleg_1[NEA2022$colleg_1 == &quot;nvt&quot;] &lt;- NA
@@ -966,30 +2205,164 @@ NEA2022$steuncol_vriendelijk &lt;- as.numeric(NEA2022$colleg_1)
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(steuncol_vriendelijk = recode(steuncol_vriendelijk, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
 
-summarytools::freq(NEA2022$colleg_1)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ------------------------- ------- --------- -------------- --------- --------------
-##       helemaal mee oneens     109      0.37           0.37      0.36           0.36
-##                mee oneens     421      1.43           1.81      1.41           1.77
-##                  mee eens   14631     49.85          51.66     48.90          50.67
-##         helemaal mee eens   14188     48.34         100.00     47.42          98.08
-##                       nvt       0      0.00         100.00      0.00          98.08
-##                   refusal       0      0.00         100.00      0.00          98.08
-##                      &lt;NA&gt;     574                               1.92         100.00
-##                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$steuncol_vriendelijk)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1   14188     48.34          48.34     47.42          47.42
-##           2   14631     49.85          98.19     48.90          96.31
-##           3     421      1.43          99.63      1.41          97.72
-##           4     109      0.37         100.00      0.36          98.08
-##        &lt;NA&gt;     574                               1.92         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+f1 &lt;- summarytools::freq(NEA2022$colleg_1)
+
+f2 &lt;- summarytools::freq(NEA2022$steuncol_vriendelijk)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>helemaal mee oneens</td>
+<td align="right">109</td>
+<td align="right">0.37</td>
+<td align="right">0.37</td>
+<td align="right">0.36</td>
+<td align="right">0.36</td>
+</tr>
+<tr class="even">
+<td>mee oneens</td>
+<td align="right">421</td>
+<td align="right">1.43</td>
+<td align="right">1.81</td>
+<td align="right">1.41</td>
+<td align="right">1.77</td>
+</tr>
+<tr class="odd">
+<td>mee eens</td>
+<td align="right">14631</td>
+<td align="right">49.85</td>
+<td align="right">51.66</td>
+<td align="right">48.90</td>
+<td align="right">50.67</td>
+</tr>
+<tr class="even">
+<td>helemaal mee eens</td>
+<td align="right">14188</td>
+<td align="right">48.34</td>
+<td align="right">100.00</td>
+<td align="right">47.42</td>
+<td align="right">98.08</td>
+</tr>
+<tr class="odd">
+<td>nvt</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">98.08</td>
+</tr>
+<tr class="even">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">98.08</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">574</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">1.92</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">14188</td>
+<td align="right">48.34</td>
+<td align="right">48.34</td>
+<td align="right">47.42</td>
+<td align="right">47.42</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">14631</td>
+<td align="right">49.85</td>
+<td align="right">98.19</td>
+<td align="right">48.90</td>
+<td align="right">96.31</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">421</td>
+<td align="right">1.43</td>
+<td align="right">99.63</td>
+<td align="right">1.41</td>
+<td align="right">97.72</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">109</td>
+<td align="right">0.37</td>
+<td align="right">100.00</td>
+<td align="right">0.36</td>
+<td align="right">98.08</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">574</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">1.92</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>#Cronbach&#39;s alpha
 
 steuncol &lt;- data.frame(
@@ -997,48 +2370,27 @@ steuncol &lt;- data.frame(
   steuncol_vriendelijk = NEA2022$steuncol_vriendelijk
 )
 
-alpha_result2 &lt;- alpha(steuncol, use=&quot;pairwise.complete.obs&quot;)
-print(alpha_result2$total$raw_alpha)</code></pre>
-<pre><code>## [1] 0.7995692</code></pre>
-<pre class="r"><code>cor(NEA2022$steuncol_belang, NEA2022$steuncol_vriendelijk, use = &quot;complete.obs&quot;, method = &quot;spearman&quot;)</code></pre>
-<pre><code>## [1] 0.6899301</code></pre>
-<pre class="r"><code>cor(NEA2022$steuncol_belang, NEA2022$steuncol_vriendelijk, use = &quot;complete.obs&quot;, method = &quot;pearson&quot;)</code></pre>
-<pre><code>## [1] 0.6745583</code></pre>
+alpha_result2 &lt;- alpha(steuncol, use = &quot;pairwise.complete.obs&quot;)
+
+cor_spearman &lt;- cor(NEA2022$steuncol_belang, NEA2022$steuncol_vriendelijk,
+                    use = &quot;complete.obs&quot;, method = &quot;spearman&quot;)
+cor_pearson  &lt;- cor(NEA2022$steuncol_belang, NEA2022$steuncol_vriendelijk,
+                    use = &quot;complete.obs&quot;, method = &quot;pearson&quot;)
+
+cat(
+  &quot;Cronbach&#39;s alpha (raw): &quot;, round(alpha_result2$total$raw_alpha, 3), &quot;\n&quot;,
+  &quot;Spearman correlation: &quot;, round(cor_spearman, 3), &quot;\n&quot;,
+  &quot;Pearson correlation: &quot;, round(cor_pearson, 3), &quot;\n&quot;
+)</code></pre>
+<p>Cronbach’s alpha (raw): 0.8 Spearman correlation: 0.69 Pearson
+correlation: 0.675</p>
 <pre class="r"><code>#Making a mean scale
 NEA2022$steuncol_scale &lt;- rowMeans(NEA2022[c(&quot;steuncol_belang&quot;, &quot;steuncol_vriendelijk&quot;)], na.rm = TRUE)
 
-summarytools::freq(NEA2022$steuncol_scale)</code></pre>
-<pre><code>## 476 NaN value(s) converted to NA</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    9983     33.90          33.90     33.36          33.36
-##         1.5    4574     15.53          49.43     15.29          48.65
-##           2   12845     43.62          93.06     42.93          91.58
-##         2.5    1459      4.95          98.01      4.88          96.45
-##           3     411      1.40          99.41      1.37          97.82
-##         3.5      71      0.24          99.65      0.24          98.06
-##           4     104      0.35         100.00      0.35          98.41
-##        &lt;NA&gt;     476                               1.59         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>NEA2022$steuncol_R &lt;- as.numeric(factor(NEA2022$steuncol_scale))
+NEA2022$steuncol_R &lt;- as.numeric(factor(NEA2022$steuncol_scale))
 NEA2022$steuncol_R[NEA2022$steuncol_R == &quot;8&quot;] &lt;- NA
-summarytools::freq(NEA2022$steuncol_R)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    9983     33.90          33.90     33.36          33.36
-##           2    4574     15.53          49.43     15.29          48.65
-##           3   12845     43.62          93.06     42.93          91.58
-##           4    1459      4.95          98.01      4.88          96.45
-##           5     411      1.40          99.41      1.37          97.82
-##           6      71      0.24          99.65      0.24          98.06
-##           7     104      0.35         100.00      0.35          98.41
-##        &lt;NA&gt;     476                               1.59         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>#Rounding to a four-point scale
+
+#Rounding to a four-point scale
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(steuncol_RR = case_when(
     steuncol_scale %in% c(1) ~ 1,
@@ -1047,108 +2399,1006 @@ NEA2022 &lt;- NEA2022 %&gt;%
     steuncol_scale %in% c(3.5, 4) ~ 4,
     TRUE ~ NA_real_
   ))
-summarytools::freq(NEA2022$steuncol_RR)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    9983     33.90          33.90     33.36          33.36
-##           2   17419     59.15          93.06     58.21          91.58
-##           3    1870      6.35          99.41      6.25          97.82
-##           4     175      0.59         100.00      0.58          98.41
-##        &lt;NA&gt;     476                               1.59         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+f1 &lt;- summarytools::freq(NEA2022$steuncol_scale)</code></pre>
+<pre><code>## 476 NaN value(s) converted to NA</code></pre>
+<pre class="r"><code>f2 &lt;- summarytools::freq(NEA2022$steuncol_RR)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">9983</td>
+<td align="right">33.90</td>
+<td align="right">33.90</td>
+<td align="right">33.36</td>
+<td align="right">33.36</td>
+</tr>
+<tr class="even">
+<td>1.5</td>
+<td align="right">4574</td>
+<td align="right">15.53</td>
+<td align="right">49.43</td>
+<td align="right">15.29</td>
+<td align="right">48.65</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="right">12845</td>
+<td align="right">43.62</td>
+<td align="right">93.06</td>
+<td align="right">42.93</td>
+<td align="right">91.58</td>
+</tr>
+<tr class="even">
+<td>2.5</td>
+<td align="right">1459</td>
+<td align="right">4.95</td>
+<td align="right">98.01</td>
+<td align="right">4.88</td>
+<td align="right">96.45</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">411</td>
+<td align="right">1.40</td>
+<td align="right">99.41</td>
+<td align="right">1.37</td>
+<td align="right">97.82</td>
+</tr>
+<tr class="even">
+<td>3.5</td>
+<td align="right">71</td>
+<td align="right">0.24</td>
+<td align="right">99.65</td>
+<td align="right">0.24</td>
+<td align="right">98.06</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td align="right">104</td>
+<td align="right">0.35</td>
+<td align="right">100.00</td>
+<td align="right">0.35</td>
+<td align="right">98.41</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">476</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">1.59</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">9983</td>
+<td align="right">33.90</td>
+<td align="right">33.90</td>
+<td align="right">33.36</td>
+<td align="right">33.36</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">17419</td>
+<td align="right">59.15</td>
+<td align="right">93.06</td>
+<td align="right">58.21</td>
+<td align="right">91.58</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">1870</td>
+<td align="right">6.35</td>
+<td align="right">99.41</td>
+<td align="right">6.25</td>
+<td align="right">97.82</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">175</td>
+<td align="right">0.59</td>
+<td align="right">100.00</td>
+<td align="right">0.58</td>
+<td align="right">98.41</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">476</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">1.59</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code># Correlation original and rounded scale
 cor(NEA2022$steuncol_scale, NEA2022$steuncol_RR, use = &quot;complete.obs&quot;)</code></pre>
-<pre><code>## [1] 0.9416012</code></pre>
+<p>[1] 0.9416012</p>
+<p><br><br></p>
 </div>
-<div id="psychological-unsafety" class="section level2" number="2.6">
-<h2><span class="header-section-number">2.6</span> Psychological
+<div id="supervisors-5" class="section level3" number="2.6.2">
+<h3><span class="header-section-number">2.6.2</span> Supervisors</h3>
+<pre class="r"><code>#Social support supervisor: my supervisor pays attention to the well-being of the staff 
+
+NEA2022$leiding_[NEA2022$leiding_ == &quot;nvt&quot;] &lt;- NA
+
+NEA2022$steunleid_welzijn &lt;- as.numeric(NEA2022$leiding_)
+
+#Reverse coding
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steunleid_welzijn = recode(steunleid_welzijn, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+f1 &lt;- summarytools::freq(NEA2022$leiding_)
+
+f2 &lt;- summarytools::freq(NEA2022$steunleid_welzijn)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>helemaal mee oneens</td>
+<td align="right">765</td>
+<td align="right">2.65</td>
+<td align="right">2.65</td>
+<td align="right">2.56</td>
+<td align="right">2.56</td>
+</tr>
+<tr class="even">
+<td>mee oneens</td>
+<td align="right">3655</td>
+<td align="right">12.64</td>
+<td align="right">15.29</td>
+<td align="right">12.21</td>
+<td align="right">14.77</td>
+</tr>
+<tr class="odd">
+<td>mee eens</td>
+<td align="right">15592</td>
+<td align="right">53.94</td>
+<td align="right">69.23</td>
+<td align="right">52.11</td>
+<td align="right">66.88</td>
+</tr>
+<tr class="even">
+<td>helemaal mee eens</td>
+<td align="right">8894</td>
+<td align="right">30.77</td>
+<td align="right">100.00</td>
+<td align="right">29.72</td>
+<td align="right">96.60</td>
+</tr>
+<tr class="odd">
+<td>nvt</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">96.60</td>
+</tr>
+<tr class="even">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">96.60</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">1017</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">3.40</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">8894</td>
+<td align="right">30.77</td>
+<td align="right">30.77</td>
+<td align="right">29.72</td>
+<td align="right">29.72</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">15592</td>
+<td align="right">53.94</td>
+<td align="right">84.71</td>
+<td align="right">52.11</td>
+<td align="right">81.83</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">3655</td>
+<td align="right">12.64</td>
+<td align="right">97.35</td>
+<td align="right">12.21</td>
+<td align="right">94.04</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">765</td>
+<td align="right">2.65</td>
+<td align="right">100.00</td>
+<td align="right">2.56</td>
+<td align="right">96.60</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">1017</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">3.40</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>#Social support supervisor:  my supervisor pays attention to what I say
+
+NEA2022$leidin_1[NEA2022$leidin_1 == &quot;nvt&quot;] &lt;- NA
+
+NEA2022$steunleid_aandacht &lt;- as.numeric(NEA2022$leidin_1)
+
+#Reverse coding
+
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steunleid_aandacht = recode(steunleid_aandacht, `1` = 4, `2` = 3, `3` = 2, `4` = 1))
+
+f1 &lt;- summarytools::freq(NEA2022$leidin_1)
+
+f2 &lt;- summarytools::freq(NEA2022$steunleid_aandacht)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>helemaal mee oneens</td>
+<td align="right">652</td>
+<td align="right">2.26</td>
+<td align="right">2.26</td>
+<td align="right">2.18</td>
+<td align="right">2.18</td>
+</tr>
+<tr class="even">
+<td>mee oneens</td>
+<td align="right">3401</td>
+<td align="right">11.79</td>
+<td align="right">14.05</td>
+<td align="right">11.37</td>
+<td align="right">13.54</td>
+</tr>
+<tr class="odd">
+<td>mee eens</td>
+<td align="right">16316</td>
+<td align="right">56.55</td>
+<td align="right">70.60</td>
+<td align="right">54.53</td>
+<td align="right">68.07</td>
+</tr>
+<tr class="even">
+<td>helemaal mee eens</td>
+<td align="right">8482</td>
+<td align="right">29.40</td>
+<td align="right">100.00</td>
+<td align="right">28.35</td>
+<td align="right">96.42</td>
+</tr>
+<tr class="odd">
+<td>nvt</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">96.42</td>
+</tr>
+<tr class="even">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">96.42</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">1072</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">3.58</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">8482</td>
+<td align="right">29.40</td>
+<td align="right">29.40</td>
+<td align="right">28.35</td>
+<td align="right">28.35</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">16316</td>
+<td align="right">56.55</td>
+<td align="right">85.95</td>
+<td align="right">54.53</td>
+<td align="right">82.87</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">3401</td>
+<td align="right">11.79</td>
+<td align="right">97.74</td>
+<td align="right">11.37</td>
+<td align="right">94.24</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">652</td>
+<td align="right">2.26</td>
+<td align="right">100.00</td>
+<td align="right">2.18</td>
+<td align="right">96.42</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">1072</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">3.58</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>#Cronbach&#39;s alpha
+
+steunleid &lt;- data.frame(
+  steunleid_aandacht = NEA2022$steunleid_aandacht,
+  steunleid_welzijn = NEA2022$steunleid_welzijn
+)
+
+alpha_result1 &lt;- alpha(steunleid, use = &quot;pairwise.complete.obs&quot;)
+
+cor_spearman &lt;- cor(NEA2022$steunleid_aandacht, NEA2022$steunleid_welzijn,
+                    use = &quot;complete.obs&quot;, method = &quot;spearman&quot;)
+cor_pearson  &lt;- cor(NEA2022$steunleid_aandacht, NEA2022$steunleid_welzijn,
+                    use = &quot;complete.obs&quot;, method = &quot;pearson&quot;)
+
+cat(
+  &quot;Cronbach&#39;s alpha (raw): &quot;, round(alpha_result1$total$raw_alpha, 3), &quot;\n&quot;,
+  &quot;Spearman correlation: &quot;, round(cor_spearman, 3), &quot;\n&quot;,
+  &quot;Pearson correlation: &quot;, round(cor_pearson, 3), &quot;\n&quot;
+)</code></pre>
+<p>Cronbach’s alpha (raw): 0.87 Spearman correlation: 0.762 Pearson
+correlation: 0.771</p>
+<pre class="r"><code>#Making a mean scale
+
+NEA2022$steunleid_scale &lt;- rowMeans(NEA2022[c(&quot;steunleid_aandacht&quot;, &quot;steunleid_welzijn&quot;)], na.rm = TRUE)
+
+NEA2022$steunleid_R &lt;- as.numeric(factor(NEA2022$steunleid_scale))
+NEA2022$steunleid_R[NEA2022$steunleid_R == &quot;8&quot;] &lt;- NA
+
+#Rounding to a four-point scale
+NEA2022 &lt;- NEA2022 %&gt;%
+  mutate(steunleid_RR = case_when(
+    steunleid_scale %in% c(1) ~ 1,
+    steunleid_scale %in% c(1.5, 2) ~ 2,
+    steunleid_scale %in% c(2.5, 3) ~ 3,
+    steunleid_scale %in% c(3.5, 4) ~ 4,
+    TRUE ~ NA_real_
+  ))
+
+f1 &lt;- summarytools::freq(NEA2022$steunleid_scale)</code></pre>
+<pre><code>## 829 NaN value(s) converted to NA</code></pre>
+<pre class="r"><code>f2 &lt;- summarytools::freq(NEA2022$steunleid_RR)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">7051</td>
+<td align="right">24.24</td>
+<td align="right">24.24</td>
+<td align="right">23.56</td>
+<td align="right">23.56</td>
+</tr>
+<tr class="even">
+<td>1.5</td>
+<td align="right">3207</td>
+<td align="right">11.02</td>
+<td align="right">35.26</td>
+<td align="right">10.72</td>
+<td align="right">34.28</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="right">13459</td>
+<td align="right">46.26</td>
+<td align="right">81.52</td>
+<td align="right">44.98</td>
+<td align="right">79.26</td>
+</tr>
+<tr class="even">
+<td>2.5</td>
+<td align="right">2199</td>
+<td align="right">7.56</td>
+<td align="right">89.08</td>
+<td align="right">7.35</td>
+<td align="right">86.61</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">2313</td>
+<td align="right">7.95</td>
+<td align="right">97.03</td>
+<td align="right">7.73</td>
+<td align="right">94.34</td>
+</tr>
+<tr class="even">
+<td>3.5</td>
+<td align="right">391</td>
+<td align="right">1.34</td>
+<td align="right">98.37</td>
+<td align="right">1.31</td>
+<td align="right">95.65</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td align="right">474</td>
+<td align="right">1.63</td>
+<td align="right">100.00</td>
+<td align="right">1.58</td>
+<td align="right">97.23</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">829</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">2.77</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">7051</td>
+<td align="right">24.24</td>
+<td align="right">24.24</td>
+<td align="right">23.56</td>
+<td align="right">23.56</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">16666</td>
+<td align="right">57.28</td>
+<td align="right">81.52</td>
+<td align="right">55.70</td>
+<td align="right">79.26</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">4512</td>
+<td align="right">15.51</td>
+<td align="right">97.03</td>
+<td align="right">15.08</td>
+<td align="right">94.34</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">865</td>
+<td align="right">2.97</td>
+<td align="right">100.00</td>
+<td align="right">2.89</td>
+<td align="right">97.23</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">829</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">2.77</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>#correlation original and rounded scale
+cor(NEA2022$steunleid_scale, NEA2022$steunleid_RR, use = &quot;complete.obs&quot;)</code></pre>
+<p>[1] 0.9609892</p>
+<p><br><br></p>
+</div>
+</div>
+<div id="psychological-unsafety" class="section level2" number="2.7">
+<h2><span class="header-section-number">2.7</span> Psychological
 unsafety</h2>
 <pre class="r"><code>#Psychological unsafety: at my workplace it is possible to raise difficult questions
 
 NEA2022$psyveil_last &lt;- as.numeric(NEA2022$psyveil_)
-summarytools::freq(NEA2022$psyveil_)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                                 Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ---------------------------- ------- --------- -------------- --------- --------------
-##                Helemaal eens    5370     18.36          18.36     17.95          17.95
-##                         Eens   15285     52.26          70.62     51.08          69.03
-##       Niet eens, niet oneens    4937     16.88          87.50     16.50          85.53
-##                    Niet eens    2405      8.22          95.73      8.04          93.56
-##           Helemaal niet eens    1250      4.27         100.00      4.18          97.74
-##                      refusal       0      0.00         100.00      0.00          97.74
-##                         &lt;NA&gt;     676                               2.26         100.00
-##                        Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$psyveil_last)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    5370     18.36          18.36     17.95          17.95
-##           2   15285     52.26          70.62     51.08          69.03
-##           3    4937     16.88          87.50     16.50          85.53
-##           4    2405      8.22          95.73      8.04          93.56
-##           5    1250      4.27         100.00      4.18          97.74
-##        &lt;NA&gt;     676                               2.26         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>#Psychological unsafety: at my workplace it is easy to ask for help
+
+#Psychological unsafety: at my workplace it is easy to ask for help
 
 NEA2022$psyveil_hulp &lt;- as.numeric(NEA2022$psyvei_1)
-summarytools::freq(NEA2022$psyvei_1)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                                 Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ---------------------------- ------- --------- -------------- --------- --------------
-##                Helemaal eens    6608     22.31          22.31     22.08          22.08
-##                         Eens   16718     56.45          78.76     55.87          77.95
-##       Niet eens, niet oneens    3963     13.38          92.14     13.24          91.20
-##                    Niet eens    1625      5.49          97.63      5.43          96.63
-##           Helemaal niet eens     702      2.37         100.00      2.35          98.97
-##                      refusal       0      0.00         100.00      0.00          98.97
-##                         &lt;NA&gt;     307                               1.03         100.00
-##                        Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$psyveil_hulp)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    6608     22.31          22.31     22.08          22.08
-##           2   16718     56.45          78.76     55.87          77.95
-##           3    3963     13.38          92.14     13.24          91.20
-##           4    1625      5.49          97.63      5.43          96.63
-##           5     702      2.37         100.00      2.35          98.97
-##        &lt;NA&gt;     307                               1.03         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>#Psychological unsafety: at my workplace it is okay to make a mistake
+
+#Psychological unsafety: at my workplace it is okay to make a mistake
 
 NEA2022$psyveil_fout &lt;- as.numeric(NEA2022$psyvei_2)
-summarytools::freq(NEA2022$psyvei_2)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                                 Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ---------------------------- ------- --------- -------------- --------- --------------
-##                Helemaal eens    3931     13.28          13.28     13.14          13.14
-##                         Eens   14033     47.42          60.70     46.90          60.03
-##       Niet eens, niet oneens    6991     23.62          84.32     23.36          83.40
-##                    Niet eens    3155     10.66          94.98     10.54          93.94
-##           Helemaal niet eens    1486      5.02         100.00      4.97          98.91
-##                      refusal       0      0.00         100.00      0.00          98.91
-##                         &lt;NA&gt;     327                               1.09         100.00
-##                        Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$psyveil_fout)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    3931     13.28          13.28     13.14          13.14
-##           2   14033     47.42          60.70     46.90          60.03
-##           3    6991     23.62          84.32     23.36          83.40
-##           4    3155     10.66          94.98     10.54          93.94
-##           5    1486      5.02         100.00      4.97          98.91
-##        &lt;NA&gt;     327                               1.09         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+
+f1 &lt;- summarytools::freq(NEA2022$psyveil_)
+
+f2 &lt;- summarytools::freq(NEA2022$psyvei_1)
+
+f3 &lt;- summarytools::freq(NEA2022$psyvei_2)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f3, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Helemaal eens</td>
+<td align="right">5370</td>
+<td align="right">18.36</td>
+<td align="right">18.36</td>
+<td align="right">17.95</td>
+<td align="right">17.95</td>
+</tr>
+<tr class="even">
+<td>Eens</td>
+<td align="right">15285</td>
+<td align="right">52.26</td>
+<td align="right">70.62</td>
+<td align="right">51.08</td>
+<td align="right">69.03</td>
+</tr>
+<tr class="odd">
+<td>Niet eens, niet oneens</td>
+<td align="right">4937</td>
+<td align="right">16.88</td>
+<td align="right">87.50</td>
+<td align="right">16.50</td>
+<td align="right">85.53</td>
+</tr>
+<tr class="even">
+<td>Niet eens</td>
+<td align="right">2405</td>
+<td align="right">8.22</td>
+<td align="right">95.73</td>
+<td align="right">8.04</td>
+<td align="right">93.56</td>
+</tr>
+<tr class="odd">
+<td>Helemaal niet eens</td>
+<td align="right">1250</td>
+<td align="right">4.27</td>
+<td align="right">100.00</td>
+<td align="right">4.18</td>
+<td align="right">97.74</td>
+</tr>
+<tr class="even">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">97.74</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">676</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">2.26</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Helemaal eens</td>
+<td align="right">6608</td>
+<td align="right">22.31</td>
+<td align="right">22.31</td>
+<td align="right">22.08</td>
+<td align="right">22.08</td>
+</tr>
+<tr class="even">
+<td>Eens</td>
+<td align="right">16718</td>
+<td align="right">56.45</td>
+<td align="right">78.76</td>
+<td align="right">55.87</td>
+<td align="right">77.95</td>
+</tr>
+<tr class="odd">
+<td>Niet eens, niet oneens</td>
+<td align="right">3963</td>
+<td align="right">13.38</td>
+<td align="right">92.14</td>
+<td align="right">13.24</td>
+<td align="right">91.20</td>
+</tr>
+<tr class="even">
+<td>Niet eens</td>
+<td align="right">1625</td>
+<td align="right">5.49</td>
+<td align="right">97.63</td>
+<td align="right">5.43</td>
+<td align="right">96.63</td>
+</tr>
+<tr class="odd">
+<td>Helemaal niet eens</td>
+<td align="right">702</td>
+<td align="right">2.37</td>
+<td align="right">100.00</td>
+<td align="right">2.35</td>
+<td align="right">98.97</td>
+</tr>
+<tr class="even">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">98.97</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">307</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">1.03</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Helemaal eens</td>
+<td align="right">3931</td>
+<td align="right">13.28</td>
+<td align="right">13.28</td>
+<td align="right">13.14</td>
+<td align="right">13.14</td>
+</tr>
+<tr class="even">
+<td>Eens</td>
+<td align="right">14033</td>
+<td align="right">47.42</td>
+<td align="right">60.70</td>
+<td align="right">46.90</td>
+<td align="right">60.03</td>
+</tr>
+<tr class="odd">
+<td>Niet eens, niet oneens</td>
+<td align="right">6991</td>
+<td align="right">23.62</td>
+<td align="right">84.32</td>
+<td align="right">23.36</td>
+<td align="right">83.40</td>
+</tr>
+<tr class="even">
+<td>Niet eens</td>
+<td align="right">3155</td>
+<td align="right">10.66</td>
+<td align="right">94.98</td>
+<td align="right">10.54</td>
+<td align="right">93.94</td>
+</tr>
+<tr class="odd">
+<td>Helemaal niet eens</td>
+<td align="right">1486</td>
+<td align="right">5.02</td>
+<td align="right">100.00</td>
+<td align="right">4.97</td>
+<td align="right">98.91</td>
+</tr>
+<tr class="even">
+<td>refusal</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">98.91</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">327</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">1.09</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>#Cronbach&#39;s alpha
 
 psyveil &lt;- data.frame(
@@ -1159,64 +3409,16 @@ psyveil &lt;- data.frame(
 
 alpha_result3 &lt;- alpha(psyveil, use=&quot;pairwise.complete.obs&quot;)
 print(alpha_result3$total$raw_alpha)</code></pre>
-<pre><code>## [1] 0.7123541</code></pre>
+<p>[1] 0.7123541</p>
 <pre class="r"><code># Making a mean scale
 
 NEA2022$psyveil_scale &lt;- rowMeans(NEA2022[c(&quot;psyveil_last&quot;, &quot;psyveil_hulp&quot;, &quot;psyveil_fout&quot;)], na.rm = TRUE)
 
-summarytools::freq(NEA2022$psyveil_scale)</code></pre>
-<pre><code>## 184 NaN value(s) converted to NA</code></pre>
-<pre><code>## Frequencies  
-## 
-##                           Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ---------------------- ------- --------- -------------- --------- --------------
-##                      1    2423     8.148          8.148     8.097          8.097
-##       1.33333333333333    1779     5.982         14.130     5.945         14.043
-##                    1.5      42     0.141         14.271     0.140         14.183
-##       1.66666666666667    2233     7.509         21.779     7.462         21.646
-##                      2    8610    28.952         50.731    28.774         50.419
-##       2.33333333333333    5053    16.991         67.723    16.887         67.306
-##                    2.5      86     0.289         68.012     0.287         67.593
-##       2.66666666666667    3698    12.435         80.447    12.358         79.952
-##                      3    2497     8.396         88.843     8.345         88.297
-##       3.33333333333333    1291     4.341         93.184     4.314         92.611
-##                    3.5      42     0.141         93.325     0.140         92.751
-##       3.66666666666667     749     2.519         95.844     2.503         95.254
-##                      4     514     1.728         97.572     1.718         96.972
-##       4.33333333333333     240     0.807         98.379     0.802         97.774
-##                    4.5      13     0.044         98.423     0.043         97.818
-##       4.66666666666667     104     0.350         98.773     0.348         98.165
-##                      5     365     1.227        100.000     1.220         99.385
-##                   &lt;NA&gt;     184                              0.615        100.000
-##                  Total   29923   100.000        100.000   100.000        100.000</code></pre>
-<pre class="r"><code>NEA2022$psyveil_R &lt;- as.numeric(factor(NEA2022$psyveil_scale))
+NEA2022$psyveil_R &lt;- as.numeric(factor(NEA2022$psyveil_scale))
 
 NEA2022$psyveil_R[NEA2022$psyveil_R == &quot;18&quot;] &lt;- NA
-summarytools::freq(NEA2022$psyveil_R)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    2423     8.148          8.148     8.097          8.097
-##           2    1779     5.982         14.130     5.945         14.043
-##           3      42     0.141         14.271     0.140         14.183
-##           4    2233     7.509         21.779     7.462         21.646
-##           5    8610    28.952         50.731    28.774         50.419
-##           6    5053    16.991         67.723    16.887         67.306
-##           7      86     0.289         68.012     0.287         67.593
-##           8    3698    12.435         80.447    12.358         79.952
-##           9    2497     8.396         88.843     8.345         88.297
-##          10    1291     4.341         93.184     4.314         92.611
-##          11      42     0.141         93.325     0.140         92.751
-##          12     749     2.519         95.844     2.503         95.254
-##          13     514     1.728         97.572     1.718         96.972
-##          14     240     0.807         98.379     0.802         97.774
-##          15      13     0.044         98.423     0.043         97.818
-##          16     104     0.350         98.773     0.348         98.165
-##          17     365     1.227        100.000     1.220         99.385
-##        &lt;NA&gt;     184                              0.615        100.000
-##       Total   29923   100.000        100.000   100.000        100.000</code></pre>
-<pre class="r"><code># Rounding to a five-point scale
+
+# Rounding to a five-point scale
 
 NEA2022 &lt;- NEA2022 %&gt;%
   mutate(psyveil_RR = case_when(
@@ -1227,24 +3429,268 @@ NEA2022 &lt;- NEA2022 %&gt;%
     psyveil_R %in% c(15, 16, 17) ~ 5,
     TRUE ~ NA_real_
   ))
-summarytools::freq(NEA2022$psyveil_RR)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##           1    4202     14.13          14.13     14.04          14.04
-##           2   15938     53.59          67.72     53.26          67.31
-##           3    7572     25.46          93.18     25.30          92.61
-##           4    1545      5.20          98.38      5.16          97.77
-##           5     482      1.62         100.00      1.61          99.39
-##        &lt;NA&gt;     184                               0.61         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+
+f1 &lt;- summarytools::freq(NEA2022$psyveil_scale)</code></pre>
+<pre><code>## 184 NaN value(s) converted to NA</code></pre>
+<pre class="r"><code>f2 &lt;- summarytools::freq(NEA2022$psyveil_RR)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">2423</td>
+<td align="right">8.148</td>
+<td align="right">8.148</td>
+<td align="right">8.097</td>
+<td align="right">8.097</td>
+</tr>
+<tr class="even">
+<td>1.33333333333333</td>
+<td align="right">1779</td>
+<td align="right">5.982</td>
+<td align="right">14.130</td>
+<td align="right">5.945</td>
+<td align="right">14.043</td>
+</tr>
+<tr class="odd">
+<td>1.5</td>
+<td align="right">42</td>
+<td align="right">0.141</td>
+<td align="right">14.271</td>
+<td align="right">0.140</td>
+<td align="right">14.183</td>
+</tr>
+<tr class="even">
+<td>1.66666666666667</td>
+<td align="right">2233</td>
+<td align="right">7.509</td>
+<td align="right">21.779</td>
+<td align="right">7.462</td>
+<td align="right">21.646</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="right">8610</td>
+<td align="right">28.952</td>
+<td align="right">50.731</td>
+<td align="right">28.774</td>
+<td align="right">50.419</td>
+</tr>
+<tr class="even">
+<td>2.33333333333333</td>
+<td align="right">5053</td>
+<td align="right">16.991</td>
+<td align="right">67.723</td>
+<td align="right">16.887</td>
+<td align="right">67.306</td>
+</tr>
+<tr class="odd">
+<td>2.5</td>
+<td align="right">86</td>
+<td align="right">0.289</td>
+<td align="right">68.012</td>
+<td align="right">0.287</td>
+<td align="right">67.593</td>
+</tr>
+<tr class="even">
+<td>2.66666666666667</td>
+<td align="right">3698</td>
+<td align="right">12.435</td>
+<td align="right">80.447</td>
+<td align="right">12.358</td>
+<td align="right">79.952</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">2497</td>
+<td align="right">8.396</td>
+<td align="right">88.843</td>
+<td align="right">8.345</td>
+<td align="right">88.297</td>
+</tr>
+<tr class="even">
+<td>3.33333333333333</td>
+<td align="right">1291</td>
+<td align="right">4.341</td>
+<td align="right">93.184</td>
+<td align="right">4.314</td>
+<td align="right">92.611</td>
+</tr>
+<tr class="odd">
+<td>3.5</td>
+<td align="right">42</td>
+<td align="right">0.141</td>
+<td align="right">93.325</td>
+<td align="right">0.140</td>
+<td align="right">92.751</td>
+</tr>
+<tr class="even">
+<td>3.66666666666667</td>
+<td align="right">749</td>
+<td align="right">2.519</td>
+<td align="right">95.844</td>
+<td align="right">2.503</td>
+<td align="right">95.254</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td align="right">514</td>
+<td align="right">1.728</td>
+<td align="right">97.572</td>
+<td align="right">1.718</td>
+<td align="right">96.972</td>
+</tr>
+<tr class="even">
+<td>4.33333333333333</td>
+<td align="right">240</td>
+<td align="right">0.807</td>
+<td align="right">98.379</td>
+<td align="right">0.802</td>
+<td align="right">97.774</td>
+</tr>
+<tr class="odd">
+<td>4.5</td>
+<td align="right">13</td>
+<td align="right">0.044</td>
+<td align="right">98.423</td>
+<td align="right">0.043</td>
+<td align="right">97.818</td>
+</tr>
+<tr class="even">
+<td>4.66666666666667</td>
+<td align="right">104</td>
+<td align="right">0.350</td>
+<td align="right">98.773</td>
+<td align="right">0.348</td>
+<td align="right">98.165</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td align="right">365</td>
+<td align="right">1.227</td>
+<td align="right">100.000</td>
+<td align="right">1.220</td>
+<td align="right">99.385</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">184</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.615</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+<td align="right">100.000</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="right">4202</td>
+<td align="right">14.13</td>
+<td align="right">14.13</td>
+<td align="right">14.04</td>
+<td align="right">14.04</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="right">15938</td>
+<td align="right">53.59</td>
+<td align="right">67.72</td>
+<td align="right">53.26</td>
+<td align="right">67.31</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="right">7572</td>
+<td align="right">25.46</td>
+<td align="right">93.18</td>
+<td align="right">25.30</td>
+<td align="right">92.61</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="right">1545</td>
+<td align="right">5.20</td>
+<td align="right">98.38</td>
+<td align="right">5.16</td>
+<td align="right">97.77</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td align="right">482</td>
+<td align="right">1.62</td>
+<td align="right">100.00</td>
+<td align="right">1.61</td>
+<td align="right">99.39</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">184</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.61</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code># Correlation original and rounded scale
 cor(NEA2022$psyveil_scale, NEA2022$psyveil_RR, use = &quot;complete.obs&quot;)</code></pre>
-<pre><code>## [1] 0.9565598</code></pre>
+<p>[1] 0.9565598</p>
+<p><br><br></p>
 </div>
-<div id="age" class="section level2" number="2.7">
-<h2><span class="header-section-number">2.7</span> Age</h2>
+<div id="age" class="section level2" number="2.8">
+<h2><span class="header-section-number">2.8</span> Age</h2>
 <p><br><br> <strong>Recoden low (15-35), middle (35-55), old
 (55-75)</strong></p>
 <pre class="r"><code>NEA2022$lft_num &lt;- as.numeric(NEA2022$afl_lftc)
@@ -1261,33 +3707,168 @@ NEA2022$leeftijd_ &lt;- factor(NEA2022$leeftijd,
                                  levels = c(1, 2, 3),
                                  labels = c(&quot;15.35&quot;, &quot;35.55&quot;, &quot;55.75&quot;))
 
-summarytools::freq(NEA2022$afl_lftc)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                         Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## -------------------- ------- --------- -------------- --------- --------------
-##       15 tot 25 jaar    3857     12.89          12.89     12.89          12.89
-##       25 tot 35 jaar    5339     17.84          30.73     17.84          30.73
-##       35 tot 45 jaar    5721     19.12          49.85     19.12          49.85
-##       45 tot 55 jaar    6420     21.46          71.31     21.46          71.31
-##       55 tot 65 jaar    7389     24.69          96.00     24.69          96.00
-##       65 tot 75 jaar    1197      4.00         100.00      4.00         100.00
-##             onbekend       0      0.00         100.00      0.00         100.00
-##                 &lt;NA&gt;       0                               0.00         100.00
-##                Total   29923    100.00         100.00    100.00         100.00</code></pre>
-<pre class="r"><code>summarytools::freq(NEA2022$leeftijd_)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ----------- ------- --------- -------------- --------- --------------
-##       15.35    9196     30.73          30.73     30.73          30.73
-##       35.55   12141     40.57          71.31     40.57          71.31
-##       55.75    8586     28.69         100.00     28.69         100.00
-##        &lt;NA&gt;       0                               0.00         100.00
-##       Total   29923    100.00         100.00    100.00         100.00</code></pre>
+f1 &lt;- summarytools::freq(NEA2022$afl_lftc)
+
+f2 &lt;- summarytools::freq(NEA2022$leeftijd_)
+
+cat(
+  print(f1, headings = TRUE, plain.ascii = TRUE),
+  &quot;\n\n&quot;,
+  print(f2, headings = TRUE, plain.ascii = TRUE)
+)</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>15 tot 25 jaar</td>
+<td align="right">3857</td>
+<td align="right">12.89</td>
+<td align="right">12.89</td>
+<td align="right">12.89</td>
+<td align="right">12.89</td>
+</tr>
+<tr class="even">
+<td>25 tot 35 jaar</td>
+<td align="right">5339</td>
+<td align="right">17.84</td>
+<td align="right">30.73</td>
+<td align="right">17.84</td>
+<td align="right">30.73</td>
+</tr>
+<tr class="odd">
+<td>35 tot 45 jaar</td>
+<td align="right">5721</td>
+<td align="right">19.12</td>
+<td align="right">49.85</td>
+<td align="right">19.12</td>
+<td align="right">49.85</td>
+</tr>
+<tr class="even">
+<td>45 tot 55 jaar</td>
+<td align="right">6420</td>
+<td align="right">21.46</td>
+<td align="right">71.31</td>
+<td align="right">21.46</td>
+<td align="right">71.31</td>
+</tr>
+<tr class="odd">
+<td>55 tot 65 jaar</td>
+<td align="right">7389</td>
+<td align="right">24.69</td>
+<td align="right">96.00</td>
+<td align="right">24.69</td>
+<td align="right">96.00</td>
+</tr>
+<tr class="even">
+<td>65 tot 75 jaar</td>
+<td align="right">1197</td>
+<td align="right">4.00</td>
+<td align="right">100.00</td>
+<td align="right">4.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>onbekend</td>
+<td align="right">0</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">0</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Frequencies</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>15.35</td>
+<td align="right">9196</td>
+<td align="right">30.73</td>
+<td align="right">30.73</td>
+<td align="right">30.73</td>
+<td align="right">30.73</td>
+</tr>
+<tr class="even">
+<td>35.55</td>
+<td align="right">12141</td>
+<td align="right">40.57</td>
+<td align="right">71.31</td>
+<td align="right">40.57</td>
+<td align="right">71.31</td>
+</tr>
+<tr class="odd">
+<td>55.75</td>
+<td align="right">8586</td>
+<td align="right">28.69</td>
+<td align="right">100.00</td>
+<td align="right">28.69</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td><NA></td>
+<td align="right">0</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
 </div>
-<div id="intersections" class="section level2" number="2.8">
-<h2><span class="header-section-number">2.8</span> Intersections</h2>
+<div id="intersections" class="section level2" number="2.9">
+<h2><span class="header-section-number">2.9</span> Intersections</h2>
 <p><br><br> <strong>Preparing variables for intersections</strong></p>
 <pre class="r"><code># Easier labels
 NEA2022 &lt;- NEA2022 %&gt;%
@@ -1296,24 +3877,22 @@ NEA2022 &lt;- NEA2022 %&gt;%
                                &quot;vrouw&quot; = &quot;v&quot;))
 
 table(NEA2022$vrllandd)</code></pre>
-<pre><code>## 
-##                    Nederland Europa (exclusief Nederland) 
-##                        25058                         1761 
-##                Buiten Europa                     Onbekend 
-##                         3104                            0 
-##                      refusal 
-##                            0</code></pre>
+<pre><code>               Nederland Europa (exclusief Nederland) 
+                   25058                         1761 
+           Buiten Europa                     Onbekend 
+                    3104                            0 
+                 refusal 
+                       0 </code></pre>
 <pre class="r"><code>NEA2022 &lt;- NEA2022 %&gt;%
   mutate(migration = recode(vrllandd,
                                &quot;Nederland&quot; = &quot;nl&quot;,
                                &quot;Europa (exclusief Nederland)&quot; = &quot;eu&quot;,
                                &quot;Buiten Europa&quot; = &quot;noeu&quot;))
 table(NEA2022$afl_soi3)</code></pre>
-<pre><code>## 
-##       laag opleidingsniveau middelbaar opleidingsniveau 
-##                        5215                       10945 
-##       hoog opleidingsniveau                    onbekend 
-##                       13763                           0</code></pre>
+<pre><code>  laag opleidingsniveau middelbaar opleidingsniveau 
+                   5215                       10945 
+  hoog opleidingsniveau                    onbekend 
+                  13763                           0 </code></pre>
 <pre class="r"><code>NEA2022 &lt;- NEA2022 %&gt;%
   mutate(education = recode(afl_soi3,
                                &quot;laag opleidingsniveau&quot; = &quot;laag&quot;,
@@ -1324,79 +3903,476 @@ NEA2022$education[NEA2022$education == &quot;onbekend&quot;] &lt;- NA
 NEA2022$education[NEA2022$migration == &quot;Onbekend&quot;] &lt;- NA
 
 # Drop unused levels
-levels(NEA2022$migration)</code></pre>
-<pre><code>## [1] &quot;nl&quot;       &quot;eu&quot;       &quot;noeu&quot;     &quot;Onbekend&quot; &quot;refusal&quot;</code></pre>
-<pre class="r"><code>NEA2022$migration &lt;- droplevels(NEA2022$migration)
-levels(NEA2022$migration)</code></pre>
-<pre><code>## [1] &quot;nl&quot;   &quot;eu&quot;   &quot;noeu&quot;</code></pre>
-<pre class="r"><code>levels(NEA2022$education)</code></pre>
-<pre><code>## [1] &quot;laag&quot;     &quot;middel&quot;   &quot;hoog&quot;     &quot;onbekend&quot;</code></pre>
-<pre class="r"><code>NEA2022$education &lt;- droplevels(NEA2022$education)
-levels(NEA2022$education)</code></pre>
-<pre><code>## [1] &quot;laag&quot;   &quot;middel&quot; &quot;hoog&quot;</code></pre>
-<pre class="r"><code>NEA2022$intersections &lt;- interaction(NEA2022$gender, NEA2022$migration, NEA2022$education, NEA2022$leeftijd_)
+NEA2022$migration &lt;- droplevels(NEA2022$migration)
+
+NEA2022$education &lt;- droplevels(NEA2022$education)
+
+NEA2022$intersections &lt;- interaction(NEA2022$gender, NEA2022$migration, NEA2022$education, NEA2022$leeftijd_)
 
 summarytools::freq(NEA2022$intersections)</code></pre>
-<pre><code>## Frequencies  
-## 
-##                              Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
-## ------------------------- ------- --------- -------------- --------- --------------
-##           m.nl.laag.15.35     711      2.38           2.38      2.38           2.38
-##           v.nl.laag.15.35     650      2.17           4.55      2.17           4.55
-##           m.eu.laag.15.35      64      0.21           4.76      0.21           4.76
-##           v.eu.laag.15.35      59      0.20           4.96      0.20           4.96
-##         m.noeu.laag.15.35     131      0.44           5.40      0.44           5.40
-##         v.noeu.laag.15.35     139      0.46           5.86      0.46           5.86
-##         m.nl.middel.15.35    1271      4.25          10.11      4.25          10.11
-##         v.nl.middel.15.35    1445      4.83          14.94      4.83          14.94
-##         m.eu.middel.15.35      68      0.23          15.17      0.23          15.17
-##         v.eu.middel.15.35     103      0.34          15.51      0.34          15.51
-##       m.noeu.middel.15.35     191      0.64          16.15      0.64          16.15
-##       v.noeu.middel.15.35     221      0.74          16.89      0.74          16.89
-##           m.nl.hoog.15.35    1334      4.46          21.34      4.46          21.34
-##           v.nl.hoog.15.35    2023      6.76          28.11      6.76          28.11
-##           m.eu.hoog.15.35     123      0.41          28.52      0.41          28.52
-##           v.eu.hoog.15.35     188      0.63          29.14      0.63          29.14
-##         m.noeu.hoog.15.35     187      0.62          29.77      0.62          29.77
-##         v.noeu.hoog.15.35     288      0.96          30.73      0.96          30.73
-##           m.nl.laag.35.55     651      2.18          32.91      2.18          32.91
-##           v.nl.laag.35.55     497      1.66          34.57      1.66          34.57
-##           m.eu.laag.35.55      58      0.19          34.76      0.19          34.76
-##           v.eu.laag.35.55      44      0.15          34.91      0.15          34.91
-##         m.noeu.laag.35.55     115      0.38          35.29      0.38          35.29
-##         v.noeu.laag.35.55      96      0.32          35.61      0.32          35.61
-##         m.nl.middel.35.55    1955      6.53          42.15      6.53          42.15
-##         v.nl.middel.35.55    1749      5.85          47.99      5.85          47.99
-##         m.eu.middel.35.55     105      0.35          48.34      0.35          48.34
-##         v.eu.middel.35.55     133      0.44          48.79      0.44          48.79
-##       m.noeu.middel.35.55     225      0.75          49.54      0.75          49.54
-##       v.noeu.middel.35.55     193      0.64          50.19      0.64          50.19
-##           m.nl.hoog.35.55    2375      7.94          58.12      7.94          58.12
-##           v.nl.hoog.35.55    2817      9.41          67.54      9.41          67.54
-##           m.eu.hoog.35.55     161      0.54          68.07      0.54          68.07
-##           v.eu.hoog.35.55     269      0.90          68.97      0.90          68.97
-##         m.noeu.hoog.35.55     345      1.15          70.13      1.15          70.13
-##         v.noeu.hoog.35.55     353      1.18          71.31      1.18          71.31
-##           m.nl.laag.55.75    1041      3.48          74.79      3.48          74.79
-##           v.nl.laag.55.75     715      2.39          77.17      2.39          77.17
-##           m.eu.laag.55.75      45      0.15          77.33      0.15          77.33
-##           v.eu.laag.55.75      39      0.13          77.46      0.13          77.46
-##         m.noeu.laag.55.75      91      0.30          77.76      0.30          77.76
-##         v.noeu.laag.55.75      69      0.23          77.99      0.23          77.99
-##         m.nl.middel.55.75    1625      5.43          83.42      5.43          83.42
-##         v.nl.middel.55.75    1299      4.34          87.76      4.34          87.76
-##         m.eu.middel.55.75      79      0.26          88.03      0.26          88.03
-##         v.eu.middel.55.75      65      0.22          88.24      0.22          88.24
-##       m.noeu.middel.55.75     120      0.40          88.64      0.40          88.64
-##       v.noeu.middel.55.75      98      0.33          88.97      0.33          88.97
-##           m.nl.hoog.55.75    1538      5.14          94.11      5.14          94.11
-##           v.nl.hoog.55.75    1362      4.55          98.66      4.55          98.66
-##           m.eu.hoog.55.75      67      0.22          98.89      0.22          98.89
-##           v.eu.hoog.55.75      91      0.30          99.19      0.30          99.19
-##         m.noeu.hoog.55.75     117      0.39          99.58      0.39          99.58
-##         v.noeu.hoog.55.75     125      0.42         100.00      0.42         100.00
-##                      &lt;NA&gt;       0                               0.00         100.00
-##                     Total   29923    100.00         100.00    100.00         100.00</code></pre>
+<p>Frequencies</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Freq</th>
+<th align="right">% Valid</th>
+<th align="right">% Valid Cum.</th>
+<th align="right">% Total</th>
+<th align="right">% Total Cum.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>m.nl.laag.15.35</td>
+<td align="right">711</td>
+<td align="right">2.38</td>
+<td align="right">2.38</td>
+<td align="right">2.38</td>
+<td align="right">2.38</td>
+</tr>
+<tr class="even">
+<td>v.nl.laag.15.35</td>
+<td align="right">650</td>
+<td align="right">2.17</td>
+<td align="right">4.55</td>
+<td align="right">2.17</td>
+<td align="right">4.55</td>
+</tr>
+<tr class="odd">
+<td>m.eu.laag.15.35</td>
+<td align="right">64</td>
+<td align="right">0.21</td>
+<td align="right">4.76</td>
+<td align="right">0.21</td>
+<td align="right">4.76</td>
+</tr>
+<tr class="even">
+<td>v.eu.laag.15.35</td>
+<td align="right">59</td>
+<td align="right">0.20</td>
+<td align="right">4.96</td>
+<td align="right">0.20</td>
+<td align="right">4.96</td>
+</tr>
+<tr class="odd">
+<td>m.noeu.laag.15.35</td>
+<td align="right">131</td>
+<td align="right">0.44</td>
+<td align="right">5.40</td>
+<td align="right">0.44</td>
+<td align="right">5.40</td>
+</tr>
+<tr class="even">
+<td>v.noeu.laag.15.35</td>
+<td align="right">139</td>
+<td align="right">0.46</td>
+<td align="right">5.86</td>
+<td align="right">0.46</td>
+<td align="right">5.86</td>
+</tr>
+<tr class="odd">
+<td>m.nl.middel.15.35</td>
+<td align="right">1271</td>
+<td align="right">4.25</td>
+<td align="right">10.11</td>
+<td align="right">4.25</td>
+<td align="right">10.11</td>
+</tr>
+<tr class="even">
+<td>v.nl.middel.15.35</td>
+<td align="right">1445</td>
+<td align="right">4.83</td>
+<td align="right">14.94</td>
+<td align="right">4.83</td>
+<td align="right">14.94</td>
+</tr>
+<tr class="odd">
+<td>m.eu.middel.15.35</td>
+<td align="right">68</td>
+<td align="right">0.23</td>
+<td align="right">15.17</td>
+<td align="right">0.23</td>
+<td align="right">15.17</td>
+</tr>
+<tr class="even">
+<td>v.eu.middel.15.35</td>
+<td align="right">103</td>
+<td align="right">0.34</td>
+<td align="right">15.51</td>
+<td align="right">0.34</td>
+<td align="right">15.51</td>
+</tr>
+<tr class="odd">
+<td>m.noeu.middel.15.35</td>
+<td align="right">191</td>
+<td align="right">0.64</td>
+<td align="right">16.15</td>
+<td align="right">0.64</td>
+<td align="right">16.15</td>
+</tr>
+<tr class="even">
+<td>v.noeu.middel.15.35</td>
+<td align="right">221</td>
+<td align="right">0.74</td>
+<td align="right">16.89</td>
+<td align="right">0.74</td>
+<td align="right">16.89</td>
+</tr>
+<tr class="odd">
+<td>m.nl.hoog.15.35</td>
+<td align="right">1334</td>
+<td align="right">4.46</td>
+<td align="right">21.34</td>
+<td align="right">4.46</td>
+<td align="right">21.34</td>
+</tr>
+<tr class="even">
+<td>v.nl.hoog.15.35</td>
+<td align="right">2023</td>
+<td align="right">6.76</td>
+<td align="right">28.11</td>
+<td align="right">6.76</td>
+<td align="right">28.11</td>
+</tr>
+<tr class="odd">
+<td>m.eu.hoog.15.35</td>
+<td align="right">123</td>
+<td align="right">0.41</td>
+<td align="right">28.52</td>
+<td align="right">0.41</td>
+<td align="right">28.52</td>
+</tr>
+<tr class="even">
+<td>v.eu.hoog.15.35</td>
+<td align="right">188</td>
+<td align="right">0.63</td>
+<td align="right">29.14</td>
+<td align="right">0.63</td>
+<td align="right">29.14</td>
+</tr>
+<tr class="odd">
+<td>m.noeu.hoog.15.35</td>
+<td align="right">187</td>
+<td align="right">0.62</td>
+<td align="right">29.77</td>
+<td align="right">0.62</td>
+<td align="right">29.77</td>
+</tr>
+<tr class="even">
+<td>v.noeu.hoog.15.35</td>
+<td align="right">288</td>
+<td align="right">0.96</td>
+<td align="right">30.73</td>
+<td align="right">0.96</td>
+<td align="right">30.73</td>
+</tr>
+<tr class="odd">
+<td>m.nl.laag.35.55</td>
+<td align="right">651</td>
+<td align="right">2.18</td>
+<td align="right">32.91</td>
+<td align="right">2.18</td>
+<td align="right">32.91</td>
+</tr>
+<tr class="even">
+<td>v.nl.laag.35.55</td>
+<td align="right">497</td>
+<td align="right">1.66</td>
+<td align="right">34.57</td>
+<td align="right">1.66</td>
+<td align="right">34.57</td>
+</tr>
+<tr class="odd">
+<td>m.eu.laag.35.55</td>
+<td align="right">58</td>
+<td align="right">0.19</td>
+<td align="right">34.76</td>
+<td align="right">0.19</td>
+<td align="right">34.76</td>
+</tr>
+<tr class="even">
+<td>v.eu.laag.35.55</td>
+<td align="right">44</td>
+<td align="right">0.15</td>
+<td align="right">34.91</td>
+<td align="right">0.15</td>
+<td align="right">34.91</td>
+</tr>
+<tr class="odd">
+<td>m.noeu.laag.35.55</td>
+<td align="right">115</td>
+<td align="right">0.38</td>
+<td align="right">35.29</td>
+<td align="right">0.38</td>
+<td align="right">35.29</td>
+</tr>
+<tr class="even">
+<td>v.noeu.laag.35.55</td>
+<td align="right">96</td>
+<td align="right">0.32</td>
+<td align="right">35.61</td>
+<td align="right">0.32</td>
+<td align="right">35.61</td>
+</tr>
+<tr class="odd">
+<td>m.nl.middel.35.55</td>
+<td align="right">1955</td>
+<td align="right">6.53</td>
+<td align="right">42.15</td>
+<td align="right">6.53</td>
+<td align="right">42.15</td>
+</tr>
+<tr class="even">
+<td>v.nl.middel.35.55</td>
+<td align="right">1749</td>
+<td align="right">5.85</td>
+<td align="right">47.99</td>
+<td align="right">5.85</td>
+<td align="right">47.99</td>
+</tr>
+<tr class="odd">
+<td>m.eu.middel.35.55</td>
+<td align="right">105</td>
+<td align="right">0.35</td>
+<td align="right">48.34</td>
+<td align="right">0.35</td>
+<td align="right">48.34</td>
+</tr>
+<tr class="even">
+<td>v.eu.middel.35.55</td>
+<td align="right">133</td>
+<td align="right">0.44</td>
+<td align="right">48.79</td>
+<td align="right">0.44</td>
+<td align="right">48.79</td>
+</tr>
+<tr class="odd">
+<td>m.noeu.middel.35.55</td>
+<td align="right">225</td>
+<td align="right">0.75</td>
+<td align="right">49.54</td>
+<td align="right">0.75</td>
+<td align="right">49.54</td>
+</tr>
+<tr class="even">
+<td>v.noeu.middel.35.55</td>
+<td align="right">193</td>
+<td align="right">0.64</td>
+<td align="right">50.19</td>
+<td align="right">0.64</td>
+<td align="right">50.19</td>
+</tr>
+<tr class="odd">
+<td>m.nl.hoog.35.55</td>
+<td align="right">2375</td>
+<td align="right">7.94</td>
+<td align="right">58.12</td>
+<td align="right">7.94</td>
+<td align="right">58.12</td>
+</tr>
+<tr class="even">
+<td>v.nl.hoog.35.55</td>
+<td align="right">2817</td>
+<td align="right">9.41</td>
+<td align="right">67.54</td>
+<td align="right">9.41</td>
+<td align="right">67.54</td>
+</tr>
+<tr class="odd">
+<td>m.eu.hoog.35.55</td>
+<td align="right">161</td>
+<td align="right">0.54</td>
+<td align="right">68.07</td>
+<td align="right">0.54</td>
+<td align="right">68.07</td>
+</tr>
+<tr class="even">
+<td>v.eu.hoog.35.55</td>
+<td align="right">269</td>
+<td align="right">0.90</td>
+<td align="right">68.97</td>
+<td align="right">0.90</td>
+<td align="right">68.97</td>
+</tr>
+<tr class="odd">
+<td>m.noeu.hoog.35.55</td>
+<td align="right">345</td>
+<td align="right">1.15</td>
+<td align="right">70.13</td>
+<td align="right">1.15</td>
+<td align="right">70.13</td>
+</tr>
+<tr class="even">
+<td>v.noeu.hoog.35.55</td>
+<td align="right">353</td>
+<td align="right">1.18</td>
+<td align="right">71.31</td>
+<td align="right">1.18</td>
+<td align="right">71.31</td>
+</tr>
+<tr class="odd">
+<td>m.nl.laag.55.75</td>
+<td align="right">1041</td>
+<td align="right">3.48</td>
+<td align="right">74.79</td>
+<td align="right">3.48</td>
+<td align="right">74.79</td>
+</tr>
+<tr class="even">
+<td>v.nl.laag.55.75</td>
+<td align="right">715</td>
+<td align="right">2.39</td>
+<td align="right">77.17</td>
+<td align="right">2.39</td>
+<td align="right">77.17</td>
+</tr>
+<tr class="odd">
+<td>m.eu.laag.55.75</td>
+<td align="right">45</td>
+<td align="right">0.15</td>
+<td align="right">77.33</td>
+<td align="right">0.15</td>
+<td align="right">77.33</td>
+</tr>
+<tr class="even">
+<td>v.eu.laag.55.75</td>
+<td align="right">39</td>
+<td align="right">0.13</td>
+<td align="right">77.46</td>
+<td align="right">0.13</td>
+<td align="right">77.46</td>
+</tr>
+<tr class="odd">
+<td>m.noeu.laag.55.75</td>
+<td align="right">91</td>
+<td align="right">0.30</td>
+<td align="right">77.76</td>
+<td align="right">0.30</td>
+<td align="right">77.76</td>
+</tr>
+<tr class="even">
+<td>v.noeu.laag.55.75</td>
+<td align="right">69</td>
+<td align="right">0.23</td>
+<td align="right">77.99</td>
+<td align="right">0.23</td>
+<td align="right">77.99</td>
+</tr>
+<tr class="odd">
+<td>m.nl.middel.55.75</td>
+<td align="right">1625</td>
+<td align="right">5.43</td>
+<td align="right">83.42</td>
+<td align="right">5.43</td>
+<td align="right">83.42</td>
+</tr>
+<tr class="even">
+<td>v.nl.middel.55.75</td>
+<td align="right">1299</td>
+<td align="right">4.34</td>
+<td align="right">87.76</td>
+<td align="right">4.34</td>
+<td align="right">87.76</td>
+</tr>
+<tr class="odd">
+<td>m.eu.middel.55.75</td>
+<td align="right">79</td>
+<td align="right">0.26</td>
+<td align="right">88.03</td>
+<td align="right">0.26</td>
+<td align="right">88.03</td>
+</tr>
+<tr class="even">
+<td>v.eu.middel.55.75</td>
+<td align="right">65</td>
+<td align="right">0.22</td>
+<td align="right">88.24</td>
+<td align="right">0.22</td>
+<td align="right">88.24</td>
+</tr>
+<tr class="odd">
+<td>m.noeu.middel.55.75</td>
+<td align="right">120</td>
+<td align="right">0.40</td>
+<td align="right">88.64</td>
+<td align="right">0.40</td>
+<td align="right">88.64</td>
+</tr>
+<tr class="even">
+<td>v.noeu.middel.55.75</td>
+<td align="right">98</td>
+<td align="right">0.33</td>
+<td align="right">88.97</td>
+<td align="right">0.33</td>
+<td align="right">88.97</td>
+</tr>
+<tr class="odd">
+<td>m.nl.hoog.55.75</td>
+<td align="right">1538</td>
+<td align="right">5.14</td>
+<td align="right">94.11</td>
+<td align="right">5.14</td>
+<td align="right">94.11</td>
+</tr>
+<tr class="even">
+<td>v.nl.hoog.55.75</td>
+<td align="right">1362</td>
+<td align="right">4.55</td>
+<td align="right">98.66</td>
+<td align="right">4.55</td>
+<td align="right">98.66</td>
+</tr>
+<tr class="odd">
+<td>m.eu.hoog.55.75</td>
+<td align="right">67</td>
+<td align="right">0.22</td>
+<td align="right">98.89</td>
+<td align="right">0.22</td>
+<td align="right">98.89</td>
+</tr>
+<tr class="even">
+<td>v.eu.hoog.55.75</td>
+<td align="right">91</td>
+<td align="right">0.30</td>
+<td align="right">99.19</td>
+<td align="right">0.30</td>
+<td align="right">99.19</td>
+</tr>
+<tr class="odd">
+<td>m.noeu.hoog.55.75</td>
+<td align="right">117</td>
+<td align="right">0.39</td>
+<td align="right">99.58</td>
+<td align="right">0.39</td>
+<td align="right">99.58</td>
+</tr>
+<tr class="even">
+<td>v.noeu.hoog.55.75</td>
+<td align="right">125</td>
+<td align="right">0.42</td>
+<td align="right">100.00</td>
+<td align="right">0.42</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="odd">
+<td><NA></td>
+<td align="right">0</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">0.00</td>
+<td align="right">100.00</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="right">29923</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
 <p><br><br> <strong>Creating dummy variables</strong></p>
 <pre class="r"><code>NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;gender&quot;, remove_first_dummy = FALSE)
 NEA2022 &lt;- dummy_cols(NEA2022, select_columns = &quot;migration&quot;, remove_first_dummy = FALSE)
@@ -1410,7 +4386,7 @@ colnames(NEA2022)[colnames(NEA2022) %in% dummy_columns] &lt;- gsub(&quot;^inters
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByZXBhcmluZyBkYXRhc2V0Ig0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wNS0wNCINCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChjYWNoZSA9IFRSVUUpDQpgYGANCg0KYGBge3IsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9DQpsaWJyYXJ5KHN1bW1hcnl0b29scykNCmxpYnJhcnkoZm9yZWlnbikNCmxpYnJhcnkoZHBseXIpDQpsaWJyYXJ5KHBzeWNoKQ0KbGlicmFyeShmYXN0RHVtbWllcykNCmBgYA0KDQojIFByZXBhcmluZyBkYXRhc2V0DQoNCmBgYHtyIGxvYWRpbmcgZGF0YSwgY2FjaGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQpORUFyYXcgPC1yZWFkLnNwc3MoImRhdGEvcmF3L0RhdGEgMjAxNC0yMDIyLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCmBgYA0KDQo8YnI+PGJyPiAqKlNlbGVjdGluZyB5ZWFyIDIwMjIgYW5kIGNsdXN0ZXIgMSoqDQoNCmBgYHtyIHNlbGVjdGluZyB5ZWFyIGNsdXN0ZXIsIGNhY2hlPVRSVUV9DQpORUEyMDIyIDwtIE5FQXJhd1tORUFyYXckamFhciA9PSAiMjAyMiIsIF0NCg0KTkVBMjAyMiA8LSBORUEyMDIyW05FQTIwMjIkc2VfY2x1c3QgPT0gMSwgXQ0KYGBgDQoNCjxicj48YnI+ICoqRGVsZXRpbmcgbWlzc2luZyBjYXNlcyBvbiBlZHVjYXRpb25hbCBsZXZlbCoqDQoNCmBgYHtyIG1pc3NpbmdzLCBjYWNoZT1UUlVFfQ0KTkVBMjAyMiRhZmxfc29pM1tORUEyMDIyJGFmbF9zb2kzID09ICJvbmJla2VuZCJdIDwtIE5BDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgZmlsdGVyKCFpcy5uYShhZmxfc29pMykpDQpgYGANCg0KIyBSZWNvZGluZyB2YXJpYWJsZXMNCg0KIyMgQnVsbHlpbmcNCg0KYGBge3IgYnVsIGNvdywgY2FjaGU9VFJVRX0NCiMgQnVsbHlpbmcgY293b3JrZXJzDQpORUEyMDIyJHBlc3Rlbl9jb2wgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9wZV8xKQ0KDQojICgxKSBubywgbmV2ZXIsICgyKSBhIGZldyB0aW1lcywgKDMpIG9mdGVuLCBhbmQgKDQpIHZlcnkgb2Z0ZW4gDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHBlc3Rlbl9jb2wgPSByZWNvZGUocGVzdGVuX2NvbCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9wZV8xKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcGVzdGVuX2NvbCkNCg0KYGBgDQoNCmBgYHtyIGJ1bCBzdXAsIGNhY2hlPVRSVUV9DQojIEJ1bGx5aW5nIHN1cGVydmlzb3JzDQpORUEyMDIyJHBlc3Rlbl9sZWlkIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfcGVfMikNCg0KIyAoMSkgbm8sIG5ldmVyLCAoMikgYSBmZXcgdGltZXMsICgzKSBvZnRlbiwgYW5kICg0KSB2ZXJ5IG9mdGVuIA0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShwZXN0ZW5fbGVpZCA9IHJlY29kZShwZXN0ZW5fbGVpZCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9wZV8yKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcGVzdGVuX2xlaWQpDQpgYGANCg0KIyMgSW50aW1pZGF0aW9uDQoNCmBgYHtyIGludCBjb3csIGNhY2hlPVRSVUV9DQojSW50aW1pZGF0aW9uIGNvd29ya2Vycw0KDQpORUEyMDIyJGludGltaWRhdGlvbl9jb2wgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9iZV8xKQ0KDQojICgxKSBubywgbmV2ZXIsICgyKSBhIGZldyB0aW1lcywgKDMpIG9mdGVuLCBhbmQgKDQpIHZlcnkgb2Z0ZW4gDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGludGltaWRhdGlvbl9jb2wgPSByZWNvZGUoaW50aW1pZGF0aW9uX2NvbCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9iZV8xKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkaW50aW1pZGF0aW9uX2NvbCkNCg0KYGBgDQoNCmBgYHtyIGludCBzdXAsIGNhY2hlPVRSVUV9DQojSW50aW1pZGF0aW9uIHN1cGVydmlzb3JzDQoNCk5FQTIwMjIkaW50aW1pZGF0aW9uX2xlaWQgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9iZV8yKQ0KDQojICgxKSBubywgbmV2ZXIsICgyKSBhIGZldyB0aW1lcywgKDMpIG9mdGVuLCBhbmQgKDQpIHZlcnkgb2Z0ZW4gDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGludGltaWRhdGlvbl9sZWlkID0gcmVjb2RlKGludGltaWRhdGlvbl9sZWlkLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX2JlXzIpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRpbnRpbWlkYXRpb25fbGVpZCkNCg0KYGBgDQoNCiMjIyBQaHlzaWNhbCB2aW9sZW5jZQ0KDQpgYGB7ciB2aW8gY293LCBjYWNoZT1UUlVFfQ0KI1BoeXNpY2FsIHZpb2xlbmNlIGNvd29ya2Vycw0KDQpORUEyMDIyJGdld2VsZF9jb2wgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9nZV8zKQ0KDQojICgxKSBubywgbmV2ZXIsICgyKSBhIGZldyB0aW1lcywgKDMpIG9mdGVuLCBhbmQgKDQpIHZlcnkgb2Z0ZW4gDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGdld2VsZF9jb2wgPSByZWNvZGUoZ2V3ZWxkX2NvbCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9nZV8zKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkZ2V3ZWxkX2NvbCkNCg0KYGBgDQoNCmBgYHtyIHZpbyBzdXAsIGNhY2hlPVRSVUV9DQojUGh5c2ljYWwgdmlvbGVuY2Ugc3VwZXJ2aXNvcnMNCg0KTkVBMjAyMiRnZXdlbGRfbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2dlXzQpDQoNCiMgKDEpIG5vLCBuZXZlciwgKDIpIGEgZmV3IHRpbWVzLCAoMykgb2Z0ZW4sIGFuZCAoNCkgdmVyeSBvZnRlbiANCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoZ2V3ZWxkX2xlaWQgPSByZWNvZGUoZ2V3ZWxkX2xlaWQsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRhZmxfZ2VfNCkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGdld2VsZF9sZWlkKQ0KYGBgDQoNCiMjIFVud2FudGVkIHNleHVhbCBhdHRlbnRpb24NCg0KYGBge3Igc2V4IGNvdywgY2FjaGU9VFJVRX0NCiNVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIGNvd29ya2Vycw0KDQpORUEyMDIyJHNla3NfY29sIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfc2VfMSkNCg0KIyAoMSkgbm8sIG5ldmVyLCAoMikgYSBmZXcgdGltZXMsICgzKSBvZnRlbiwgYW5kICg0KSB2ZXJ5IG9mdGVuIA0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzZWtzX2NvbCA9IHJlY29kZShzZWtzX2NvbCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9zZV8xKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc2Vrc19jb2wpDQpgYGANCg0KYGBge3Igc2V4IHN1cCwgY2FjaGU9VFJVRX0NCiNVbndhbnRlZCBzZXh1YWwgYXR0ZW50aW9uIHN1cGVydmlzb3JzDQpORUEyMDIyJHNla3NfbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3NlXzIpDQoNCiMgKDEpIG5vLCBuZXZlciwgKDIpIGEgZmV3IHRpbWVzLCAoMykgb2Z0ZW4sIGFuZCAoNCkgdmVyeSBvZnRlbiANCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc2Vrc19sZWlkID0gcmVjb2RlKHNla3NfbGVpZCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9zZV8yKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc2Vrc19sZWlkKQ0KDQpgYGANCg0KIyMgQ29uZmxpY3QNCg0KYGBge3IgY29uIGNvdywgY2FjaGU9VFJVRX0NCiNDb25mbGljdCBjb3dvcmtlcg0KDQpORUEyMDIyJGNvbmZsaWN0X2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpY3QpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGNvbmZsaWN0KQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkY29uZmxpY3RfY29sKQ0KYGBgDQoNCmBgYHtyIGNvbiBzdXAsIGNhY2hlPVRSVUV9DQojQ29uZmxpY3Qgc3VwZXJ2aXNvcg0KDQpORUEyMDIyJGNvbmZsaWN0X2xlaWQgPC0gYXMubnVtZXJpYyhORUEyMDIyJGNvbmZsaV8xKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRjb25mbGlfMSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGNvbmZsaWN0X2xlaWQpDQpgYGANCg0KYGBge3IgY29uIGVtcCwgY2FjaGU9VFJVRX0NCiNDb25mbGljdCBlbXBsb3llcg0KDQpORUEyMDIyJGNvbmZsaWN0X2VtcCA8LSBhcy5udW1lcmljKE5FQTIwMjIkY29uZmxpXzIpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGNvbmZsaV8yKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkY29uZmxpY3RfZW1wKQ0KYGBgDQoNCg0KIyMgSW5jaXZpbGl0eQ0KDQpgYGB7ciBpbmMgc3VwLCBjYWNoZT1UUlVFfQ0KI1NvY2lhbCBzdXBwb3J0IHN1cGVydmlzb3I6IG15IHN1cGVydmlzb3IgcGF5cyBhdHRlbnRpb24gdG8gdGhlIHdlbGwtYmVpbmcgb2YgdGhlIHN0YWZmIA0KDQpORUEyMDIyJGxlaWRpbmdfW05FQTIwMjIkbGVpZGluZ18gPT0gIm52dCJdIDwtIE5BDQoNCk5FQTIwMjIkc3RldW5sZWlkX3dlbHppam4gPC0gYXMubnVtZXJpYyhORUEyMDIyJGxlaWRpbmdfKQ0KDQojUmV2ZXJzZSBjb2RpbmcNCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5sZWlkX3dlbHppam4gPSByZWNvZGUoc3RldW5sZWlkX3dlbHppam4sIGAxYCA9IDQsIGAyYCA9IDMsIGAzYCA9IDIsIGA0YCA9IDEpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRsZWlkaW5nXykNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVubGVpZF93ZWx6aWpuKQ0KDQojU29jaWFsIHN1cHBvcnQgc3VwZXJ2aXNvcjogIG15IHN1cGVydmlzb3IgcGF5cyBhdHRlbnRpb24gdG8gd2hhdCBJIHNheQ0KDQpORUEyMDIyJGxlaWRpbl8xW05FQTIwMjIkbGVpZGluXzEgPT0gIm52dCJdIDwtIE5BDQoNCk5FQTIwMjIkc3RldW5sZWlkX2FhbmRhY2h0IDwtIGFzLm51bWVyaWMoTkVBMjAyMiRsZWlkaW5fMSkNCg0KI1JldmVyc2UgY29kaW5nDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHN0ZXVubGVpZF9hYW5kYWNodCA9IHJlY29kZShzdGV1bmxlaWRfYWFuZGFjaHQsIGAxYCA9IDQsIGAyYCA9IDMsIGAzYCA9IDIsIGA0YCA9IDEpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRsZWlkaW5fKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX2FhbmRhY2h0KQ0KDQojQ3JvbmJhY2gncyBhbHBoYQ0KDQpzdGV1bmxlaWQgPC0gZGF0YS5mcmFtZSgNCiAgc3RldW5sZWlkX2FhbmRhY2h0ID0gTkVBMjAyMiRzdGV1bmxlaWRfYWFuZGFjaHQsDQogIHN0ZXVubGVpZF93ZWx6aWpuID0gTkVBMjAyMiRzdGV1bmxlaWRfd2Vsemlqbg0KKQ0KDQphbHBoYV9yZXN1bHQxIDwtIGFscGhhKHN0ZXVubGVpZCwgdXNlPSJwYWlyd2lzZS5jb21wbGV0ZS5vYnMiKQ0KcHJpbnQoYWxwaGFfcmVzdWx0MSR0b3RhbCRyYXdfYWxwaGEpDQoNCmNvcihORUEyMDIyJHN0ZXVubGVpZF9hYW5kYWNodCwgTkVBMjAyMiRzdGV1bmxlaWRfd2VsemlqbiwgdXNlID0gImNvbXBsZXRlLm9icyIsIG1ldGhvZCA9ICJzcGVhcm1hbiIpDQpjb3IoTkVBMjAyMiRzdGV1bmxlaWRfYWFuZGFjaHQsIE5FQTIwMjIkc3RldW5sZWlkX3dlbHppam4sIHVzZSA9ICJjb21wbGV0ZS5vYnMiLCBtZXRob2QgPSAicGVhcnNvbiIpDQoNCg0KDQojTWFraW5nIGEgbWVhbiBzY2FsZQ0KDQpORUEyMDIyJHN0ZXVubGVpZF9zY2FsZSA8LSByb3dNZWFucyhORUEyMDIyW2MoInN0ZXVubGVpZF9hYW5kYWNodCIsICJzdGV1bmxlaWRfd2VsemlqbiIpXSwgbmEucm0gPSBUUlVFKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX3NjYWxlKQ0KDQoNCk5FQTIwMjIkc3RldW5sZWlkX1IgPC0gYXMubnVtZXJpYyhmYWN0b3IoTkVBMjAyMiRzdGV1bmxlaWRfc2NhbGUpKQ0KTkVBMjAyMiRzdGV1bmxlaWRfUltORUEyMDIyJHN0ZXVubGVpZF9SID09ICI4Il0gPC0gTkENCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVubGVpZF9SKQ0KDQojUm91bmRpbmcgdG8gYSBmb3VyLXBvaW50IHNjYWxlDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzdGV1bmxlaWRfUlIgPSBjYXNlX3doZW4oDQogICAgc3RldW5sZWlkX3NjYWxlICVpbiUgYygxKSB+IDEsDQogICAgc3RldW5sZWlkX3NjYWxlICVpbiUgYygxLjUsIDIpIH4gMiwNCiAgICBzdGV1bmxlaWRfc2NhbGUgJWluJSBjKDIuNSwgMykgfiAzLA0KICAgIHN0ZXVubGVpZF9zY2FsZSAlaW4lIGMoMy41LCA0KSB+IDQsDQogICAgVFJVRSB+IE5BX3JlYWxfDQogICkpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRzdGV1bmxlaWRfUlIpDQoNCiNjb3JyZWxhdGlvbiBvcmlnaW5hbCBhbmQgcm91bmRlZCBzY2FsZQ0KY29yKE5FQTIwMjIkc3RldW5sZWlkX3NjYWxlLCBORUEyMDIyJHN0ZXVubGVpZF9SUiwgdXNlID0gImNvbXBsZXRlLm9icyIpDQpgYGANCg0KDQpgYGB7ciBpbmMgY293LCBjYWNoZT1UUlVFfQ0KI1NvY2lhbCBzdXBwb3J0IGNvd29ya2VyczogbXkgY28td29ya2VycyB0YWtlIHBlcnNvbmFsIGludGVyZXN0IGluIG1lDQoNCk5FQTIwMjIkY29sbGVnYV9bTkVBMjAyMiRjb2xsZWdhXyA9PSAibnZ0Il0gPC0gTkENCg0KTkVBMjAyMiRzdGV1bmNvbF9iZWxhbmcgPC0gYXMubnVtZXJpYyhORUEyMDIyJGNvbGxlZ2FfKQ0KDQoNCiNSZXZlcnNlIGNvZGluZw0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzdGV1bmNvbF9iZWxhbmcgPSByZWNvZGUoc3RldW5jb2xfYmVsYW5nLCBgMWAgPSA0LCBgMmAgPSAzLCBgM2AgPSAyLCBgNGAgPSAxKSkNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkY29sbGVnYV8pDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRzdGV1bmNvbF9iZWxhbmcpDQoNCiNTb2NpYWwgc3VwcG9ydCBjb3dvcmtlcnM6IG15IGNvd29ya2VycyBhcmUgZnJpZW5kbHkNCg0KTkVBMjAyMiRjb2xsZWdfMVtORUEyMDIyJGNvbGxlZ18xID09ICJudnQiXSA8LSBOQQ0KDQpORUEyMDIyJHN0ZXVuY29sX3ZyaWVuZGVsaWprIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRjb2xsZWdfMSkNCg0KI1JldmVyc2UgY29kaW5nIHRoZSBzY2FsZQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzdGV1bmNvbF92cmllbmRlbGlqayA9IHJlY29kZShzdGV1bmNvbF92cmllbmRlbGlqaywgYDFgID0gNCwgYDJgID0gMywgYDNgID0gMiwgYDRgID0gMSkpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGNvbGxlZ18xKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5jb2xfdnJpZW5kZWxpamspDQoNCiNDcm9uYmFjaCdzIGFscGhhDQoNCnN0ZXVuY29sIDwtIGRhdGEuZnJhbWUoDQogIHN0ZXVuY29sX2JlbGFuZyA9IE5FQTIwMjIkc3RldW5jb2xfYmVsYW5nLA0KICBzdGV1bmNvbF92cmllbmRlbGlqayA9IE5FQTIwMjIkc3RldW5jb2xfdnJpZW5kZWxpamsNCikNCg0KYWxwaGFfcmVzdWx0MiA8LSBhbHBoYShzdGV1bmNvbCwgdXNlPSJwYWlyd2lzZS5jb21wbGV0ZS5vYnMiKQ0KcHJpbnQoYWxwaGFfcmVzdWx0MiR0b3RhbCRyYXdfYWxwaGEpDQoNCmNvcihORUEyMDIyJHN0ZXVuY29sX2JlbGFuZywgTkVBMjAyMiRzdGV1bmNvbF92cmllbmRlbGlqaywgdXNlID0gImNvbXBsZXRlLm9icyIsIG1ldGhvZCA9ICJzcGVhcm1hbiIpDQpjb3IoTkVBMjAyMiRzdGV1bmNvbF9iZWxhbmcsIE5FQTIwMjIkc3RldW5jb2xfdnJpZW5kZWxpamssIHVzZSA9ICJjb21wbGV0ZS5vYnMiLCBtZXRob2QgPSAicGVhcnNvbiIpDQoNCg0KI01ha2luZyBhIG1lYW4gc2NhbGUNCk5FQTIwMjIkc3RldW5jb2xfc2NhbGUgPC0gcm93TWVhbnMoTkVBMjAyMltjKCJzdGV1bmNvbF9iZWxhbmciLCAic3RldW5jb2xfdnJpZW5kZWxpamsiKV0sIG5hLnJtID0gVFJVRSkNCg0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5jb2xfc2NhbGUpDQoNCk5FQTIwMjIkc3RldW5jb2xfUiA8LSBhcy5udW1lcmljKGZhY3RvcihORUEyMDIyJHN0ZXVuY29sX3NjYWxlKSkNCk5FQTIwMjIkc3RldW5jb2xfUltORUEyMDIyJHN0ZXVuY29sX1IgPT0gIjgiXSA8LSBOQQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5jb2xfUikNCg0KI1JvdW5kaW5nIHRvIGEgZm91ci1wb2ludCBzY2FsZQ0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc3RldW5jb2xfUlIgPSBjYXNlX3doZW4oDQogICAgc3RldW5jb2xfc2NhbGUgJWluJSBjKDEpIH4gMSwNCiAgICBzdGV1bmNvbF9zY2FsZSAlaW4lIGMoMS41LCAyKSB+IDIsDQogICAgc3RldW5jb2xfc2NhbGUgJWluJSBjKDIuNSwgMykgfiAzLA0KICAgIHN0ZXVuY29sX3NjYWxlICVpbiUgYygzLjUsIDQpIH4gNCwNCiAgICBUUlVFIH4gTkFfcmVhbF8NCiAgKSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVuY29sX1JSKQ0KDQojIENvcnJlbGF0aW9uIG9yaWdpbmFsIGFuZCByb3VuZGVkIHNjYWxlDQpjb3IoTkVBMjAyMiRzdGV1bmNvbF9zY2FsZSwgTkVBMjAyMiRzdGV1bmNvbF9SUiwgdXNlID0gImNvbXBsZXRlLm9icyIpDQpgYGANCg0KIyMgUHN5Y2hvbG9naWNhbCB1bnNhZmV0eQ0KDQpgYGB7ciBwc3ljaCwgY2FjaGU9VFJVRX0NCiNQc3ljaG9sb2dpY2FsIHVuc2FmZXR5OiBhdCBteSB3b3JrcGxhY2UgaXQgaXMgcG9zc2libGUgdG8gcmFpc2UgZGlmZmljdWx0IHF1ZXN0aW9ucw0KDQpORUEyMDIyJHBzeXZlaWxfbGFzdCA8LSBhcy5udW1lcmljKE5FQTIwMjIkcHN5dmVpbF8pDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRwc3l2ZWlsXykNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBzeXZlaWxfbGFzdCkNCg0KI1BzeWNob2xvZ2ljYWwgdW5zYWZldHk6IGF0IG15IHdvcmtwbGFjZSBpdCBpcyBlYXN5IHRvIGFzayBmb3IgaGVscA0KDQpORUEyMDIyJHBzeXZlaWxfaHVscCA8LSBhcy5udW1lcmljKE5FQTIwMjIkcHN5dmVpXzEpDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRwc3l2ZWlfMSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBzeXZlaWxfaHVscCkNCg0KI1BzeWNob2xvZ2ljYWwgdW5zYWZldHk6IGF0IG15IHdvcmtwbGFjZSBpdCBpcyBva2F5IHRvIG1ha2UgYSBtaXN0YWtlDQoNCk5FQTIwMjIkcHN5dmVpbF9mb3V0IDwtIGFzLm51bWVyaWMoTkVBMjAyMiRwc3l2ZWlfMikNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBzeXZlaV8yKQ0Kc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcHN5dmVpbF9mb3V0KQ0KDQojQ3JvbmJhY2gncyBhbHBoYQ0KDQpwc3l2ZWlsIDwtIGRhdGEuZnJhbWUoDQogIHBzeXZlaWxfbGFzdCA9IE5FQTIwMjIkcHN5dmVpbF9sYXN0LA0KICBwc3l2ZWlsX2h1bHAgPSBORUEyMDIyJHBzeXZlaWxfaHVscCwNCiAgcHN5dmVpbF9mb3V0ID0gTkVBMjAyMiRwc3l2ZWlsX2ZvdXQNCikNCg0KYWxwaGFfcmVzdWx0MyA8LSBhbHBoYShwc3l2ZWlsLCB1c2U9InBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpDQpwcmludChhbHBoYV9yZXN1bHQzJHRvdGFsJHJhd19hbHBoYSkNCg0KIyBNYWtpbmcgYSBtZWFuIHNjYWxlDQoNCk5FQTIwMjIkcHN5dmVpbF9zY2FsZSA8LSByb3dNZWFucyhORUEyMDIyW2MoInBzeXZlaWxfbGFzdCIsICJwc3l2ZWlsX2h1bHAiLCAicHN5dmVpbF9mb3V0IildLCBuYS5ybSA9IFRSVUUpDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBzeXZlaWxfc2NhbGUpDQoNCk5FQTIwMjIkcHN5dmVpbF9SIDwtIGFzLm51bWVyaWMoZmFjdG9yKE5FQTIwMjIkcHN5dmVpbF9zY2FsZSkpDQoNCk5FQTIwMjIkcHN5dmVpbF9SW05FQTIwMjIkcHN5dmVpbF9SID09ICIxOCJdIDwtIE5BDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRwc3l2ZWlsX1IpDQoNCiMgUm91bmRpbmcgdG8gYSBmaXZlLXBvaW50IHNjYWxlDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHBzeXZlaWxfUlIgPSBjYXNlX3doZW4oDQogICAgcHN5dmVpbF9SICVpbiUgYygxLCAyKSB+IDEsDQogICAgcHN5dmVpbF9SICVpbiUgYygzLCA0LCA1LCA2KSB+IDIsDQogICAgcHN5dmVpbF9SICVpbiUgYyg3LCA4LCA5LCAxMCkgfiAzLA0KICAgIHBzeXZlaWxfUiAlaW4lIGMoMTEsIDEyLCAxMywgMTQpIH4gNCwNCiAgICBwc3l2ZWlsX1IgJWluJSBjKDE1LCAxNiwgMTcpIH4gNSwNCiAgICBUUlVFIH4gTkFfcmVhbF8NCiAgKSkNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBzeXZlaWxfUlIpDQoNCiMgQ29ycmVsYXRpb24gb3JpZ2luYWwgYW5kIHJvdW5kZWQgc2NhbGUNCmNvcihORUEyMDIyJHBzeXZlaWxfc2NhbGUsIE5FQTIwMjIkcHN5dmVpbF9SUiwgdXNlID0gImNvbXBsZXRlLm9icyIpDQpgYGANCg0KDQojIyBBZ2UNCg0KPGJyPjxicj4gKipSZWNvZGVuIGxvdyAoMTUtMzUpLCBtaWRkbGUgKDM1LTU1KSwgb2xkICg1NS03NSkqKg0KDQpgYGB7ciBhZ2UsIGNhY2hlPVRSVUV9DQoNCk5FQTIwMjIkbGZ0X251bSA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2xmdGMpDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGxlZWZ0aWpkID0gY2FzZV93aGVuKA0KICAgIGxmdF9udW0gJWluJSBjKDEsIDIpIH4gMSwNCiAgICBsZnRfbnVtICVpbiUgYygzLCA0KSB+IDIsDQogICAgbGZ0X251bSAlaW4lIGMoNSwgNikgfiAzLA0KICAgIFRSVUUgfiBOQV9yZWFsXw0KICApKQ0KDQpORUEyMDIyJGxlZWZ0aWpkXyA8LSBmYWN0b3IoTkVBMjAyMiRsZWVmdGlqZCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVscyA9IGMoMSwgMiwgMyksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsYWJlbHMgPSBjKCIxNS4zNSIsICIzNS41NSIsICI1NS43NSIpKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRhZmxfbGZ0YykNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGxlZWZ0aWpkXykNCg0KYGBgDQoNCiMjIEludGVyc2VjdGlvbnMNCg0KPGJyPjxicj4gKipQcmVwYXJpbmcgdmFyaWFibGVzIGZvciBpbnRlcnNlY3Rpb25zKioNCg0KYGBge3IgaW50ZXJzZWN0aW9ucywgY2FjaGU9VFJVRX0NCiMgRWFzaWVyIGxhYmVscw0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoZ2VuZGVyID0gcmVjb2RlKG1fdiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAibWFuIiA9ICJtIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAidnJvdXciID0gInYiKSkNCg0KdGFibGUoTkVBMjAyMiR2cmxsYW5kZCkNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKG1pZ3JhdGlvbiA9IHJlY29kZSh2cmxsYW5kZCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiTmVkZXJsYW5kIiA9ICJubCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkV1cm9wYSAoZXhjbHVzaWVmIE5lZGVybGFuZCkiID0gImV1IiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiQnVpdGVuIEV1cm9wYSIgPSAibm9ldSIpKQ0KdGFibGUoTkVBMjAyMiRhZmxfc29pMykNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGVkdWNhdGlvbiA9IHJlY29kZShhZmxfc29pMywNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAibGFhZyBvcGxlaWRpbmdzbml2ZWF1IiA9ICJsYWFnIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAibWlkZGVsYmFhciBvcGxlaWRpbmdzbml2ZWF1IiA9ICJtaWRkZWwiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJob29nIG9wbGVpZGluZ3NuaXZlYXUiID0gImhvb2ciKSkNCg0KTkVBMjAyMiRlZHVjYXRpb25bTkVBMjAyMiRlZHVjYXRpb24gPT0gIm9uYmVrZW5kIl0gPC0gTkENCk5FQTIwMjIkZWR1Y2F0aW9uW05FQTIwMjIkbWlncmF0aW9uID09ICJPbmJla2VuZCJdIDwtIE5BDQoNCiMgRHJvcCB1bnVzZWQgbGV2ZWxzDQpsZXZlbHMoTkVBMjAyMiRtaWdyYXRpb24pDQpORUEyMDIyJG1pZ3JhdGlvbiA8LSBkcm9wbGV2ZWxzKE5FQTIwMjIkbWlncmF0aW9uKQ0KbGV2ZWxzKE5FQTIwMjIkbWlncmF0aW9uKQ0KDQpsZXZlbHMoTkVBMjAyMiRlZHVjYXRpb24pDQpORUEyMDIyJGVkdWNhdGlvbiA8LSBkcm9wbGV2ZWxzKE5FQTIwMjIkZWR1Y2F0aW9uKQ0KbGV2ZWxzKE5FQTIwMjIkZWR1Y2F0aW9uKQ0KDQpORUEyMDIyJGludGVyc2VjdGlvbnMgPC0gaW50ZXJhY3Rpb24oTkVBMjAyMiRnZW5kZXIsIE5FQTIwMjIkbWlncmF0aW9uLCBORUEyMDIyJGVkdWNhdGlvbiwgTkVBMjAyMiRsZWVmdGlqZF8pDQoNCnN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGludGVyc2VjdGlvbnMpDQpgYGANCg0KPGJyPjxicj4gKipDcmVhdGluZyBkdW1teSB2YXJpYWJsZXMqKg0KDQpgYGB7ciBkdW1taWVzLCBjYWNoZT1UUlVFfQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gImdlbmRlciIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gIm1pZ3JhdGlvbiIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gImVkdWNhdGlvbiIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gImxlZWZ0aWpkXyIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gImludGVyc2VjdGlvbnMiLCByZW1vdmVfZmlyc3RfZHVtbXkgPSBGQUxTRSkNCg0KZHVtbXlfY29sdW1ucyA8LSBncmVwKCJeaW50ZXJzZWN0aW9uc18iLCBjb2xuYW1lcyhORUEyMDIyKSwgdmFsdWUgPSBUUlVFKQ0KY29sbmFtZXMoTkVBMjAyMilbY29sbmFtZXMoTkVBMjAyMikgJWluJSBkdW1teV9jb2x1bW5zXSA8LSBnc3ViKCJeaW50ZXJzZWN0aW9uc18iLCAiIiwgZHVtbXlfY29sdW1ucykNCmBgYA0KYGBge3J9DQpzYXZlUkRTKE5FQTIwMjIsICJkYXRhL3Byb2Nlc3NlZC9kYXRhcHJlcC5yZHMiKQ0KYGBgDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByZXBhcmluZyBkYXRhc2V0Ig0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wNS0wNCINCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChjYWNoZSA9IFRSVUUpDQpgYGANCg0KDQojIFByZXBhcmluZyBkYXRhc2V0DQpgYGB7ciwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0NCmxpYnJhcnkoc3VtbWFyeXRvb2xzKQ0KbGlicmFyeShmb3JlaWduKQ0KbGlicmFyeShkcGx5cikNCmxpYnJhcnkocHN5Y2gpDQpsaWJyYXJ5KGZhc3REdW1taWVzKQ0KYGBgDQoNCmBgYHtyIGxvYWRpbmcgZGF0YSwgY2FjaGU9VFJVRSwgcmVzdWx0cz0naGlkZScsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQpORUFyYXcgPC1yZWFkLnNwc3MoImRhdGEvcmF3L0RhdGEgMjAxNC0yMDIyLnNhdiIsIHVzZS52YWx1ZS5sYWJlbHMgPSBULCB0by5kYXRhLmZyYW1lID0gVCkNCmBgYA0KDQoNCmBgYHtyIHNlbGVjdGluZyB5ZWFyIGNsdXN0ZXIsIGNhY2hlPVRSVUV9DQojIFNlbGVjdGluZyB5ZWFyIDIwMjIgYW5kIGNsdXN0ZXIgMQ0KTkVBMjAyMiA8LSBORUFyYXdbTkVBcmF3JGphYXIgPT0gIjIwMjIiLCBdDQoNCk5FQTIwMjIgPC0gTkVBMjAyMltORUEyMDIyJHNlX2NsdXN0ID09IDEsIF0NCmBgYA0KDQoNCmBgYHtyIG1pc3NpbmdzLCBjYWNoZT1UUlVFfQ0KIyBEZWxldGluZyBtaXNzaW5nIGNhc2VzIG9uIGVkdWNhdGlvbmFsIGxldmVsDQpORUEyMDIyJGFmbF9zb2kzW05FQTIwMjIkYWZsX3NvaTMgPT0gIm9uYmVrZW5kIl0gPC0gTkENCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBmaWx0ZXIoIWlzLm5hKGFmbF9zb2kzKSkNCmBgYA0KDQo8YnI+PGJyPg0KDQoNCiMgUmVjb2RpbmcgdmFyaWFibGVzDQoNCjxicj48YnI+DQoNCiMjIEJ1bGx5aW5nDQoNCjxicj48YnI+DQoNCiMjIyBDb3dvcmtlcnMNCg0KYGBge3IgYnVsIGNvdywgcmVzdWx0cz0nYXNpcycsIGNhY2hlPVRSVUV9DQoNCk5FQTIwMjIkcGVzdGVuX2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3BlXzEpDQoNCiMgMTogbm8sIG5ldmVyIChuaWV0KSwgMjogYSBmZXcgdGltZXMgKGVlbiBlbmtlbGUga2VlciksIDM6IG9mdGVuICh2YWFrKSwgYW5kIDQ6IHZlcnkgb2Z0ZW4gKHplZXIgdmFhaykgDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHBlc3Rlbl9jb2wgPSByZWNvZGUocGVzdGVuX2NvbCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCmYxIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9wZV8xKQ0KDQpmMiA8LSBzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRwZXN0ZW5fY29sKQ0KDQpjYXQoDQogIHByaW50KGYxLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSksDQogICJcblxuIiwNCiAgcHJpbnQoZjIsIGhlYWRpbmdzID0gVFJVRSwgcGxhaW4uYXNjaWkgPSBUUlVFKQ0KKQ0KDQpgYGANCg0KPGJyPjxicj4NCg0KIyMjIFN1cGVydmlzb3JzDQoNCmBgYHtyIGJ1bCBzdXAsIHJlc3VsdHM9J2FzaXMnLCBjYWNoZT1UUlVFfQ0KTkVBMjAyMiRwZXN0ZW5fbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX3BlXzIpDQoNCiMgMTogbm8sIG5ldmVyIChuaWV0KSwgMjogYSBmZXcgdGltZXMgKGVlbiBlbmtlbGUga2VlciksIDM6IG9mdGVuICh2YWFrKSwgYW5kIDQ6IHZlcnkgb2Z0ZW4gKHplZXIgdmFhaykgDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHBlc3Rlbl9sZWlkID0gcmVjb2RlKHBlc3Rlbl9sZWlkLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0KZjEgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX3BlXzIpDQoNCmYyIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBlc3Rlbl9sZWlkKQ0KDQpjYXQoDQogIHByaW50KGYxLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSksDQogICJcblxuIiwNCiAgcHJpbnQoZjIsIGhlYWRpbmdzID0gVFJVRSwgcGxhaW4uYXNjaWkgPSBUUlVFKQ0KKQ0KYGBgDQoNCjxicj48YnI+DQoNCiMjIEludGltaWRhdGlvbg0KDQo8YnI+PGJyPg0KDQojIyMgQ293b3JrZXJzDQoNCmBgYHtyIGludCBjb3csIHJlc3VsdHM9J2FzaXMnLCBjYWNoZT1UUlVFfQ0KDQpORUEyMDIyJGludGltaWRhdGlvbl9jb2wgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9iZV8xKQ0KDQojIDE6IG5vLCBuZXZlciAobmlldCksIDI6IGEgZmV3IHRpbWVzIChlZW4gZW5rZWxlIGtlZXIpLCAzOiBvZnRlbiAodmFhayksIGFuZCA0OiB2ZXJ5IG9mdGVuICh6ZWVyIHZhYWspIA0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShpbnRpbWlkYXRpb25fY29sID0gcmVjb2RlKGludGltaWRhdGlvbl9jb2wsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQpmMSA8LSBzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRhZmxfYmVfMSkNCg0KZjIgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkaW50aW1pZGF0aW9uX2NvbCkNCg0KY2F0KA0KICBwcmludChmMSwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpLA0KICAiXG5cbiIsDQogIHByaW50KGYyLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSkNCikNCg0KYGBgDQoNCjxicj48YnI+DQoNCiMjIyBTdXBlcnZpc29ycw0KDQpgYGB7ciBpbnQgc3VwLCByZXN1bHRzPSdhc2lzJywgY2FjaGU9VFJVRX0NCg0KTkVBMjAyMiRpbnRpbWlkYXRpb25fbGVpZCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2JlXzIpDQoNCiMgMTogbm8sIG5ldmVyIChuaWV0KSwgMjogYSBmZXcgdGltZXMgKGVlbiBlbmtlbGUga2VlciksIDM6IG9mdGVuICh2YWFrKSwgYW5kIDQ6IHZlcnkgb2Z0ZW4gKHplZXIgdmFhaykgDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGludGltaWRhdGlvbl9sZWlkID0gcmVjb2RlKGludGltaWRhdGlvbl9sZWlkLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0KZjEgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX2JlXzIpDQoNCmYyIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGludGltaWRhdGlvbl9sZWlkKQ0KDQpjYXQoDQogIHByaW50KGYxLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSksDQogICJcblxuIiwNCiAgcHJpbnQoZjIsIGhlYWRpbmdzID0gVFJVRSwgcGxhaW4uYXNjaWkgPSBUUlVFKQ0KKQ0KDQpgYGANCjxicj48YnI+DQoNCiMjIFBoeXNpY2FsIHZpb2xlbmNlDQoNCjxicj48YnI+DQoNCiMjIyBDb3dvcmtlcnMNCg0KYGBge3IgdmlvIGNvdywgcmVzdWx0cz0nYXNpcycsIGNhY2hlPVRSVUV9DQoNCk5FQTIwMjIkZ2V3ZWxkX2NvbCA8LSBhcy5udW1lcmljKE5FQTIwMjIkYWZsX2dlXzMpDQoNCiMgMTogbm8sIG5ldmVyIChuaWV0KSwgMjogYSBmZXcgdGltZXMgKGVlbiBlbmtlbGUga2VlciksIDM6IG9mdGVuICh2YWFrKSwgYW5kIDQ6IHZlcnkgb2Z0ZW4gKHplZXIgdmFhaykgDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGdld2VsZF9jb2wgPSByZWNvZGUoZ2V3ZWxkX2NvbCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCmYxIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9nZV8zKQ0KDQpmMiA8LSBzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRnZXdlbGRfY29sKQ0KDQpjYXQoDQogIHByaW50KGYxLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSksDQogICJcblxuIiwNCiAgcHJpbnQoZjIsIGhlYWRpbmdzID0gVFJVRSwgcGxhaW4uYXNjaWkgPSBUUlVFKQ0KKQ0KDQpgYGANCg0KDQo8YnI+PGJyPg0KDQojIyMgU3VwZXJ2aXNvcnMNCg0KYGBge3IgdmlvIHN1cCwgcmVzdWx0cz0nYXNpcycsIGNhY2hlPVRSVUV9DQoNCk5FQTIwMjIkZ2V3ZWxkX2xlaWQgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9nZV80KQ0KDQojIDE6IG5vLCBuZXZlciAobmlldCksIDI6IGEgZmV3IHRpbWVzIChlZW4gZW5rZWxlIGtlZXIpLCAzOiBvZnRlbiAodmFhayksIGFuZCA0OiB2ZXJ5IG9mdGVuICh6ZWVyIHZhYWspIA0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShnZXdlbGRfbGVpZCA9IHJlY29kZShnZXdlbGRfbGVpZCwgYDFgID0gMiwgYDJgID0gMywgYDNgID0gNCwgYDRgID0gMSkpDQoNCmYxIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGFmbF9nZV80KQ0KDQpmMiA8LSBzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRnZXdlbGRfbGVpZCkNCg0KY2F0KA0KICBwcmludChmMSwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpLA0KICAiXG5cbiIsDQogIHByaW50KGYyLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSkNCikNCmBgYA0KPGJyPjxicj4NCg0KIyMgVW53YW50ZWQgc2V4dWFsIGF0dGVudGlvbg0KDQo8YnI+PGJyPg0KDQojIyMgQ293b3JrZXJzDQoNCmBgYHtyIHNleCBjb3csIHJlc3VsdHM9J2FzaXMnLCBjYWNoZT1UUlVFfQ0KDQpORUEyMDIyJHNla3NfY29sIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRhZmxfc2VfMSkNCg0KIyAxOiBubywgbmV2ZXIgKG5pZXQpLCAyOiBhIGZldyB0aW1lcyAoZWVuIGVua2VsZSBrZWVyKSwgMzogb2Z0ZW4gKHZhYWspLCBhbmQgNDogdmVyeSBvZnRlbiAoemVlciB2YWFrKSANCg0KTkVBMjAyMiA8LSBORUEyMDIyICU+JQ0KICBtdXRhdGUoc2Vrc19jb2wgPSByZWNvZGUoc2Vrc19jb2wsIGAxYCA9IDIsIGAyYCA9IDMsIGAzYCA9IDQsIGA0YCA9IDEpKQ0KDQpmMSA8LSBzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRhZmxfc2VfMSkNCg0KZjIgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc2Vrc19jb2wpDQoNCmNhdCgNCiAgcHJpbnQoZjEsIGhlYWRpbmdzID0gVFJVRSwgcGxhaW4uYXNjaWkgPSBUUlVFKSwNCiAgIlxuXG4iLA0KICBwcmludChmMiwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpDQopDQpgYGANCg0KPGJyPjxicj4NCg0KIyMjIFN1cGVydmlzb3JzDQoNCmBgYHtyIHNleCBzdXAsIHJlc3VsdHM9J2FzaXMnLCBjYWNoZT1UUlVFfQ0KTkVBMjAyMiRzZWtzX2xlaWQgPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9zZV8yKQ0KDQojIDE6IG5vLCBuZXZlciAobmlldCksIDI6IGEgZmV3IHRpbWVzIChlZW4gZW5rZWxlIGtlZXIpLCAzOiBvZnRlbiAodmFhayksIGFuZCA0OiB2ZXJ5IG9mdGVuICh6ZWVyIHZhYWspIA0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzZWtzX2xlaWQgPSByZWNvZGUoc2Vrc19sZWlkLCBgMWAgPSAyLCBgMmAgPSAzLCBgM2AgPSA0LCBgNGAgPSAxKSkNCg0KZjEgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX3NlXzIpDQoNCmYyIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHNla3NfbGVpZCkNCg0KY2F0KA0KICBwcmludChmMSwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpLA0KICAiXG5cbiIsDQogIHByaW50KGYyLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSkNCikNCg0KYGBgDQoNCjxicj48YnI+DQoNCiMjIENvbmZsaWN0DQoNCjxicj48YnI+DQoNCiMjIyBDb3dvcmtlcnMNCg0KYGBge3IgY29uIGNvdywgcmVzdWx0cz0nYXNpcycsIGNhY2hlPVRSVUV9DQoNCk5FQTIwMjIkY29uZmxpY3RfY29sIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRjb25mbGljdCkNCg0KZjEgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkY29uZmxpY3QpDQoNCmYyIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGNvbmZsaWN0X2NvbCkNCg0KY2F0KA0KICBwcmludChmMSwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpLA0KICAiXG5cbiIsDQogIHByaW50KGYyLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSkNCikNCmBgYA0KDQo8YnI+PGJyPg0KDQojIyMgU3VwZXJ2aXNvcnMNCg0KYGBge3IgY29uIHN1cCwgcmVzdWx0cz0nYXNpcycsIGNhY2hlPVRSVUV9DQpORUEyMDIyJGNvbmZsaWN0X2xlaWQgPC0gYXMubnVtZXJpYyhORUEyMDIyJGNvbmZsaV8xKQ0KDQpmMSA8LSBzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRjb25mbGlfMSkNCg0KZjIgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkY29uZmxpY3RfbGVpZCkNCg0KY2F0KA0KICBwcmludChmMSwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpLA0KICAiXG5cbiIsDQogIHByaW50KGYyLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSkNCikNCmBgYA0KPGJyPjxicj4NCg0KIyMgSW5jaXZpbGl0eQ0KDQo8YnI+PGJyPg0KDQojIyMgQ293b3JrZXJzDQoNCmBgYHtyIGluYyBjb3csIHJlc3VsdHM9J2FzaXMnLCBjYWNoZT1UUlVFfQ0KI1NvY2lhbCBzdXBwb3J0IGNvd29ya2VyczogbXkgY28td29ya2VycyB0YWtlIHBlcnNvbmFsIGludGVyZXN0IGluIG1lDQoNCk5FQTIwMjIkY29sbGVnYV9bTkVBMjAyMiRjb2xsZWdhXyA9PSAibnZ0Il0gPC0gTkENCg0KTkVBMjAyMiRzdGV1bmNvbF9iZWxhbmcgPC0gYXMubnVtZXJpYyhORUEyMDIyJGNvbGxlZ2FfKQ0KDQoNCiNSZXZlcnNlIGNvZGluZw0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShzdGV1bmNvbF9iZWxhbmcgPSByZWNvZGUoc3RldW5jb2xfYmVsYW5nLCBgMWAgPSA0LCBgMmAgPSAzLCBgM2AgPSAyLCBgNGAgPSAxKSkNCg0KZjEgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkY29sbGVnYV8pDQoNCmYyIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVuY29sX2JlbGFuZykNCg0KY2F0KA0KICBwcmludChmMSwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpLA0KICAiXG5cbiIsDQogIHByaW50KGYyLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSkNCikNCg0KI1NvY2lhbCBzdXBwb3J0IGNvd29ya2VyczogbXkgY293b3JrZXJzIGFyZSBmcmllbmRseQ0KDQpORUEyMDIyJGNvbGxlZ18xW05FQTIwMjIkY29sbGVnXzEgPT0gIm52dCJdIDwtIE5BDQoNCk5FQTIwMjIkc3RldW5jb2xfdnJpZW5kZWxpamsgPC0gYXMubnVtZXJpYyhORUEyMDIyJGNvbGxlZ18xKQ0KDQojUmV2ZXJzZSBjb2RpbmcgdGhlIHNjYWxlDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHN0ZXVuY29sX3ZyaWVuZGVsaWprID0gcmVjb2RlKHN0ZXVuY29sX3ZyaWVuZGVsaWprLCBgMWAgPSA0LCBgMmAgPSAzLCBgM2AgPSAyLCBgNGAgPSAxKSkNCg0KZjEgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkY29sbGVnXzEpDQoNCmYyIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVuY29sX3ZyaWVuZGVsaWprKQ0KDQpjYXQoDQogIHByaW50KGYxLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSksDQogICJcblxuIiwNCiAgcHJpbnQoZjIsIGhlYWRpbmdzID0gVFJVRSwgcGxhaW4uYXNjaWkgPSBUUlVFKQ0KKQ0KDQojQ3JvbmJhY2gncyBhbHBoYQ0KDQpzdGV1bmNvbCA8LSBkYXRhLmZyYW1lKA0KICBzdGV1bmNvbF9iZWxhbmcgPSBORUEyMDIyJHN0ZXVuY29sX2JlbGFuZywNCiAgc3RldW5jb2xfdnJpZW5kZWxpamsgPSBORUEyMDIyJHN0ZXVuY29sX3ZyaWVuZGVsaWprDQopDQoNCmFscGhhX3Jlc3VsdDIgPC0gYWxwaGEoc3RldW5jb2wsIHVzZSA9ICJwYWlyd2lzZS5jb21wbGV0ZS5vYnMiKQ0KDQpjb3Jfc3BlYXJtYW4gPC0gY29yKE5FQTIwMjIkc3RldW5jb2xfYmVsYW5nLCBORUEyMDIyJHN0ZXVuY29sX3ZyaWVuZGVsaWprLA0KICAgICAgICAgICAgICAgICAgICB1c2UgPSAiY29tcGxldGUub2JzIiwgbWV0aG9kID0gInNwZWFybWFuIikNCmNvcl9wZWFyc29uICA8LSBjb3IoTkVBMjAyMiRzdGV1bmNvbF9iZWxhbmcsIE5FQTIwMjIkc3RldW5jb2xfdnJpZW5kZWxpamssDQogICAgICAgICAgICAgICAgICAgIHVzZSA9ICJjb21wbGV0ZS5vYnMiLCBtZXRob2QgPSAicGVhcnNvbiIpDQoNCmNhdCgNCiAgIkNyb25iYWNoJ3MgYWxwaGEgKHJhdyk6ICIsIHJvdW5kKGFscGhhX3Jlc3VsdDIkdG90YWwkcmF3X2FscGhhLCAzKSwgIlxuIiwNCiAgIlNwZWFybWFuIGNvcnJlbGF0aW9uOiAiLCByb3VuZChjb3Jfc3BlYXJtYW4sIDMpLCAiXG4iLA0KICAiUGVhcnNvbiBjb3JyZWxhdGlvbjogIiwgcm91bmQoY29yX3BlYXJzb24sIDMpLCAiXG4iDQopDQoNCg0KI01ha2luZyBhIG1lYW4gc2NhbGUNCk5FQTIwMjIkc3RldW5jb2xfc2NhbGUgPC0gcm93TWVhbnMoTkVBMjAyMltjKCJzdGV1bmNvbF9iZWxhbmciLCAic3RldW5jb2xfdnJpZW5kZWxpamsiKV0sIG5hLnJtID0gVFJVRSkNCg0KTkVBMjAyMiRzdGV1bmNvbF9SIDwtIGFzLm51bWVyaWMoZmFjdG9yKE5FQTIwMjIkc3RldW5jb2xfc2NhbGUpKQ0KTkVBMjAyMiRzdGV1bmNvbF9SW05FQTIwMjIkc3RldW5jb2xfUiA9PSAiOCJdIDwtIE5BDQoNCiNSb3VuZGluZyB0byBhIGZvdXItcG9pbnQgc2NhbGUNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHN0ZXVuY29sX1JSID0gY2FzZV93aGVuKA0KICAgIHN0ZXVuY29sX3NjYWxlICVpbiUgYygxKSB+IDEsDQogICAgc3RldW5jb2xfc2NhbGUgJWluJSBjKDEuNSwgMikgfiAyLA0KICAgIHN0ZXVuY29sX3NjYWxlICVpbiUgYygyLjUsIDMpIH4gMywNCiAgICBzdGV1bmNvbF9zY2FsZSAlaW4lIGMoMy41LCA0KSB+IDQsDQogICAgVFJVRSB+IE5BX3JlYWxfDQogICkpDQpmMSA8LSBzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRzdGV1bmNvbF9zY2FsZSkNCg0KZjIgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5jb2xfUlIpDQoNCmNhdCgNCiAgcHJpbnQoZjEsIGhlYWRpbmdzID0gVFJVRSwgcGxhaW4uYXNjaWkgPSBUUlVFKSwNCiAgIlxuXG4iLA0KICBwcmludChmMiwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpDQopDQoNCiMgQ29ycmVsYXRpb24gb3JpZ2luYWwgYW5kIHJvdW5kZWQgc2NhbGUNCmNvcihORUEyMDIyJHN0ZXVuY29sX3NjYWxlLCBORUEyMDIyJHN0ZXVuY29sX1JSLCB1c2UgPSAiY29tcGxldGUub2JzIikNCmBgYA0KDQoNCjxicj48YnI+DQoNCiMjIyBTdXBlcnZpc29ycw0KDQpgYGB7ciBpbmMgc3VwLCByZXN1bHRzPSdhc2lzJywgY2FjaGU9VFJVRX0NCiNTb2NpYWwgc3VwcG9ydCBzdXBlcnZpc29yOiBteSBzdXBlcnZpc29yIHBheXMgYXR0ZW50aW9uIHRvIHRoZSB3ZWxsLWJlaW5nIG9mIHRoZSBzdGFmZiANCg0KTkVBMjAyMiRsZWlkaW5nX1tORUEyMDIyJGxlaWRpbmdfID09ICJudnQiXSA8LSBOQQ0KDQpORUEyMDIyJHN0ZXVubGVpZF93ZWx6aWpuIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRsZWlkaW5nXykNCg0KI1JldmVyc2UgY29kaW5nDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHN0ZXVubGVpZF93ZWx6aWpuID0gcmVjb2RlKHN0ZXVubGVpZF93ZWx6aWpuLCBgMWAgPSA0LCBgMmAgPSAzLCBgM2AgPSAyLCBgNGAgPSAxKSkNCg0KZjEgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkbGVpZGluZ18pDQoNCmYyIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHN0ZXVubGVpZF93ZWx6aWpuKQ0KDQpjYXQoDQogIHByaW50KGYxLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSksDQogICJcblxuIiwNCiAgcHJpbnQoZjIsIGhlYWRpbmdzID0gVFJVRSwgcGxhaW4uYXNjaWkgPSBUUlVFKQ0KKQ0KDQojU29jaWFsIHN1cHBvcnQgc3VwZXJ2aXNvcjogIG15IHN1cGVydmlzb3IgcGF5cyBhdHRlbnRpb24gdG8gd2hhdCBJIHNheQ0KDQpORUEyMDIyJGxlaWRpbl8xW05FQTIwMjIkbGVpZGluXzEgPT0gIm52dCJdIDwtIE5BDQoNCk5FQTIwMjIkc3RldW5sZWlkX2FhbmRhY2h0IDwtIGFzLm51bWVyaWMoTkVBMjAyMiRsZWlkaW5fMSkNCg0KI1JldmVyc2UgY29kaW5nDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHN0ZXVubGVpZF9hYW5kYWNodCA9IHJlY29kZShzdGV1bmxlaWRfYWFuZGFjaHQsIGAxYCA9IDQsIGAyYCA9IDMsIGAzYCA9IDIsIGA0YCA9IDEpKQ0KDQpmMSA8LSBzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRsZWlkaW5fMSkNCg0KZjIgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX2FhbmRhY2h0KQ0KDQpjYXQoDQogIHByaW50KGYxLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSksDQogICJcblxuIiwNCiAgcHJpbnQoZjIsIGhlYWRpbmdzID0gVFJVRSwgcGxhaW4uYXNjaWkgPSBUUlVFKQ0KKQ0KDQojQ3JvbmJhY2gncyBhbHBoYQ0KDQpzdGV1bmxlaWQgPC0gZGF0YS5mcmFtZSgNCiAgc3RldW5sZWlkX2FhbmRhY2h0ID0gTkVBMjAyMiRzdGV1bmxlaWRfYWFuZGFjaHQsDQogIHN0ZXVubGVpZF93ZWx6aWpuID0gTkVBMjAyMiRzdGV1bmxlaWRfd2Vsemlqbg0KKQ0KDQphbHBoYV9yZXN1bHQxIDwtIGFscGhhKHN0ZXVubGVpZCwgdXNlID0gInBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpDQoNCmNvcl9zcGVhcm1hbiA8LSBjb3IoTkVBMjAyMiRzdGV1bmxlaWRfYWFuZGFjaHQsIE5FQTIwMjIkc3RldW5sZWlkX3dlbHppam4sDQogICAgICAgICAgICAgICAgICAgIHVzZSA9ICJjb21wbGV0ZS5vYnMiLCBtZXRob2QgPSAic3BlYXJtYW4iKQ0KY29yX3BlYXJzb24gIDwtIGNvcihORUEyMDIyJHN0ZXVubGVpZF9hYW5kYWNodCwgTkVBMjAyMiRzdGV1bmxlaWRfd2VsemlqbiwNCiAgICAgICAgICAgICAgICAgICAgdXNlID0gImNvbXBsZXRlLm9icyIsIG1ldGhvZCA9ICJwZWFyc29uIikNCg0KY2F0KA0KICAiQ3JvbmJhY2gncyBhbHBoYSAocmF3KTogIiwgcm91bmQoYWxwaGFfcmVzdWx0MSR0b3RhbCRyYXdfYWxwaGEsIDMpLCAiXG4iLA0KICAiU3BlYXJtYW4gY29ycmVsYXRpb246ICIsIHJvdW5kKGNvcl9zcGVhcm1hbiwgMyksICJcbiIsDQogICJQZWFyc29uIGNvcnJlbGF0aW9uOiAiLCByb3VuZChjb3JfcGVhcnNvbiwgMyksICJcbiINCikNCg0KDQojTWFraW5nIGEgbWVhbiBzY2FsZQ0KDQpORUEyMDIyJHN0ZXVubGVpZF9zY2FsZSA8LSByb3dNZWFucyhORUEyMDIyW2MoInN0ZXVubGVpZF9hYW5kYWNodCIsICJzdGV1bmxlaWRfd2VsemlqbiIpXSwgbmEucm0gPSBUUlVFKQ0KDQpORUEyMDIyJHN0ZXVubGVpZF9SIDwtIGFzLm51bWVyaWMoZmFjdG9yKE5FQTIwMjIkc3RldW5sZWlkX3NjYWxlKSkNCk5FQTIwMjIkc3RldW5sZWlkX1JbTkVBMjAyMiRzdGV1bmxlaWRfUiA9PSAiOCJdIDwtIE5BDQoNCiNSb3VuZGluZyB0byBhIGZvdXItcG9pbnQgc2NhbGUNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHN0ZXVubGVpZF9SUiA9IGNhc2Vfd2hlbigNCiAgICBzdGV1bmxlaWRfc2NhbGUgJWluJSBjKDEpIH4gMSwNCiAgICBzdGV1bmxlaWRfc2NhbGUgJWluJSBjKDEuNSwgMikgfiAyLA0KICAgIHN0ZXVubGVpZF9zY2FsZSAlaW4lIGMoMi41LCAzKSB+IDMsDQogICAgc3RldW5sZWlkX3NjYWxlICVpbiUgYygzLjUsIDQpIH4gNCwNCiAgICBUUlVFIH4gTkFfcmVhbF8NCiAgKSkNCg0KZjEgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkc3RldW5sZWlkX3NjYWxlKQ0KDQpmMiA8LSBzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRzdGV1bmxlaWRfUlIpDQoNCmNhdCgNCiAgcHJpbnQoZjEsIGhlYWRpbmdzID0gVFJVRSwgcGxhaW4uYXNjaWkgPSBUUlVFKSwNCiAgIlxuXG4iLA0KICBwcmludChmMiwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpDQopDQoNCiNjb3JyZWxhdGlvbiBvcmlnaW5hbCBhbmQgcm91bmRlZCBzY2FsZQ0KY29yKE5FQTIwMjIkc3RldW5sZWlkX3NjYWxlLCBORUEyMDIyJHN0ZXVubGVpZF9SUiwgdXNlID0gImNvbXBsZXRlLm9icyIpDQpgYGANCg0KPGJyPjxicj4NCg0KIyMgUHN5Y2hvbG9naWNhbCB1bnNhZmV0eQ0KDQpgYGB7ciBwc3ljaCwgcmVzdWx0cz0nYXNpcycsIGNhY2hlPVRSVUV9DQojUHN5Y2hvbG9naWNhbCB1bnNhZmV0eTogYXQgbXkgd29ya3BsYWNlIGl0IGlzIHBvc3NpYmxlIHRvIHJhaXNlIGRpZmZpY3VsdCBxdWVzdGlvbnMNCg0KTkVBMjAyMiRwc3l2ZWlsX2xhc3QgPC0gYXMubnVtZXJpYyhORUEyMDIyJHBzeXZlaWxfKQ0KDQojUHN5Y2hvbG9naWNhbCB1bnNhZmV0eTogYXQgbXkgd29ya3BsYWNlIGl0IGlzIGVhc3kgdG8gYXNrIGZvciBoZWxwDQoNCk5FQTIwMjIkcHN5dmVpbF9odWxwIDwtIGFzLm51bWVyaWMoTkVBMjAyMiRwc3l2ZWlfMSkNCg0KI1BzeWNob2xvZ2ljYWwgdW5zYWZldHk6IGF0IG15IHdvcmtwbGFjZSBpdCBpcyBva2F5IHRvIG1ha2UgYSBtaXN0YWtlDQoNCk5FQTIwMjIkcHN5dmVpbF9mb3V0IDwtIGFzLm51bWVyaWMoTkVBMjAyMiRwc3l2ZWlfMikNCg0KZjEgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcHN5dmVpbF8pDQoNCmYyIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJHBzeXZlaV8xKQ0KDQpmMyA8LSBzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRwc3l2ZWlfMikNCg0KY2F0KA0KICBwcmludChmMSwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpLA0KICAiXG5cbiIsDQogIHByaW50KGYyLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSksDQogICJcblxuIiwNCiAgcHJpbnQoZjMsIGhlYWRpbmdzID0gVFJVRSwgcGxhaW4uYXNjaWkgPSBUUlVFKQ0KKQ0KDQojQ3JvbmJhY2gncyBhbHBoYQ0KDQpwc3l2ZWlsIDwtIGRhdGEuZnJhbWUoDQogIHBzeXZlaWxfbGFzdCA9IE5FQTIwMjIkcHN5dmVpbF9sYXN0LA0KICBwc3l2ZWlsX2h1bHAgPSBORUEyMDIyJHBzeXZlaWxfaHVscCwNCiAgcHN5dmVpbF9mb3V0ID0gTkVBMjAyMiRwc3l2ZWlsX2ZvdXQNCikNCg0KYWxwaGFfcmVzdWx0MyA8LSBhbHBoYShwc3l2ZWlsLCB1c2U9InBhaXJ3aXNlLmNvbXBsZXRlLm9icyIpDQpwcmludChhbHBoYV9yZXN1bHQzJHRvdGFsJHJhd19hbHBoYSkNCg0KIyBNYWtpbmcgYSBtZWFuIHNjYWxlDQoNCk5FQTIwMjIkcHN5dmVpbF9zY2FsZSA8LSByb3dNZWFucyhORUEyMDIyW2MoInBzeXZlaWxfbGFzdCIsICJwc3l2ZWlsX2h1bHAiLCAicHN5dmVpbF9mb3V0IildLCBuYS5ybSA9IFRSVUUpDQoNCk5FQTIwMjIkcHN5dmVpbF9SIDwtIGFzLm51bWVyaWMoZmFjdG9yKE5FQTIwMjIkcHN5dmVpbF9zY2FsZSkpDQoNCk5FQTIwMjIkcHN5dmVpbF9SW05FQTIwMjIkcHN5dmVpbF9SID09ICIxOCJdIDwtIE5BDQoNCiMgUm91bmRpbmcgdG8gYSBmaXZlLXBvaW50IHNjYWxlDQoNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKHBzeXZlaWxfUlIgPSBjYXNlX3doZW4oDQogICAgcHN5dmVpbF9SICVpbiUgYygxLCAyKSB+IDEsDQogICAgcHN5dmVpbF9SICVpbiUgYygzLCA0LCA1LCA2KSB+IDIsDQogICAgcHN5dmVpbF9SICVpbiUgYyg3LCA4LCA5LCAxMCkgfiAzLA0KICAgIHBzeXZlaWxfUiAlaW4lIGMoMTEsIDEyLCAxMywgMTQpIH4gNCwNCiAgICBwc3l2ZWlsX1IgJWluJSBjKDE1LCAxNiwgMTcpIH4gNSwNCiAgICBUUlVFIH4gTkFfcmVhbF8NCiAgKSkNCg0KZjEgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcHN5dmVpbF9zY2FsZSkNCg0KZjIgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkcHN5dmVpbF9SUikNCg0KY2F0KA0KICBwcmludChmMSwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpLA0KICAiXG5cbiIsDQogIHByaW50KGYyLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSkNCikNCg0KIyBDb3JyZWxhdGlvbiBvcmlnaW5hbCBhbmQgcm91bmRlZCBzY2FsZQ0KY29yKE5FQTIwMjIkcHN5dmVpbF9zY2FsZSwgTkVBMjAyMiRwc3l2ZWlsX1JSLCB1c2UgPSAiY29tcGxldGUub2JzIikNCmBgYA0KDQo8YnI+PGJyPg0KDQojIyBBZ2UNCg0KPGJyPjxicj4gKipSZWNvZGVuIGxvdyAoMTUtMzUpLCBtaWRkbGUgKDM1LTU1KSwgb2xkICg1NS03NSkqKg0KDQpgYGB7ciBhZ2UsIHJlc3VsdHM9J2FzaXMnLCBjYWNoZT1UUlVFfQ0KDQpORUEyMDIyJGxmdF9udW0gPC0gYXMubnVtZXJpYyhORUEyMDIyJGFmbF9sZnRjKQ0KDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShsZWVmdGlqZCA9IGNhc2Vfd2hlbigNCiAgICBsZnRfbnVtICVpbiUgYygxLCAyKSB+IDEsDQogICAgbGZ0X251bSAlaW4lIGMoMywgNCkgfiAyLA0KICAgIGxmdF9udW0gJWluJSBjKDUsIDYpIH4gMywNCiAgICBUUlVFIH4gTkFfcmVhbF8NCiAgKSkNCg0KTkVBMjAyMiRsZWVmdGlqZF8gPC0gZmFjdG9yKE5FQTIwMjIkbGVlZnRpamQsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBjKDEsIDIsIDMpLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWxzID0gYygiMTUuMzUiLCAiMzUuNTUiLCAiNTUuNzUiKSkNCg0KZjEgPC0gc3VtbWFyeXRvb2xzOjpmcmVxKE5FQTIwMjIkYWZsX2xmdGMpDQoNCmYyIDwtIHN1bW1hcnl0b29sczo6ZnJlcShORUEyMDIyJGxlZWZ0aWpkXykNCg0KY2F0KA0KICBwcmludChmMSwgaGVhZGluZ3MgPSBUUlVFLCBwbGFpbi5hc2NpaSA9IFRSVUUpLA0KICAiXG5cbiIsDQogIHByaW50KGYyLCBoZWFkaW5ncyA9IFRSVUUsIHBsYWluLmFzY2lpID0gVFJVRSkNCikNCg0KYGBgDQoNCjxicj48YnI+DQoNCiMjIEludGVyc2VjdGlvbnMNCg0KPGJyPjxicj4gKipQcmVwYXJpbmcgdmFyaWFibGVzIGZvciBpbnRlcnNlY3Rpb25zKioNCg0KYGBge3IgaW50ZXJzZWN0aW9ucywgcmVzdWx0cz0nYXNpcycsIGNhY2hlPVRSVUV9DQojIEVhc2llciBsYWJlbHMNCk5FQTIwMjIgPC0gTkVBMjAyMiAlPiUNCiAgbXV0YXRlKGdlbmRlciA9IHJlY29kZShtX3YsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIm1hbiIgPSAibSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInZyb3V3IiA9ICJ2IikpDQoNCnRhYmxlKE5FQTIwMjIkdnJsbGFuZGQpDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShtaWdyYXRpb24gPSByZWNvZGUodnJsbGFuZGQsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIk5lZGVybGFuZCIgPSAibmwiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJFdXJvcGEgKGV4Y2x1c2llZiBOZWRlcmxhbmQpIiA9ICJldSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkJ1aXRlbiBFdXJvcGEiID0gIm5vZXUiKSkNCnRhYmxlKE5FQTIwMjIkYWZsX3NvaTMpDQpORUEyMDIyIDwtIE5FQTIwMjIgJT4lDQogIG11dGF0ZShlZHVjYXRpb24gPSByZWNvZGUoYWZsX3NvaTMsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImxhYWcgb3BsZWlkaW5nc25pdmVhdSIgPSAibGFhZyIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIm1pZGRlbGJhYXIgb3BsZWlkaW5nc25pdmVhdSIgPSAibWlkZGVsIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiaG9vZyBvcGxlaWRpbmdzbml2ZWF1IiA9ICJob29nIikpDQoNCk5FQTIwMjIkZWR1Y2F0aW9uW05FQTIwMjIkZWR1Y2F0aW9uID09ICJvbmJla2VuZCJdIDwtIE5BDQpORUEyMDIyJGVkdWNhdGlvbltORUEyMDIyJG1pZ3JhdGlvbiA9PSAiT25iZWtlbmQiXSA8LSBOQQ0KDQojIERyb3AgdW51c2VkIGxldmVscw0KTkVBMjAyMiRtaWdyYXRpb24gPC0gZHJvcGxldmVscyhORUEyMDIyJG1pZ3JhdGlvbikNCg0KTkVBMjAyMiRlZHVjYXRpb24gPC0gZHJvcGxldmVscyhORUEyMDIyJGVkdWNhdGlvbikNCg0KTkVBMjAyMiRpbnRlcnNlY3Rpb25zIDwtIGludGVyYWN0aW9uKE5FQTIwMjIkZ2VuZGVyLCBORUEyMDIyJG1pZ3JhdGlvbiwgTkVBMjAyMiRlZHVjYXRpb24sIE5FQTIwMjIkbGVlZnRpamRfKQ0KDQpzdW1tYXJ5dG9vbHM6OmZyZXEoTkVBMjAyMiRpbnRlcnNlY3Rpb25zKQ0KYGBgDQoNCg0KPGJyPjxicj4gKipDcmVhdGluZyBkdW1teSB2YXJpYWJsZXMqKg0KDQpgYGB7ciBkdW1taWVzLCBjYWNoZT1UUlVFfQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gImdlbmRlciIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gIm1pZ3JhdGlvbiIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gImVkdWNhdGlvbiIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gImxlZWZ0aWpkXyIsIHJlbW92ZV9maXJzdF9kdW1teSA9IEZBTFNFKQ0KTkVBMjAyMiA8LSBkdW1teV9jb2xzKE5FQTIwMjIsIHNlbGVjdF9jb2x1bW5zID0gImludGVyc2VjdGlvbnMiLCByZW1vdmVfZmlyc3RfZHVtbXkgPSBGQUxTRSkNCg0KZHVtbXlfY29sdW1ucyA8LSBncmVwKCJeaW50ZXJzZWN0aW9uc18iLCBjb2xuYW1lcyhORUEyMDIyKSwgdmFsdWUgPSBUUlVFKQ0KY29sbmFtZXMoTkVBMjAyMilbY29sbmFtZXMoTkVBMjAyMikgJWluJSBkdW1teV9jb2x1bW5zXSA8LSBnc3ViKCJeaW50ZXJzZWN0aW9uc18iLCAiIiwgZHVtbXlfY29sdW1ucykNCmBgYA0KYGBge3J9DQpzYXZlUkRTKE5FQTIwMjIsICJkYXRhL3Byb2Nlc3NlZC9kYXRhcHJlcC5yZHMiKQ0KYGBgDQoNCg==</div>
 
 
 </div>

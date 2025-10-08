@@ -59,6 +59,7 @@ NEA2022$leeftijd <- factor(NEA2022$leeftijd,
                             levels = c("15.35", "35.55", "55.75"))
 ```
 
+<br><br>
 
 # Overall unsafety (class 6)
 
@@ -126,7 +127,7 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_6 - se_pred_6,
                     ymax = mean_pred_6 + se_pred_6),
                 width = 0,
@@ -141,6 +142,7 @@ ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability overall unsafety Model0",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -214,6 +216,7 @@ ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability overall unsafety Model1",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -373,6 +376,7 @@ df6 %>%
   )
 ```
 
+<br><br>
 
 # Supervisor unsafety (class 4)
 
@@ -425,7 +429,7 @@ summary_preds_4 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_4 - se_pred_4,
                     ymax = mean_pred_4 + se_pred_4),
                 width = 0,
@@ -440,6 +444,7 @@ ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability supervisor unsafety Model0",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -480,7 +485,7 @@ summary_preds_4 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_4 - se_pred_4,
                     ymax = mean_pred_4 + se_pred_4),
                 width = 0,
@@ -495,6 +500,7 @@ ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability supervisor unsafety Model1",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -653,6 +659,7 @@ df4 %>%
 
 ```
 
+<br><br>
 
 # Coworker unsafety (class 7)
 
@@ -705,7 +712,7 @@ summary_preds_7 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_7, aes(x = leeftijd, y = mean_pred_7, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_7 - se_pred_7,
                     ymax = mean_pred_7 + se_pred_7),
                 width = 0,
@@ -720,6 +727,7 @@ ggplot(summary_preds_7, aes(x = leeftijd, y = mean_pred_7, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability coworker unsafety Model0",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -760,7 +768,7 @@ summary_preds_7 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_7, aes(x = leeftijd, y = mean_pred_7, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_7 - se_pred_7,
                     ymax = mean_pred_7 + se_pred_7),
                 width = 0,
@@ -775,6 +783,7 @@ ggplot(summary_preds_7, aes(x = leeftijd, y = mean_pred_7, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability coworker unsafety Model1",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -933,6 +942,7 @@ df7 %>%
 
 ```
 
+<br><br>
 
 # Unsafe social climate (class 5)
 
@@ -986,7 +996,7 @@ summary_preds_5 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_5 - se_pred_5,
                     ymax = mean_pred_5 + se_pred_5),
                 width = 0,
@@ -1001,6 +1011,7 @@ ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability unsafe social climate Model0",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -1041,7 +1052,7 @@ summary_preds_5 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_5 - se_pred_5,
                     ymax = mean_pred_5 + se_pred_5),
                 width = 0,
@@ -1056,6 +1067,7 @@ ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability unsafe social climate Model1",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -1214,7 +1226,7 @@ df5 %>%
 
 ```
 
-
+<br><br>
 
 # Short-term conflict (class 1)
 
@@ -1266,7 +1278,7 @@ summary_preds_1 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
                     ymax = mean_pred_1 + se_pred_1),
                 width = 0,
@@ -1281,6 +1293,7 @@ ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability short-term conflict Model0",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -1321,7 +1334,7 @@ summary_preds_1 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
                     ymax = mean_pred_1 + se_pred_1),
                 width = 0,
@@ -1336,6 +1349,7 @@ ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability short-term conflict Model1",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -1494,8 +1508,9 @@ df1 %>%
 
 ```
 
+<br><br>
 
-# safe (class 2)
+# Safe (class 2)
 
 
 ```{r regression safe, cache=TRUE}
@@ -1546,7 +1561,7 @@ summary_preds_2 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_2 - se_pred_2,
                     ymax = mean_pred_2 + se_pred_2),
                 width = 0,
@@ -1561,6 +1576,7 @@ ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability safe Model0",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -1602,7 +1618,7 @@ summary_preds_2 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_2 - se_pred_2,
                     ymax = mean_pred_2 + se_pred_2),
                 width = 0,
@@ -1617,6 +1633,7 @@ ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability safe Model1",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -1776,6 +1793,7 @@ df2 %>%
 
 ```
 
+<br><br>
 
 # Highly safe (class 3)
 
@@ -1829,7 +1847,7 @@ summary_preds_3 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_3 - se_pred_3,
                     ymax = mean_pred_3 + se_pred_3),
                 width = 0,
@@ -1844,6 +1862,7 @@ ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability highly safe Model0",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -1884,7 +1903,7 @@ summary_preds_3 <- NEA2022 %>%
   )
 
 ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_3 - se_pred_3,
                     ymax = mean_pred_3 + se_pred_3),
                 width = 0,
@@ -1899,6 +1918,7 @@ ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
              switch = "y"
   ) +
   labs(
+    title = "Predicted probability highly safe Model1",
     y = NULL,
     x = NULL,
     color = "Gender"

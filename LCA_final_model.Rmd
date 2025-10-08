@@ -43,6 +43,7 @@ library("klippy")
 library("dplyr")
 library("haven")
 library("psych")
+library("summarytools")
 ```
 
 
@@ -76,7 +77,11 @@ items_emp <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 <br><br> Steuncol_RR: **My co-workers take personal interest in me.** **My co-workers are friendly.** Mean score of the two items, rounded. (1) fully agree (2) agree (3) disagree (4) fully disagree
 <br><br> Psyveil_RR: **At my workplace it is possible to raise difficult questions.** **At my workplace it is easy to ask for help.** **At my workplace it is okay to make a mistake.** Mean score of the three items, rounded. (1) fully agree (2) agree (3) don't agree, don't disagree (4) disagree (5) fully disagree
 
+<br><br>
+
 # **Latent class analysis**
+
+<br><br>
 
 ## Model1
 
@@ -84,11 +89,15 @@ items_emp <- cbind(pesten_col, pesten_leid, intimidation_col, intimidation_leid,
 model1_emp <- poLCA(items_emp, data_emp, nclass = 1, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model2
 
 ```{r model2, cache=TRUE}
 model2_emp <- poLCA(items_emp, data_emp, nclass = 2, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+<br><br>
 
 ## Model3
 
@@ -96,11 +105,15 @@ model2_emp <- poLCA(items_emp, data_emp, nclass = 2, maxiter = 5000, nrep = 10, 
 model3_emp <- poLCA(items_emp, data_emp, nclass = 3, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model4
 
 ```{r model4, cache=TRUE}
 model4_emp <- poLCA(items_emp, data_emp, nclass = 4, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+<br><br>
 
 ## Model5
 
@@ -108,18 +121,23 @@ model4_emp <- poLCA(items_emp, data_emp, nclass = 4, maxiter = 5000, nrep = 10, 
 model5_emp <- poLCA(items_emp, data_emp, nclass = 5, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model6
 
 ```{r model6, cache=TRUE}
 model6_emp <- poLCA(items_emp, data_emp, nclass = 6, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model7
 
 ```{r model7, cache=TRUE}
 model7_emp <- poLCA(items_emp, data_emp, nclass = 7, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
-model7_emp
 ```
+
+<br><br>
 
 ## Model8
 
@@ -127,11 +145,15 @@ model7_emp
 model8_emp <- poLCA(items_emp, data_emp, nclass = 8, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model9
 
 ```{r model9, cache=TRUE}
 model9_emp <- poLCA(items_emp, data_emp, nclass = 9, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+<br><br>
 
 ## Model10
 
@@ -139,11 +161,15 @@ model9_emp <- poLCA(items_emp, data_emp, nclass = 9, maxiter = 5000, nrep = 10, 
 model10_emp <- poLCA(items_emp, data_emp, nclass = 10, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model11
 
 ```{r model11, cache=TRUE}
 model11_emp <- poLCA(items_emp, data_emp, nclass = 11, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+<br><br>
 
 ## Model12
 
@@ -151,17 +177,23 @@ model11_emp <- poLCA(items_emp, data_emp, nclass = 11, maxiter = 5000, nrep = 10
 model12_emp <- poLCA(items_emp, data_emp, nclass = 12, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model13
 
 ```{r model13, cache=TRUE}
 model13_emp <- poLCA(items_emp, data_emp, nclass = 13, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
 
+<br><br>
+
 ## Model14
 
 ```{r model14, cache=TRUE}
 model14_emp <- poLCA(items_emp, data_emp, nclass = 14, maxiter = 5000, nrep = 10, graphs=FALSE, na.rm = FALSE)
 ```
+
+<br><br>
 
 # Saving the models
 
@@ -483,16 +515,19 @@ for (i in seq_along(models)) {
 
 ```
 
+<br><br>
 
 # Class separation
 
 ```{r post prob}
 max_probs <- apply(model7_emppost, 1, max)
 
-mean(max_probs)
-median(max_probs)
-min(max_probs)
-max(max_probs)
+cat(
+  "Mean:   ", round(mean(max_probs, na.rm = TRUE), 4), "\n",
+  "Median: ", round(median(max_probs, na.rm = TRUE), 4), "\n",
+  "Min:    ", round(min(max_probs, na.rm = TRUE), 4), "\n",
+  "Max:    ", round(max(max_probs, na.rm = TRUE), 4), "\n"
+)
 
 K <- 7
 
@@ -525,93 +560,26 @@ poLCA.entropy <- function(model) {
   entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
   return(1 - entropy)
 }
-poLCA.entropy(model2_emp)
 
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model3_emp)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model4_emp)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model5_emp)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model6_emp)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model7_emp)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model8_emp)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model9_emp)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model10_emp)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model11_emp)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model12_emp)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model13_emp)
-
-poLCA.entropy <- function(model) {
-  P <- model$posterior
-  entropy <- sum(-P * log(P), na.rm=TRUE) / (nrow(P) * log(ncol(P)))
-  return(1 - entropy)
-}
-poLCA.entropy(model14_emp)
+cat(
+  "Entropy values for LCA models:\n",
+  "Model 2: ", round(poLCA.entropy(model2_emp), 4), "\n",
+  "Model 3: ", round(poLCA.entropy(model3_emp), 4), "\n",
+  "Model 4: ", round(poLCA.entropy(model4_emp), 4), "\n",
+  "Model 5: ", round(poLCA.entropy(model5_emp), 4), "\n",
+  "Model 6: ", round(poLCA.entropy(model6_emp), 4), "\n",
+  "Model 7: ", round(poLCA.entropy(model7_emp), 4), "\n",
+  "Model 8: ", round(poLCA.entropy(model8_emp), 4), "\n",
+  "Model 9: ", round(poLCA.entropy(model9_emp), 4), "\n",
+  "Model 10: ", round(poLCA.entropy(model10_emp), 4), "\n",
+  "Model 11: ", round(poLCA.entropy(model11_emp), 4), "\n",
+  "Model 12: ", round(poLCA.entropy(model12_emp), 4), "\n",
+  "Model 13: ", round(poLCA.entropy(model13_emp), 4), "\n",
+  "Model 14: ", round(poLCA.entropy(model14_emp), 4), "\n"
+)
 ```
 
+<br><br>
 
 # Plots
 
@@ -659,6 +627,7 @@ NEA2022 <- NEA2022 %>%
 
 ```
 
+<br><br>
 
 ## Model 4
 
@@ -730,6 +699,7 @@ ggplot(plot_data4, aes(x = indicator, y = mean_value,
 
 ```
 
+<br><br>
 
 ## Model5
 
@@ -806,6 +776,8 @@ ggplot(plot_data5, aes(x = indicator, y = mean_value,
   )
 
 ```
+
+<br><br>
 
 ## Model6
 
@@ -884,6 +856,8 @@ ggplot(plot_data6, aes(x = indicator, y = mean_value,
   )
 
 ```
+
+<br><br>
 
 ## Model7
 
@@ -967,6 +941,8 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
     legend.text = element_text(size = 13)
   )
 ```
+
+<br><br>
 
 ## Model8
 
@@ -1062,6 +1038,8 @@ ggplot(plot_data8, aes(x = indicator, y = mean_value,
 
 ```
 
+<br><br>
+
 ## Model9
 
 ```{r plot9}
@@ -1156,6 +1134,9 @@ ggplot(plot_data9, aes(x = indicator, y = mean_value,
   )
 
 ```
+
+<br><br>
+
 
 ```{r}
 saveRDS(NEA2022, "data/processed/lcafinal.rds")
