@@ -204,7 +204,7 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
-  geom_point() +   # geen position_dodge
+  geom_point() +
   geom_errorbar(aes(ymin = mean_pred_6 - se_pred_6,
                     ymax = mean_pred_6 + se_pred_6),
                 width = 0,

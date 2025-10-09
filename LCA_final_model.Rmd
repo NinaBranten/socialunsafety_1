@@ -492,6 +492,25 @@ Models_emp <- cbind (volgnumm, model3_emppred	,
 ```
 
 ```{r}
+NEA2022$pmodel7_empv1 <- pmodel7_empv1
+NEA2022$pmodel7_empv2 <- pmodel7_empv2
+NEA2022$pmodel7_empv3 <- pmodel7_empv3
+NEA2022$pmodel7_empv4 <- pmodel7_empv4
+NEA2022$pmodel7_empv5 <- pmodel7_empv5
+NEA2022$pmodel7_empv6 <- pmodel7_empv6
+NEA2022$pmodel7_empv7 <- pmodel7_empv7
+
+NEA2022$model3_emppred <- model3_emppred
+NEA2022$model4_emppred <- model4_emppred
+NEA2022$model5_emppred <- model5_emppred
+NEA2022$model6_emppred <- model6_emppred
+NEA2022$model7_emppred <- model7_emppred
+NEA2022$model8_emppred <- model8_emppred
+NEA2022$model9_emppred <- model9_emppred
+```
+
+
+```{r}
 models <- list(
   model3_emp, model4_emp, model5_emp, model6_emp, model7_emp,
   model8_emp, model9_emp, model10_emp, model11_emp, model12_emp,

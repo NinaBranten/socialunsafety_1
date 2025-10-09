@@ -26,7 +26,11 @@ navbar:
           href: MAIHDA_binary.html
         - text: "items separate"
           href: Items_seperate.html
-      
+        - text: "beta regression"
+          href: beta_models.html
+          
+          
+          
         # here, other .Rmds can be added
 
 

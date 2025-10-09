@@ -26,7 +26,7 @@ library("psych")
 <br><br> **Loading the data**
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022 <- readRDS("data/processed/dataprep.rds")
+NEA2022 <- readRDS("data/processed/lcafinal.rds")
 
 attach(NEA2022)
 set.seed(123)
@@ -461,6 +461,15 @@ Models_b <- cbind (volgnumm, model3_bpred	,
                  pmodel12_bv12 )
 ```
 
+```{r}
+NEA2022$pmodel7_bv1 <- pmodel7_bv1
+NEA2022$pmodel7_bv2 <- pmodel7_bv2
+NEA2022$pmodel7_bv3 <- pmodel7_bv3
+NEA2022$pmodel7_bv4 <- pmodel7_bv4
+NEA2022$pmodel7_bv5 <- pmodel7_bv5
+NEA2022$pmodel7_bv6 <- pmodel7_bv6
+NEA2022$pmodel7_bv7 <- pmodel7_bv7
+```
 
 ```{r}
 models_b <- list(
@@ -905,6 +914,8 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
     legend.text = element_text(size = 11)
   )
 ```
+
+
 <br><br>
 
 ## Model8
