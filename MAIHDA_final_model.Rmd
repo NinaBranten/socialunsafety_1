@@ -33,7 +33,8 @@ library("dplyr")
 ```
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022 <- readRDS("data/processed/LCAlist.rds")
+
+NEA2022 <- readRDS("data/processed/LCAfinal.rds")
 
 attach(NEA2022)
 set.seed(123)
@@ -80,10 +81,10 @@ L_6_m <- lmer(model7_6 ~ migration_eu + migration_noeu  + (1 | intersections), d
 
 L_6_e <- lmer(model7_6 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
 
-L_6_a <- lmer(model7_6 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+L_6_a <- lmer(model7_6 ~ leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 L_6_1 <- lmer(model7_6 ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 tab_model(L_6_0, L_6_g, L_6_m, L_6_e, L_6_a, L_6_1, p.style="stars")
 
@@ -135,7 +136,7 @@ ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
                     ymax = mean_pred_6 + se_pred_6),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -209,7 +210,7 @@ ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
                     ymax = mean_pred_6 + se_pred_6),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -399,10 +400,10 @@ L_4_m <- lmer(model7_4 ~ migration_eu + migration_noeu + (1 | intersections), da
 
 L_4_e <- lmer(model7_4 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
 
-L_4_a <- lmer(model7_4 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+L_4_a <- lmer(model7_4 ~ leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 L_4_1 <- lmer(model7_4 ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 tab_model(L_4_0, L_4_g, L_4_m, L_4_e, L_4_a, L_4_1, p.style="stars")
 
@@ -439,7 +440,7 @@ ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
                     ymax = mean_pred_4 + se_pred_4),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -495,7 +496,7 @@ ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
                     ymax = mean_pred_4 + se_pred_4),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -683,10 +684,10 @@ L_7_m <- lmer(model7_7 ~ migration_eu + migration_noeu  + (1 | intersections), d
 
 L_7_e <- lmer(model7_7 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
 
-L_7_a <- lmer(model7_7 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+L_7_a <- lmer(model7_7 ~ leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 L_7_1 <- lmer(model7_7 ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 tab_model(L_7_0, L_7_g, L_7_m, L_7_e, L_7_a, L_7_1, p.style="stars")
 
@@ -724,7 +725,7 @@ ggplot(summary_preds_7, aes(x = leeftijd, y = mean_pred_7, color = gender)) +
                     ymax = mean_pred_7 + se_pred_7),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -780,7 +781,7 @@ ggplot(summary_preds_7, aes(x = leeftijd, y = mean_pred_7, color = gender)) +
                     ymax = mean_pred_7 + se_pred_7),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -970,10 +971,10 @@ L_5_m <- lmer(model7_5 ~ migration_eu + migration_noeu  + (1 | intersections), d
 
 L_5_e <- lmer(model7_5 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
 
-L_5_a <- lmer(model7_5 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+L_5_a <- lmer(model7_5 ~ leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 L_5_1 <- lmer(model7_5 ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 tab_model(L_5_0, L_5_g, L_5_m, L_5_e, L_5_a, L_5_1, p.style="stars")
 
@@ -1010,7 +1011,7 @@ ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
                     ymax = mean_pred_5 + se_pred_5),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -1066,7 +1067,7 @@ ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
                     ymax = mean_pred_5 + se_pred_5),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -1256,10 +1257,10 @@ L_1_m <- lmer(model7_1 ~ migration_eu + migration_noeu + (1 | intersections), da
 
 L_1_e <- lmer(model7_1 ~ education_laag + education_middel + (1 | intersections), data=NEA2022)
 
-L_1_a <- lmer(model7_1 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+L_1_a <- lmer(model7_1 ~ leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 L_1_1 <- lmer(model7_1 ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 tab_model(L_1_0, L_1_g, L_1_m, L_1_e, L_1_a, L_1_1, p.style="stars")
 
@@ -1295,7 +1296,7 @@ ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
                     ymax = mean_pred_1 + se_pred_1),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -1351,7 +1352,7 @@ ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
                     ymax = mean_pred_1 + se_pred_1),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -1540,10 +1541,10 @@ L_2_m <- lmer(model7_2 ~ migration_eu + migration_noeu + (1 | intersections), da
 
 L_2_e <- lmer(model7_2 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
 
-L_2_a <- lmer(model7_2 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+L_2_a <- lmer(model7_2 ~ leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 L_2_1 <- lmer(model7_2 ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 tab_model(L_2_0, L_2_g, L_2_m, L_2_e, L_2_a, L_2_1, p.style="stars")
 
@@ -1580,7 +1581,7 @@ ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
                     ymax = mean_pred_2 + se_pred_2),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -1637,7 +1638,7 @@ ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
                     ymax = mean_pred_2 + se_pred_2),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -1828,10 +1829,10 @@ L_3_m <- lmer(model7_3 ~ migration_eu + migration_noeu + (1 | intersections), da
 
 L_3_e <- lmer(model7_3 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
 
-L_3_a <- lmer(model7_3 ~ leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+L_3_a <- lmer(model7_3 ~ leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 L_3_1 <- lmer(model7_3 ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections), data=NEA2022)
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
 
 tab_model(L_3_0, L_3_g, L_3_m, L_3_e, L_3_a, L_3_1, p.style="stars")
 
@@ -1868,7 +1869,7 @@ ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
                     ymax = mean_pred_3 + se_pred_3),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -1924,7 +1925,7 @@ ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
                     ymax = mean_pred_3 + se_pred_3),
                 width = 0,
                 alpha = 0.4,
-                size = 0.005
+                linewidth = 0.005
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(

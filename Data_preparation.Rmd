@@ -353,7 +353,7 @@ steuncol <- data.frame(
   steuncol_vriendelijk = NEA2022$steuncol_vriendelijk
 )
 
-alpha_result2 <- alpha(steuncol, use = "pairwise.complete.obs")
+alpha_result2 <- psych::alpha(steuncol)
 
 cor_spearman <- cor(NEA2022$steuncol_belang, NEA2022$steuncol_vriendelijk,
                     use = "complete.obs", method = "spearman")
@@ -578,7 +578,15 @@ cor(NEA2022$psyveil_scale, NEA2022$psyveil_RR, use = "complete.obs")
 
 <br><br> **Recoden low (15-35), middle (35-55), old (55-75)**
 
+
 ```{r age, results='asis', cache=TRUE}
+
+NEA2022$afl_lftc <- factor(
+  NEA2022$afl_lftc,
+  levels = c("15 tot 25 jaar", "25 tot 35 jaar", "35 tot 45 jaar",
+             "45 tot 55 jaar", "55 tot 65 jaar", "65 tot 75 jaar"),
+  ordered = TRUE
+)
 
 NEA2022$lft_num <- as.numeric(NEA2022$afl_lftc)
 
@@ -590,21 +598,21 @@ NEA2022 <- NEA2022 %>%
     TRUE ~ NA_real_
   ))
 
-NEA2022$leeftijd_ <- factor(NEA2022$leeftijd,
+NEA2022$leeftijd <- factor(NEA2022$leeftijd,
                                  levels = c(1, 2, 3),
                                  labels = c("15.35", "35.55", "55.75"))
 
 f1 <- summarytools::freq(NEA2022$afl_lftc)
 
-f2 <- summarytools::freq(NEA2022$leeftijd_)
+f2 <- summarytools::freq(NEA2022$leeftijd)
 
 cat(
   print(f1, headings = TRUE, plain.ascii = TRUE),
   "\n\n",
   print(f2, headings = TRUE, plain.ascii = TRUE)
 )
-
 ```
+
 
 <br><br>
 
@@ -640,7 +648,7 @@ NEA2022$migration <- droplevels(NEA2022$migration)
 
 NEA2022$education <- droplevels(NEA2022$education)
 
-NEA2022$intersections <- interaction(NEA2022$gender, NEA2022$migration, NEA2022$education, NEA2022$leeftijd_)
+NEA2022$intersections <- interaction(NEA2022$gender, NEA2022$migration, NEA2022$education, NEA2022$leeftijd)
 
 summarytools::freq(NEA2022$intersections)
 ```
@@ -652,12 +660,25 @@ summarytools::freq(NEA2022$intersections)
 NEA2022 <- dummy_cols(NEA2022, select_columns = "gender", remove_first_dummy = FALSE)
 NEA2022 <- dummy_cols(NEA2022, select_columns = "migration", remove_first_dummy = FALSE)
 NEA2022 <- dummy_cols(NEA2022, select_columns = "education", remove_first_dummy = FALSE)
-NEA2022 <- dummy_cols(NEA2022, select_columns = "leeftijd_", remove_first_dummy = FALSE)
+NEA2022 <- dummy_cols(NEA2022, select_columns = "leeftijd", remove_first_dummy = FALSE)
 NEA2022 <- dummy_cols(NEA2022, select_columns = "intersections", remove_first_dummy = FALSE)
 
 dummy_columns <- grep("^intersections_", colnames(NEA2022), value = TRUE)
 colnames(NEA2022)[colnames(NEA2022) %in% dummy_columns] <- gsub("^intersections_", "", dummy_columns)
 ```
+
+```{r age rename}
+NEA2022 <- NEA2022 %>%
+  mutate(
+    leeftijd_15_35 = `leeftijd_15.35`,
+    leeftijd_35_55 = `leeftijd_35.55`,
+    leeftijd_55_75 = `leeftijd_55.75`
+  )
+
+grep("leeftijd", names(NEA2022), value = TRUE)
+```
+
+
 ```{r}
 saveRDS(NEA2022, "data/processed/dataprep.rds")
 ```

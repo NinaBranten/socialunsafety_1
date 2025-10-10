@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2025-05-19" />
+
+<title>Multinomial</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="tweaks.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="Data_preparation.html">Data preparation</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    LCAs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="LCA_final_model.html">final model</a>
+    </li>
+    <li>
+      <a href="LCA_binair.html">binary</a>
+    </li>
+    <li>
+      <a href="LCA_listwise.html">listwise</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    MAIHDA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="MAIHDA_final_model.html">final model</a>
+    </li>
+    <li>
+      <a href="MAIHDA_binary.html">binary</a>
+    </li>
+    <li>
+      <a href="Items_seperate.html">items separate</a>
+    </li>
+    <li>
+      <a href="beta_models.html">beta</a>
+    </li>
+    <li>
+      <a href="Multinomial.html">multinomial</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ninabranten/socialunsafety_1">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Multinomial</h1>
+<h4 class="date">2025-05-19</h4>
+
+</div>
+
+
+<pre class="r"><code>library(&quot;formatR&quot;)
+library(&quot;foreign&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;lme4&quot;)
+library(&quot;poLCA&quot;)
+library(&quot;reprex&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;klippy&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;haven&quot;)
+library(&quot;psych&quot;)
+library(&quot;Matrix&quot;)
+library(&quot;lme4&quot;)
+library(&quot;merTools&quot;)
+library(&quot;sjPlot&quot;)
+library(&quot;glmmTMB&quot;)
+library(&quot;foreign&quot;)
+library(&quot;gt&quot;)
+library(&quot;tibble&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;brms&quot;)</code></pre>
+<p><br><br> <strong>Loading the data</strong></p>
+<pre class="r"><code>NEA2022 &lt;- readRDS(&quot;data/processed/LCAfinal.rds&quot;)
+
+set.seed(123)</code></pre>
+<pre class="r"><code>which(duplicated(names(NEA2022)))</code></pre>
+<pre><code>## integer(0)</code></pre>
+<pre class="r"><code>names(NEA2022)[duplicated(names(NEA2022))]</code></pre>
+<pre><code>## character(0)</code></pre>
+<pre class="r"><code>grep(&quot;leeftijd&quot;, names(NEA2022), value = TRUE)</code></pre>
+<pre><code>## [1] &quot;leeftijd&quot;       &quot;leeftijd_15.35&quot; &quot;leeftijd_35.55&quot; &quot;leeftijd_55.75&quot;
+## [5] &quot;leeftijd_15_35&quot; &quot;leeftijd_35_55&quot; &quot;leeftijd_55_75&quot;</code></pre>
+<p><br><br></p>
+<pre class="r"><code>NEA2022$pred_7_f &lt;- as.factor(NEA2022$model7_emppred)
+NEA2022$pred_7_f &lt;- relevel(NEA2022$pred_7_f, ref = &quot;3&quot;)
+table(NEA2022$pred_7_f)</code></pre>
+<pre><code>## 
+##     3     1     2     4     5     6     7 
+##  6091  2046 16868   548  3051   464   855</code></pre>
+<p><br><br></p>
+<div id="multinomial-multilevel-ref-highly-safe" class="section level1"
+number="1">
+<h1><span class="header-section-number">1</span> Multinomial multilevel
+(ref = highly safe)</h1>
+<p><br><br></p>
+<div id="model0" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Model0</h2>
+<p><br><br></p>
+<pre class="r"><code>brm_emp7_0 &lt;- brm(
+  formula = pred_7_f ~ 1 + (1 | intersections),
+  data = NEA2022,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)</code></pre>
+<pre><code>## Compiling Stan program...</code></pre>
+<pre><code>## Start sampling</code></pre>
+<pre class="r"><code>summary(brm_emp7_0)</code></pre>
+<pre><code>##  Family: categorical 
+##   Links: mu1 = logit; mu2 = logit; mu4 = logit; mu5 = logit; mu6 = logit; mu7 = logit 
+## Formula: pred_7_f ~ 1 + (1 | intersections) 
+##    Data: NEA2022 (Number of observations: 29923) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Group-Level Effects: 
+## ~intersections (Number of levels: 54) 
+##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(mu1_Intercept)     0.30      0.05     0.22     0.40 1.00     1167     1788
+## sd(mu2_Intercept)     0.14      0.03     0.09     0.19 1.00     1300     2498
+## sd(mu4_Intercept)     0.31      0.07     0.17     0.47 1.00     1347     2341
+## sd(mu5_Intercept)     0.27      0.04     0.21     0.36 1.00     1089     2027
+## sd(mu6_Intercept)     0.54      0.09     0.39     0.73 1.00     1368     2319
+## sd(mu7_Intercept)     0.25      0.06     0.14     0.37 1.00     1643     2081
+## 
+## Population-Level Effects: 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## mu1_Intercept    -1.06      0.06    -1.17    -0.94 1.00      956     1600
+## mu2_Intercept     1.04      0.03     0.98     1.09 1.00     1220     1995
+## mu4_Intercept    -2.39      0.07    -2.54    -2.25 1.00     1625     2409
+## mu5_Intercept    -0.57      0.05    -0.67    -0.47 1.00     1084     1994
+## mu6_Intercept    -2.42      0.10    -2.62    -2.22 1.00     1032     1754
+## mu7_Intercept    -1.90      0.06    -2.01    -1.78 1.00     1839     2483
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+<p><br><br></p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk11bHRpbm9taWFsIg0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wNS0xOSINCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQoNCmBgYHtyIGxvYWRpbmcgcGFja2FnZXMsIHdhcm5pbmc9RkFMU0UsIHJlc3VsdHM9J2hpZGUnLCBtZXNzYWdlPUZBTFNFfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmxpYnJhcnkoInBzeWNoIikNCmxpYnJhcnkoIk1hdHJpeCIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoIm1lclRvb2xzIikNCmxpYnJhcnkoInNqUGxvdCIpDQpsaWJyYXJ5KCJnbG1tVE1CIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ3QiKQ0KbGlicmFyeSgidGliYmxlIikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImJybXMiKQ0KYGBgDQoNCg0KPGJyPjxicj4gKipMb2FkaW5nIHRoZSBkYXRhKioNCg0KYGBge3IgbG9hZGluZyBkYXRhLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KTkVBMjAyMiA8LSByZWFkUkRTKCJkYXRhL3Byb2Nlc3NlZC9MQ0FmaW5hbC5yZHMiKQ0KDQpzZXQuc2VlZCgxMjMpDQpgYGANCg0KDQpgYGB7ciB0ZXN0LCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0Kd2hpY2goZHVwbGljYXRlZChuYW1lcyhORUEyMDIyKSkpDQpuYW1lcyhORUEyMDIyKVtkdXBsaWNhdGVkKG5hbWVzKE5FQTIwMjIpKV0NCg0KZ3JlcCgibGVlZnRpamQiLCBuYW1lcyhORUEyMDIyKSwgdmFsdWUgPSBUUlVFKQ0KYGBgDQoNCjxicj48YnI+DQoNCmBgYHtyIGZhY3RvciwgY2FjaGU9VFJVRX0NCk5FQTIwMjIkcHJlZF83X2YgPC0gYXMuZmFjdG9yKE5FQTIwMjIkbW9kZWw3X2VtcHByZWQpDQpORUEyMDIyJHByZWRfN19mIDwtIHJlbGV2ZWwoTkVBMjAyMiRwcmVkXzdfZiwgcmVmID0gIjMiKQ0KdGFibGUoTkVBMjAyMiRwcmVkXzdfZikNCmBgYA0KDQo8YnI+PGJyPg0KDQojIE11bHRpbm9taWFsIG11bHRpbGV2ZWwgKHJlZiA9IGhpZ2hseSBzYWZlKQ0KDQoNCjxicj48YnI+DQoNCiMjIE1vZGVsMA0KDQo8YnI+PGJyPg0KDQoNCmBgYHtyIG11bHRpbm9taWFsIG1vZGVsMCwgY2FjaGU9VFJVRX0NCmJybV9lbXA3XzAgPC0gYnJtKA0KICBmb3JtdWxhID0gcHJlZF83X2YgfiAxICsgKDEgfCBpbnRlcnNlY3Rpb25zKSwNCiAgZGF0YSA9IE5FQTIwMjIsDQogIGZhbWlseSA9IGNhdGVnb3JpY2FsKCksDQogIGNoYWlucyA9IDQsIGNvcmVzID0gMiwgaXRlciA9IDIwMDANCikNCg0Kc3VtbWFyeShicm1fZW1wN18wKQ0KYGBgDQoNCjxicj48YnI+DQoNCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("Multinomial.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

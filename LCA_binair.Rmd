@@ -26,7 +26,7 @@ library("psych")
 <br><br> **Loading the data**
 
 ```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022 <- readRDS("data/processed/lcafinal.rds")
+NEA2022 <- readRDS("data/processed/dataprep.rds")
 
 attach(NEA2022)
 set.seed(123)
@@ -35,8 +35,6 @@ set.seed(123)
 <br><br> **Recoding into binary variables**
 
 ```{r recoding binary, cache=TRUE}
-table(NEA2022$pesten_col)
-
 NEA2022 <- NEA2022 %>%
   mutate(bul_c = case_when(
     pesten_col == 1 ~ 1,
@@ -471,6 +469,8 @@ NEA2022$pmodel7_bv6 <- pmodel7_bv6
 NEA2022$pmodel7_bv7 <- pmodel7_bv7
 ```
 
+
+
 ```{r}
 models_b <- list(
   model3_b, model4_b, model5_b, model6_b, model7_b,
@@ -530,7 +530,7 @@ mean_posteriors
 ggplot(data.frame(max_probs = max_probs), aes(x = max_probs)) +
   geom_histogram(binwidth = 0.05, fill = "steelblue", color = "white") +
   geom_vline(aes(xintercept = mean(max_probs)), 
-             color = "red", linetype = "dashed", linewidth = 1) +
+             color = "red", linetype = "dashed", size = 1) +
   labs(title = "Distribution of maximum posterior probabilities",
        x = "Maximum posterior probability",
        y = "Number of respondents") +
@@ -656,7 +656,7 @@ indicator_labels <- c(
 
 ggplot(plot_data4, aes(x = indicator, y = mean_value,
                       color = class_label, group = class_label)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_point(size = 2) +
   scale_x_discrete(labels = indicator_labels) +
   scale_y_continuous(breaks = seq(0, 1, 0.1),
@@ -730,7 +730,7 @@ indicator_labels <- c(
 
 ggplot(plot_data5, aes(x = indicator, y = mean_value,
                        color = class_label, group = class_label)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_point(size = 2) +
   scale_x_discrete(labels = indicator_labels) +
   scale_y_continuous(breaks = seq(0, 1, 0.1),
@@ -806,7 +806,7 @@ indicator_labels <- c(
 
 ggplot(plot_data6, aes(x = indicator, y = mean_value,
                        color = class_label, group = class_label)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_point(size = 2) +
   scale_x_discrete(labels = indicator_labels) +
   scale_y_continuous(breaks = seq(0, 1, 0.1),
@@ -889,7 +889,7 @@ indicator_labels <- c(
 
 ggplot(plot_data7, aes(x = indicator, y = mean_value,
                       color = class_label, group = class_label)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_point(size = 2) +
   scale_x_discrete(labels = indicator_labels) +
   scale_y_continuous(breaks = seq(0, 1, 0.1),
@@ -970,7 +970,7 @@ indicator_labels <- c(
 
 ggplot(plot_data8, aes(x = indicator, y = mean_value,
                        color = class_label, group = class_label)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_point(size = 2) +
   scale_x_discrete(labels = indicator_labels) +
   scale_y_continuous(breaks = seq(0, 1, 0.1),
@@ -1052,7 +1052,7 @@ indicator_labels <- c(
 
 ggplot(plot_data9, aes(x = indicator, y = mean_value,
                        color = class_label, group = class_label)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_point(size = 2) +
   scale_x_discrete(labels = indicator_labels) +
   scale_y_continuous(breaks = seq(0, 1, 0.1),

@@ -84,7 +84,7 @@ flb_6_0 <- glmmTMB(pmodel7_empv6_T ~ 1 + (1 | intersections),
                   data = NEA2022)
 
 flb_6_1 <- glmmTMB(pmodel7_empv6_T ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections),
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
                   data = NEA2022)
 summary(flb_6_0)
@@ -234,7 +234,7 @@ flb_4_0 <- glmmTMB(pmodel7_empv4_T ~ 1 + (1 | intersections),
                   data = NEA2022)
 
 flb_4_1 <- glmmTMB(pmodel7_empv4_T ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections),
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
                   data = NEA2022)
 summary(flb_4_0)
@@ -383,7 +383,7 @@ flb_7_0 <- glmmTMB(pmodel7_empv7_T ~ 1 + (1 | intersections),
                   data = NEA2022)
 
 flb_7_1 <- glmmTMB(pmodel7_empv7_T ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections),
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
                   data = NEA2022)
 summary(flb_7_0)
@@ -530,7 +530,7 @@ flb_5_0 <- glmmTMB(pmodel7_empv5_T ~ 1 + (1 | intersections),
                   data = NEA2022)
 
 flb_5_1 <- glmmTMB(pmodel7_empv5_T ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections),
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
                   data = NEA2022)
 summary(flb_5_0)
@@ -678,7 +678,7 @@ flb_1_0 <- glmmTMB(pmodel7_empv1_T ~ 1 + (1 | intersections),
                   data = NEA2022)
 
 flb_1_1 <- glmmTMB(pmodel7_empv1_T ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections),
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
                   data = NEA2022)
 summary(flb_1_0)
@@ -825,7 +825,7 @@ flb_2_0 <- glmmTMB(pmodel7_empv2_T ~ 1 + (1 | intersections),
                   data = NEA2022)
 
 flb_2_1 <- glmmTMB(pmodel7_empv2_T ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections),
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
                   data = NEA2022)
 summary(flb_2_0)
@@ -972,7 +972,7 @@ flb_3_0 <- glmmTMB(pmodel7_empv3_T ~ 1 + (1 | intersections),
                   data = NEA2022)
 
 flb_3_1 <- glmmTMB(pmodel7_empv3_T ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd__35.55 + leeftijd__55.75  + (1 | intersections),
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections),
                   family = beta_family(link = "logit"),
                   data = NEA2022)
 summary(flb_3_0)
