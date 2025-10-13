@@ -464,9 +464,12 @@ number="1">
 <div id="model0" class="section level2" number="1.1">
 <h2><span class="header-section-number">1.1</span> Model0</h2>
 <p><br><br></p>
+<pre class="r"><code>attach(NEA2022)
+data_multi &lt;- data.frame(gender_v, migration_eu, migration_noeu, 
+    education_laag, education_middel, leeftijd_35_55, leeftijd_55_75, pred_7_f, intersections)</code></pre>
 <pre class="r"><code>brm_emp7_0 &lt;- brm(
   formula = pred_7_f ~ 1 + (1 | intersections),
-  data = NEA2022,
+  data = data_multi,
   family = categorical(),
   chains = 4, cores = 2, iter = 2000
 )</code></pre>
@@ -476,37 +479,47 @@ number="1">
 <pre><code>##  Family: categorical 
 ##   Links: mu1 = logit; mu2 = logit; mu4 = logit; mu5 = logit; mu6 = logit; mu7 = logit 
 ## Formula: pred_7_f ~ 1 + (1 | intersections) 
-##    Data: NEA2022 (Number of observations: 29923) 
+##    Data: data_multi (Number of observations: 29923) 
 ##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
 ##          total post-warmup draws = 4000
 ## 
 ## Group-Level Effects: 
 ## ~intersections (Number of levels: 54) 
 ##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sd(mu1_Intercept)     0.30      0.05     0.22     0.40 1.00     1167     1788
-## sd(mu2_Intercept)     0.14      0.03     0.09     0.19 1.00     1300     2498
-## sd(mu4_Intercept)     0.31      0.07     0.17     0.47 1.00     1347     2341
-## sd(mu5_Intercept)     0.27      0.04     0.21     0.36 1.00     1089     2027
-## sd(mu6_Intercept)     0.54      0.09     0.39     0.73 1.00     1368     2319
-## sd(mu7_Intercept)     0.25      0.06     0.14     0.37 1.00     1643     2081
+## sd(mu1_Intercept)     0.30      0.05     0.22     0.39 1.00     1247     1804
+## sd(mu2_Intercept)     0.14      0.03     0.09     0.19 1.00     1193     1985
+## sd(mu4_Intercept)     0.31      0.08     0.18     0.47 1.00     1512     2077
+## sd(mu5_Intercept)     0.27      0.04     0.20     0.36 1.00     1146     1951
+## sd(mu6_Intercept)     0.53      0.08     0.38     0.71 1.00     1632     2322
+## sd(mu7_Intercept)     0.25      0.06     0.14     0.37 1.00     1671     2638
 ## 
 ## Population-Level Effects: 
 ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## mu1_Intercept    -1.06      0.06    -1.17    -0.94 1.00      956     1600
-## mu2_Intercept     1.04      0.03     0.98     1.09 1.00     1220     1995
-## mu4_Intercept    -2.39      0.07    -2.54    -2.25 1.00     1625     2409
-## mu5_Intercept    -0.57      0.05    -0.67    -0.47 1.00     1084     1994
-## mu6_Intercept    -2.42      0.10    -2.62    -2.22 1.00     1032     1754
-## mu7_Intercept    -1.90      0.06    -2.01    -1.78 1.00     1839     2483
+## mu1_Intercept    -1.06      0.06    -1.17    -0.95 1.01     1082     1527
+## mu2_Intercept     1.04      0.03     0.98     1.09 1.00     1177     1692
+## mu4_Intercept    -2.39      0.07    -2.54    -2.25 1.00     1748     2339
+## mu5_Intercept    -0.57      0.05    -0.67    -0.47 1.00      977     1789
+## mu6_Intercept    -2.42      0.10    -2.61    -2.23 1.00     1196     1700
+## mu7_Intercept    -1.90      0.06    -2.01    -1.78 1.00     1661     2129
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p><br><br></p>
+<pre class="r"><code>brm_emp7_1 &lt;- brm(
+  formula = pred_7_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35_55 + leeftijd_55_75 +
+    (1 | intersections),
+  data = data_multi,
+  family = categorical(),
+  chains = 4, cores = 2, iter = 2000
+)</code></pre>
+<pre><code>## Compiling Stan program...</code></pre>
+<pre><code>## Start sampling</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIk11bHRpbm9taWFsIg0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wNS0xOSINCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQoNCmBgYHtyIGxvYWRpbmcgcGFja2FnZXMsIHdhcm5pbmc9RkFMU0UsIHJlc3VsdHM9J2hpZGUnLCBtZXNzYWdlPUZBTFNFfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmxpYnJhcnkoInBzeWNoIikNCmxpYnJhcnkoIk1hdHJpeCIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoIm1lclRvb2xzIikNCmxpYnJhcnkoInNqUGxvdCIpDQpsaWJyYXJ5KCJnbG1tVE1CIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ3QiKQ0KbGlicmFyeSgidGliYmxlIikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImJybXMiKQ0KYGBgDQoNCg0KPGJyPjxicj4gKipMb2FkaW5nIHRoZSBkYXRhKioNCg0KYGBge3IgbG9hZGluZyBkYXRhLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KTkVBMjAyMiA8LSByZWFkUkRTKCJkYXRhL3Byb2Nlc3NlZC9MQ0FmaW5hbC5yZHMiKQ0KDQpzZXQuc2VlZCgxMjMpDQpgYGANCg0KDQpgYGB7ciB0ZXN0LCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0Kd2hpY2goZHVwbGljYXRlZChuYW1lcyhORUEyMDIyKSkpDQpuYW1lcyhORUEyMDIyKVtkdXBsaWNhdGVkKG5hbWVzKE5FQTIwMjIpKV0NCg0KZ3JlcCgibGVlZnRpamQiLCBuYW1lcyhORUEyMDIyKSwgdmFsdWUgPSBUUlVFKQ0KYGBgDQoNCjxicj48YnI+DQoNCmBgYHtyIGZhY3RvciwgY2FjaGU9VFJVRX0NCk5FQTIwMjIkcHJlZF83X2YgPC0gYXMuZmFjdG9yKE5FQTIwMjIkbW9kZWw3X2VtcHByZWQpDQpORUEyMDIyJHByZWRfN19mIDwtIHJlbGV2ZWwoTkVBMjAyMiRwcmVkXzdfZiwgcmVmID0gIjMiKQ0KdGFibGUoTkVBMjAyMiRwcmVkXzdfZikNCmBgYA0KDQo8YnI+PGJyPg0KDQojIE11bHRpbm9taWFsIG11bHRpbGV2ZWwgKHJlZiA9IGhpZ2hseSBzYWZlKQ0KDQoNCjxicj48YnI+DQoNCiMjIE1vZGVsMA0KDQo8YnI+PGJyPg0KDQoNCmBgYHtyIG11bHRpbm9taWFsIG1vZGVsMCwgY2FjaGU9VFJVRX0NCmJybV9lbXA3XzAgPC0gYnJtKA0KICBmb3JtdWxhID0gcHJlZF83X2YgfiAxICsgKDEgfCBpbnRlcnNlY3Rpb25zKSwNCiAgZGF0YSA9IE5FQTIwMjIsDQogIGZhbWlseSA9IGNhdGVnb3JpY2FsKCksDQogIGNoYWlucyA9IDQsIGNvcmVzID0gMiwgaXRlciA9IDIwMDANCikNCg0Kc3VtbWFyeShicm1fZW1wN18wKQ0KYGBgDQoNCjxicj48YnI+DQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk11bHRpbm9taWFsIg0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wNS0xOSINCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQoNCmBgYHtyIGxvYWRpbmcgcGFja2FnZXMsIHdhcm5pbmc9RkFMU0UsIHJlc3VsdHM9J2hpZGUnLCBtZXNzYWdlPUZBTFNFfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmxpYnJhcnkoInBzeWNoIikNCmxpYnJhcnkoIk1hdHJpeCIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoIm1lclRvb2xzIikNCmxpYnJhcnkoInNqUGxvdCIpDQpsaWJyYXJ5KCJnbG1tVE1CIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ3QiKQ0KbGlicmFyeSgidGliYmxlIikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImJybXMiKQ0KYGBgDQoNCg0KPGJyPjxicj4gKipMb2FkaW5nIHRoZSBkYXRhKioNCg0KYGBge3IgbG9hZGluZyBkYXRhLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KTkVBMjAyMiA8LSByZWFkUkRTKCJkYXRhL3Byb2Nlc3NlZC9MQ0FmaW5hbC5yZHMiKQ0KDQpzZXQuc2VlZCgxMjMpDQpgYGANCg0KDQpgYGB7ciB0ZXN0LCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0Kd2hpY2goZHVwbGljYXRlZChuYW1lcyhORUEyMDIyKSkpDQpuYW1lcyhORUEyMDIyKVtkdXBsaWNhdGVkKG5hbWVzKE5FQTIwMjIpKV0NCg0KZ3JlcCgibGVlZnRpamQiLCBuYW1lcyhORUEyMDIyKSwgdmFsdWUgPSBUUlVFKQ0KYGBgDQoNCjxicj48YnI+DQoNCmBgYHtyIGZhY3Rvcn0NCk5FQTIwMjIkcHJlZF83X2YgPC0gYXMuZmFjdG9yKE5FQTIwMjIkbW9kZWw3X2VtcHByZWQpDQpORUEyMDIyJHByZWRfN19mIDwtIHJlbGV2ZWwoTkVBMjAyMiRwcmVkXzdfZiwgcmVmID0gIjMiKQ0KdGFibGUoTkVBMjAyMiRwcmVkXzdfZikNCmBgYA0KDQo8YnI+PGJyPg0KDQojIE11bHRpbm9taWFsIG11bHRpbGV2ZWwgKHJlZiA9IGhpZ2hseSBzYWZlKQ0KDQoNCjxicj48YnI+DQoNCiMjIE1vZGVsMA0KDQo8YnI+PGJyPg0KDQpgYGB7ciwgd2FybmluZz1GQUxTRX0NCmF0dGFjaChORUEyMDIyKQ0KZGF0YV9tdWx0aSA8LSBkYXRhLmZyYW1lKGdlbmRlcl92LCBtaWdyYXRpb25fZXUsIG1pZ3JhdGlvbl9ub2V1LCANCiAgICBlZHVjYXRpb25fbGFhZywgZWR1Y2F0aW9uX21pZGRlbCwgbGVlZnRpamRfMzVfNTUsIGxlZWZ0aWpkXzU1Xzc1LCBwcmVkXzdfZiwgaW50ZXJzZWN0aW9ucykNCmBgYA0KDQoNCmBgYHtyIG11bHRpbm9taWFsIG1vZGVsMH0NCmJybV9lbXA3XzAgPC0gYnJtKA0KICBmb3JtdWxhID0gcHJlZF83X2YgfiAxICsgKDEgfCBpbnRlcnNlY3Rpb25zKSwNCiAgZGF0YSA9IGRhdGFfbXVsdGksDQogIGZhbWlseSA9IGNhdGVnb3JpY2FsKCksDQogIGNoYWlucyA9IDQsIGNvcmVzID0gMiwgaXRlciA9IDIwMDANCikNCg0Kc3VtbWFyeShicm1fZW1wN18wKQ0KYGBgDQoNCjxicj48YnI+DQoNCmBgYHtyIG11bHRpbm9taWFsIG1vZGVsMX0NCg0KYnJtX2VtcDdfMSA8LSBicm0oDQogIGZvcm11bGEgPSBwcmVkXzdfZiB+IGdlbmRlcl92ICsgbWlncmF0aW9uX2V1ICsgbWlncmF0aW9uX25vZXUgKyANCiAgICBlZHVjYXRpb25fbGFhZyArIGVkdWNhdGlvbl9taWRkZWwgKyBsZWVmdGlqZF8zNV81NSArIGxlZWZ0aWpkXzU1Xzc1ICsNCiAgICAoMSB8IGludGVyc2VjdGlvbnMpLA0KICBkYXRhID0gZGF0YV9tdWx0aSwNCiAgZmFtaWx5ID0gY2F0ZWdvcmljYWwoKSwNCiAgY2hhaW5zID0gNCwgY29yZXMgPSAyLCBpdGVyID0gMjAwMA0KKQ0KYGBgDQoNCg0KDQo=</div>
 
 
 </div>
