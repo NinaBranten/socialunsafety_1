@@ -466,7 +466,13 @@ number="1">
 <p><br><br></p>
 <pre class="r"><code>attach(NEA2022)
 data_multi &lt;- data.frame(gender_v, migration_eu, migration_noeu, 
-    education_laag, education_middel, leeftijd_35_55, leeftijd_55_75, pred_7_f, intersections)</code></pre>
+    education_laag, education_middel, leeftijd_35_55, leeftijd_55_75, pred_7_f, intersections)
+attach(data_multi)</code></pre>
+<pre><code>## The following objects are masked from NEA2022:
+## 
+##     education_laag, education_middel, gender_v, intersections,
+##     leeftijd_35_55, leeftijd_55_75, migration_eu, migration_noeu,
+##     pred_7_f</code></pre>
 <pre class="r"><code>brm_emp7_0 &lt;- brm(
   formula = pred_7_f ~ 1 + (1 | intersections),
   data = data_multi,
@@ -486,21 +492,21 @@ data_multi &lt;- data.frame(gender_v, migration_eu, migration_noeu,
 ## Group-Level Effects: 
 ## ~intersections (Number of levels: 54) 
 ##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sd(mu1_Intercept)     0.30      0.05     0.22     0.39 1.00     1247     1804
-## sd(mu2_Intercept)     0.14      0.03     0.09     0.19 1.00     1193     1985
-## sd(mu4_Intercept)     0.31      0.08     0.18     0.47 1.00     1512     2077
-## sd(mu5_Intercept)     0.27      0.04     0.20     0.36 1.00     1146     1951
-## sd(mu6_Intercept)     0.53      0.08     0.38     0.71 1.00     1632     2322
-## sd(mu7_Intercept)     0.25      0.06     0.14     0.37 1.00     1671     2638
+## sd(mu1_Intercept)     0.30      0.04     0.22     0.40 1.01     1259     2047
+## sd(mu2_Intercept)     0.14      0.02     0.09     0.19 1.00     1226     1950
+## sd(mu4_Intercept)     0.31      0.08     0.18     0.47 1.00     1287     2027
+## sd(mu5_Intercept)     0.27      0.04     0.20     0.36 1.00     1107     1961
+## sd(mu6_Intercept)     0.54      0.09     0.38     0.73 1.00     1638     2094
+## sd(mu7_Intercept)     0.25      0.06     0.15     0.37 1.01     1139     2500
 ## 
 ## Population-Level Effects: 
 ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## mu1_Intercept    -1.06      0.06    -1.17    -0.95 1.01     1082     1527
-## mu2_Intercept     1.04      0.03     0.98     1.09 1.00     1177     1692
-## mu4_Intercept    -2.39      0.07    -2.54    -2.25 1.00     1748     2339
-## mu5_Intercept    -0.57      0.05    -0.67    -0.47 1.00      977     1789
-## mu6_Intercept    -2.42      0.10    -2.61    -2.23 1.00     1196     1700
-## mu7_Intercept    -1.90      0.06    -2.01    -1.78 1.00     1661     2129
+## mu1_Intercept    -1.05      0.06    -1.16    -0.94 1.00      955     1364
+## mu2_Intercept     1.04      0.03     0.98     1.09 1.00     1105     1764
+## mu4_Intercept    -2.39      0.07    -2.54    -2.25 1.00     1613     2287
+## mu5_Intercept    -0.57      0.05    -0.67    -0.47 1.01      867     1307
+## mu6_Intercept    -2.42      0.10    -2.61    -2.21 1.00     1108     1785
+## mu7_Intercept    -1.90      0.06    -2.02    -1.78 1.01     1564     2437
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -516,10 +522,131 @@ data_multi &lt;- data.frame(gender_v, migration_eu, migration_noeu,
 )</code></pre>
 <pre><code>## Compiling Stan program...</code></pre>
 <pre><code>## Start sampling</code></pre>
+<pre class="r"><code>summary(brm_emp7_1)</code></pre>
+<pre><code>##  Family: categorical 
+##   Links: mu1 = logit; mu2 = logit; mu4 = logit; mu5 = logit; mu6 = logit; mu7 = logit 
+## Formula: pred_7_f ~ gender_v + migration_eu + migration_noeu + education_laag + education_middel + leeftijd_35_55 + leeftijd_55_75 + (1 | intersections) 
+##    Data: data_multi (Number of observations: 29923) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Group-Level Effects: 
+## ~intersections (Number of levels: 54) 
+##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(mu1_Intercept)     0.13      0.05     0.04     0.23 1.00      951      706
+## sd(mu2_Intercept)     0.05      0.03     0.00     0.10 1.00      953     1291
+## sd(mu4_Intercept)     0.16      0.09     0.01     0.36 1.00      837     1352
+## sd(mu5_Intercept)     0.05      0.03     0.00     0.12 1.00     1355     2170
+## sd(mu6_Intercept)     0.24      0.09     0.07     0.42 1.00     1380     1051
+## sd(mu7_Intercept)     0.12      0.06     0.01     0.25 1.00     1159     1187
+## 
+## Population-Level Effects: 
+##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
+## mu1_Intercept           -1.48      0.10    -1.68    -1.30 1.00     2615
+## mu2_Intercept            0.89      0.04     0.80     0.97 1.00     2979
+## mu4_Intercept           -3.00      0.15    -3.31    -2.72 1.00     3581
+## mu5_Intercept           -1.20      0.07    -1.33    -1.08 1.00     3336
+## mu6_Intercept           -3.35      0.17    -3.70    -3.02 1.00     3274
+## mu7_Intercept           -2.01      0.11    -2.22    -1.80 1.00     3499
+## mu1_gender_v            -0.30      0.08    -0.44    -0.15 1.00     2834
+## mu1_migration_eu         0.14      0.12    -0.11     0.38 1.00     3691
+## mu1_migration_noeu       0.30      0.10     0.10     0.49 1.00     3774
+## mu1_education_laag       0.50      0.10     0.32     0.70 1.00     2966
+## mu1_education_middel     0.35      0.09     0.18     0.53 1.00     3087
+## mu1_leeftijd_35_55       0.34      0.09     0.16     0.52 1.00     3078
+## mu1_leeftijd_55_75       0.50      0.09     0.31     0.68 1.00     3572
+## mu2_gender_v            -0.16      0.04    -0.23    -0.08 1.00     3536
+## mu2_migration_eu        -0.01      0.07    -0.14     0.13 1.00     4020
+## mu2_migration_noeu       0.21      0.06     0.10     0.32 1.00     4271
+## mu2_education_laag       0.29      0.05     0.19     0.40 1.00     3499
+## mu2_education_middel     0.11      0.04     0.03     0.19 1.00     3173
+## mu2_leeftijd_35_55       0.11      0.04     0.02     0.20 1.00     3420
+## mu2_leeftijd_55_75       0.23      0.05     0.13     0.32 1.00     3379
+## mu4_gender_v            -0.06      0.11    -0.28     0.17 1.00     4689
+## mu4_migration_eu         0.28      0.19    -0.11     0.64 1.00     5325
+## mu4_migration_noeu       0.30      0.16    -0.02     0.60 1.00     5132
+## mu4_education_laag       0.40      0.15     0.11     0.70 1.00     4422
+## mu4_education_middel     0.24      0.13    -0.04     0.49 1.00     3793
+## mu4_leeftijd_35_55       0.54      0.15     0.25     0.85 1.00     2741
+## mu4_leeftijd_55_75       0.64      0.15     0.34     0.94 1.00     3544
+## mu5_gender_v            -0.09      0.05    -0.19     0.01 1.00     4228
+## mu5_migration_eu         0.29      0.09     0.10     0.47 1.00     4456
+## mu5_migration_noeu       0.44      0.08     0.29     0.59 1.00     4906
+## mu5_education_laag       0.63      0.07     0.50     0.77 1.00     3576
+## mu5_education_middel     0.47      0.06     0.35     0.58 1.00     3830
+## mu5_leeftijd_35_55       0.21      0.06     0.09     0.33 1.00     3988
+## mu5_leeftijd_55_75       0.42      0.07     0.29     0.55 1.00     3728
+## mu6_gender_v            -0.12      0.13    -0.38     0.15 1.00     3763
+## mu6_migration_eu         0.59      0.20     0.19     0.97 1.00     4752
+## mu6_migration_noeu       0.91      0.16     0.60     1.22 1.00     3699
+## mu6_education_laag       0.93      0.17     0.60     1.27 1.00     3408
+## mu6_education_middel     0.77      0.16     0.47     1.09 1.00     3217
+## mu6_leeftijd_35_55       0.23      0.15    -0.07     0.51 1.00     3979
+## mu6_leeftijd_55_75       0.23      0.17    -0.11     0.54 1.00     3850
+## mu7_gender_v            -0.21      0.09    -0.38    -0.02 1.00     4271
+## mu7_migration_eu         0.34      0.15     0.03     0.63 1.00     5741
+## mu7_migration_noeu       0.48      0.12     0.24     0.72 1.00     5048
+## mu7_education_laag       0.36      0.12     0.13     0.59 1.00     4406
+## mu7_education_middel     0.14      0.10    -0.07     0.34 1.00     4112
+## mu7_leeftijd_35_55       0.01      0.11    -0.20     0.21 1.00     4224
+## mu7_leeftijd_55_75      -0.16      0.12    -0.40     0.07 1.00     4195
+##                      Tail_ESS
+## mu1_Intercept            2683
+## mu2_Intercept            2928
+## mu4_Intercept            3031
+## mu5_Intercept            2350
+## mu6_Intercept            2634
+## mu7_Intercept            2876
+## mu1_gender_v             2589
+## mu1_migration_eu         3095
+## mu1_migration_noeu       2803
+## mu1_education_laag       2803
+## mu1_education_middel     2835
+## mu1_leeftijd_35_55       2990
+## mu1_leeftijd_55_75       3136
+## mu2_gender_v             2998
+## mu2_migration_eu         3620
+## mu2_migration_noeu       3309
+## mu2_education_laag       3001
+## mu2_education_middel     2588
+## mu2_leeftijd_35_55       3158
+## mu2_leeftijd_55_75       3113
+## mu4_gender_v             3018
+## mu4_migration_eu         3190
+## mu4_migration_noeu       2983
+## mu4_education_laag       3192
+## mu4_education_middel     2861
+## mu4_leeftijd_35_55       2590
+## mu4_leeftijd_55_75       3114
+## mu5_gender_v             3309
+## mu5_migration_eu         3268
+## mu5_migration_noeu       2987
+## mu5_education_laag       2910
+## mu5_education_middel     2752
+## mu5_leeftijd_35_55       3204
+## mu5_leeftijd_55_75       3160
+## mu6_gender_v             3160
+## mu6_migration_eu         3137
+## mu6_migration_noeu       3248
+## mu6_education_laag       2865
+## mu6_education_middel     2750
+## mu6_leeftijd_35_55       3367
+## mu6_leeftijd_55_75       3374
+## mu7_gender_v             2956
+## mu7_migration_eu         3036
+## mu7_migration_noeu       3057
+## mu7_education_laag       3181
+## mu7_education_middel     3189
+## mu7_leeftijd_35_55       3108
+## mu7_leeftijd_55_75       2974
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIk11bHRpbm9taWFsIg0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wNS0xOSINCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQoNCmBgYHtyIGxvYWRpbmcgcGFja2FnZXMsIHdhcm5pbmc9RkFMU0UsIHJlc3VsdHM9J2hpZGUnLCBtZXNzYWdlPUZBTFNFfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmxpYnJhcnkoInBzeWNoIikNCmxpYnJhcnkoIk1hdHJpeCIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoIm1lclRvb2xzIikNCmxpYnJhcnkoInNqUGxvdCIpDQpsaWJyYXJ5KCJnbG1tVE1CIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ3QiKQ0KbGlicmFyeSgidGliYmxlIikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImJybXMiKQ0KYGBgDQoNCg0KPGJyPjxicj4gKipMb2FkaW5nIHRoZSBkYXRhKioNCg0KYGBge3IgbG9hZGluZyBkYXRhLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KTkVBMjAyMiA8LSByZWFkUkRTKCJkYXRhL3Byb2Nlc3NlZC9MQ0FmaW5hbC5yZHMiKQ0KDQpzZXQuc2VlZCgxMjMpDQpgYGANCg0KDQpgYGB7ciB0ZXN0LCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0Kd2hpY2goZHVwbGljYXRlZChuYW1lcyhORUEyMDIyKSkpDQpuYW1lcyhORUEyMDIyKVtkdXBsaWNhdGVkKG5hbWVzKE5FQTIwMjIpKV0NCg0KZ3JlcCgibGVlZnRpamQiLCBuYW1lcyhORUEyMDIyKSwgdmFsdWUgPSBUUlVFKQ0KYGBgDQoNCjxicj48YnI+DQoNCmBgYHtyIGZhY3Rvcn0NCk5FQTIwMjIkcHJlZF83X2YgPC0gYXMuZmFjdG9yKE5FQTIwMjIkbW9kZWw3X2VtcHByZWQpDQpORUEyMDIyJHByZWRfN19mIDwtIHJlbGV2ZWwoTkVBMjAyMiRwcmVkXzdfZiwgcmVmID0gIjMiKQ0KdGFibGUoTkVBMjAyMiRwcmVkXzdfZikNCmBgYA0KDQo8YnI+PGJyPg0KDQojIE11bHRpbm9taWFsIG11bHRpbGV2ZWwgKHJlZiA9IGhpZ2hseSBzYWZlKQ0KDQoNCjxicj48YnI+DQoNCiMjIE1vZGVsMA0KDQo8YnI+PGJyPg0KDQpgYGB7ciwgd2FybmluZz1GQUxTRX0NCmF0dGFjaChORUEyMDIyKQ0KZGF0YV9tdWx0aSA8LSBkYXRhLmZyYW1lKGdlbmRlcl92LCBtaWdyYXRpb25fZXUsIG1pZ3JhdGlvbl9ub2V1LCANCiAgICBlZHVjYXRpb25fbGFhZywgZWR1Y2F0aW9uX21pZGRlbCwgbGVlZnRpamRfMzVfNTUsIGxlZWZ0aWpkXzU1Xzc1LCBwcmVkXzdfZiwgaW50ZXJzZWN0aW9ucykNCmBgYA0KDQoNCmBgYHtyIG11bHRpbm9taWFsIG1vZGVsMH0NCmJybV9lbXA3XzAgPC0gYnJtKA0KICBmb3JtdWxhID0gcHJlZF83X2YgfiAxICsgKDEgfCBpbnRlcnNlY3Rpb25zKSwNCiAgZGF0YSA9IGRhdGFfbXVsdGksDQogIGZhbWlseSA9IGNhdGVnb3JpY2FsKCksDQogIGNoYWlucyA9IDQsIGNvcmVzID0gMiwgaXRlciA9IDIwMDANCikNCg0Kc3VtbWFyeShicm1fZW1wN18wKQ0KYGBgDQoNCjxicj48YnI+DQoNCmBgYHtyIG11bHRpbm9taWFsIG1vZGVsMX0NCg0KYnJtX2VtcDdfMSA8LSBicm0oDQogIGZvcm11bGEgPSBwcmVkXzdfZiB+IGdlbmRlcl92ICsgbWlncmF0aW9uX2V1ICsgbWlncmF0aW9uX25vZXUgKyANCiAgICBlZHVjYXRpb25fbGFhZyArIGVkdWNhdGlvbl9taWRkZWwgKyBsZWVmdGlqZF8zNV81NSArIGxlZWZ0aWpkXzU1Xzc1ICsNCiAgICAoMSB8IGludGVyc2VjdGlvbnMpLA0KICBkYXRhID0gZGF0YV9tdWx0aSwNCiAgZmFtaWx5ID0gY2F0ZWdvcmljYWwoKSwNCiAgY2hhaW5zID0gNCwgY29yZXMgPSAyLCBpdGVyID0gMjAwMA0KKQ0KYGBgDQoNCg0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk11bHRpbm9taWFsIg0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wNS0xOSINCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQoNCmBgYHtyIGxvYWRpbmcgcGFja2FnZXMsIHdhcm5pbmc9RkFMU0UsIHJlc3VsdHM9J2hpZGUnLCBtZXNzYWdlPUZBTFNFfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmxpYnJhcnkoInBzeWNoIikNCmxpYnJhcnkoIk1hdHJpeCIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoIm1lclRvb2xzIikNCmxpYnJhcnkoInNqUGxvdCIpDQpsaWJyYXJ5KCJnbG1tVE1CIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ3QiKQ0KbGlicmFyeSgidGliYmxlIikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImJybXMiKQ0KYGBgDQoNCg0KPGJyPjxicj4gKipMb2FkaW5nIHRoZSBkYXRhKioNCg0KYGBge3IgbG9hZGluZyBkYXRhLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KTkVBMjAyMiA8LSByZWFkUkRTKCJkYXRhL3Byb2Nlc3NlZC9MQ0FmaW5hbC5yZHMiKQ0KDQpzZXQuc2VlZCgxMjMpDQpgYGANCg0KDQpgYGB7ciB0ZXN0LCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0Kd2hpY2goZHVwbGljYXRlZChuYW1lcyhORUEyMDIyKSkpDQpuYW1lcyhORUEyMDIyKVtkdXBsaWNhdGVkKG5hbWVzKE5FQTIwMjIpKV0NCg0KZ3JlcCgibGVlZnRpamQiLCBuYW1lcyhORUEyMDIyKSwgdmFsdWUgPSBUUlVFKQ0KYGBgDQoNCjxicj48YnI+DQoNCmBgYHtyIGZhY3Rvcn0NCk5FQTIwMjIkcHJlZF83X2YgPC0gYXMuZmFjdG9yKE5FQTIwMjIkbW9kZWw3X2VtcHByZWQpDQpORUEyMDIyJHByZWRfN19mIDwtIHJlbGV2ZWwoTkVBMjAyMiRwcmVkXzdfZiwgcmVmID0gIjMiKQ0KdGFibGUoTkVBMjAyMiRwcmVkXzdfZikNCmBgYA0KDQo8YnI+PGJyPg0KDQojIE11bHRpbm9taWFsIG11bHRpbGV2ZWwgKHJlZiA9IGhpZ2hseSBzYWZlKQ0KDQoNCjxicj48YnI+DQoNCiMjIE1vZGVsMA0KDQo8YnI+PGJyPg0KDQpgYGB7ciwgd2FybmluZz1GQUxTRX0NCmF0dGFjaChORUEyMDIyKQ0KZGF0YV9tdWx0aSA8LSBkYXRhLmZyYW1lKGdlbmRlcl92LCBtaWdyYXRpb25fZXUsIG1pZ3JhdGlvbl9ub2V1LCANCiAgICBlZHVjYXRpb25fbGFhZywgZWR1Y2F0aW9uX21pZGRlbCwgbGVlZnRpamRfMzVfNTUsIGxlZWZ0aWpkXzU1Xzc1LCBwcmVkXzdfZiwgaW50ZXJzZWN0aW9ucykNCmF0dGFjaChkYXRhX211bHRpKQ0KYGBgDQoNCg0KYGBge3IgbXVsdGlub21pYWwgbW9kZWwwLCBjYWNoZT1UUlVFfQ0KYnJtX2VtcDdfMCA8LSBicm0oDQogIGZvcm11bGEgPSBwcmVkXzdfZiB+IDEgKyAoMSB8IGludGVyc2VjdGlvbnMpLA0KICBkYXRhID0gZGF0YV9tdWx0aSwNCiAgZmFtaWx5ID0gY2F0ZWdvcmljYWwoKSwNCiAgY2hhaW5zID0gNCwgY29yZXMgPSAyLCBpdGVyID0gMjAwMA0KKQ0KDQpzdW1tYXJ5KGJybV9lbXA3XzApDQpgYGANCg0KPGJyPjxicj4NCg0KYGBge3IgbXVsdGlub21pYWwgbW9kZWwxLCBjYWNoZT1UUlVFfQ0KDQpicm1fZW1wN18xIDwtIGJybSgNCiAgZm9ybXVsYSA9IHByZWRfN19mIH4gZ2VuZGVyX3YgKyBtaWdyYXRpb25fZXUgKyBtaWdyYXRpb25fbm9ldSArIA0KICAgIGVkdWNhdGlvbl9sYWFnICsgZWR1Y2F0aW9uX21pZGRlbCArIGxlZWZ0aWpkXzM1XzU1ICsgbGVlZnRpamRfNTVfNzUgKw0KICAgICgxIHwgaW50ZXJzZWN0aW9ucyksDQogIGRhdGEgPSBkYXRhX211bHRpLA0KICBmYW1pbHkgPSBjYXRlZ29yaWNhbCgpLA0KICBjaGFpbnMgPSA0LCBjb3JlcyA9IDIsIGl0ZXIgPSAyMDAwDQopDQoNCnN1bW1hcnkoYnJtX2VtcDdfMSkNCmBgYA0KDQoNCg==</div>
 
 
 </div>
