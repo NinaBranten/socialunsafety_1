@@ -68,6 +68,12 @@ Last compiled on `r format(Sys.time(), '%B, %Y')`
 - Final model
 <br>
 - Model with transgressive behaviors as binary (no/yes)
+<br>
+- Multilevel beta-regression with the ‘glmmTMB’ package using a logit link
+<br>
+- Multinomial multilevel model
+<br><br>
+
 
 :::
 ::: {.column width="50%"}
