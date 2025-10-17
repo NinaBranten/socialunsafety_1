@@ -34,10 +34,6 @@ navbar:
           
         # here, other .Rmds can be added
 
-
-#  right:
-#  - icon: fab fa-github
-#    href: https://github.com/ninabranten/socialunsafety_1
 output:
   html_document:
     theme: flatly
