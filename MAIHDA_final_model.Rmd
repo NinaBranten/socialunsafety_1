@@ -99,7 +99,7 @@ cat("ICC model 0: ", 0.8319/(0.8319+115.2122), "\n",
 
 
 
-```{r estimated overall unsafety Model0, cache=TRUE}
+```{r estimated overall unsafety Model0., cache=TRUE}
 #Model0: Predicted probability belonging to overall unsafety class
 
 NEA2022$predicted_6 <- predict(L_6_0, re.form = NULL, type = "response")
