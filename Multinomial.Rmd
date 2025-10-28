@@ -30,56 +30,58 @@ library("foreign")
 library("gt")
 library("tibble")
 library("dplyr")
+library("brms")
 ```
 
 
 <br><br> **Loading the data**
 
-```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
-NEA2022 <- readRDS("data/processed/NEA1009.rds")
+```{r loading data, warning=FALSE, message=FALSE}
+NEA2022 <- readRDS("data/processed/LCAfinal.rds")
 
-attach(NEA2022)
 set.seed(123)
 ```
 
 
-MULTINOMIAL WITH SEVEN-CLASS MODEL AS DEPENDENT
-```{r}
-library("brms")
+```{r test, warning=FALSE, message=FALSE}
+which(duplicated(names(NEA2022)))
+names(NEA2022)[duplicated(names(NEA2022))]
+
+grep("leeftijd", names(NEA2022), value = TRUE)
 ```
 
-```{r}
-model7_emppred <- model7_emp$predclass
-model7_emppost <- model7_emp$posterior
+<br><br>
 
-lposteriorsmodel7_emp <- as.list(as.data.frame(model7_emppost))
-
-pmodel7_empv1 <- lposteriorsmodel7_emp[[1]]
-pmodel7_empv2 <- lposteriorsmodel7_emp[[2]]
-pmodel7_empv3 <- lposteriorsmodel7_emp[[3]]
-pmodel7_empv4 <- lposteriorsmodel7_emp[[4]]
-pmodel7_empv5 <- lposteriorsmodel7_emp[[5]]
-pmodel7_empv6 <- lposteriorsmodel7_emp[[6]]
-pmodel7_empv7 <- lposteriorsmodel7_emp[[7]]
+```{r factor}
+table(NEA2022$model7_emppred)
+NEA2022$pred_7_f <- as.factor(NEA2022$model7_emppred)
+NEA2022$pred_7_f <- relevel(NEA2022$pred_7_f, ref = "3")
+table(NEA2022$pred_7_f)
 ```
 
-```{r}
-NEA2022$class_emp_7 <- model7_emp$predclass
-table(NEA2022$class_emp_7)
+<br><br>
+
+# Multinomial multilevel (ref = highly safe)
+
+
+<br><br>
+
+## Model0
+
+<br><br>
+
+```{r, warning=FALSE}
+attach(NEA2022)
+data_multi <- data.frame(gender_v, migration_eu, migration_noeu, 
+    education_laag, education_middel, leeftijd_35_55, leeftijd_55_75, pred_7_f, intersections)
+attach(data_multi)
 ```
 
 
-```{r}
-NEA2022$class_emp_7_f <- as.factor(NEA2022$class_emp_7)
-table(NEA2022$class_emp_7_f)
-NEA2022$class_emp_7_f <- relevel(NEA2022$class_emp_7_f, ref = "4")
-table(NEA2022$class_emp_7_f)
-```
-
-```{r}
+```{r multinomial model0, cache=TRUE}
 brm_emp7_0 <- brm(
-  formula = class_emp_7_f ~ 1 + (1 | intersections),
-  data = NEA2022,
+  formula = pred_7_f ~ 1 + (1 | intersections),
+  data = data_multi,
   family = categorical(),
   chains = 4, cores = 2, iter = 2000
 )
@@ -87,16 +89,66 @@ brm_emp7_0 <- brm(
 summary(brm_emp7_0)
 ```
 
-```{r}
+
+<br><br>
+
+## Model1
+
+<br><br>
+
+```{r multinomial model1, cache=TRUE}
+
 brm_emp7_1 <- brm(
-  formula = class_emp_7_f ~ gender_v + migration_eu + migration_noeu + 
-    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75 +
+  formula = pred_7_f ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35_55 + leeftijd_55_75 +
     (1 | intersections),
-  data = NEA2022,
+  data = data_multi,
   family = categorical(),
   chains = 4, cores = 2, iter = 2000
 )
+
 summary(brm_emp7_1)
-
 ```
+<br><br>
 
+## ICC
+
+<br><br>
+
+```{r}
+#Overall unsafety (6)
+
+cat("ICC model0: ", 0.2916/(0.2916+3.29), "\n",
+    "ICC final: ", 0.0570/(0.0570+3.29), "\n",
+    "PCV: ", (0.2916-0.0570)/0.2916, "\n")
+
+#Supervisor unsafety (4)
+
+cat("ICC model0: ", 0.0961/(0.0961+3.29), "\n",
+    "ICC final: ", 0.0250/(0.0250+3.29), "\n",
+    "PCV: ", (0.0961-0.0250)/0.0961, "\n")
+
+#Coworker unsafety (7)
+
+cat("ICC model0: ", 0.0625/(0.0625+3.29), "\n",
+    "ICC final: ", 0.0144/(0.0144+3.29), "\n",
+    "PCV: ", (0.0625-0.0144)/0.0625, "\n")
+
+#Unsafe social climate (5)
+
+cat("ICC model0: ", 0.0729/(0.0729+3.29), "\n",
+    "ICC final: ", 0.0025/(0.0025+3.29), "\n",
+    "PCV: ", (0.0729-0.0025)/0.0729, "\n")
+
+#Short-term conflict (1)
+
+cat("ICC model0: ", 0.09/(0.09+3.29), "\n",
+    "ICC final: ", 0.0169/(0.0169+3.29), "\n",
+    "PCV: ", (0.09-0.0169)/0.09, "\n")
+
+#Safe (2)
+
+cat("ICC model0: ", 0.0196/(0.0196+3.29), "\n",
+    "ICC final: ", 0.0025/(0.0025+3.29), "\n",
+    "PCV: ", (0.0196-0.0025)/0.0196, "\n")
+```

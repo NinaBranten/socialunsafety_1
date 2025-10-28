@@ -65,12 +65,12 @@ summarytools::freq(NEAfinal$psyveil_R)
 
 
 ```{r, echo=FALSE, include=TRUE, results='hide', warning=FALSE, message=FALSE}
-attach(NEAfinal)
+attach(NEA2022)
 ```
 
 
 ```{r}
-data_lpa <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_R, steuncol_R, psyveil_R)
+data_lpa <- data.frame(pesten_col, pesten_leid, intimidation_col, intimidation_leid, geweld_col, geweld_leid, seks_col, seks_leid, conflict_col, conflict_leid, steunleid_RR, steuncol_RR, psyveil_RR)
 ```
 
 ```{r}
