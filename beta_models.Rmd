@@ -74,6 +74,7 @@ NEA2022$leeftijd <- factor(NEA2022$leeftijd,
 
 
 ```{r regression overall unsafety, cache=TRUE}
+
 NEA2022 <- NEA2022 %>%
   mutate(pmodel7_empv6 = pmodel7_empv6)
 
@@ -106,8 +107,8 @@ cat("Residual variance: ", mean(var_y), "\n",
     "PCV: ", (0.0008979-1.939e-09)/0.0008979, "\n")
 ```
 
-
 ```{r Model1: Predicted probability overall unsafety, cache=TRUE}
+
 NEA2022$predicted_6 <- predict(flb_6_1, re.form = NULL, type = "response")
 
 NEA2022$residual_6 <- NEA2022$pmodel7_empv6_T - NEA2022$predicted_6
@@ -117,7 +118,8 @@ summary_preds_6 <- NEA2022 %>%
   summarise(
     mean_pred_6 = mean(predicted_6, na.rm = TRUE),
     se_pred_6 = sd(residual_6, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_6 - 1.96 * se_pred_6,
+    upper = mean_pred_6 + 1.96 * se_pred_6,
     .groups = "drop"
   )
 
@@ -139,12 +141,14 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
-  geom_point() +
+  geom_point(position = position_dodge(width = 0.3)
+             ) +
   geom_errorbar(aes(ymin = mean_pred_6 - se_pred_6,
                     ymax = mean_pred_6 + se_pred_6),
                 width = 0,
                 alpha = 0.4,
-                linewidth = 0.005
+                linewidth = 0.005,
+                position = position_dodge(width = 0.3)
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -266,7 +270,8 @@ summary_preds_4 <- NEA2022 %>%
   summarise(
     mean_pred_4 = mean(predicted_4, na.rm = TRUE),
     se_pred_4 = sd(residual_4, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_4 - 1.96 * se_pred_4,
+    upper = mean_pred_4 + 1.96 * se_pred_4,
     .groups = "drop"
   )
 
@@ -288,12 +293,14 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
-  geom_point() +
+  geom_point(position = position_dodge(width = 0.3)
+             ) +
   geom_errorbar(aes(ymin = mean_pred_4 - se_pred_4,
                     ymax = mean_pred_4 + se_pred_4),
                 width = 0,
                 alpha = 0.4,
-                linewidth = 0.005
+                linewidth = 0.005,
+                position = position_dodge(width = 0.3)
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -303,7 +310,7 @@ ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
              switch = "y"
   ) +
   labs(
-    title = "Predicted probability overall unsafety Model1",
+    title = "Predicted probability supervisor unsafety Model1",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -415,7 +422,8 @@ summary_preds_7 <- NEA2022 %>%
   summarise(
     mean_pred_7 = mean(predicted_7, na.rm = TRUE),
     se_pred_7 = sd(residual_7, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_7 - 1.96 * se_pred_7,
+    upper = mean_pred_7 + 1.96 * se_pred_7,
     .groups = "drop"
   )
 
@@ -437,12 +445,14 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_7, aes(x = leeftijd, y = mean_pred_7, color = gender)) +
-  geom_point() +
+  geom_point(position = position_dodge(width = 0.3)
+             ) +
   geom_errorbar(aes(ymin = mean_pred_7 - se_pred_7,
                     ymax = mean_pred_7 + se_pred_7),
                 width = 0,
                 alpha = 0.4,
-                linewidth = 0.005
+                linewidth = 0.005,
+                position = position_dodge(width = 0.3)
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -553,7 +563,7 @@ cat("Residual variance: ", mean(var_y), "\n",
 
 
 ```{r Model1: Predicted probability unsafe social climate, cache=TRUE}
-NEA2022$predicted_5 <- predict(flb_5_0, re.form = NULL, type = "response")
+NEA2022$predicted_5 <- predict(flb_5_1, re.form = NULL, type = "response")
 
 NEA2022$residual_5 <- NEA2022$pmodel7_empv5_T - NEA2022$predicted_5
 
@@ -562,7 +572,8 @@ summary_preds_5 <- NEA2022 %>%
   summarise(
     mean_pred_5 = mean(predicted_5, na.rm = TRUE),
     se_pred_5 = sd(residual_5, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_5 - 1.96 * se_pred_5,
+    upper = mean_pred_5 + 1.96 * se_pred_5,
     .groups = "drop"
   )
 
@@ -584,12 +595,14 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
-  geom_point() +
+  geom_point(position = position_dodge(width = 0.3)
+             ) +
   geom_errorbar(aes(ymin = mean_pred_5 - se_pred_5,
                     ymax = mean_pred_5 + se_pred_5),
                 width = 0,
                 alpha = 0.4,
-                linewidth = 0.005
+                linewidth = 0.005,
+                position = position_dodge(width = 0.3)
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -700,16 +713,17 @@ cat("Residual variance: ", mean(var_y), "\n",
 
 
 ```{r Model1: Predicted probability short-term conflict, cache=TRUE}
-NEA2022$predicted_1 <- predict(flb_1_0, re.form = NULL, type = "response")
+NEA2022$predicted_4 <- predict(flb_4_1, re.form = NULL, type = "response")
 
-NEA2022$residual_1 <- NEA2022$pmodel7_empv1_T - NEA2022$predicted_1
+NEA2022$residual_4 <- NEA2022$pmodel7_empv4_T - NEA2022$predicted_4
 
-summary_preds_1 <- NEA2022 %>%
+summary_preds_4 <- NEA2022 %>%
   group_by(gender, migration, education, leeftijd) %>%
   summarise(
-    mean_pred_1 = mean(predicted_1, na.rm = TRUE),
-    se_pred_1 = sd(residual_1, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    mean_pred_4 = mean(predicted_4, na.rm = TRUE),
+    se_pred_4 = sd(residual_4, na.rm = TRUE) / sqrt(n()),
+    lower = mean_pred_4 - 1.96 * se_pred_4,
+    upper = mean_pred_4 + 1.96 * se_pred_4,
     .groups = "drop"
   )
 
@@ -730,13 +744,15 @@ education_labels <- as_labeller(c(
   "hoog"   = "High"
 ))
 
-ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
-                    ymax = mean_pred_1 + se_pred_1),
+ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
+  geom_point(position = position_dodge(width = 0.3)
+             ) +
+  geom_errorbar(aes(ymin = mean_pred_4 - se_pred_4,
+                    ymax = mean_pred_4 + se_pred_4),
                 width = 0,
                 alpha = 0.4,
-                linewidth = 0.005
+                linewidth = 0.005,
+                position = position_dodge(width = 0.3)
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -746,7 +762,7 @@ ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
              switch = "y"
   ) +
   labs(
-    title = "Predicted probability unsafe social climate Model1",
+    title = "Predicted probability short-term conflict Model1",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -847,7 +863,7 @@ cat("Residual variance: ", mean(var_y), "\n",
 
 
 ```{r Model1: Predicted probability safe, cache=TRUE}
-NEA2022$predicted_2 <- predict(flb_2_0, re.form = NULL, type = "response")
+NEA2022$predicted_2 <- predict(flb_2_1, re.form = NULL, type = "response")
 
 NEA2022$residual_2 <- NEA2022$pmodel7_empv2_T - NEA2022$predicted_2
 
@@ -856,7 +872,8 @@ summary_preds_2 <- NEA2022 %>%
   summarise(
     mean_pred_2 = mean(predicted_2, na.rm = TRUE),
     se_pred_2 = sd(residual_2, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_2 - 1.96 * se_pred_2,
+    upper = mean_pred_2 + 1.96 * se_pred_2,
     .groups = "drop"
   )
 
@@ -878,12 +895,14 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
-  geom_point() +
+  geom_point(position = position_dodge(width = 0.3)
+             ) +
   geom_errorbar(aes(ymin = mean_pred_2 - se_pred_2,
                     ymax = mean_pred_2 + se_pred_2),
                 width = 0,
                 alpha = 0.4,
-                linewidth = 0.005
+                linewidth = 0.005,
+                position = position_dodge(width = 0.3)
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -893,7 +912,7 @@ ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
              switch = "y"
   ) +
   labs(
-    title = "Predicted probability unsafe social climate Model1",
+    title = "Predicted probability safe Model1",
     y = NULL,
     x = NULL,
     color = "Gender"
@@ -994,7 +1013,7 @@ cat("Residual variance: ", mean(var_y), "\n",
 
 
 ```{r Model1: Predicted probability highly safe, cache=TRUE}
-NEA2022$predicted_3 <- predict(flb_3_0, re.form = NULL, type = "response")
+NEA2022$predicted_3 <- predict(flb_3_1, re.form = NULL, type = "response")
 
 NEA2022$residual_3 <- NEA2022$pmodel7_empv3_T - NEA2022$predicted_3
 
@@ -1003,7 +1022,8 @@ summary_preds_3 <- NEA2022 %>%
   summarise(
     mean_pred_3 = mean(predicted_3, na.rm = TRUE),
     se_pred_3 = sd(residual_3, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_3 - 1.96 * se_pred_3,
+    upper = mean_pred_3 + 1.96 * se_pred_3,
     .groups = "drop"
   )
 
@@ -1025,12 +1045,14 @@ education_labels <- as_labeller(c(
 ))
 
 ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
-  geom_point() +
+  geom_point(position = position_dodge(width = 0.3)
+             ) +
   geom_errorbar(aes(ymin = mean_pred_3 - se_pred_3,
                     ymax = mean_pred_3 + se_pred_3),
                 width = 0,
                 alpha = 0.4,
-                linewidth = 0.005
+                linewidth = 0.005,
+                position = position_dodge(width = 0.3)
                 ) + 
   facet_grid(rows = vars(education), cols = vars(migration),
              labeller = labeller(
@@ -1040,7 +1062,7 @@ ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
              switch = "y"
   ) +
   labs(
-    title = "Predicted probability unsafe social climate Model1",
+    title = "Predicted probability highly safe Model1",
     y = NULL,
     x = NULL,
     color = "Gender"

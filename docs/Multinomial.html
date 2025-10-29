@@ -385,12 +385,7 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/ninabranten/socialunsafety_1">
-    <span class="fab fa-github"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -658,56 +653,56 @@ attach(data_multi)</code></pre>
 <p><br><br></p>
 <pre class="r"><code>#Overall unsafety (6)
 
-cat(&quot;ICC model0: &quot;, 0.2916/(0.2916+3.29), &quot;\n&quot;,
-    &quot;ICC final: &quot;, 0.0570/(0.0570+3.29), &quot;\n&quot;,
-    &quot;PCV: &quot;, (0.2916-0.0570)/0.2916, &quot;\n&quot;)</code></pre>
+cat(&quot;ICC model0: &quot;, (0.54*0.54)/((0.54*0.54)+3.29), &quot;\n&quot;,
+    &quot;ICC final: &quot;, (0.24*0.24)/((0.24*0.24)+3.29), &quot;\n&quot;,
+    &quot;PCV: &quot;, (0.2916-0.0576)/0.2916, &quot;\n&quot;)</code></pre>
 <pre><code>## ICC model0:  0.08141613 
-##  ICC final:  0.01703018 
-##  PCV:  0.8045267</code></pre>
+##  ICC final:  0.01720636 
+##  PCV:  0.8024691</code></pre>
 <pre class="r"><code>#Supervisor unsafety (4)
 
-cat(&quot;ICC model0: &quot;, 0.0961/(0.0961+3.29), &quot;\n&quot;,
-    &quot;ICC final: &quot;, 0.0250/(0.0250+3.29), &quot;\n&quot;,
-    &quot;PCV: &quot;, (0.0961-0.0250)/0.0961, &quot;\n&quot;)</code></pre>
+cat(&quot;ICC model0: &quot;, (0.31*0.31)/((0.31*0.31)+3.29), &quot;\n&quot;,
+    &quot;ICC final: &quot;, (0.16*0.16)/((0.16*0.16)+3.29), &quot;\n&quot;,
+    &quot;PCV: &quot;, (0.0961-0.0256)/0.0961, &quot;\n&quot;)</code></pre>
 <pre><code>## ICC model0:  0.02838073 
-##  ICC final:  0.007541478 
-##  PCV:  0.7398543</code></pre>
+##  ICC final:  0.007721076 
+##  PCV:  0.7336108</code></pre>
 <pre class="r"><code>#Coworker unsafety (7)
 
-cat(&quot;ICC model0: &quot;, 0.0625/(0.0625+3.29), &quot;\n&quot;,
-    &quot;ICC final: &quot;, 0.0144/(0.0144+3.29), &quot;\n&quot;,
+cat(&quot;ICC model0: &quot;, (0.25*0.25)/((0.25*0.25)+3.29), &quot;\n&quot;,
+    &quot;ICC final: &quot;, (0.12*0.12)/((0.12*0.12)+3.29), &quot;\n&quot;,
     &quot;PCV: &quot;, (0.0625-0.0144)/0.0625, &quot;\n&quot;)</code></pre>
 <pre><code>## ICC model0:  0.0186428 
 ##  ICC final:  0.004357826 
 ##  PCV:  0.7696</code></pre>
 <pre class="r"><code>#Unsafe social climate (5)
 
-cat(&quot;ICC model0: &quot;, 0.0729/(0.0729+3.29), &quot;\n&quot;,
-    &quot;ICC final: &quot;, 0.0025/(0.0025+3.29), &quot;\n&quot;,
+cat(&quot;ICC model0: &quot;, (0.27*0.27)/((0.27*0.27)+3.29), &quot;\n&quot;,
+    &quot;ICC final: &quot;, (0.05*0.05)/((0.05*0.05)+3.29), &quot;\n&quot;,
     &quot;PCV: &quot;, (0.0729-0.0025)/0.0729, &quot;\n&quot;)</code></pre>
 <pre><code>## ICC model0:  0.02167772 
 ##  ICC final:  0.0007593014 
 ##  PCV:  0.9657064</code></pre>
 <pre class="r"><code>#Short-term conflict (1)
 
-cat(&quot;ICC model0: &quot;, 0.09/(0.09+3.29), &quot;\n&quot;,
-    &quot;ICC final: &quot;, 0.0169/(0.0169+3.29), &quot;\n&quot;,
+cat(&quot;ICC model0: &quot;, (0.30*0.30)/((0.30*0.30)+3.29), &quot;\n&quot;,
+    &quot;ICC final: &quot;, (0.13*0.13)/((0.13*0.13)+3.29), &quot;\n&quot;,
     &quot;PCV: &quot;, (0.09-0.0169)/0.09, &quot;\n&quot;)</code></pre>
 <pre><code>## ICC model0:  0.02662722 
 ##  ICC final:  0.005110526 
 ##  PCV:  0.8122222</code></pre>
 <pre class="r"><code>#Safe (2)
 
-cat(&quot;ICC model0: &quot;, 0.0196/(0.0196+3.29), &quot;\n&quot;,
-    &quot;ICC final: &quot;, 0.0025/(0.0025+3.29), &quot;\n&quot;,
-    &quot;PCV: &quot;, (0.0196-0.0025)/0.0196, &quot;\n&quot;)</code></pre>
+cat(&quot;ICC model0: &quot;, (0.14*0.14)/((0.14*0.14)+3.29), &quot;\n&quot;,
+    &quot;ICC final: &quot;, (0.05*0.05)/((0.05*0.05)+3.29), &quot;\n&quot;,
+    &quot;PCV: &quot;, (0.0169-0.0025)/0.0169, &quot;\n&quot;)</code></pre>
 <pre><code>## ICC model0:  0.005922166 
 ##  ICC final:  0.0007593014 
-##  PCV:  0.872449</code></pre>
+##  PCV:  0.852071</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIk11bHRpbm9taWFsIg0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wNS0xOSINCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQoNCmBgYHtyIGxvYWRpbmcgcGFja2FnZXMsIHdhcm5pbmc9RkFMU0UsIHJlc3VsdHM9J2hpZGUnLCBtZXNzYWdlPUZBTFNFfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmxpYnJhcnkoInBzeWNoIikNCmxpYnJhcnkoIk1hdHJpeCIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoIm1lclRvb2xzIikNCmxpYnJhcnkoInNqUGxvdCIpDQpsaWJyYXJ5KCJnbG1tVE1CIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ3QiKQ0KbGlicmFyeSgidGliYmxlIikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImJybXMiKQ0KYGBgDQoNCg0KPGJyPjxicj4gKipMb2FkaW5nIHRoZSBkYXRhKioNCg0KYGBge3IgbG9hZGluZyBkYXRhLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KTkVBMjAyMiA8LSByZWFkUkRTKCJkYXRhL3Byb2Nlc3NlZC9MQ0FmaW5hbC5yZHMiKQ0KDQpzZXQuc2VlZCgxMjMpDQpgYGANCg0KDQpgYGB7ciB0ZXN0LCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0Kd2hpY2goZHVwbGljYXRlZChuYW1lcyhORUEyMDIyKSkpDQpuYW1lcyhORUEyMDIyKVtkdXBsaWNhdGVkKG5hbWVzKE5FQTIwMjIpKV0NCg0KZ3JlcCgibGVlZnRpamQiLCBuYW1lcyhORUEyMDIyKSwgdmFsdWUgPSBUUlVFKQ0KYGBgDQoNCjxicj48YnI+DQoNCmBgYHtyIGZhY3Rvcn0NCnRhYmxlKE5FQTIwMjIkbW9kZWw3X2VtcHByZWQpDQpORUEyMDIyJHByZWRfN19mIDwtIGFzLmZhY3RvcihORUEyMDIyJG1vZGVsN19lbXBwcmVkKQ0KTkVBMjAyMiRwcmVkXzdfZiA8LSByZWxldmVsKE5FQTIwMjIkcHJlZF83X2YsIHJlZiA9ICIzIikNCnRhYmxlKE5FQTIwMjIkcHJlZF83X2YpDQpgYGANCg0KPGJyPjxicj4NCg0KIyBNdWx0aW5vbWlhbCBtdWx0aWxldmVsIChyZWYgPSBoaWdobHkgc2FmZSkNCg0KDQo8YnI+PGJyPg0KDQojIyBNb2RlbDANCg0KPGJyPjxicj4NCg0KYGBge3IsIHdhcm5pbmc9RkFMU0V9DQphdHRhY2goTkVBMjAyMikNCmRhdGFfbXVsdGkgPC0gZGF0YS5mcmFtZShnZW5kZXJfdiwgbWlncmF0aW9uX2V1LCBtaWdyYXRpb25fbm9ldSwgDQogICAgZWR1Y2F0aW9uX2xhYWcsIGVkdWNhdGlvbl9taWRkZWwsIGxlZWZ0aWpkXzM1XzU1LCBsZWVmdGlqZF81NV83NSwgcHJlZF83X2YsIGludGVyc2VjdGlvbnMpDQphdHRhY2goZGF0YV9tdWx0aSkNCmBgYA0KDQoNCmBgYHtyIG11bHRpbm9taWFsIG1vZGVsMCwgY2FjaGU9VFJVRX0NCmJybV9lbXA3XzAgPC0gYnJtKA0KICBmb3JtdWxhID0gcHJlZF83X2YgfiAxICsgKDEgfCBpbnRlcnNlY3Rpb25zKSwNCiAgZGF0YSA9IGRhdGFfbXVsdGksDQogIGZhbWlseSA9IGNhdGVnb3JpY2FsKCksDQogIGNoYWlucyA9IDQsIGNvcmVzID0gMiwgaXRlciA9IDIwMDANCikNCg0Kc3VtbWFyeShicm1fZW1wN18wKQ0KYGBgDQoNCg0KPGJyPjxicj4NCg0KIyMgTW9kZWwxDQoNCjxicj48YnI+DQoNCmBgYHtyIG11bHRpbm9taWFsIG1vZGVsMSwgY2FjaGU9VFJVRX0NCg0KYnJtX2VtcDdfMSA8LSBicm0oDQogIGZvcm11bGEgPSBwcmVkXzdfZiB+IGdlbmRlcl92ICsgbWlncmF0aW9uX2V1ICsgbWlncmF0aW9uX25vZXUgKyANCiAgICBlZHVjYXRpb25fbGFhZyArIGVkdWNhdGlvbl9taWRkZWwgKyBsZWVmdGlqZF8zNV81NSArIGxlZWZ0aWpkXzU1Xzc1ICsNCiAgICAoMSB8IGludGVyc2VjdGlvbnMpLA0KICBkYXRhID0gZGF0YV9tdWx0aSwNCiAgZmFtaWx5ID0gY2F0ZWdvcmljYWwoKSwNCiAgY2hhaW5zID0gNCwgY29yZXMgPSAyLCBpdGVyID0gMjAwMA0KKQ0KDQpzdW1tYXJ5KGJybV9lbXA3XzEpDQpgYGANCjxicj48YnI+DQoNCiMjIElDQw0KDQo8YnI+PGJyPg0KDQpgYGB7cn0NCiNPdmVyYWxsIHVuc2FmZXR5ICg2KQ0KDQpjYXQoIklDQyBtb2RlbDA6ICIsIDAuMjkxNi8oMC4yOTE2KzMuMjkpLCAiXG4iLA0KICAgICJJQ0MgZmluYWw6ICIsIDAuMDU3MC8oMC4wNTcwKzMuMjkpLCAiXG4iLA0KICAgICJQQ1Y6ICIsICgwLjI5MTYtMC4wNTcwKS8wLjI5MTYsICJcbiIpDQoNCiNTdXBlcnZpc29yIHVuc2FmZXR5ICg0KQ0KDQpjYXQoIklDQyBtb2RlbDA6ICIsIDAuMDk2MS8oMC4wOTYxKzMuMjkpLCAiXG4iLA0KICAgICJJQ0MgZmluYWw6ICIsIDAuMDI1MC8oMC4wMjUwKzMuMjkpLCAiXG4iLA0KICAgICJQQ1Y6ICIsICgwLjA5NjEtMC4wMjUwKS8wLjA5NjEsICJcbiIpDQoNCiNDb3dvcmtlciB1bnNhZmV0eSAoNykNCg0KY2F0KCJJQ0MgbW9kZWwwOiAiLCAwLjA2MjUvKDAuMDYyNSszLjI5KSwgIlxuIiwNCiAgICAiSUNDIGZpbmFsOiAiLCAwLjAxNDQvKDAuMDE0NCszLjI5KSwgIlxuIiwNCiAgICAiUENWOiAiLCAoMC4wNjI1LTAuMDE0NCkvMC4wNjI1LCAiXG4iKQ0KDQojVW5zYWZlIHNvY2lhbCBjbGltYXRlICg1KQ0KDQpjYXQoIklDQyBtb2RlbDA6ICIsIDAuMDcyOS8oMC4wNzI5KzMuMjkpLCAiXG4iLA0KICAgICJJQ0MgZmluYWw6ICIsIDAuMDAyNS8oMC4wMDI1KzMuMjkpLCAiXG4iLA0KICAgICJQQ1Y6ICIsICgwLjA3MjktMC4wMDI1KS8wLjA3MjksICJcbiIpDQoNCiNTaG9ydC10ZXJtIGNvbmZsaWN0ICgxKQ0KDQpjYXQoIklDQyBtb2RlbDA6ICIsIDAuMDkvKDAuMDkrMy4yOSksICJcbiIsDQogICAgIklDQyBmaW5hbDogIiwgMC4wMTY5LygwLjAxNjkrMy4yOSksICJcbiIsDQogICAgIlBDVjogIiwgKDAuMDktMC4wMTY5KS8wLjA5LCAiXG4iKQ0KDQojU2FmZSAoMikNCg0KY2F0KCJJQ0MgbW9kZWwwOiAiLCAwLjAxOTYvKDAuMDE5NiszLjI5KSwgIlxuIiwNCiAgICAiSUNDIGZpbmFsOiAiLCAwLjAwMjUvKDAuMDAyNSszLjI5KSwgIlxuIiwNCiAgICAiUENWOiAiLCAoMC4wMTk2LTAuMDAyNSkvMC4wMTk2LCAiXG4iKQ0KYGBgDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk11bHRpbm9taWFsIg0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQpkYXRlOiAiMjAyNS0wNS0xOSINCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQoNCmBgYHtyIGxvYWRpbmcgcGFja2FnZXMsIHdhcm5pbmc9RkFMU0UsIHJlc3VsdHM9J2hpZGUnLCBtZXNzYWdlPUZBTFNFfQ0KbGlicmFyeSgiZm9ybWF0UiIpDQpsaWJyYXJ5KCJmb3JlaWduIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgibG1lNCIpDQpsaWJyYXJ5KCJwb0xDQSIpDQpsaWJyYXJ5KCJyZXByZXgiKQ0KbGlicmFyeSgidGlkeXIiKQ0KbGlicmFyeSgia2xpcHB5IikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImhhdmVuIikNCmxpYnJhcnkoInBzeWNoIikNCmxpYnJhcnkoIk1hdHJpeCIpDQpsaWJyYXJ5KCJsbWU0IikNCmxpYnJhcnkoIm1lclRvb2xzIikNCmxpYnJhcnkoInNqUGxvdCIpDQpsaWJyYXJ5KCJnbG1tVE1CIikNCmxpYnJhcnkoImZvcmVpZ24iKQ0KbGlicmFyeSgiZ3QiKQ0KbGlicmFyeSgidGliYmxlIikNCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoImJybXMiKQ0KYGBgDQoNCg0KPGJyPjxicj4gKipMb2FkaW5nIHRoZSBkYXRhKioNCg0KYGBge3IgbG9hZGluZyBkYXRhLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KTkVBMjAyMiA8LSByZWFkUkRTKCJkYXRhL3Byb2Nlc3NlZC9MQ0FmaW5hbC5yZHMiKQ0KDQpzZXQuc2VlZCgxMjMpDQpgYGANCg0KDQpgYGB7ciB0ZXN0LCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0Kd2hpY2goZHVwbGljYXRlZChuYW1lcyhORUEyMDIyKSkpDQpuYW1lcyhORUEyMDIyKVtkdXBsaWNhdGVkKG5hbWVzKE5FQTIwMjIpKV0NCg0KZ3JlcCgibGVlZnRpamQiLCBuYW1lcyhORUEyMDIyKSwgdmFsdWUgPSBUUlVFKQ0KYGBgDQoNCjxicj48YnI+DQoNCmBgYHtyIGZhY3Rvcn0NCnRhYmxlKE5FQTIwMjIkbW9kZWw3X2VtcHByZWQpDQpORUEyMDIyJHByZWRfN19mIDwtIGFzLmZhY3RvcihORUEyMDIyJG1vZGVsN19lbXBwcmVkKQ0KTkVBMjAyMiRwcmVkXzdfZiA8LSByZWxldmVsKE5FQTIwMjIkcHJlZF83X2YsIHJlZiA9ICIzIikNCnRhYmxlKE5FQTIwMjIkcHJlZF83X2YpDQpgYGANCg0KPGJyPjxicj4NCg0KIyBNdWx0aW5vbWlhbCBtdWx0aWxldmVsIChyZWYgPSBoaWdobHkgc2FmZSkNCg0KDQo8YnI+PGJyPg0KDQojIyBNb2RlbDANCg0KPGJyPjxicj4NCg0KYGBge3IsIHdhcm5pbmc9RkFMU0V9DQphdHRhY2goTkVBMjAyMikNCmRhdGFfbXVsdGkgPC0gZGF0YS5mcmFtZShnZW5kZXJfdiwgbWlncmF0aW9uX2V1LCBtaWdyYXRpb25fbm9ldSwgDQogICAgZWR1Y2F0aW9uX2xhYWcsIGVkdWNhdGlvbl9taWRkZWwsIGxlZWZ0aWpkXzM1XzU1LCBsZWVmdGlqZF81NV83NSwgcHJlZF83X2YsIGludGVyc2VjdGlvbnMpDQphdHRhY2goZGF0YV9tdWx0aSkNCmBgYA0KDQoNCmBgYHtyIG11bHRpbm9taWFsIG1vZGVsMCwgY2FjaGU9VFJVRX0NCmJybV9lbXA3XzAgPC0gYnJtKA0KICBmb3JtdWxhID0gcHJlZF83X2YgfiAxICsgKDEgfCBpbnRlcnNlY3Rpb25zKSwNCiAgZGF0YSA9IGRhdGFfbXVsdGksDQogIGZhbWlseSA9IGNhdGVnb3JpY2FsKCksDQogIGNoYWlucyA9IDQsIGNvcmVzID0gMiwgaXRlciA9IDIwMDANCikNCg0Kc3VtbWFyeShicm1fZW1wN18wKQ0KYGBgDQoNCg0KPGJyPjxicj4NCg0KIyMgTW9kZWwxDQoNCjxicj48YnI+DQoNCmBgYHtyIG11bHRpbm9taWFsIG1vZGVsMSwgY2FjaGU9VFJVRX0NCg0KYnJtX2VtcDdfMSA8LSBicm0oDQogIGZvcm11bGEgPSBwcmVkXzdfZiB+IGdlbmRlcl92ICsgbWlncmF0aW9uX2V1ICsgbWlncmF0aW9uX25vZXUgKyANCiAgICBlZHVjYXRpb25fbGFhZyArIGVkdWNhdGlvbl9taWRkZWwgKyBsZWVmdGlqZF8zNV81NSArIGxlZWZ0aWpkXzU1Xzc1ICsNCiAgICAoMSB8IGludGVyc2VjdGlvbnMpLA0KICBkYXRhID0gZGF0YV9tdWx0aSwNCiAgZmFtaWx5ID0gY2F0ZWdvcmljYWwoKSwNCiAgY2hhaW5zID0gNCwgY29yZXMgPSAyLCBpdGVyID0gMjAwMA0KKQ0KDQpzdW1tYXJ5KGJybV9lbXA3XzEpDQpgYGANCjxicj48YnI+DQoNCiMjIElDQw0KDQo8YnI+PGJyPg0KDQpgYGB7cn0NCiNPdmVyYWxsIHVuc2FmZXR5ICg2KQ0KDQpjYXQoIklDQyBtb2RlbDA6ICIsICgwLjU0KjAuNTQpLygoMC41NCowLjU0KSszLjI5KSwgIlxuIiwNCiAgICAiSUNDIGZpbmFsOiAiLCAoMC4yNCowLjI0KS8oKDAuMjQqMC4yNCkrMy4yOSksICJcbiIsDQogICAgIlBDVjogIiwgKDAuMjkxNi0wLjA1NzYpLzAuMjkxNiwgIlxuIikNCg0KI1N1cGVydmlzb3IgdW5zYWZldHkgKDQpDQoNCmNhdCgiSUNDIG1vZGVsMDogIiwgKDAuMzEqMC4zMSkvKCgwLjMxKjAuMzEpKzMuMjkpLCAiXG4iLA0KICAgICJJQ0MgZmluYWw6ICIsICgwLjE2KjAuMTYpLygoMC4xNiowLjE2KSszLjI5KSwgIlxuIiwNCiAgICAiUENWOiAiLCAoMC4wOTYxLTAuMDI1NikvMC4wOTYxLCAiXG4iKQ0KDQojQ293b3JrZXIgdW5zYWZldHkgKDcpDQoNCmNhdCgiSUNDIG1vZGVsMDogIiwgKDAuMjUqMC4yNSkvKCgwLjI1KjAuMjUpKzMuMjkpLCAiXG4iLA0KICAgICJJQ0MgZmluYWw6ICIsICgwLjEyKjAuMTIpLygoMC4xMiowLjEyKSszLjI5KSwgIlxuIiwNCiAgICAiUENWOiAiLCAoMC4wNjI1LTAuMDE0NCkvMC4wNjI1LCAiXG4iKQ0KDQojVW5zYWZlIHNvY2lhbCBjbGltYXRlICg1KQ0KDQpjYXQoIklDQyBtb2RlbDA6ICIsICgwLjI3KjAuMjcpLygoMC4yNyowLjI3KSszLjI5KSwgIlxuIiwNCiAgICAiSUNDIGZpbmFsOiAiLCAoMC4wNSowLjA1KS8oKDAuMDUqMC4wNSkrMy4yOSksICJcbiIsDQogICAgIlBDVjogIiwgKDAuMDcyOS0wLjAwMjUpLzAuMDcyOSwgIlxuIikNCg0KI1Nob3J0LXRlcm0gY29uZmxpY3QgKDEpDQoNCmNhdCgiSUNDIG1vZGVsMDogIiwgKDAuMzAqMC4zMCkvKCgwLjMwKjAuMzApKzMuMjkpLCAiXG4iLA0KICAgICJJQ0MgZmluYWw6ICIsICgwLjEzKjAuMTMpLygoMC4xMyowLjEzKSszLjI5KSwgIlxuIiwNCiAgICAiUENWOiAiLCAoMC4wOS0wLjAxNjkpLzAuMDksICJcbiIpDQoNCiNTYWZlICgyKQ0KDQpjYXQoIklDQyBtb2RlbDA6ICIsICgwLjE0KjAuMTQpLygoMC4xNCowLjE0KSszLjI5KSwgIlxuIiwNCiAgICAiSUNDIGZpbmFsOiAiLCAoMC4wNSowLjA1KS8oKDAuMDUqMC4wNSkrMy4yOSksICJcbiIsDQogICAgIlBDVjogIiwgKDAuMDE2OS0wLjAwMjUpLzAuMDE2OSwgIlxuIikNCmBgYA0K</div>
 
 
 </div>
