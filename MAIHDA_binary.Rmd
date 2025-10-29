@@ -94,11 +94,9 @@ cat("ICC final: ", 0.1802/(0.1802+129.4920), "\n",
     "PCV: ", (0.9627-0.1802)/0.9627, "\n")
 ```
 
+
 ```{r estimated overall unsafety, cache=TRUE}
-#Predicted probability belonging to overall unsafety class
-
 NEA2022$predicted_7 <- predict(Lb_7_1, re.form = NULL, type = "response")
-
 NEA2022$residual_7 <- NEA2022$modelb7_7 - NEA2022$predicted_7
 
 summary_preds_7 <- NEA2022 %>%
@@ -106,67 +104,69 @@ summary_preds_7 <- NEA2022 %>%
   summarise(
     mean_pred_7 = mean(predicted_7, na.rm = TRUE),
     se_pred_7 = sd(residual_7, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_7 - 1.96 * se_pred_7,
+    upper = mean_pred_7 + 1.96 * se_pred_7,
     .groups = "drop"
   )
 
-gender_labels <- as_labeller(c(
-  "m" = "Men",
-  "v" = "Women"
-))
+y_min <- min(summary_preds_7$lower, na.rm = TRUE)
+y_max <- max(summary_preds_7$upper, na.rm = TRUE)
 
+gender_labels <- as_labeller(c("m" = "Men", "v" = "Women"))
 migration_labels <- as_labeller(c(
-  "nl"   = "No migration background",
-  "eu"   = "European",
+  "nl" = "No migration background",
+  "eu" = "European",
   "noeu" = "Non-European"
 ))
-
 education_labels <- as_labeller(c(
-  "laag"   = "Low",
+  "laag" = "Low",
   "middel" = "Middle",
-  "hoog"   = "High"
+  "hoog" = "High"
 ))
 
 ggplot(summary_preds_7, aes(x = leeftijd, y = mean_pred_7, color = gender)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = mean_pred_7 - se_pred_7,
-                    ymax = mean_pred_7 + se_pred_7),
-                width = 0,
-                alpha = 0.4,
-                linewidth = 0.005
-                ) + 
-  facet_grid(rows = vars(education), cols = vars(migration),
-             labeller = labeller(
-               education = education_labels,
-               migration = migration_labels
-             ),
-             switch = "y"
+  geom_point(
+        position = position_dodge(width = 0.3)
   ) +
-  labs(
-    title = "Predicted probability overall unsafety",
-    y = NULL,
-    x = NULL,
-    color = "Gender"
+  geom_errorbar(
+    aes(ymin = lower, ymax = upper),
+    width = 0,
+    alpha = 0.4,
+    linewidth = 0.5,
+        position = position_dodge(width = 0.3)
+  ) +
+  facet_grid(
+    rows = vars(education),
+    cols = vars(migration),
+    labeller = labeller(
+      education = education_labels,
+      migration = migration_labels
+    ),
+    switch = "y"
+  ) +
+  scale_y_continuous(
+    limits = c(y_min, y_max),
+    breaks = seq(floor(y_min), ceiling(y_max), by = 2),
+    labels = function(x) ifelse(x < 0, "", x),
+    name = NULL,
+    sec.axis = dup_axis(name = NULL)
   ) +
   scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
                      labels = gender_labels) +
+  labs(
+    title = "Predicted probability overall unsafety Model1",
+    x = "",
+    color = "Gender"
+  ) +
   theme_minimal() +
   theme(
-    axis.title.y.right = element_text(angle = 90),
     strip.background = element_rect(fill = "gray90", color = NA),
     strip.placement = "outside",
     strip.text.y.left = element_text(angle = 0),
-    axis.title.y = element_blank(),
     axis.text.y.left = element_blank(),
-    axis.ticks.y.left = element_blank(),
-    plot.margin = margin(10, 30, 10, 10)
-  ) +
-  scale_y_continuous(
-    name = NULL,
-    sec.axis = dup_axis(name = "Predicted Probability")
+    axis.ticks.y.left = element_blank()
   )
 ```
-
 
 ```{r estimated intersectional effects overall unsafety, cache=TRUE}
 #Estimated intersectional effects
@@ -337,12 +337,8 @@ cat("ICC final: ", 0.1316/(0.1316+147.0932), "\n",
     "PCV: ", (0.233-0.1316)/0.233, "\n")
 
 ```
-
 ```{r estimated supervisor unsafety, cache=TRUE}
-#Predicted probability belonging to overall unsafety class
-
 NEA2022$predicted_2 <- predict(Lb_2_1, re.form = NULL, type = "response")
-
 NEA2022$residual_2 <- NEA2022$modelb7_2 - NEA2022$predicted_2
 
 summary_preds_2 <- NEA2022 %>%
@@ -350,68 +346,69 @@ summary_preds_2 <- NEA2022 %>%
   summarise(
     mean_pred_2 = mean(predicted_2, na.rm = TRUE),
     se_pred_2 = sd(residual_2, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_2 - 1.96 * se_pred_2,
+    upper = mean_pred_2 + 1.96 * se_pred_2,
     .groups = "drop"
   )
 
-gender_labels <- as_labeller(c(
-  "m" = "Men",
-  "v" = "Women"
-))
+y_min <- min(summary_preds_2$lower, na.rm = TRUE)
+y_max <- max(summary_preds_2$upper, na.rm = TRUE)
 
+gender_labels <- as_labeller(c("m" = "Men", "v" = "Women"))
 migration_labels <- as_labeller(c(
-  "nl"   = "No migration background",
-  "eu"   = "European",
+  "nl" = "No migration background",
+  "eu" = "European",
   "noeu" = "Non-European"
 ))
-
 education_labels <- as_labeller(c(
-  "laag"   = "Low",
+  "laag" = "Low",
   "middel" = "Middle",
-  "hoog"   = "High"
+  "hoog" = "High"
 ))
 
 ggplot(summary_preds_2, aes(x = leeftijd, y = mean_pred_2, color = gender)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = mean_pred_2 - se_pred_2,
-                    ymax = mean_pred_2 + se_pred_2),
-                width = 0,
-                alpha = 0.4,
-                linewidth = 0.005
-                ) + 
-  facet_grid(rows = vars(education), cols = vars(migration),
-             labeller = labeller(
-               education = education_labels,
-               migration = migration_labels
-             ),
-             switch = "y"
+  geom_point(
+        position = position_dodge(width = 0.3)
   ) +
-  labs(
-    title = "Predicted probability supervisor unsafety",
-    y = NULL,
-    x = NULL,
-    color = "Gender"
+  geom_errorbar(
+    aes(ymin = lower, ymax = upper),
+    width = 0,
+    alpha = 0.4,
+    linewidth = 0.5,
+        position = position_dodge(width = 0.3)
+  ) +
+  facet_grid(
+    rows = vars(education),
+    cols = vars(migration),
+    labeller = labeller(
+      education = education_labels,
+      migration = migration_labels
+    ),
+    switch = "y"
+  ) +
+  scale_y_continuous(
+    limits = c(y_min, y_max),
+    breaks = seq(floor(y_min), ceiling(y_max), by = 2),
+    labels = function(x) ifelse(x < 0, "", x),
+    name = NULL,
+    sec.axis = dup_axis(name = NULL)
   ) +
   scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
                      labels = gender_labels) +
+  labs(
+    title = "Predicted probability supervisor unsafety Model1",
+    x = "",
+    color = "Gender"
+  ) +
   theme_minimal() +
   theme(
-    axis.title.y.right = element_text(angle = 90),
     strip.background = element_rect(fill = "gray90", color = NA),
     strip.placement = "outside",
     strip.text.y.left = element_text(angle = 0),
-    axis.title.y = element_blank(),
     axis.text.y.left = element_blank(),
-    axis.ticks.y.left = element_blank(),
-    plot.margin = margin(10, 30, 10, 10)
-  ) +
-  scale_y_continuous(
-    name = NULL,
-    sec.axis = dup_axis(name = "Predicted Probability")
+    axis.ticks.y.left = element_blank()
   )
 ```
-
-
 
 ```{r estimated intersectional effects supervisor unsafety, cache=TRUE}
 #Estimated intersectional effects
@@ -581,10 +578,7 @@ cat("ICC final: ", 0.08042/(0.08042+214.96827), "\n",
 ```
 
 ```{r estimated coworker unsafety, cache=TRUE}
-#Predicted probability belonging to overall unsafety class
-
 NEA2022$predicted_3 <- predict(Lb_3_1, re.form = NULL, type = "response")
-
 NEA2022$residual_3 <- NEA2022$modelb7_3 - NEA2022$predicted_3
 
 summary_preds_3 <- NEA2022 %>%
@@ -592,64 +586,67 @@ summary_preds_3 <- NEA2022 %>%
   summarise(
     mean_pred_3 = mean(predicted_3, na.rm = TRUE),
     se_pred_3 = sd(residual_3, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_3 - 1.96 * se_pred_3,
+    upper = mean_pred_3 + 1.96 * se_pred_3,
     .groups = "drop"
   )
 
-gender_labels <- as_labeller(c(
-  "m" = "Men",
-  "v" = "Women"
-))
+y_min <- min(summary_preds_3$lower, na.rm = TRUE)
+y_max <- max(summary_preds_3$upper, na.rm = TRUE)
 
+gender_labels <- as_labeller(c("m" = "Men", "v" = "Women"))
 migration_labels <- as_labeller(c(
-  "nl"   = "No migration background",
-  "eu"   = "European",
+  "nl" = "No migration background",
+  "eu" = "European",
   "noeu" = "Non-European"
 ))
-
 education_labels <- as_labeller(c(
-  "laag"   = "Low",
+  "laag" = "Low",
   "middel" = "Middle",
-  "hoog"   = "High"
+  "hoog" = "High"
 ))
 
 ggplot(summary_preds_3, aes(x = leeftijd, y = mean_pred_3, color = gender)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = mean_pred_3 - se_pred_3,
-                    ymax = mean_pred_3 + se_pred_3),
-                width = 0,
-                alpha = 0.4,
-                linewidth = 0.005
-                ) + 
-  facet_grid(rows = vars(education), cols = vars(migration),
-             labeller = labeller(
-               education = education_labels,
-               migration = migration_labels
-             ),
-             switch = "y"
+  geom_point(
+        position = position_dodge(width = 0.3)
   ) +
-  labs(
-    title = "Predicted probability coworker unsafety",
-    y = NULL,
-    x = NULL,
-    color = "Gender"
+  geom_errorbar(
+    aes(ymin = lower, ymax = upper),
+    width = 0,
+    alpha = 0.4,
+    linewidth = 0.5,
+        position = position_dodge(width = 0.3)
+  ) +
+  facet_grid(
+    rows = vars(education),
+    cols = vars(migration),
+    labeller = labeller(
+      education = education_labels,
+      migration = migration_labels
+    ),
+    switch = "y"
+  ) +
+  scale_y_continuous(
+    limits = c(y_min, y_max),
+    breaks = seq(floor(y_min), ceiling(y_max), by = 2),
+    labels = function(x) ifelse(x < 0, "", x),
+    name = NULL,
+    sec.axis = dup_axis(name = NULL)
   ) +
   scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
                      labels = gender_labels) +
+  labs(
+    title = "Predicted probability coworker unsafety Model1",
+    x = "",
+    color = "Gender"
+  ) +
   theme_minimal() +
   theme(
-    axis.title.y.right = element_text(angle = 90),
     strip.background = element_rect(fill = "gray90", color = NA),
     strip.placement = "outside",
     strip.text.y.left = element_text(angle = 0),
-    axis.title.y = element_blank(),
     axis.text.y.left = element_blank(),
-    axis.ticks.y.left = element_blank(),
-    plot.margin = margin(10, 30, 10, 10)
-  ) +
-  scale_y_continuous(
-    name = NULL,
-    sec.axis = dup_axis(name = "Predicted Probability")
+    axis.ticks.y.left = element_blank()
   )
 ```
 
@@ -823,10 +820,7 @@ cat("ICC final: ", 0.21/(0.21+633.04), "\n",
 ```
 
 ```{r estimated unsafe social climate, cache=TRUE}
-#Predicted probability belonging to overall unsafety class
-
 NEA2022$predicted_4 <- predict(Lb_4_1, re.form = NULL, type = "response")
-
 NEA2022$residual_4 <- NEA2022$modelb7_4 - NEA2022$predicted_4
 
 summary_preds_4 <- NEA2022 %>%
@@ -834,64 +828,67 @@ summary_preds_4 <- NEA2022 %>%
   summarise(
     mean_pred_4 = mean(predicted_4, na.rm = TRUE),
     se_pred_4 = sd(residual_4, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_4 - 1.96 * se_pred_4,
+    upper = mean_pred_4 + 1.96 * se_pred_4,
     .groups = "drop"
   )
 
-gender_labels <- as_labeller(c(
-  "m" = "Men",
-  "v" = "Women"
-))
+y_min <- min(summary_preds_4$lower, na.rm = TRUE)
+y_max <- max(summary_preds_4$upper, na.rm = TRUE)
 
+gender_labels <- as_labeller(c("m" = "Men", "v" = "Women"))
 migration_labels <- as_labeller(c(
-  "nl"   = "No migration background",
-  "eu"   = "European",
+  "nl" = "No migration background",
+  "eu" = "European",
   "noeu" = "Non-European"
 ))
-
 education_labels <- as_labeller(c(
-  "laag"   = "Low",
+  "laag" = "Low",
   "middel" = "Middle",
-  "hoog"   = "High"
+  "hoog" = "High"
 ))
 
 ggplot(summary_preds_4, aes(x = leeftijd, y = mean_pred_4, color = gender)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = mean_pred_4 - se_pred_4,
-                    ymax = mean_pred_4 + se_pred_4),
-                width = 0,
-                alpha = 0.4,
-                linewidth = 0.005
-                ) + 
-  facet_grid(rows = vars(education), cols = vars(migration),
-             labeller = labeller(
-               education = education_labels,
-               migration = migration_labels
-             ),
-             switch = "y"
+  geom_point(
+        position = position_dodge(width = 0.3)
   ) +
-  labs(
-    title = "Predicted probability unsafe social climate",
-    y = NULL,
-    x = NULL,
-    color = "Gender"
+  geom_errorbar(
+    aes(ymin = lower, ymax = upper),
+    width = 0,
+    alpha = 0.4,
+    linewidth = 0.5,
+        position = position_dodge(width = 0.3)
+  ) +
+  facet_grid(
+    rows = vars(education),
+    cols = vars(migration),
+    labeller = labeller(
+      education = education_labels,
+      migration = migration_labels
+    ),
+    switch = "y"
+  ) +
+  scale_y_continuous(
+    limits = c(y_min, y_max),
+    breaks = seq(floor(y_min), ceiling(y_max), by = 4),
+    labels = function(x) ifelse(x < 0, "", x),
+    name = NULL,
+    sec.axis = dup_axis(name = NULL)
   ) +
   scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
                      labels = gender_labels) +
+  labs(
+    title = "Predicted probability unsafe social climate Model1",
+    x = "",
+    color = "Gender"
+  ) +
   theme_minimal() +
   theme(
-    axis.title.y.right = element_text(angle = 90),
     strip.background = element_rect(fill = "gray90", color = NA),
     strip.placement = "outside",
     strip.text.y.left = element_text(angle = 0),
-    axis.title.y = element_blank(),
     axis.text.y.left = element_blank(),
-    axis.ticks.y.left = element_blank(),
-    plot.margin = margin(10, 30, 10, 10)
-  ) +
-  scale_y_continuous(
-    name = NULL,
-    sec.axis = dup_axis(name = "Predicted Probability")
+    axis.ticks.y.left = element_blank()
   )
 ```
 
@@ -1066,10 +1063,7 @@ cat("ICC final: ", 0.7291/(0.7291+424.4979), "\n",
 ```
 
 ```{r estimated short-term conflict, cache=TRUE}
-#Predicted probability belonging to overall unsafety class
-
 NEA2022$predicted_1 <- predict(Lb_1_1, re.form = NULL, type = "response")
-
 NEA2022$residual_1 <- NEA2022$modelb7_1 - NEA2022$predicted_1
 
 summary_preds_1 <- NEA2022 %>%
@@ -1077,64 +1071,67 @@ summary_preds_1 <- NEA2022 %>%
   summarise(
     mean_pred_1 = mean(predicted_1, na.rm = TRUE),
     se_pred_1 = sd(residual_1, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_1 - 1.96 * se_pred_1,
+    upper = mean_pred_1 + 1.96 * se_pred_1,
     .groups = "drop"
   )
 
-gender_labels <- as_labeller(c(
-  "m" = "Men",
-  "v" = "Women"
-))
+y_min <- min(summary_preds_1$lower, na.rm = TRUE)
+y_max <- max(summary_preds_1$upper, na.rm = TRUE)
 
+gender_labels <- as_labeller(c("m" = "Men", "v" = "Women"))
 migration_labels <- as_labeller(c(
-  "nl"   = "No migration background",
-  "eu"   = "European",
+  "nl" = "No migration background",
+  "eu" = "European",
   "noeu" = "Non-European"
 ))
-
 education_labels <- as_labeller(c(
-  "laag"   = "Low",
+  "laag" = "Low",
   "middel" = "Middle",
-  "hoog"   = "High"
+  "hoog" = "High"
 ))
 
 ggplot(summary_preds_1, aes(x = leeftijd, y = mean_pred_1, color = gender)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = mean_pred_1 - se_pred_1,
-                    ymax = mean_pred_1 + se_pred_1),
-                width = 0,
-                alpha = 0.4,
-                linewidth = 0.005
-                ) + 
-  facet_grid(rows = vars(education), cols = vars(migration),
-             labeller = labeller(
-               education = education_labels,
-               migration = migration_labels
-             ),
-             switch = "y"
+  geom_point(
+        position = position_dodge(width = 0.3)
   ) +
-  labs(
-    title = "Predicted probability short-term conflict",
-    y = NULL,
-    x = NULL,
-    color = "Gender"
+  geom_errorbar(
+    aes(ymin = lower, ymax = upper),
+    width = 0,
+    alpha = 0.4,
+    linewidth = 0.5,
+        position = position_dodge(width = 0.3)
+  ) +
+  facet_grid(
+    rows = vars(education),
+    cols = vars(migration),
+    labeller = labeller(
+      education = education_labels,
+      migration = migration_labels
+    ),
+    switch = "y"
+  ) +
+  scale_y_continuous(
+    limits = c(y_min, y_max),
+    breaks = seq(floor(y_min), ceiling(y_max), by = 2),
+    labels = function(x) ifelse(x < 0, "", x),
+    name = NULL,
+    sec.axis = dup_axis(name = NULL)
   ) +
   scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
                      labels = gender_labels) +
+  labs(
+    title = "Predicted probability short-term conflict Model1",
+    x = "",
+    color = "Gender"
+  ) +
   theme_minimal() +
   theme(
-    axis.title.y.right = element_text(angle = 90),
     strip.background = element_rect(fill = "gray90", color = NA),
     strip.placement = "outside",
     strip.text.y.left = element_text(angle = 0),
-    axis.title.y = element_blank(),
     axis.text.y.left = element_blank(),
-    axis.ticks.y.left = element_blank(),
-    plot.margin = margin(10, 30, 10, 10)
-  ) +
-  scale_y_continuous(
-    name = NULL,
-    sec.axis = dup_axis(name = "Predicted Probability")
+    axis.ticks.y.left = element_blank()
   )
 ```
 
@@ -1309,10 +1306,7 @@ cat("ICC final: ", 2.152/(2.152+1436.346), "\n",
 ```
 
 ```{r estimated safe, cache=TRUE}
-#Predicted probability belonging to overall unsafety class
-
 NEA2022$predicted_5 <- predict(Lb_5_1, re.form = NULL, type = "response")
-
 NEA2022$residual_5 <- NEA2022$modelb7_5 - NEA2022$predicted_5
 
 summary_preds_5 <- NEA2022 %>%
@@ -1320,64 +1314,67 @@ summary_preds_5 <- NEA2022 %>%
   summarise(
     mean_pred_5 = mean(predicted_5, na.rm = TRUE),
     se_pred_5 = sd(residual_5, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_5 - 1.96 * se_pred_5,
+    upper = mean_pred_5 + 1.96 * se_pred_5,
     .groups = "drop"
   )
 
-gender_labels <- as_labeller(c(
-  "m" = "Men",
-  "v" = "Women"
-))
+y_min <- min(summary_preds_5$lower, na.rm = TRUE)
+y_max <- max(summary_preds_5$upper, na.rm = TRUE)
 
+gender_labels <- as_labeller(c("m" = "Men", "v" = "Women"))
 migration_labels <- as_labeller(c(
-  "nl"   = "No migration background",
-  "eu"   = "European",
+  "nl" = "No migration background",
+  "eu" = "European",
   "noeu" = "Non-European"
 ))
-
 education_labels <- as_labeller(c(
-  "laag"   = "Low",
+  "laag" = "Low",
   "middel" = "Middle",
-  "hoog"   = "High"
+  "hoog" = "High"
 ))
 
 ggplot(summary_preds_5, aes(x = leeftijd, y = mean_pred_5, color = gender)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = mean_pred_5 - se_pred_5,
-                    ymax = mean_pred_5 + se_pred_5),
-                width = 0,
-                alpha = 0.4,
-                linewidth = 0.005
-                ) + 
-  facet_grid(rows = vars(education), cols = vars(migration),
-             labeller = labeller(
-               education = education_labels,
-               migration = migration_labels
-             ),
-             switch = "y"
+  geom_point(
+        position = position_dodge(width = 0.3)
   ) +
-  labs(
-    title = "Predicted probability safe",
-    y = NULL,
-    x = NULL,
-    color = "Gender"
+  geom_errorbar(
+    aes(ymin = lower, ymax = upper),
+    width = 0,
+    alpha = 0.4,
+    linewidth = 0.5,
+        position = position_dodge(width = 0.3)
+  ) +
+  facet_grid(
+    rows = vars(education),
+    cols = vars(migration),
+    labeller = labeller(
+      education = education_labels,
+      migration = migration_labels
+    ),
+    switch = "y"
+  ) +
+  scale_y_continuous(
+    limits = c(y_min, y_max),
+    breaks = seq(floor(y_min), ceiling(y_max), by = 4),
+    labels = function(x) ifelse(x < 0, "", x),
+    name = NULL,
+    sec.axis = dup_axis(name = NULL)
   ) +
   scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
                      labels = gender_labels) +
+  labs(
+    title = "Predicted probability safe Model1",
+    x = "",
+    color = "Gender"
+  ) +
   theme_minimal() +
   theme(
-    axis.title.y.right = element_text(angle = 90),
     strip.background = element_rect(fill = "gray90", color = NA),
     strip.placement = "outside",
     strip.text.y.left = element_text(angle = 0),
-    axis.title.y = element_blank(),
     axis.text.y.left = element_blank(),
-    axis.ticks.y.left = element_blank(),
-    plot.margin = margin(10, 30, 10, 10)
-  ) +
-  scale_y_continuous(
-    name = NULL,
-    sec.axis = dup_axis(name = "Predicted Probability")
+    axis.ticks.y.left = element_blank()
   )
 ```
 
@@ -1551,10 +1548,7 @@ cat("ICC final: ", 2.243/(2.243+1254.959), "\n",
 ```
 
 ```{r estimated highly safe, cache=TRUE}
-#Predicted probability belonging to overall unsafety class
-
 NEA2022$predicted_6 <- predict(Lb_6_1, re.form = NULL, type = "response")
-
 NEA2022$residual_6 <- NEA2022$modelb7_6 - NEA2022$predicted_6
 
 summary_preds_6 <- NEA2022 %>%
@@ -1562,64 +1556,67 @@ summary_preds_6 <- NEA2022 %>%
   summarise(
     mean_pred_6 = mean(predicted_6, na.rm = TRUE),
     se_pred_6 = sd(residual_6, na.rm = TRUE) / sqrt(n()),
-    n = n(),
+    lower = mean_pred_6 - 1.96 * se_pred_6,
+    upper = mean_pred_6 + 1.96 * se_pred_6,
     .groups = "drop"
   )
 
-gender_labels <- as_labeller(c(
-  "m" = "Men",
-  "v" = "Women"
-))
+y_min <- min(summary_preds_6$lower, na.rm = TRUE)
+y_max <- max(summary_preds_6$upper, na.rm = TRUE)
 
+gender_labels <- as_labeller(c("m" = "Men", "v" = "Women"))
 migration_labels <- as_labeller(c(
-  "nl"   = "No migration background",
-  "eu"   = "European",
+  "nl" = "No migration background",
+  "eu" = "European",
   "noeu" = "Non-European"
 ))
-
 education_labels <- as_labeller(c(
-  "laag"   = "Low",
+  "laag" = "Low",
   "middel" = "Middle",
-  "hoog"   = "High"
+  "hoog" = "High"
 ))
 
 ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = mean_pred_6 - se_pred_6,
-                    ymax = mean_pred_6 + se_pred_6),
-                width = 0,
-                alpha = 0.4,
-                linewidth = 0.005
-                ) + 
-  facet_grid(rows = vars(education), cols = vars(migration),
-             labeller = labeller(
-               education = education_labels,
-               migration = migration_labels
-             ),
-             switch = "y"
+  geom_point(
+        position = position_dodge(width = 0.3)
   ) +
-  labs(
-    title = "Predicted probability highly safe",
-    y = NULL,
-    x = NULL,
-    color = "Gender"
+  geom_errorbar(
+    aes(ymin = lower, ymax = upper),
+    width = 0,
+    alpha = 0.4,
+    linewidth = 0.5,
+        position = position_dodge(width = 0.3)
+  ) +
+  facet_grid(
+    rows = vars(education),
+    cols = vars(migration),
+    labeller = labeller(
+      education = education_labels,
+      migration = migration_labels
+    ),
+    switch = "y"
+  ) +
+  scale_y_continuous(
+    limits = c(y_min, y_max),
+    breaks = seq(floor(y_min), ceiling(y_max), by = 4),
+    labels = function(x) ifelse(x < 0, "", x),
+    name = NULL,
+    sec.axis = dup_axis(name = NULL)
   ) +
   scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
                      labels = gender_labels) +
+  labs(
+    title = "Predicted probability highly safe Model1",
+    x = "",
+    color = "Gender"
+  ) +
   theme_minimal() +
   theme(
-    axis.title.y.right = element_text(angle = 90),
     strip.background = element_rect(fill = "gray90", color = NA),
     strip.placement = "outside",
     strip.text.y.left = element_text(angle = 0),
-    axis.title.y = element_blank(),
     axis.text.y.left = element_blank(),
-    axis.ticks.y.left = element_blank(),
-    plot.margin = margin(10, 30, 10, 10)
-  ) +
-  scale_y_continuous(
-    name = NULL,
-    sec.axis = dup_axis(name = "Predicted Probability")
+    axis.ticks.y.left = element_blank()
   )
 ```
 

@@ -1,0 +1,381 @@
+```{r loading packages, warning=FALSE, results='hide', message=FALSE}
+library("formatR")
+library("foreign")
+library("ggplot2")
+library("lme4")
+library("poLCA")
+library("reprex")
+library("tidyr")
+library("klippy")
+library("dplyr")
+library("haven")
+library("psych")
+library("Matrix")
+library("lme4")
+library("merTools")
+library("sjPlot")
+library("glmmTMB")
+library("foreign")
+library("gt")
+library("tibble")
+library("dplyr")
+```
+
+```{r loading data, cache=TRUE, results='hide', warning=FALSE, message=FALSE}
+
+NEA2022 <- readRDS("data/processed/LCAfinal.rds")
+
+attach(NEA2022)
+set.seed(123)
+```
+
+
+```{r transform in factor, cache=TRUE}
+#Transform in factor
+NEA2022 <- NEA2022 %>%
+  mutate(
+    migration = trimws(migration),
+    education = trimws(education),
+    gender = trimws(gender),
+    leeftijd = trimws(leeftijd)
+  )
+
+NEA2022$gender <- factor(NEA2022$gender, levels = c("m", "v"))
+NEA2022$migration <- factor(NEA2022$migration,
+                            levels = c("nl", "eu", "noeu"))
+NEA2022$education <- factor(NEA2022$education,
+                            levels = c("laag", "middel", "hoog"))
+NEA2022$leeftijd <- factor(NEA2022$leeftijd,
+                            levels = c("15.35", "35.55", "55.75"))
+```
+
+
+```{r}
+NEA2022 <- NEA2022 %>%
+  mutate(model7_6 = pmodel7_empv6 * 100)
+```
+
+
+
+
+
+```{r}
+# --- Model-based predicted probabilities + 95% CI from lmer model ---
+
+#Regression
+NEA2022 <- NEA2022 %>%
+  mutate(model7_6 = pmodel7_empv6 * 100)
+
+L_6_0 <- lmer(model7_6 ~ 1 + (1|intersections), data=NEA2022) 
+
+L_6_g <- lmer(model7_6 ~ gender_v + (1 | intersections), data=NEA2022)
+
+L_6_m <- lmer(model7_6 ~ migration_eu + migration_noeu  + (1 | intersections), data=NEA2022)
+
+L_6_e <- lmer(model7_6 ~ education_laag + education_middel  + (1 | intersections), data=NEA2022)
+
+L_6_a <- lmer(model7_6 ~ leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
+
+L_6_1 <- lmer(model7_6 ~ gender_v + migration_eu + migration_noeu + 
+    education_laag + education_middel + leeftijd_35.55 + leeftijd_55.75  + (1 | intersections), data=NEA2022)
+
+tab_model(L_6_0, L_6_g, L_6_m, L_6_e, L_6_a, L_6_1, p.style="stars")
+
+cat("ICC model 0: ", 0.8319/(0.8319+115.2122), "\n",
+    "ICC gender: ", 0.8588/(0.8588+115.2120), "\n",
+    "ICC migration: ", 0.3866/(0.3866+115.2214), "\n",
+    "ICC education: ", 0.6416/(0.6416+115.2140), "\n",
+    "ICC age: ", 0.8895/(0.8895+115.2102), "\n",
+    "ICC final: ", 0.1494/(0.1494+115.2260), "\n",
+    "PCV: ", (0.8319-0.1494)/0.8319, "\n")
+```
+
+
+```{r}
+# --- 1. Model-based predictions met 95% CI via parametric bootstrap ---
+set.seed(123)
+preds6_0 <- predictInterval(
+  merMod = L_6_0,
+  newdata = NEA2022,
+  level = 0.95,
+  n.sims = 1000,
+  type = "linear.prediction",  # bij logistische modellen: "response"
+  include.resid.var = FALSE
+)
+
+# Voeg voorspellingen toe aan data
+NEA2022 <- cbind(NEA2022, preds6_0)
+
+# --- 2. Groepeer per intersectionele groep ---
+summary_preds_6_0 <- NEA2022 %>%
+  group_by(gender, migration, education, leeftijd) %>%
+  summarise(
+    mean_fit = mean(fit, na.rm = TRUE),
+    lower = mean(lwr, na.rm = TRUE),
+    upper = mean(upr, na.rm = TRUE),
+    n = n(),
+    .groups = "drop"
+  )
+
+# --- 3. Labels ---
+gender_labels <- as_labeller(c(
+  "m" = "Men",
+  "v" = "Women"
+))
+
+migration_labels <- as_labeller(c(
+  "nl"   = "No migration background",
+  "eu"   = "European",
+  "noeu" = "Non-European"
+))
+
+education_labels <- as_labeller(c(
+  "laag"   = "Low",
+  "middel" = "Middle",
+  "hoog"   = "High"
+))
+
+# --- 4. Plot ---
+ggplot(summary_preds_6_0, aes(x = leeftijd, y = mean_fit, color = gender)) +
+  geom_point(size = 2) +
+  geom_errorbar(
+    aes(ymin = lower, ymax = upper),
+    width = 0,
+    alpha = 0.4,
+    linewidth = 0.6
+  ) +
+  facet_grid(
+    rows = vars(education),
+    cols = vars(migration),
+    labeller = labeller(
+      education = education_labels,
+      migration = migration_labels
+    ),
+    switch = "y"
+  ) +
+  labs(
+    title = "Predicted probability of overall unsafety (Model 1)",
+    subtitle = "95% model-based confidence intervals (merTools parametric simulation)",
+    y = "Predicted Probability",
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(
+    values = c("m" = "steelblue", "v" = "tomato"),
+    labels = gender_labels
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(sec.axis = dup_axis(name = "Predicted Probability"))
+
+```
+
+
+
+
+```{r}
+# --- 1. Model-based predictions met 95% CI via parametric bootstrap ---
+set.seed(123)
+preds6_1 <- predictInterval(
+  merMod = L_6_1,
+  newdata = NEA2022,
+  level = 0.95,
+  n.sims = 1000,
+  type = "linear.prediction",  # bij logistische modellen: "response"
+  include.resid.var = FALSE
+)
+
+# Voeg voorspellingen toe aan data
+NEA2022 <- cbind(NEA2022, preds6_1)
+
+# --- 2. Groepeer per intersectionele groep ---
+summary_preds_6_1 <- NEA2022 %>%
+  group_by(gender, migration, education, leeftijd) %>%
+  summarise(
+    mean_fit = mean(fit, na.rm = TRUE),
+    lower = mean(lwr, na.rm = TRUE),
+    upper = mean(upr, na.rm = TRUE),
+    n = n(),
+    .groups = "drop"
+  )
+
+# --- 3. Labels ---
+gender_labels <- as_labeller(c(
+  "m" = "Men",
+  "v" = "Women"
+))
+
+migration_labels <- as_labeller(c(
+  "nl"   = "No migration background",
+  "eu"   = "European",
+  "noeu" = "Non-European"
+))
+
+education_labels <- as_labeller(c(
+  "laag"   = "Low",
+  "middel" = "Middle",
+  "hoog"   = "High"
+))
+
+# --- 4. Plot ---
+ggplot(summary_preds_6_1, aes(x = leeftijd, y = mean_fit, color = gender)) +
+  geom_point(size = 2) +
+  geom_errorbar(
+    aes(ymin = lower, ymax = upper),
+    width = 0,
+    alpha = 0.4,
+    linewidth = 0.6
+  ) +
+  facet_grid(
+    rows = vars(education),
+    cols = vars(migration),
+    labeller = labeller(
+      education = education_labels,
+      migration = migration_labels
+    ),
+    switch = "y"
+  ) +
+  labs(
+    title = "Predicted probability of overall unsafety (Model 1)",
+    subtitle = "95% model-based confidence intervals (merTools parametric simulation)",
+    y = "Predicted Probability",
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(
+    values = c("m" = "steelblue", "v" = "tomato"),
+    labels = gender_labels
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(sec.axis = dup_axis(name = "Predicted Probability"))
+
+```
+
+
+```{r}
+pred_summary <- NEA2022 %>%
+  group_by(intersections) %>%
+  summarise(
+    pred_mean = mean(fit, na.rm = TRUE),
+    lower = mean(lwr, na.rm = TRUE),
+    upper = mean(upr, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(pred_mean)) %>%
+  mutate(rank = row_number())
+
+top10 <- pred_summary %>% slice(1:10) %>% mutate(type = "Top 10")
+bottom10 <- pred_summary %>% slice((n() - 9):n()) %>% mutate(type = "Bottom 10")
+
+df6 <- bind_rows(top10, bottom10)
+
+df6 %>%
+  select(rank, intersections, pred_mean, lower, upper) %>%
+  gt() %>%
+  tab_header(
+    title = md("**Highest and lowest intersections probability overall unsafety**")
+  ) %>%
+  fmt_number(
+    columns = c("pred_mean", "lower", "upper"),
+    decimals = 3
+  ) %>%
+  fmt_number(columns = "rank", decimals = 0) %>%
+  cols_label(
+    intersections = md("**Intersections**"),
+    pred_mean    = md("**Predicted probability**"),
+    lower        = md("**95% CI lower**"),
+    upper        = md("**95% CI upper**"),
+    rank         = md("**Rank**")
+  )
+
+```
+
+
+
+
+
+
+
+```{r estimated overall unsafety Model1, cache=TRUE}
+#Model1: Predicted probability belonging to overall unsafety class
+
+NEA2022$predicted_6 <- predict(L_6_1, re.form = NULL, type = "response")
+
+NEA2022$residual_6 <- NEA2022$model7_6 - NEA2022$predicted_6
+
+summary_preds_6 <- NEA2022 %>%
+  group_by(gender, migration, education, leeftijd) %>%
+  summarise(
+    mean_pred_6 = mean(predicted_6, na.rm = TRUE),
+    se_pred_6 = sd(residual_6, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+gender_labels <- as_labeller(c(
+  "m" = "Men",
+  "v" = "Women"
+))
+
+migration_labels <- as_labeller(c(
+  "nl"   = "No migration background",
+  "eu"   = "European",
+  "noeu" = "Non-European"
+))
+
+education_labels <- as_labeller(c(
+  "laag"   = "Low",
+  "middel" = "Middle",
+  "hoog"   = "High"
+))
+
+ggplot(summary_preds_6, aes(x = leeftijd, y = mean_pred_6, color = gender)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = mean_pred_6 - 1.96*se_pred_6,
+                    ymax = mean_pred_6 + 1.96*se_pred_6),
+                width = 0,
+                alpha = 0.4,
+                linewidth = 0.005
+                ) + 
+  facet_grid(rows = vars(education), cols = vars(migration),
+             labeller = labeller(
+               education = education_labels,
+               migration = migration_labels
+             ),
+             switch = "y"
+  ) +
+  labs(
+    title = "Predicted probability overall unsafety Model1",
+    y = NULL,
+    x = NULL,
+    color = "Gender"
+  ) +
+  scale_color_manual(values = c("m" = "steelblue", "v" = "tomato"),
+                     labels = gender_labels) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(angle = 90),
+    strip.background = element_rect(fill = "gray90", color = NA),
+    strip.placement = "outside",
+    strip.text.y.left = element_text(angle = 0),
+    axis.title.y = element_blank(),
+    axis.text.y.left = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  scale_y_continuous(
+    name = NULL,
+    sec.axis = dup_axis(name = "Predicted Probability")
+  )
+```
