@@ -2159,9 +2159,9 @@ df_conflictleid %>%
 ```
 
 
-# Incivility coworkers
+# Lack of social support coworkers
 
-```{r regression incivility coworkers, cache=TRUE}
+```{r regression lack of social support coworkers, cache=TRUE}
 mis_steuncol <- NEA2022 %>%
   filter(!is.na(steuncol_RR))
 
@@ -2272,7 +2272,7 @@ re_df <- data.frame(
 re_df %>%
   gt() %>%
   tab_header(
-    title = "Estimated intersectional effect incivility coworkers"
+    title = "Estimated intersectional effect lack of social support coworkers"
   ) %>%
   fmt_number(
     columns = c(estimate, se, lower, upper),
@@ -2346,7 +2346,7 @@ df_steuncol %>%
   select(rank, intersections, pred_mean_steuncol) %>%
   gt() %>%
   tab_header(
-    title = md("**Highest and lowest intersections probability incivility coworkers**")
+    title = md("**Highest and lowest intersections probability lack social support coworkers**")
   ) %>%
   fmt_number(
     columns = "pred_mean_steuncol",
@@ -2366,11 +2366,11 @@ df_steuncol %>%
 
 
 
-# Incivility supervisors
+# Lack of social support supervisors
 
 
 
-```{r regression incivility supervisors, cache=TRUE}
+```{r regression lack of social support supervisors, cache=TRUE}
 
 mis_steunleid <- NEA2022 %>%
   filter(!is.na(steunleid_RR))
@@ -2484,7 +2484,7 @@ re_df <- data.frame(
 re_df %>%
   gt() %>%
   tab_header(
-    title = "Estimated intersectional effect incivility supervisors (steunleid_RR)"
+    title = "Estimated intersectional effect lack social support supervisors (steunleid_RR)"
   ) %>%
   fmt_number(
     columns = c(estimate, se, lower, upper),
@@ -2557,7 +2557,7 @@ df_steunleid %>%
   select(rank, intersections, pred_mean_steunleid) %>%
   gt() %>%
   tab_header(
-    title = md("**Highest and lowest intersections probability incivility supervisors (steunleid_RR)**")
+    title = md("**Highest and lowest intersections probability lack social support supervisors (steunleid_RR)**")
   ) %>%
   fmt_number(
     columns = "pred_mean_steunleid",
