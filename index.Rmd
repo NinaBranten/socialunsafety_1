@@ -39,7 +39,7 @@ klippy::klippy(position = c('top', 'right'))
 ----
 
 :::::::::::::: {.columns}
-::: {.column width="50%"}
+::: {.column width="100%"}
 
 # Experiences with social unsafety among employees in the Netherlands: a holistic, intersectional perspective 
 Last compiled on `r format(Sys.time(), '%B, %Y')`  
