@@ -683,12 +683,12 @@ indicator_labels <- c(
   "int_leid_plot"      = "Intimidation S",
   "seks_col_plot"      = "Unwanted sexual attention C",
   "seks_leid_plot"     = "Unwanted sexual attention S",
-  "gew_col_plot"       = "Violence C",
-  "gew_leid_plot"      = "Violence S",
+  "gew_col_plot"       = "Physical violence C",
+  "gew_leid_plot"      = "Physical violence S",
   "conflict_col_plot"  = "Conflict C",
   "conflict_leid_plot" = "Conflict S",
-  "steuncol_plot"      = "Incivility C",
-  "steunleid_plot"     = "Incivility S",
+  "steuncol_plot"      = "Lack of social support C",
+  "steunleid_plot"     = "Lack of social support S",
   "psyveil_plot"       = "Psychological unsafety"
 )
 
@@ -713,7 +713,7 @@ ggplot(plot_data4, aes(x = indicator, y = mean_value,
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
     legend.position = "bottom",
-    legend.text = element_text(size = 11)
+    legend.text = element_text(size = 7)
   )
 
 ```
@@ -760,12 +760,12 @@ indicator_labels <- c(
   "int_leid_plot"      = "Intimidation S",
   "seks_col_plot"      = "Unwanted sexual attention C",
   "seks_leid_plot"     = "Unwanted sexual attention S",
-  "gew_col_plot"       = "Violence C",
-  "gew_leid_plot"      = "Violence S",
+  "gew_col_plot"       = "Physical violence C",
+  "gew_leid_plot"      = "Physical violence S",
   "conflict_col_plot"  = "Conflict C",
   "conflict_leid_plot" = "Conflict S",
-  "steuncol_plot"      = "Incivility C",
-  "steunleid_plot"     = "Incivility S",
+  "steuncol_plot"      = "Lack of social support C",
+  "steunleid_plot"     = "Lack of social support S",
   "psyveil_plot"       = "Psychological unsafety"
 )
 
@@ -791,7 +791,7 @@ ggplot(plot_data5, aes(x = indicator, y = mean_value,
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
     legend.position = "bottom",
-    legend.text = element_text(size = 11)
+    legend.text = element_text(size = 7)
   )
 
 ```
@@ -839,12 +839,12 @@ indicator_labels <- c(
   "int_leid_plot"      = "Intimidation S",
   "seks_col_plot"      = "Unwanted sexual attention C",
   "seks_leid_plot"     = "Unwanted sexual attention S",
-  "gew_col_plot"       = "Violence C",
-  "gew_leid_plot"      = "Violence S",
+  "gew_col_plot"       = "Physical violence C",
+  "gew_leid_plot"      = "Physical violence S",
   "conflict_col_plot"  = "Conflict C",
   "conflict_leid_plot" = "Conflict S",
-  "steuncol_plot"      = "Incivility C",
-  "steunleid_plot"     = "Incivility S",
+  "steuncol_plot"      = "Lack of social support C",
+  "steunleid_plot"     = "Lack of social support S",
   "psyveil_plot"       = "Psychological unsafety"
 )
 
@@ -871,7 +871,7 @@ ggplot(plot_data6, aes(x = indicator, y = mean_value,
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
     legend.position = "bottom",
-    legend.text = element_text(size = 11)
+    legend.text = element_text(size = 7)
   )
 
 ```
@@ -924,12 +924,12 @@ indicator_labels <- c(
   "int_leid_plot"      = "Intimidation S",
   "seks_col_plot"      = "Unwanted sexual attention C",
   "seks_leid_plot"     = "Unwanted sexual attention S",
-  "gew_col_plot"       = "Violence C",
-  "gew_leid_plot"      = "Violence S",
+  "gew_col_plot"       = "Physical violence C",
+  "gew_leid_plot"      = "Physical violence S",
   "conflict_col_plot"  = "Conflict C",
   "conflict_leid_plot" = "Conflict S",
-  "steuncol_plot"      = "Incivility C",
-  "steunleid_plot"     = "Incivility S",
+  "steuncol_plot"      = "Lack of social support C",
+  "steunleid_plot"     = "Lack of social support S",
   "psyveil_plot"       = "Psychological unsafety"
 )
 
@@ -955,9 +955,9 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
   labs(x = NULL, y = "Mean score", color = NULL) +
   theme_minimal() +
   theme(
-    axis.text.x = element_text(size = 10, angle = 45, hjust = 1),
+    axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
     legend.position = "bottom",
-    legend.text = element_text(size = 10)
+    legend.text = element_text(size = 7)
   )
 ```
 
@@ -1017,12 +1017,12 @@ indicator_labels <- c(
   "int_leid_plot"      = "Intimidation S",
   "seks_col_plot"      = "Unwanted sexual attention C",
   "seks_leid_plot"     = "Unwanted sexual attention S",
-  "gew_col_plot"       = "Violence C",
-  "gew_leid_plot"      = "Violence S",
+  "gew_col_plot"       = "Physical violence C",
+  "gew_leid_plot"      = "Physical violence S",
   "conflict_col_plot"  = "Conflict C",
   "conflict_leid_plot" = "Conflict S",
-  "steuncol_plot"      = "Incivility C",
-  "steunleid_plot"     = "Incivility S",
+  "steuncol_plot"      = "Lack of social support C",
+  "steunleid_plot"     = "Lack of social support S",
   "psyveil_plot"       = "Psychological unsafety"
 )
 
@@ -1052,7 +1052,7 @@ ggplot(plot_data8, aes(x = indicator, y = mean_value,
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
     legend.position = "bottom",
-    legend.text = element_text(size = 11)
+    legend.text = element_text(size = 7)
   )
 
 ```
@@ -1113,12 +1113,12 @@ indicator_labels <- c(
   "int_leid_plot"      = "Intimidation S",
   "seks_col_plot"      = "Unwanted sexual attention C",
   "seks_leid_plot"     = "Unwanted sexual attention S",
-  "gew_col_plot"       = "Violence C",
-  "gew_leid_plot"      = "Violence S",
+  "gew_col_plot"       = "Physical violence C",
+  "gew_leid_plot"      = "Physical violence S",
   "conflict_col_plot"  = "Conflict C",
   "conflict_leid_plot" = "Conflict S",
-  "steuncol_plot"      = "Incivility C",
-  "steunleid_plot"     = "Incivility S",
+  "steuncol_plot"      = "Lack of social support C",
+  "steunleid_plot"     = "Lack of social support S",
   "psyveil_plot"       = "Psychological unsafety"
 )
 
@@ -1149,7 +1149,7 @@ ggplot(plot_data9, aes(x = indicator, y = mean_value,
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
     legend.position = "bottom",
-    legend.text = element_text(size = 11)
+    legend.text = element_text(size = 7)
   )
 
 ```
