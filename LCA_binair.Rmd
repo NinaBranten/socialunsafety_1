@@ -649,8 +649,8 @@ indicator_labels <- c(
   "vio_s_plot"      = "Violence S",
   "conflict_col_plot"  = "Conflict C",
   "conflict_leid_plot" = "Conflict S",
-  "steuncol_plot"      = "Incivility C",
-  "steunleid_plot"     = "Incivility S",
+  "steuncol_plot"      = "Lack social support C",
+  "steunleid_plot"     = "Lack social support S",
   "psyveil_plot"       = "Psychological unsafety"
 )
 
@@ -723,8 +723,8 @@ indicator_labels <- c(
   "vio_s_plot"       = "Violence S",
   "conflict_col_plot"  = "Conflict C",
   "conflict_leid_plot" = "Conflict S",
-  "steuncol_plot"      = "Incivility C",
-  "steunleid_plot"     = "Incivility S",
+  "steuncol_plot"      = "Lack social support C",
+  "steunleid_plot"     = "Lack social support S",
   "psyveil_plot"       = "Psychological unsafety"
 )
 
@@ -799,8 +799,8 @@ indicator_labels <- c(
   "vio_s_plot"       = "Violence S",
   "conflict_col_plot"  = "Conflict C",
   "conflict_leid_plot" = "Conflict S",
-  "steuncol_plot"      = "Incivility C",
-  "steunleid_plot"     = "Incivility S",
+  "steuncol_plot"      = "Lack social support C",
+  "steunleid_plot"     = "Lack social support S",
   "psyveil_plot"       = "Psychological unsafety"
 )
 
@@ -882,8 +882,8 @@ indicator_labels <- c(
   "vio_s_plot"      = "Violence S",
   "conflict_col_plot"  = "Conflict C",
   "conflict_leid_plot" = "Conflict S",
-  "steuncol_plot"      = "Incivility C",
-  "steunleid_plot"     = "Incivility S",
+  "steuncol_plot"      = "Lack social support C",
+  "steunleid_plot"     = "Lack social support S",
   "psyveil_plot"       = "Psychological unsafety"
 )
 
@@ -911,7 +911,7 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
     legend.position = "bottom",
-    legend.text = element_text(size = 11)
+    legend.text = element_text(size = 7)
   )
 ```
 
@@ -963,8 +963,8 @@ indicator_labels <- c(
   "vio_s_plot"        = "Violence S",
   "conflict_col_plot" = "Conflict C",
   "conflict_leid_plot"= "Conflict S",
-  "steuncol_plot"     = "Incivility C",
-  "steunleid_plot"    = "Incivility S",
+  "steuncol_plot"     = "Lack social support C",
+  "steunleid_plot"    = "Lack social support S",
   "psyveil_plot"      = "Psychological unsafety"
 )
 
@@ -1045,8 +1045,8 @@ indicator_labels <- c(
   "vio_s_plot"        = "Violence S",
   "conflict_col_plot" = "Conflict C",
   "conflict_leid_plot"= "Conflict S",
-  "steuncol_plot"     = "Incivility C",
-  "steunleid_plot"    = "Incivility S",
+  "steuncol_plot"     = "Lack social support C",
+  "steunleid_plot"    = "Lack social support S",
   "psyveil_plot"      = "Psychological unsafety"
 )
 
