@@ -296,7 +296,7 @@ cat(
 ```
 <br><br>
 
-## Incivility
+## Lack of social support
 
 <br><br>
 
@@ -574,9 +574,9 @@ cor(NEA2022$psyveil_scale, NEA2022$psyveil_RR, use = "complete.obs")
 
 <br><br>
 
-## Age
+## Intersections
 
-<br><br> **Recoden low (15-35), middle (35-55), old (55-75)**
+<br><br> **Recoden age low (15-35), middle (35-55), old (55-75)**
 
 
 ```{r age, results='asis', cache=TRUE}
@@ -612,11 +612,6 @@ cat(
   print(f2, headings = TRUE, plain.ascii = TRUE)
 )
 ```
-
-
-<br><br>
-
-## Intersections
 
 <br><br> **Preparing variables for intersections**
 
