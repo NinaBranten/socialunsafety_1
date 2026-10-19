@@ -834,7 +834,7 @@ ggplot(plot_data7, aes(x = indicator, y = mean_value,
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
     legend.position = "bottom",
-    legend.text = element_text(size = 11)
+    legend.text = element_text(size = 7)
   )
 ```
 
