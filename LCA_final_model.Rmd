@@ -1151,7 +1151,7 @@ ggplot(plot_data9, aes(x = indicator, y = mean_value,
     legend.position = "bottom",
     legend.text = element_text(size = 7)
   )
-
+ 
 ```
 
 <br><br>
