@@ -47,32 +47,29 @@ Last compiled on `r format(Sys.time(), '%B, %Y')`
 <br>
 
 ----
+Welcome to our website, showing the codes, analyses, and results of the paper called "Experiences with social unsafety among employees in the Netherlands: a holistic, intersectional perspective". Below, you can find an overview of our main analyses and robustness analyses.
+
+<br><br>
 
 # Overview
-<br><br>
 
-**Data preperation**
-<br><br>
+**Data preparation**
+
+- [Data preparation](Data_preparation.html)
 
 **Latent Class Analysis**
-<br><br>
-- Final model
-<br>
-- Model with transgressive behaviors as binary (no/yes)
-<br>
-- Model with missings deleted listwise
-<br><br>
+
+- [Final model](LCA_final_model.html)
+- [Model with transgressive behaviors as binary (no/yes)](LCA_binair.html)
+- [Model with missings deleted listwise](LCA_listwise.html)
 
 **Multilevel Analysis of Individual Heterogeneity and Discriminatory Accuracy (MAIHDA)**
-<br><br>
-- Final model
-<br>
-- Model with transgressive behaviors as binary (no/yes)
-<br>
-- Multilevel beta-regression with the ‘glmmTMB’ package using a logit link
-<br>
-- Multinomial multilevel model
-<br><br>
+
+- [Final model](MAIHDA_final_model.html)
+- [Model with transgressive behaviors as binary (no/yes)](MAIHDA_binary.html)
+- [Items separate](Items_seperate.html)
+- [Multilevel beta-regression using glmmTMB with a logit link](beta_models.html)
+- [Multinomial multilevel model](Multinomial.html)
 
 
 :::
